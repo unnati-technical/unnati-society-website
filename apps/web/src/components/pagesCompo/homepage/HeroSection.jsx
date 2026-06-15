@@ -1,9 +1,8 @@
 import React from "react";
 import play from './../../../assets/play.png'
-import herosection from './../../../assets/herosection.jpeg'
 import { cloudinaryImage2 } from "../../../utils/cloudinary";
 import { useNavigate } from "react-router-dom";
-import { useState,useRef } from "react";
+
 
 
 const HeroSection = () => {

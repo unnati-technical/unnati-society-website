@@ -1,9 +1,7 @@
 import React from "react";
-import digiXplore from './../../../assets/digiImage.png'
-import netritva from './../../../assets/netritvaImg.png'
-import akshar from './../../../assets/aksharImg.png'
 import { useNavigate } from "react-router-dom";
 import { cloudinaryImage } from "./../../../utils/cloudinary";
+
 
 const HeroSection = () => {
   const navigate = useNavigate();

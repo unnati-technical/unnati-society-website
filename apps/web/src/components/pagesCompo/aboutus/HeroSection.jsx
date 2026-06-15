@@ -1,6 +1,6 @@
 import React from "react";
-import play from './../../../assets/play.png'
 import swachhtaPakhwara from './../../../assets/swachhtaPakhwara.jpg'
+
 
 
 const HeroSection = () => {

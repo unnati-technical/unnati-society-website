@@ -1,7 +1,7 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
-import { cloudinaryImage } from "../../../utils/cloudinary";
 import { cloudinaryImage2 } from "../../../utils/cloudinary";
+
 
 const Hero = () => {
   const navigate = useNavigate();
