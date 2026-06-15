@@ -4,7 +4,7 @@
   "version": "0.0.0",
   "scripts": {
     "dev": "expo start",
-    "build": "expo build",
+    "build": "echo 'No build step for mobile placeholder'",
     "lint": "echo 'No source to lint in mobile placeholder'"
   },
   "dependencies": {

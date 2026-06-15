@@ -7,6 +7,12 @@
       "inputs": ["$TURBO_DEFAULT$", ".env*"],
       "outputs": ["dist/**"]
     },
+    "@unnati/api#build": {
+      "outputs": []
+    },
+    "@unnati/mobile#build": {
+      "outputs": []
+    },
     "dev": {
       "cache": false,
       "persistent": true
