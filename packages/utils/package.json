@@ -1,0 +1,12 @@
+{
+  "name": "@unnati/utils",
+  "private": true,
+  "version": "0.0.0",
+  "description": "Shared utility functions for Unnati Society apps",
+  "type": "module",
+  "main": "./src/index.js",
+  "exports": {
+    ".": "./src/index.js"
+  },
+  "files": ["src"]
+}

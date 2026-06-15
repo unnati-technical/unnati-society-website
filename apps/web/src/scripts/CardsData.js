@@ -1,6 +1,8 @@
 import directorImg from '../assets/directorsir.png';
 import prImg from '../assets/prsir.png';
 import chetanImg from '../assets/chetansir.jpg';
+import { cloudinaryImage } from '../utils/cloudinary';
+
 
 const cardData = [
     {
@@ -21,8 +23,15 @@ const cardData = [
         title:"Faculty Mentor, Unnati Society",
         name:"Dr. Chetan Barde",
         position:"Assistant Professor, IIIT Bhagalpur",
-        content:"Students are the strongest driving force behind meaningful social change. Through their initiative, creativity, and commitment, they have the power to positively impact communities beyond the campus.Unnati Society serves as a platform where students transform their ideas into action, addressing educational and social challenges with empathy and responsibility. As the Faculty Mentor, I am committed to guiding and supporting their efforts, ensuring that Unnati’s initiatives remain impactful, ethical, and sustainable.I look forward to strengthening student leadership, fostering collaboration, and creating opportunities where learning extends beyond classrooms and contributes to the greater good.Together, we can nurture socially responsible leaders and build a more inclusive and empowered society.",
+        content:"Students are the strongest driving force behind meaningful social change. Through their initiative, creativity, and commitment, they have the power to positively impact communities beyond the campus.Unnati Society serves as a platform where students transform their ideas into action, addressing educational and social challenges with empathy and responsibility. As the Faculty Mentor, I am committed to guiding and supporting their efforts, ensuring that Unnati's initiatives remain impactful, ethical, and sustainable.I look forward to strengthening student leadership, fostering collaboration, and creating opportunities where learning extends beyond classrooms and contributes to the greater good.Together, we can nurture socially responsible leaders and build a more inclusive and empowered society.",
         image:chetanImg
+    },
+    {
+        title:"President, Unnati Society",
+        name:"Dheeraj Yadav",
+        position:"B.Tech CSE, IIIT Bhagalpur (2023–27)",
+        content:"Unnati Society has always been more than just a club — it is a movement driven by the collective will of students who believe that education must create ripples of change in society. As President, my vision is to deepen our roots in the communities we serve, expand our programs in digital literacy and leadership, and build a more inclusive, impactful organisation. I am grateful to every volunteer, mentor, and partner who makes this mission possible. Together, we are not just building futures — we are transforming lives.",
+        image: cloudinaryImage("dheeraj_cuclko")
     }
 ]
 

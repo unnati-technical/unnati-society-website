@@ -1,0 +1,20 @@
+{
+  "name": "@unnati/mobile",
+  "private": true,
+  "version": "0.0.0",
+  "scripts": {
+    "dev": "expo start",
+    "build": "expo build",
+    "lint": "eslint ."
+  },
+  "dependencies": {
+    "expo": "~53.0.0",
+    "react": "^19.0.0",
+    "react-native": "0.79.3",
+    "@unnati/types": "workspace:*",
+    "@unnati/utils": "workspace:*"
+  },
+  "devDependencies": {
+    "eslint": "^9.39.1"
+  }
+}

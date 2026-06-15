@@ -1,0 +1,12 @@
+{
+  "name": "@unnati/types",
+  "private": true,
+  "version": "0.0.0",
+  "description": "Shared TypeScript types for Unnati Society apps",
+  "main": "./src/index.ts",
+  "types": "./src/index.ts",
+  "exports": {
+    ".": "./src/index.ts"
+  },
+  "files": ["src"]
+}

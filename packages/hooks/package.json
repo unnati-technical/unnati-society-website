@@ -1,0 +1,15 @@
+{
+  "name": "@unnati/hooks",
+  "private": true,
+  "version": "0.0.0",
+  "description": "Shared React hooks for Unnati Society apps",
+  "type": "module",
+  "main": "./src/index.js",
+  "exports": {
+    ".": "./src/index.js"
+  },
+  "files": ["src"],
+  "peerDependencies": {
+    "react": ">=18.0.0"
+  }
+}
