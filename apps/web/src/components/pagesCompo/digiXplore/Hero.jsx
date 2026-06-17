@@ -5,7 +5,7 @@ import { cloudinaryImage } from "../../../utils/cloudinary";
 const Hero = () => {
   const navigate = useNavigate();
   return (
-    <section className="bg-black text-white flex w-screen justify-center items-center px-10 py-30 md:py-25">
+    <section className="bg-black text-white flex w-screen justify-center items-center px-10 py-10 md:py-12">
       <div className="w-full md:w-3/4 flex flex-col xl:flex-row justify-between items-center">
         
         <div className="flex flex-col gap-6 w-full md:w-1/2">

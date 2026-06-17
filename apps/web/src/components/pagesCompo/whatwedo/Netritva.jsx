@@ -1,75 +1,120 @@
 import React from "react";
 import { cloudinaryImage } from "../../../utils/cloudinary";
+import { FiTarget } from "react-icons/fi";
+import { HiOutlineUserGroup } from "react-icons/hi2";
+import { LuSchool } from "react-icons/lu";
+import { TbTargetArrow } from "react-icons/tb";
 
 const Netritva = () => {
   return (
-    <section className="bg-white text-black w-screen flex justify-center items-center py-30 px-10">
-      <div className="w-full md:w-3/4 flex flex-col-reverse gap-5 md:flex-row justify-between items-center">
+    <section className="bg-white text-black w-full flex flex-col items-center py-20 px-6 lg:px-10 overflow-hidden font-sans">
+      <div className="w-full max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-start gap-12 md:gap-16">
+        
+        {/* Left Side: Image Cluster and Our Focus Box */}
+        <div className="w-full md:w-1/2 flex flex-col items-center relative">
+          
+          {/* Image Cluster Container */}
+          <div className="relative w-full aspect-square max-w-[500px] mx-auto mt-4">
+            
+            {/* Background SVG curved dotted line */}
+            <svg className="absolute inset-0 w-full h-full pointer-events-none z-0" viewBox="0 0 500 500">
+              <path d="M 80 280 C 120 80, 350 40, 420 160" fill="transparent" stroke="#3b82f6" strokeWidth="1.5" strokeDasharray="6 6" className="opacity-70" />
+            </svg>
 
-        {/* Image Cluster */}
-        <div className="w-3/4 flex gap-6 items-center justify-center">
+            {/* Solid light blue circle (left) */}
+            <div className="absolute top-1/4 left-0 w-24 h-24 sm:w-32 sm:h-32 bg-[#f0f5ff] rounded-full z-0"></div>
 
-          {/* Left */}
-          <div className="flex flex-col items-center">
-            <div className="h-20"></div>
+            {/* Small hollow circle (top right) */}
+            <div className="absolute top-12 right-28 sm:right-32 w-8 h-8 border-2 border-blue-600 rounded-full z-0 bg-white"></div>
 
-            <div className=" rounded-full w-32 h-32 overflow-hidden flex justify-center items-center">
-              <img
-                src={cloudinaryImage("WhatsApp_Image_2026-02-03_at_1.39.39_PM_2_fqc1pi")}
-                alt=""
-                className="w-full h-full object-cover rounded-full"
-              />
+            {/* Dots pattern (bottom left) */}
+            <div className="absolute bottom-16 left-16 sm:left-24 grid grid-cols-4 gap-2 opacity-40 z-0">
+               {[...Array(16)].map((_, i) => (
+                 <div key={i} className="w-1.5 h-1.5 rounded-full bg-blue-600"></div>
+               ))}
+            </div>
+
+            {/* Top Right Image */}
+            <div className="absolute top-8 sm:top-8 right-2 sm:right-2 z-0 w-36 h-36 sm:w-44 sm:h-44 rounded-full border-[6px] sm:border-8 border-white shadow-xl overflow-hidden group bg-gray-200">
+               <img src={cloudinaryImage("WhatsApp_Image_2026-02-03_at_1.39.38_PM_3_thxqic")} alt="Impact Top" className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" />
+            </div>
+
+            {/* Center Main Image */}
+            <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 z-10 w-64 h-64 sm:w-80 sm:h-80 rounded-full border-[6px] sm:border-8 border-white shadow-2xl overflow-hidden group bg-gray-200">
+               <img src={cloudinaryImage("WhatsApp_Image_2026-02-03_at_1.39.42_PM_xs2pm0")} alt="Impact Center" className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" />
+            </div>
+
+            {/* Bottom Left Image */}
+            <div className="absolute bottom-2 sm:bottom-2 left-0 sm:left-0 z-20 w-44 h-44 sm:w-52 sm:h-52 rounded-full border-[6px] sm:border-8 border-white shadow-xl overflow-hidden group bg-gray-200">
+               <img src={cloudinaryImage("WhatsApp_Image_2026-02-03_at_1.39.39_PM_2_fqc1pi")} alt="Impact Bottom" className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" />
             </div>
           </div>
 
-          {/* Center (Main Image) */}
-          <div className=" rounded-full w-48 h-48 bg-white overflow-hidden flex justify-center items-center">
-            <img
-              src={cloudinaryImage("WhatsApp_Image_2026-02-03_at_1.39.42_PM_xs2pm0")}
-              alt=""
-              className="w-full h-full object-cover rounded-full"
-            />
-          </div>
-
-          {/* Right */}
-          <div className="flex flex-col items-center">
-            <div className=" rounded-full w-32 h-32 overflow-hidden flex justify-center items-center">
-              <img
-                src={cloudinaryImage("WhatsApp_Image_2026-02-03_at_1.39.38_PM_3_thxqic")}
-                alt=""
-                className="w-full h-full object-cover rounded-full"
-              />
+          {/* Mission/Focus Card moved to left side below the images */}
+          <div className="bg-[#f8fbff] rounded-2xl p-6 flex items-start gap-5 mt-10 w-full max-w-[500px]">
+            <div className="text-blue-600 flex-shrink-0 mt-1">
+               <TbTargetArrow size={32} />
             </div>
-
-            <div className="h-20"></div>
+            <div className="flex flex-col">
+              <span className="text-gray-900 font-bold text-lg">Our Focus</span>
+              <span className="text-gray-600 text-sm mt-1 leading-relaxed">
+                Career guidance, personality development, and life skills for a confident tomorrow.
+              </span>
+            </div>
           </div>
 
         </div>
 
-        {/* Text Section */}
-        <div className="flex flex-col gap-3">
-          <div className="w-15 h-1 bg-gray-400 mb-4"></div>
+        {/* Right Side: Text and Cards */}
+        <div className="flex flex-col gap-6 w-full md:w-1/2 mt-4 md:mt-12">
+          {/* Pill */}
+          <div className="bg-[#eff6ff] text-blue-600 font-bold px-4 py-1.5 rounded-full text-xs tracking-wider uppercase w-fit">
+            OUR PROGRAMS
+          </div>
+          
+          {/* Blue Underline */}
+          <div className="w-16 h-1 bg-blue-600 mt-1 mb-1"></div>
 
-          <div className="text-5xl">
-            <h1 className="text-black oswald-font-3">IMPACT OF</h1>
-            <h1 className="text-blue-400 oswald-font-3">NETRITVA</h1>
+          {/* Heading */}
+          <div className="text-5xl lg:text-6xl font-black leading-tight tracking-tight">
+            <h1 className="text-gray-900">IMPACT OF</h1>
+            <h1 className="text-blue-600 mt-1">NETRITVA</h1>
+          </div>
+          
+          {/* Description */}
+          <p className="text-gray-600 text-[15px] sm:text-base max-w-[480px] mt-2 leading-relaxed">
+            Netritva is our mentorship and guidance program
+            that helps students discover their potential,
+            build confidence, and make informed decisions
+            for a brighter future.
+          </p>
+          
+          {/* Large Stats Card */}
+          <div className="bg-white border border-gray-100 rounded-3xl p-6 sm:p-8 shadow-[0_8px_30px_rgb(0,0,0,0.06)] flex flex-col sm:flex-row items-center sm:items-stretch gap-6 sm:gap-0 mt-4 max-w-[480px]">
+            {/* Left Column: Children */}
+            <div className="flex-1 flex flex-col items-center text-center px-2">
+               <div className="bg-[#eff6ff] rounded-xl p-4 text-blue-600 mb-5">
+                  <HiOutlineUserGroup size={32} />
+               </div>
+               <span className="text-blue-600 font-black text-4xl">30+</span>
+               <span className="text-gray-900 font-bold text-[13px] tracking-wider uppercase mt-2">CHILDREN</span>
+               <span className="text-gray-500 text-[13px] mt-2 leading-relaxed">Received guidance<br/>and mentorship</span>
+            </div>
+            
+            {/* Divider */}
+            <div className="hidden sm:block w-px bg-gray-200 my-4 mx-2"></div>
+            
+            {/* Right Column: Schools */}
+            <div className="flex-1 flex flex-col items-center text-center px-2 border-t sm:border-t-0 border-gray-100 pt-6 sm:pt-0">
+               <div className="bg-[#eff6ff] rounded-xl p-4 text-blue-600 mb-5">
+                  <LuSchool size={32} />
+               </div>
+               <span className="text-blue-600 font-black text-4xl">1</span>
+               <span className="text-gray-900 font-bold text-[13px] tracking-wider uppercase mt-2">SCHOOLS</span>
+               <span className="text-gray-500 text-[13px] mt-2 leading-relaxed">Reached and<br/>collaborated</span>
+            </div>
           </div>
 
-          <div className="mt-4 flex justify-between">
-            <div className="flex flex-col w-1/2 gap-3">
-              <div className="text-blue-400 text-3xl sm:text-3xl md:text-5xl inter-font-3">30+</div>
-              <div className="inter-font-3">
-                CHILDREN RECEIVED GUIDANCE
-              </div>
-            </div>
-
-            <div className="flex flex-col gap-3">
-              <div className="text-blue-400 text-3xl sm:text-3xl md:text-5xl inter-font-3">1</div>
-              <div className="inter-font-3">
-                SCHOOLS REACHED
-              </div>
-            </div>
-          </div>
         </div>
 
       </div>

@@ -2,7 +2,7 @@ import React from "react";
 import play from './../../../assets/play.png'
 import { cloudinaryImage2 } from "../../../utils/cloudinary";
 import { useNavigate } from "react-router-dom";
-
+import homeHeroVideo from './../../../assets/home_hero.mp4';
 
 
 const HeroSection = () => {
@@ -15,9 +15,18 @@ const HeroSection = () => {
     //       className="relative bg-cover bg-center bg-no-repeat min-h-screen w-full text-white overflow-hidden"
     //       style={{backgroundImage: `url(${cloudinaryImage2("GICS_3_ji24dg")})`}}
     // >
-   <section className="relative bg-cover bg-center text-white flex justify-start pt-10 pb-10 xl:pb-52 px-10 xl:px-62 sm:py-30 sm:pb-51 items-center min-h-[50vh]" style={{backgroundImage: `url(${cloudinaryImage2("akshar_circle_wh3pw7")})`}}> 
-   <div className="absolute inset-0 bg-black/30 z-0 pointer-events-none"></div>
-      <div className="flex flex-col justify-start gap-4">
+   <section className="relative overflow-hidden bg-cover bg-center text-white flex justify-start pt-10 pb-10 xl:pb-52 px-10 xl:px-62 sm:py-10 sm:pb-51 items-center min-h-[50vh]"> 
+      <video 
+         autoPlay 
+         loop 
+         muted 
+         playsInline 
+         className="absolute inset-0 w-full h-full object-cover z-0 pointer-events-none"
+      >
+         <source src={homeHeroVideo} type="video/mp4" />
+      </video>
+      <div className="absolute inset-0 bg-black/30 z-0 pointer-events-none"></div>
+      <div className="relative z-10 flex flex-col justify-start gap-4">
         <div className="oswald-font text-xl sm:text-2xl md:text-5xl tracking-wide">
           <h1 className="text-white drop-shadow-lg">EMPOWERING</h1>
           <h1 className="text-white drop-shadow-lg">DREAMS</h1>

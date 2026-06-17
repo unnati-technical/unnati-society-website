@@ -5,7 +5,7 @@ import { useNavigate } from "react-router-dom";
 const Program = () => {
   const navigate = useNavigate();
   return (
-    <section className="flex justify-center items-center w-screen py-30 px-5">
+    <section className="flex justify-center items-center w-screen py-10 px-5">
       <div className="flex flex-col gap-4 w-3/4">
         <div className="w-20 h-1 bg-blue-400"></div>
         <div>

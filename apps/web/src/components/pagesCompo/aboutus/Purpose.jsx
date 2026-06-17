@@ -3,7 +3,7 @@ import heroSection from "./../../../assets/mission2.png";
 
 const Purpose = () => {
   return (
-    <section className="bg-[#F9FAFB] text-black py-10 px-10 md:py-40 md:px-10">
+    <section className="bg-[#F9FAFB] text-black py-10 px-10 md:py-12 md:px-10">
       <div className="flex flex-col-reverse md:flex-row justify-center items-center gap-8 ">
         <div className="w-full sm:w-1/2 lg:w-1/3 xl:w-1/4 h-1/2 mt-4 ">
           <img src={heroSection} alt="vision" className="object-cover h-96 border-none shadow-xl bg-black "/>

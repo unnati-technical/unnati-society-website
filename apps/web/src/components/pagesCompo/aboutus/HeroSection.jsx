@@ -5,7 +5,7 @@ import swachhtaPakhwara from './../../../assets/swachhtaPakhwara.jpg'
 
 const HeroSection = () => {
   return (
-    <section className=" text-white relative bg-cover bg-center bg-no-repeat flex justify-start py-50 xl:pb-52 px-10 xl:px-62 sm:py-30 sm:pb-51 items-center min-h-[50vh] h-screen" style={{backgroundImage: `url(${swachhtaPakhwara})`}}>
+    <section className=" text-white relative bg-cover bg-center bg-no-repeat flex justify-start py-50 xl:pb-52 px-10 xl:px-62 sm:py-10 sm:pb-51 items-center min-h-[50vh] h-screen" style={{backgroundImage: `url(${swachhtaPakhwara})`}}>
         <div className="absolute inset-0 bg-black/70"></div>
       <div className="flex z-10 flex-col justify-start gap-4">
         <div className="oswald-font text-xl sm:text-2xl md:text-5xl tracking-wide">
