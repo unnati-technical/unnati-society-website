@@ -8,12 +8,12 @@ const HeroSection = () => {
     <section className=" text-white relative bg-cover bg-center bg-no-repeat flex justify-start py-50 xl:pb-52 px-10 xl:px-62 sm:py-10 sm:pb-51 items-center min-h-[50vh] h-screen" style={{backgroundImage: `url(${swachhtaPakhwara})`}}>
         <div className="absolute inset-0 bg-black/70"></div>
       <div className="flex z-10 flex-col justify-start gap-4">
-        <div className="oswald-font text-xl sm:text-2xl md:text-5xl tracking-wide">
+        <div className="oswald-font-3 text-4xl sm:text-5xl md:text-7xl tracking-wide">
           <h1>EMPOWERING</h1>
-          <h1>DREAMS</h1>
+          <h1 className="text-blue-500">DREAMS</h1>
         </div>
         <div>
-          <p className="text-[18px] great-vibes-regular text-blue-400 sm:text-xl tracking-wide">Revolutionizing Present, Transforming Future</p>
+          <p className="text-xl great-vibes-regular text-yellow-400 sm:text-2xl tracking-wide">Revolutionizing Present, Transforming Future</p>
         </div>
         <div>
           <p className="border-4 text-justify border-l-blue-400 border-r-0 border-t-0 border-b-0 pl-4 text-sm md:text-xl font-[Open_Sans]">

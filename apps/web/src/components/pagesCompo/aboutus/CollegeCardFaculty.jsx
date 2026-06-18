@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { motion, AnimatePresence } from "framer-motion";
 
 import cardData from "../../../scripts/CardsData";
 
@@ -57,50 +58,40 @@ const CollegeCardFaculty = () => {
 
         </div>
 
-        <div className="flex flex-col-reverse md:flex-row items-center">
+        <div className="flex-1 overflow-hidden">
+          <AnimatePresence mode="wait">
+            <motion.div
+              key={currentIndex}
+              initial={{ opacity: 0, x: 20 }}
+              animate={{ opacity: 1, x: 0 }}
+              exit={{ opacity: 0, x: -20 }}
+              transition={{ duration: 0.3 }}
+              className="flex flex-col-reverse md:flex-row items-center w-full"
+            >
+              <div className="flex-1 pr-0 md:pr-8">
+                <h2 className="text-3xl oswald-font-3 text-center md:text-left">
+                  {card.title}
+                </h2>
+                <h3 className="text-lg inter-font mt-1 text-white/85 text-center md:text-left">
+                  {card.name}
+                </h3>
+                <p className="inter-font text-white/85 text-center md:text-left">
+                  {card.position}
+                </p>
+                <p className="mt-3 font-[Open_Sans] text-white/85 text-justify md:text-left leading-relaxed">
+                  {card.content}
+                </p>
+              </div>
 
-          <div className="flex-1">
-
-            <h2 className="text-3xl oswald-font-3 text-center md:text-left">
-
-              {card.title}
-
-            </h2>
-
-            <h3 className="text-lg inter-font mt-1 text-white/85 text-center md:text-left">
-
-              {card.name}
-
-            </h3>
-
-            <p className="inter-font text-white/85 text-center md:text-left">
-
-              {card.position}
-
-            </p>
-
-            <p className="mt-3 font-[Open_Sans] text-white/85 text-justify md:text-left">
-
-              {card.content}
-
-            </p>
-
-          </div>
-
-          <div className="flex-1 flex justify-center">
-
-            <img
-
-              src={card.image}
-
-              alt={card.name}
-
-              className="w-full h-full md:w-96 md:h-96 object-cover rounded-xl mb-8 md:mb-0"
-
-            />
-
-          </div>
-
+              <div className="flex-1 flex justify-center lg:justify-end">
+                <img
+                  src={card.image}
+                  alt={card.name}
+                  className="w-full h-auto max-w-[300px] md:w-96 md:h-96 object-cover rounded-xl mb-8 md:mb-0 shadow-lg border border-gray-700"
+                />
+              </div>
+            </motion.div>
+          </AnimatePresence>
         </div>
 
         <div className="ml-4 hidden md:block">
