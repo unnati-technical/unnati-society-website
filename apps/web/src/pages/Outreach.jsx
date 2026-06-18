@@ -52,7 +52,7 @@ const Outreach = () => {
       <NavUnn />
 
       {/* SECTION 1: HERO (Matched exactly to Target Image 2) */}
-      <section className="w-full bg-white relative overflow-hidden pt-8 pb-16 lg:pt-16 lg:pb-24 font-sans">
+      <section className="w-full bg-white relative overflow-hidden pt-6 pb-12 lg:pt-10 lg:pb-16 font-sans">
         
         {/* Very subtle background light blue blob for the whole section */}
         <div className="absolute top-0 right-0 w-[800px] h-[800px] bg-blue-50/50 rounded-full blur-[100px] -translate-y-1/4 translate-x-1/4 pointer-events-none"></div>
@@ -63,67 +63,38 @@ const Outreach = () => {
           <div className="w-full lg:w-[48%] xl:w-[45%] flex flex-col items-start pr-0 lg:pr-8">
             
             {/* Breadcrumb */}
-            <div className="flex items-center gap-3 text-sm font-bold tracking-widest uppercase mb-8">
-              <span className="text-gray-500">HOME</span>
-              <span className="text-gray-300">/</span>
-              <span className="text-blue-600">OUTREACH</span>
+            <div className="flex items-center gap-3 inter-font text-sm font-semibold tracking-wider uppercase mb-6">
+              <span className="text-gray-800">HOME</span>
+              <span className="text-gray-400">/</span>
+              <span className="text-[#4285F4]">OUTREACH</span>
             </div>
             
             {/* Main Heading */}
-            <h1 className="text-[56px] sm:text-[64px] lg:text-[72px] font-extrabold text-slate-900 leading-[1.05] tracking-tight mb-6">
+            <h1 className="oswald-font-3 text-4xl sm:text-5xl md:text-6xl font-extrabold uppercase leading-tight tracking-tight text-black mb-4">
               Outreach &<br/>
-              <span className="text-blue-600">Collaborations</span>
+              <span className="text-[#4285F4]">Collaborations</span>
             </h1>
             
             {/* Decorative Yellow Line */}
-            <div className="w-16 h-1.5 bg-yellow-400 rounded-full mb-8"></div>
+            <div className="w-40 h-1.5 bg-yellow-400 rounded-full mb-6"></div>
             
             {/* Description */}
-            <p className="text-lg text-gray-600 mb-12 max-w-lg leading-relaxed font-medium">
+            <p className="inter-font text-base text-gray-700 leading-relaxed font-medium mb-8 max-w-lg">
               Unnati Society partners with schools, colleges, and institutions to deliver digital education, career guidance, leadership development, and social awareness programs for students across underserved communities.
             </p>
 
-            {/* Feature Icons Row */}
-            <div className="flex items-start gap-6 sm:gap-10 mb-12">
-              <div className="flex flex-col items-center text-center w-[110px]">
-                <div className="w-16 h-16 rounded-full bg-blue-50 flex items-center justify-center mb-4 text-blue-600 shadow-sm border border-blue-100">
-                  <FaHandshake size={28} />
-                </div>
-                <h4 className="font-bold text-slate-900 text-[15px] mb-1">Collaborate</h4>
-                <p className="text-[12px] text-gray-500 leading-tight">Work together for greater impact</p>
-              </div>
-              
-              <div className="w-px h-20 bg-gray-200 mt-4 hidden sm:block"></div>
 
-              <div className="flex flex-col items-center text-center w-[110px]">
-                <div className="w-16 h-16 rounded-full bg-yellow-50 flex items-center justify-center mb-4 text-yellow-500 shadow-sm border border-yellow-100">
-                  <BiBuildingHouse size={28} />
-                </div>
-                <h4 className="font-bold text-slate-900 text-[15px] mb-1">Engage</h4>
-                <p className="text-[12px] text-gray-500 leading-tight">Inspire students through interactive programs</p>
-              </div>
-              
-              <div className="w-px h-20 bg-gray-200 mt-4 hidden sm:block"></div>
-
-              <div className="flex flex-col items-center text-center w-[110px]">
-                <div className="w-16 h-16 rounded-full bg-blue-50 flex items-center justify-center mb-4 text-blue-600 shadow-sm border border-blue-100">
-                  <FiUsers size={28} />
-                </div>
-                <h4 className="font-bold text-slate-900 text-[15px] mb-1">Empower</h4>
-                <p className="text-[12px] text-gray-500 leading-tight">Build skills and open doors to better futures</p>
-              </div>
-            </div>
 
             {/* Buttons */}
             <div className="flex flex-wrap items-center gap-4 mb-6">
-              <button className="flex items-center justify-center gap-2 bg-blue-600 hover:bg-blue-700 text-white px-6 py-3.5 rounded-xl font-semibold transition-all shadow-lg shadow-blue-600/20 text-sm">
-                <FiCalendar size={18} /> Book a Campus Visit
+              <button className="flex items-center justify-center gap-2 bg-blue-600 hover:bg-blue-700 text-white px-6 py-3.5 rounded-xl oswald-font-3 font-bold tracking-wide uppercase transition-all shadow-lg shadow-blue-600/20 text-sm">
+                <FiCalendar size={16} /> Book a Campus Visit
               </button>
-              <button className="flex items-center justify-center gap-2 bg-yellow-400 hover:bg-yellow-500 text-slate-900 px-6 py-3.5 rounded-xl font-bold transition-all shadow-lg shadow-yellow-400/20 text-sm">
-                <BiBuildingHouse size={18} /> Invite Us To Your School
+              <button className="flex items-center justify-center gap-2 bg-[#FFC107] hover:bg-[#FFB300] text-black px-6 py-3.5 rounded-xl oswald-font-3 font-bold tracking-wide uppercase transition-all shadow-lg shadow-yellow-400/20 text-sm">
+                <BiBuildingHouse size={16} /> Invite Us To Your Campus
               </button>
-              <button className="flex items-center justify-center gap-2 bg-white border border-gray-200 hover:border-blue-600 hover:bg-blue-50 text-slate-700 px-6 py-3.5 rounded-xl font-semibold transition-all text-sm shadow-sm">
-                <FaHandshake size={18} className="text-gray-400" /> Partner With Us
+              <button className="flex items-center justify-center gap-2 bg-white border border-gray-200 hover:border-blue-600 hover:bg-blue-50 text-slate-700 px-6 py-3.5 rounded-xl oswald-font-3 font-bold tracking-wide uppercase transition-all text-sm shadow-sm">
+                <FaHandshake size={16} className="text-gray-400" /> Partner With Us
               </button>
             </div>
             
@@ -136,8 +107,8 @@ const Outreach = () => {
           </div>
 
           {/* Right Column - Image Collage (Fixed Aspect, Scale Transform for Responsiveness) */}
-          <div className="w-full lg:w-[50%] flex justify-center lg:justify-end mt-16 lg:mt-0" style={{ minHeight: '600px' }}>
-            <div className="shrink-0 lg:scale-90 xl:scale-100" style={{ position: 'relative', width: '540px', height: '580px', transformOrigin: 'center right' }}>
+          <div className="w-full lg:w-[50%] flex justify-center lg:justify-end mt-16 lg:mt-0" style={{ minHeight: '500px' }}>
+            <div className="shrink-0" style={{ position: 'relative', width: '540px', height: '580px', transformOrigin: 'center right', transform: 'scale(0.85)' }}>
               
               {/* Blue Dot Grid - Top Right */}
               <div style={{ position: 'absolute', top: '-24px', right: '-24px', width: '128px', height: '128px', backgroundImage: 'radial-gradient(#3B82F6 2.5px, transparent 2.5px)', backgroundSize: '16px 16px', opacity: 0.3, zIndex: 0 }}></div>
@@ -179,54 +150,44 @@ const Outreach = () => {
         </div>
       </section>
 
-      {/* STATS BAR */}
-      <section className="w-full px-4 lg:px-16 relative z-40 pb-16 bg-white -mt-4 lg:-mt-8">
-        <div className="max-w-[1400px] mx-auto bg-white border border-gray-100 rounded-[32px] lg:rounded-full shadow-[0_10px_40px_rgba(0,0,0,0.04)] flex flex-wrap lg:flex-nowrap items-center justify-between px-6 py-8 lg:py-6 gap-8 lg:gap-4">
+      {/* STATS SECTION */}
+      <section className="w-full px-4 lg:px-16 relative z-40 pb-20 bg-transparent -mt-12 lg:-mt-20">
+        <div className="max-w-[1400px] mx-auto grid grid-cols-2 lg:grid-cols-4 gap-6">
           
-          <div className="flex items-center gap-4 w-full sm:w-auto flex-1 justify-center lg:justify-start lg:pl-4">
-            <div className="w-[60px] h-[60px] rounded-full border-2 border-blue-600 flex items-center justify-center text-blue-600 bg-blue-50/30 shrink-0">
-              <BiBuildingHouse size={26} />
+          {/* Stat Card 1 */}
+          <div className="bg-white rounded-[32px] p-8 shadow-[0_20px_60px_rgba(0,0,0,0.06)] border border-gray-100 hover:-translate-y-2 transition-all duration-500 group flex flex-col items-center text-center">
+            <div className="w-[68px] h-[68px] rounded-[20px] bg-blue-50 text-blue-600 flex items-center justify-center mb-6 group-hover:scale-110 group-hover:bg-blue-600 group-hover:text-white group-hover:shadow-[0_10px_30px_rgba(37,99,235,0.3)] transition-all duration-300">
+              <BiBuildingHouse size={32} />
             </div>
-            <div>
-              <h3 className="text-[28px] font-extrabold text-blue-600 leading-tight">500+</h3>
-              <p className="text-[13px] font-semibold text-slate-700">Schools Reached</p>
-            </div>
+            <h3 className="oswald-font-3 text-5xl font-extrabold text-[#0F172A] mb-2 tracking-tight group-hover:text-blue-600 transition-colors">500<span className="text-[#FFC107]">++</span></h3>
+            <p className="inter-font text-[13px] font-bold text-gray-500 uppercase tracking-widest">Schools Reached</p>
           </div>
 
-          <div className="w-px h-12 bg-gray-200 hidden lg:block"></div>
-          
-          <div className="flex items-center gap-4 w-full sm:w-auto flex-1 justify-center lg:justify-start">
-            <div className="w-[60px] h-[60px] rounded-full border-2 border-yellow-400 flex items-center justify-center text-yellow-500 bg-yellow-50/30 shrink-0">
-              <FiUsers size={26} />
+          {/* Stat Card 2 */}
+          <div className="bg-white rounded-[32px] p-8 shadow-[0_20px_60px_rgba(0,0,0,0.06)] border border-gray-100 hover:-translate-y-2 transition-all duration-500 group flex flex-col items-center text-center">
+            <div className="w-[68px] h-[68px] rounded-[20px] bg-[#FFF8E1] text-[#FFB300] flex items-center justify-center mb-6 group-hover:scale-110 group-hover:bg-[#FFC107] group-hover:text-black group-hover:shadow-[0_10px_30px_rgba(255,193,7,0.3)] transition-all duration-300">
+              <FiUsers size={32} />
             </div>
-            <div>
-              <h3 className="text-[28px] font-extrabold text-blue-600 leading-tight">25,000+</h3>
-              <p className="text-[13px] font-semibold text-slate-700">Students Impacted</p>
-            </div>
+            <h3 className="oswald-font-3 text-5xl font-extrabold text-[#0F172A] mb-2 tracking-tight group-hover:text-[#FFB300] transition-colors">25k<span className="text-blue-600">+</span></h3>
+            <p className="inter-font text-[13px] font-bold text-gray-500 uppercase tracking-widest">Students Impacted</p>
           </div>
 
-          <div className="w-px h-12 bg-gray-200 hidden lg:block"></div>
-          
-          <div className="flex items-center gap-4 w-full sm:w-auto flex-1 justify-center lg:justify-start">
-            <div className="w-[60px] h-[60px] rounded-full border-2 border-blue-600 flex items-center justify-center text-blue-600 bg-blue-50/30 shrink-0">
-              <BiChalkboard size={26} />
+          {/* Stat Card 3 */}
+          <div className="bg-white rounded-[32px] p-8 shadow-[0_20px_60px_rgba(0,0,0,0.06)] border border-gray-100 hover:-translate-y-2 transition-all duration-500 group flex flex-col items-center text-center">
+            <div className="w-[68px] h-[68px] rounded-[20px] bg-blue-50 text-blue-600 flex items-center justify-center mb-6 group-hover:scale-110 group-hover:bg-blue-600 group-hover:text-white group-hover:shadow-[0_10px_30px_rgba(37,99,235,0.3)] transition-all duration-300">
+              <BiChalkboard size={32} />
             </div>
-            <div>
-              <h3 className="text-[28px] font-extrabold text-blue-600 leading-tight">250+</h3>
-              <p className="text-[13px] font-semibold text-slate-700">Programs Conducted</p>
-            </div>
+            <h3 className="oswald-font-3 text-5xl font-extrabold text-[#0F172A] mb-2 tracking-tight group-hover:text-blue-600 transition-colors">250<span className="text-[#FFC107]">+</span></h3>
+            <p className="inter-font text-[13px] font-bold text-gray-500 uppercase tracking-widest">Programs Conducted</p>
           </div>
 
-          <div className="w-px h-12 bg-gray-200 hidden lg:block"></div>
-          
-          <div className="flex items-center gap-4 w-full sm:w-auto flex-1 justify-center lg:justify-start lg:pr-4">
-            <div className="w-[60px] h-[60px] rounded-full border-2 border-yellow-400 flex items-center justify-center text-yellow-500 bg-yellow-50/30 shrink-0">
-              <FiMapPin size={26} />
+          {/* Stat Card 4 */}
+          <div className="bg-white rounded-[32px] p-8 shadow-[0_20px_60px_rgba(0,0,0,0.06)] border border-gray-100 hover:-translate-y-2 transition-all duration-500 group flex flex-col items-center text-center">
+            <div className="w-[68px] h-[68px] rounded-[20px] bg-[#FFF8E1] text-[#FFB300] flex items-center justify-center mb-6 group-hover:scale-110 group-hover:bg-[#FFC107] group-hover:text-black group-hover:shadow-[0_10px_30px_rgba(255,193,7,0.3)] transition-all duration-300">
+              <FiMapPin size={32} />
             </div>
-            <div>
-              <h3 className="text-[28px] font-extrabold text-blue-600 leading-tight">15+</h3>
-              <p className="text-[13px] font-semibold text-slate-700">Districts Covered</p>
-            </div>
+            <h3 className="oswald-font-3 text-5xl font-extrabold text-[#0F172A] mb-2 tracking-tight group-hover:text-[#FFB300] transition-colors">15<span className="text-blue-600">+</span></h3>
+            <p className="inter-font text-[13px] font-bold text-gray-500 uppercase tracking-widest">Districts Covered</p>
           </div>
 
         </div>
