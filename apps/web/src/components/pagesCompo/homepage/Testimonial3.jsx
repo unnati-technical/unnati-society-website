@@ -16,7 +16,7 @@ const Testimonial3 = () => {
         <img
           src={cloudinaryImage2("4_wafb1x")}
           alt="testimonial"
-          className="relative w-screen h-30 object-cover rounded-[28px] shadow-xl transition-all duration-500 group-hover:-translate-y-2"
+          className="relative w-full h-30 object-cover rounded-[28px] shadow-xl transition-all duration-500 group-hover:-translate-y-2"
         />
       </div>
     </div>

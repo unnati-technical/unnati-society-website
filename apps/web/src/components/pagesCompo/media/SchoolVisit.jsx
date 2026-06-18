@@ -6,7 +6,7 @@ import { cloudinaryImage } from "./../../../utils/cloudinary";
 const HeroSection = () => {
   const navigate = useNavigate();
   return (
-    <section className="w-screen relative bg-cover bg-center bg-no-repeat flex justify-center items-center min-h-[50vh] h-screen text-white" style={{backgroundImage:`url(${cloudinaryImage("mountasisi-5_ssxaxg")})`}}>
+    <section className="w-full relative bg-cover bg-center bg-no-repeat flex justify-center items-center min-h-[50vh] h-screen text-white" style={{backgroundImage:`url(${cloudinaryImage("mountasisi-5_ssxaxg")})`}}>
       <div className="absolute inset-0 bg-black/40"></div>
       <div>
         <div className="flex gap-20">

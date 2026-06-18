@@ -17,7 +17,8 @@ const HeroSection = () => {
   }, []);
 
   const openVideo = () => {
-    window.open("https://player.cloudinary.com/embed/?cloud_name=dwxckh5t4&public_id=home_video_dq0ac8", "_blank");
+    const cloudName = import.meta.env.VITE_CLOUDINARY_CLOUD_NAME2 || "dwxckh5t4";
+    window.open(`https://player.cloudinary.com/embed/?cloud_name=${cloudName}&public_id=home_video_dq0ac8`, "_blank");
   };
 
   return (

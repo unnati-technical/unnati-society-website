@@ -5,8 +5,8 @@ import { useNavigate } from "react-router-dom";
 const Events = () => {
   const navigate = useNavigate();
   return (
-    <section className='flex justify-center items-center py-20 w-screen '>
-        <div className='flex flex-col gap-10 w-3/4 overflow-x-hidden md:overflow-x-scroll scrollbar-hide'>
+    <section className='flex justify-center items-center py-20 w-full overflow-hidden'>
+        <div className='flex flex-col gap-10 w-full max-w-7xl mx-auto px-6 md:px-12 lg:px-20 overflow-x-hidden md:overflow-x-scroll scrollbar-hide'>
             <div>
                 <h1 className='oswald-font-3 text-2xl'>OUR UPCOMING EVENTS</h1>
             </div>

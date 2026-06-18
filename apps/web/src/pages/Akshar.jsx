@@ -1,7 +1,8 @@
 import React from 'react'
 import Navbar from '../components/common/Navbar'
 import NavUnn from '../components/common/NavUnn'
-import Hero from '../components/pagesCompo/akshar/Hero'
+import ProgramsShowcase from '../components/pagesCompo/whatwedo/ProgramsShowcase'
+
 import BriefAkshar from '../components/pagesCompo/akshar/BriefAkshar'
 import ImpactAkshar from '../components/pagesCompo/akshar/ImpactAkshar'
 import FutureScopeAkshar from '../components/pagesCompo/akshar/FutureScopeAkshar'
@@ -12,7 +13,7 @@ const Akshar = () => {
     <div>
         <Navbar/>
         <NavUnn/>
-        <Hero/>
+        <ProgramsShowcase activeProgramId="akshar" />
         <BriefAkshar/>
         <ImpactAkshar/>
         <FutureScopeAkshar/>

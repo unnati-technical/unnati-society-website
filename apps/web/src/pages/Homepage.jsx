@@ -14,7 +14,7 @@ import Testimonial2 from '../components/pagesCompo/homepage/Testimonial2'
 
 const Homepage = () => {
   return (
-    <div>
+    <div className="overflow-x-hidden max-w-[100vw]">
         <Navbar/>
         <NavUnn/>
         <HeroSection/>

@@ -9,7 +9,7 @@ const HeroSection = () => {
   const navigate = useNavigate();
   return (
     <section
-      className="w-screen relative bg-cover bg-center bg-no-repeat flex justify-center items-center min-h-[50vh] h-screen text-white"
+      className="w-full relative bg-cover bg-center bg-no-repeat flex justify-center items-center min-h-[50vh] h-screen text-white"
       style={{ backgroundImage: `url(${bgimg})` }}
     >
       <div className="absolute inset-0 bg-black/40"></div>

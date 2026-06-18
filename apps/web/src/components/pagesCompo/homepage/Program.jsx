@@ -10,7 +10,7 @@ import {
   FiLayers,
   FiHeart
 } from "react-icons/fi";
-import { FaRegBuilding } from "react-icons/fa";
+import { FaRegBuilding, FaUserGraduate, FaSchool, FaLayerGroup } from "react-icons/fa";
 
 const Program = () => {
   const navigate = useNavigate();
@@ -71,42 +71,42 @@ const Program = () => {
         </div>
 
         {/* Impact Statistics Row */}
-        <div className="flex flex-wrap items-center gap-x-8 gap-y-4">
+        <div className="flex flex-wrap items-center gap-x-8 gap-y-6 bg-white py-4 px-8 rounded-[24px] shadow-[0_8px_30px_rgb(0,0,0,0.06)] border border-gray-100 w-fit">
           
           {/* Stat 1 */}
-          <div className="flex items-start gap-3">
-            <div className="text-[#3B82F6] pt-1">
-              <FiUsers size={24} strokeWidth={1.5} />
+          <div className="flex items-center gap-4">
+            <div className="w-12 h-12 rounded-xl bg-blue-50 flex items-center justify-center text-blue-600 shadow-sm border border-blue-100">
+              <FaUserGraduate size={22} />
             </div>
             <div className="flex flex-col">
-              <h3 className="text-xl font-extrabold text-[#0F172A] leading-none">280+</h3>
-              <p className="text-gray-600 text-xs font-medium mt-1">Students Reached</p>
+              <h3 className="text-2xl font-black text-[#0F172A] leading-none tracking-tight oswald-font-3">280<span className="text-blue-600">+</span></h3>
+              <p className="text-gray-500 text-[11px] uppercase tracking-widest font-bold mt-1.5">Students</p>
             </div>
           </div>
 
-          <div className="hidden sm:block w-px h-8 bg-gray-300"></div>
+          <div className="hidden sm:block w-px h-10 bg-gray-200"></div>
 
           {/* Stat 2 */}
-          <div className="flex items-start gap-3">
-            <div className="text-[#3B82F6] pt-1">
-              <FaRegBuilding size={24} />
+          <div className="flex items-center gap-4">
+            <div className="w-12 h-12 rounded-xl bg-yellow-50 flex items-center justify-center text-[#FFB300] shadow-sm border border-yellow-100">
+              <FaSchool size={22} />
             </div>
             <div className="flex flex-col">
-              <h3 className="text-xl font-extrabold text-[#0F172A] leading-none">8</h3>
-              <p className="text-gray-600 text-xs font-medium mt-1">Schools Engaged</p>
+              <h3 className="text-2xl font-black text-[#0F172A] leading-none tracking-tight oswald-font-3">8</h3>
+              <p className="text-gray-500 text-[11px] uppercase tracking-widest font-bold mt-1.5">Schools</p>
             </div>
           </div>
 
-          <div className="hidden sm:block w-px h-8 bg-gray-300"></div>
+          <div className="hidden sm:block w-px h-10 bg-gray-200"></div>
 
           {/* Stat 3 */}
-          <div className="flex items-start gap-3">
-            <div className="text-[#3B82F6] pt-1">
-              <FiLayers size={24} strokeWidth={1.5} />
+          <div className="flex items-center gap-4">
+            <div className="w-12 h-12 rounded-xl bg-green-50 flex items-center justify-center text-green-600 shadow-sm border border-green-100">
+              <FaLayerGroup size={22} />
             </div>
             <div className="flex flex-col">
-              <h3 className="text-xl font-extrabold text-[#0F172A] leading-none">3</h3>
-              <p className="text-gray-600 text-xs font-medium mt-1">Active Programs</p>
+              <h3 className="text-2xl font-black text-[#0F172A] leading-none tracking-tight oswald-font-3">3</h3>
+              <p className="text-gray-500 text-[11px] uppercase tracking-widest font-bold mt-1.5">Programs</p>
             </div>
           </div>
 

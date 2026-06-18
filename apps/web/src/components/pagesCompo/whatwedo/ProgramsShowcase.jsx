@@ -51,9 +51,8 @@ const programsData = [
   }
 ];
 
-const ProgramsShowcase = () => {
+const ProgramsShowcase = ({ activeProgramId = "digiXplore" }) => {
   const navigate = useNavigate();
-  const [activeProgram, setActiveProgram] = useState(programsData[0].id);
   const [isMobile, setIsMobile] = useState(window.innerWidth < 1024);
 
   useEffect(() => {
@@ -62,11 +61,11 @@ const ProgramsShowcase = () => {
     return () => window.removeEventListener("resize", handleResize);
   }, []);
 
-  const activeData = programsData.find((p) => p.id === activeProgram);
-  const inactivePrograms = programsData.filter((p) => p.id !== activeProgram);
+  const activeData = programsData.find((p) => p.id === activeProgramId) || programsData[0];
+  const inactivePrograms = programsData.filter((p) => p.id !== activeData.id);
 
   return (
-    <section className="relative w-screen min-h-screen bg-[#020617] text-white overflow-hidden flex items-center justify-center py-20 px-6 md:px-12 lg:px-20 font-sans">
+    <section className="relative w-full min-h-screen bg-[#020617] text-white overflow-hidden flex items-center justify-center py-20 px-6 md:px-12 lg:px-20 font-sans">
       {/* Subtle Background Glow */}
       <motion.div
         className="absolute inset-0 z-0 pointer-events-none"
@@ -82,7 +81,7 @@ const ProgramsShowcase = () => {
         <div className="w-full lg:w-1/2 flex flex-col justify-center space-y-6 lg:pr-10 min-h-[500px]">
           <AnimatePresence mode="wait">
             <motion.div
-              key={activeProgram}
+              key={activeData.id}
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: -20 }}
@@ -139,7 +138,7 @@ const ProgramsShowcase = () => {
               </motion.div>
 
               <motion.button
-                onClick={() => navigate(activeData.link)}
+                onClick={() => window.scrollTo({ top: window.innerHeight, behavior: 'smooth' })}
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
                 className="mt-8 px-8 py-4 bg-blue-600 hover:bg-blue-500 text-white rounded-full w-fit font-medium transition-colors shadow-[0_0_20px_rgba(37,99,235,0.4)]"
@@ -215,7 +214,7 @@ const ProgramsShowcase = () => {
                   borderColor: "rgba(59,130,246,0.6)"
                 }}
                 transition={{ type: "spring", stiffness: 100, damping: 20 }}
-                onClick={() => setActiveProgram(prog.id)}
+                onClick={() => navigate(prog.link)}
               >
                 <img
                   src={prog.image}
