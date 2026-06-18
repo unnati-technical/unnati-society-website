@@ -1,60 +1,87 @@
-import React from "react";
+import React, { useEffect, useRef } from "react";
 import play from './../../../assets/play.png'
-import { cloudinaryImage2 } from "../../../utils/cloudinary";
 import { useNavigate } from "react-router-dom";
 import homeHeroVideo from './../../../assets/home_hero.mp4';
 
-
 const HeroSection = () => {
   const navigate = useNavigate();
+  const videoRef = useRef(null);
+
+  useEffect(() => {
+    // Ensures the video plays automatically and loops even if browser policies interfere
+    if (videoRef.current) {
+      videoRef.current.play().catch(error => {
+        console.error("Video auto-play failed:", error);
+      });
+    }
+  }, []);
+
   const openVideo = () => {
     window.open("https://player.cloudinary.com/embed/?cloud_name=dwxckh5t4&public_id=home_video_dq0ac8", "_blank");
   };
+
   return (
-    // <section
-    //       className="relative bg-cover bg-center bg-no-repeat min-h-screen w-full text-white overflow-hidden"
-    //       style={{backgroundImage: `url(${cloudinaryImage2("GICS_3_ji24dg")})`}}
-    // >
-   <section className="relative overflow-hidden bg-cover bg-center text-white flex justify-start pt-10 pb-10 xl:pb-52 px-10 xl:px-62 sm:py-10 sm:pb-51 items-center min-h-[50vh]"> 
-      <video 
-         autoPlay 
-         loop 
-         muted 
-         playsInline 
-         className="absolute inset-0 w-full h-full object-cover z-0 pointer-events-none"
+    <section className="relative w-full h-[calc(100vh-100px)] min-h-[600px] overflow-hidden bg-black text-white flex items-center px-6 md:px-16 lg:px-24">
+      {/* Background Video */}
+      <video
+        ref={videoRef}
+        autoPlay
+        loop
+        muted
+        playsInline
+        className="absolute inset-0 w-full h-full object-cover z-0"
       >
-         <source src={homeHeroVideo} type="video/mp4" />
+        <source src={homeHeroVideo} type="video/mp4" />
       </video>
-      <div className="absolute inset-0 bg-black/30 z-0 pointer-events-none"></div>
-      <div className="relative z-10 flex flex-col justify-start gap-4">
-        <div className="oswald-font text-xl sm:text-2xl md:text-5xl tracking-wide">
-          <h1 className="text-white drop-shadow-lg">EMPOWERING</h1>
-          <h1 className="text-white drop-shadow-lg">DREAMS</h1>
+      
+      {/* Dark Overlay for text readability */}
+      <div className="absolute inset-0 bg-black/40 z-10 pointer-events-none"></div>
+      
+      {/* Hero Content */}
+      <div className="relative z-20 flex flex-col justify-center max-w-4xl gap-6">
+        
+        {/* Main Heading */}
+        <div className="oswald-font-3 text-5xl md:text-7xl lg:text-8xl tracking-wide font-bold leading-[1.1] drop-shadow-lg">
+          <h1>EMPOWERING</h1>
+          <h1>DREAMS</h1>
         </div>
+
+        {/* Subtitle */}
         <div>
-          <p className="text-[18px] great-vibes-regular text-blue-400 sm:text-xl tracking-wide drop-shadow-md">Revolutionizing Present, Transforming Future</p>
+          <p className="text-2xl md:text-3xl lg:text-3xl great-vibes-regular text-[#60A5FA] tracking-wide drop-shadow-md">
+            Revolutionizing Present, Transforming Future
+          </p>
         </div>
-        <div className="max-w-xl">
-          <p className="border-4 inter-font border-l-blue-400 border-r-0 border-t-0 border-b-0 pl-4 text-sm md:text-xl drop-shadow-md">
+
+        {/* Paragraph */}
+        <div className="max-w-2xl border-l-4 border-[#60A5FA] pl-5 mt-2">
+          <p className="inter-font text-base md:text-lg lg:text-xl drop-shadow-md leading-[1.6]">
             We bridge the digital divide by providing underprivileged students
             with essential technology education and basic knowledge, equipping
             them for the digital age.
           </p>
         </div>
-        <div className="flex gap-4">
-          <div className="text-[12px] flex justify-center items-center sm:text-xl bg-white text-black font-extrabold oswald-font-3 px-5 py-2 cursor-pointer drop-shadow-md" onClick={() => navigate('/about-us')}>READ MORE</div>
-          <div className="text-[12px] flex justify-center items-center oswald-font-3 border font-bold border-white px-5 py-2 gap-2 cursor-pointer">
-            <button
-              onClick={openVideo}
-              className="text-[12px] flex items-center gap-2 oswald-font-3 font-bold px-5 py-2 cursor-pointer hover:scale-105 transition drop-shadow-md"
-            >
-              <div className="bg-white rounded-full p-1">
-                <img src={play} alt="play" className="w-4 h-4" />
-              </div>
 
-              WATCH VIDEO
-            </button>
-          </div>
+        {/* Call to Actions */}
+        <div className="flex flex-wrap items-center gap-5 mt-6">
+          <button 
+            onClick={() => navigate('/about-us')}
+            className="bg-white text-black font-extrabold oswald-font-2 px-8 py-3 text-sm md:text-base tracking-wider hover:bg-gray-100 transition shadow-lg"
+          >
+            READ MORE
+          </button>
+          
+          <button
+            onClick={openVideo}
+            className="flex items-center gap-3 border-2 border-white px-6 py-2.5 hover:bg-white/10 transition shadow-lg"
+          >
+            <div className="bg-white rounded-full p-1.5 flex items-center justify-center">
+              <img src={play} alt="play" className="w-3 h-3 ml-[1px]" />
+            </div>
+            <span className="oswald-font-3 font-bold text-sm md:text-base tracking-wider">
+              Impact Film
+            </span>
+          </button>
         </div>
       </div>
     </section>

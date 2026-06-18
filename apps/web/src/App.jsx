@@ -33,6 +33,7 @@ import Akshar from './pages/Akshar'
 import Netritva from './pages/Netritva'
 import Resources from './pages/Resources'
 import Contact from './pages/Contact'
+import Outreach from './pages/Outreach'
 
 const App = () => {
   return (
@@ -79,6 +80,8 @@ const App = () => {
          <Route path="/executive-body" element={<Executivebody/>}/>
 
          <Route path='/resources' element={<Resources/>}/>
+         
+         <Route path="/outreach" element={<Outreach/>}/>
       </Routes>
     </div>
   )
