@@ -1,5 +1,6 @@
 import React from 'react';
 import { Target, GraduationCap, Users, School, ArrowUp, ArrowDown } from 'lucide-react';
+// eslint-disable-next-line no-unused-vars
 import { motion } from 'framer-motion';
 
 
