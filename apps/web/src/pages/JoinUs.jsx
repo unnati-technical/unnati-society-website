@@ -1,4 +1,6 @@
 import React, { useState } from 'react';
+// eslint-disable-next-line no-unused-vars
+import { motion, AnimatePresence } from 'framer-motion';
 import Navbar from '../components/common/Navbar';
 import NavUnn from '../components/common/NavUnn';
 import Footer from '../components/common/Footer';
