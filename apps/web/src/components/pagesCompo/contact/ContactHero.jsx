@@ -1,5 +1,6 @@
 import React from 'react';
-
+// eslint-disable-next-line no-unused-vars
+import { motion, AnimatePresence } from 'framer-motion';
 import { Clock, Users, ShieldCheck } from 'lucide-react';
 import { cloudinaryImage2 } from '../../../utils/cloudinary';
 

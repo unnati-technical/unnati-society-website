@@ -1,7 +1,8 @@
 import React from 'react';
 import { MapPin, Phone, Mail, Clock, Navigation, Map as MapIcon, PhoneCall } from 'lucide-react';
 
-
+// eslint-disable-next-line no-unused-vars
+import { motion, AnimatePresence } from 'framer-motion';
 const ContactLocation = () => {
 
   return (

@@ -1,5 +1,8 @@
 import React from 'react';
 
+// eslint-disable-next-line no-unused-vars
+import { motion, AnimatePresence } from 'framer-motion';
+
 import { FaQuoteLeft, FaQuoteRight } from 'react-icons/fa';
 
 const Testimonial1 = () => {
