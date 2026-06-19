@@ -34,6 +34,8 @@ import Netritva from './pages/Netritva'
 import Resources from './pages/Resources'
 import Contact from './pages/Contact'
 import Outreach from './pages/Outreach'
+import JoinUs from './pages/JoinUs'
+import TeamLeadDashboard from './pages/TeamLeadDashboard'
 
 const App = () => {
   return (
@@ -82,6 +84,10 @@ const App = () => {
          <Route path='/resources' element={<Resources/>}/>
          
          <Route path="/outreach" element={<Outreach/>}/>
+         <Route path="/join-us" element={<JoinUs/>}/>
+
+         {/* Team Lead Portal */}
+         <Route path="/teamlead/dashboard" element={<TeamLeadDashboard/>}/>
       </Routes>
     </div>
   )

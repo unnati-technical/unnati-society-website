@@ -9,6 +9,8 @@ import {
 } from 'react-icons/fi';
 import { BiBuildingHouse, BiChalkboard, BiTargetLock } from 'react-icons/bi';
 import { FaHandshake } from 'react-icons/fa';
+import CampusVisitModal from '../components/common/CampusVisitModal';
+import InviteUsModal from '../components/common/InviteUsModal';
 
 const Counter = ({ end, duration = 2000, suffix = "" }) => {
   const [count, setCount] = useState(0);
@@ -42,6 +44,9 @@ const Counter = ({ end, duration = 2000, suffix = "" }) => {
 };
 
 const Outreach = () => {
+  const [isCampusVisitModalOpen, setIsCampusVisitModalOpen] = useState(false);
+  const [isInviteUsModalOpen, setIsInviteUsModalOpen] = useState(false);
+
   useEffect(() => {
     window.scrollTo(0, 0);
   }, []);
@@ -87,10 +92,10 @@ const Outreach = () => {
 
             {/* Buttons */}
             <div className="flex flex-wrap items-center gap-4 mb-6">
-              <button className="flex items-center justify-center gap-2 bg-blue-600 hover:bg-blue-700 text-white px-6 py-3.5 rounded-xl oswald-font-3 font-bold tracking-wide uppercase transition-all shadow-lg shadow-blue-600/20 text-sm">
+              <button onClick={() => setIsCampusVisitModalOpen(true)} className="flex items-center justify-center gap-2 bg-blue-600 hover:bg-blue-700 text-white px-6 py-3.5 rounded-xl oswald-font-3 font-bold tracking-wide uppercase transition-all shadow-lg shadow-blue-600/20 text-sm">
                 <FiCalendar size={16} /> Book a Campus Visit
               </button>
-              <button className="flex items-center justify-center gap-2 bg-[#FFC107] hover:bg-[#FFB300] text-black px-6 py-3.5 rounded-xl oswald-font-3 font-bold tracking-wide uppercase transition-all shadow-lg shadow-yellow-400/20 text-sm">
+              <button onClick={() => setIsInviteUsModalOpen(true)} className="flex items-center justify-center gap-2 bg-[#FFC107] hover:bg-[#FFB300] text-black px-6 py-3.5 rounded-xl oswald-font-3 font-bold tracking-wide uppercase transition-all shadow-lg shadow-yellow-400/20 text-sm">
                 <BiBuildingHouse size={16} /> Invite Us To Your School
               </button>
               <button className="flex items-center justify-center gap-2 bg-white border border-gray-200 hover:border-blue-600 hover:bg-blue-50 text-slate-700 px-6 py-3.5 rounded-xl oswald-font-3 font-bold tracking-wide uppercase transition-all text-sm shadow-sm">
@@ -212,7 +217,7 @@ const Outreach = () => {
               <li className="flex items-center text-sm font-medium text-gray-700"><FiCheckCircle className="text-blue-500 mr-2" /> Career guidance</li>
               <li className="flex items-center text-sm font-medium text-gray-700"><FiCheckCircle className="text-blue-500 mr-2" /> Exposure visit</li>
             </ul>
-            <button className="w-full bg-blue-50 hover:bg-blue-600 hover:text-white text-blue-600 font-bold py-3 rounded-xl transition-colors">
+            <button onClick={() => setIsCampusVisitModalOpen(true)} className="w-full bg-blue-50 hover:bg-blue-600 hover:text-white text-blue-600 font-bold py-3 rounded-xl transition-colors">
               Request Campus Visit
             </button>
           </div>
@@ -232,7 +237,7 @@ const Outreach = () => {
               <li className="flex items-center text-sm font-medium text-gray-700"><FiCheckCircle className="text-blue-500 mr-2" /> Awareness programs</li>
               <li className="flex items-center text-sm font-medium text-gray-700"><FiCheckCircle className="text-blue-500 mr-2" /> Interactive workshops</li>
             </ul>
-            <button className="w-full bg-yellow-100 hover:bg-yellow-500 hover:text-white text-yellow-700 font-bold py-3 rounded-xl transition-colors">
+            <button onClick={() => setIsInviteUsModalOpen(true)} className="w-full bg-yellow-100 hover:bg-yellow-500 hover:text-white text-yellow-700 font-bold py-3 rounded-xl transition-colors">
               Invite Us
             </button>
           </div>
@@ -291,7 +296,7 @@ const Outreach = () => {
               </div>
             </div>
 
-            <button className="bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-8 rounded-full transition-all shadow-lg shadow-blue-600/30 flex items-center gap-2">
+            <button onClick={() => setIsCampusVisitModalOpen(true)} className="bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-8 rounded-full transition-all shadow-lg shadow-blue-600/30 flex items-center gap-2">
               Request Campus Visit <FiArrowRight />
             </button>
           </div>
@@ -556,10 +561,10 @@ const Outreach = () => {
             Invite us, visit our campus, or collaborate to create meaningful educational impact.
           </p>
           <div className="flex flex-col sm:flex-row justify-center gap-4">
-            <button className="bg-blue-600 hover:bg-blue-700 text-white font-bold py-4 px-8 rounded-full transition-all shadow-lg shadow-blue-600/30">
+            <button onClick={() => setIsCampusVisitModalOpen(true)} className="bg-blue-600 hover:bg-blue-700 text-white font-bold py-4 px-8 rounded-full transition-all shadow-lg shadow-blue-600/30">
               Book a Campus Visit
             </button>
-            <button className="bg-[#FBBF24] hover:bg-yellow-500 text-[#0F172A] font-bold py-4 px-8 rounded-full transition-all shadow-lg shadow-yellow-400/30">
+            <button onClick={() => setIsInviteUsModalOpen(true)} className="bg-[#FBBF24] hover:bg-yellow-500 text-[#0F172A] font-bold py-4 px-8 rounded-full transition-all shadow-lg shadow-yellow-400/30">
               Invite Us To Your School
             </button>
           </div>
@@ -567,6 +572,18 @@ const Outreach = () => {
       </section>
 
       <Footer />
+
+      {/* Campus Visit Modal */}
+      <CampusVisitModal 
+        isOpen={isCampusVisitModalOpen} 
+        onClose={() => setIsCampusVisitModalOpen(false)} 
+      />
+
+      {/* Invite Us Modal */}
+      <InviteUsModal 
+        isOpen={isInviteUsModalOpen} 
+        onClose={() => setIsInviteUsModalOpen(false)} 
+      />
     </div>
   );
 };

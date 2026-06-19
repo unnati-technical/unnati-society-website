@@ -1,10 +1,14 @@
-import React from "react";
+import React, { useState } from "react";
 import Unnati from "./../../assets/Unnati.png";
 import IIITBh from "./../../assets/IIITBh.png";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
+import AuthModal from "./AuthModal";
 
 const Footer = () => {
   const navigate = useNavigate();
+  const location = useLocation();
+  const isPeoplePage = location.pathname === '/executive-body';
+  const [isAuthOpen, setIsAuthOpen] = useState(false);
   return (
     <footer className="bg-black text-white px-16 py-14">
       <div className="max-w-7xl mx-auto grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-16">
@@ -125,8 +129,21 @@ const Footer = () => {
               OK
             </button>
           </div>
+          
+          {isPeoplePage && (
+            <div className="mt-8 pt-4 border-t border-white/10">
+              <button 
+                onClick={() => setIsAuthOpen(true)}
+                className="text-xs text-white/40 hover:text-white/80 transition-colors tracking-widest uppercase font-semibold"
+              >
+                Admin Login
+              </button>
+            </div>
+          )}
         </div>
       </div>
+      
+      <AuthModal isOpen={isAuthOpen} onClose={() => setIsAuthOpen(false)} />
     </footer>
   );
 };

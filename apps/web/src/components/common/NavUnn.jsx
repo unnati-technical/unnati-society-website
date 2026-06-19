@@ -65,7 +65,7 @@ const NavUnn = () => {
         <h3 className="px-1 sm:px-3 py-1 cursor-pointer text-[10px] sm:text-[11px] md:text-[12px] hover:text-blue-400 hover:underline underline-offset-4 decoration-2" onClick={() => navigate("/programs")}>PROGRAMS</h3>
         <h3 className="px-1 sm:px-3 py-1 cursor-pointer text-[10px] sm:text-[11px] md:text-[12px] hover:text-blue-400 hover:underline underline-offset-4 decoration-2" onClick={() => navigate('/executive-body')}>PEOPLE</h3>
         <h3 className="px-1 sm:px-3 py-1 cursor-pointer text-[10px] sm:text-[11px] md:text-[12px] hover:text-blue-400 hover:underline underline-offset-4 decoration-2" onClick={() => navigate('/resources')}>RESOURCES</h3>
-        <h3 className="bg-blue-400 px-3 join-us py-1 cursor-pointer text-[10px] sm:text-[11px] md:text-[12px] oswald-font-3">JOIN US</h3>
+        <h3 className="bg-blue-400 px-3 join-us py-1 cursor-pointer text-[10px] sm:text-[11px] md:text-[12px] oswald-font-3" onClick={() => navigate('/join-us')}>JOIN US</h3>
       </div>
 
       {/* Mobile Menu Button */}
@@ -88,7 +88,7 @@ const NavUnn = () => {
           <h3 className="cursor-pointer text-[11px]" onClick={() => navigate("/programs")}>PROGRAMS</h3>
           <h3 className="cursor-pointer text-[11px]" onClick={() => navigate("/executive-body")}>PEOPLE</h3>
           <h3 className="cursor-pointer text-[11px]" onClick={() => navigate("/resources")}>RESOURCES</h3>
-          <h3 className="bg-blue-400 px-2 py-1 cursor-pointer text-[11px] text-white text-center rounded">JOIN US</h3>
+          <h3 className="bg-blue-400 px-2 py-1 cursor-pointer text-[11px] text-white text-center rounded" onClick={() => { navigate("/join-us"); setShow(false); }}>JOIN US</h3>
         </div>
       )}
 
