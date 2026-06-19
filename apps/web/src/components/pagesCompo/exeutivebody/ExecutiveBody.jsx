@@ -64,18 +64,18 @@ const ExecutiveBody = () => {
       linkedin: "https://www.linkedin.com/search/results/all/?keywords=ayush%20yadav",
     },
     {
-      name: "Twinkle Kumari",
-      post: "Joint Secretary\nTechnical",
-      img: "twinkle_akhjbq",
-      email: "twinkle.240101143@iiitbh.ac.in",
-      linkedin: "https://www.linkedin.com/in/twinkle-kumari-b09306325/",
-    },
-    {
       name: "Jayanshu Bhardwaj",
       post: "Joint Secretary\nPublic Relation",
       img: "jayanshuu_iwno29",
       email: "jayanshu.240101181@iitbh.ac.in",
       linkedin: "https://www.linkedin.com/in/jayanshu-bhardwaj-05a791322/",
+    },
+    {
+      name: "Twinkle Kumari",
+      post: "Joint Secretary\nTechnical",
+      img: "twinkle_akhjbq",
+      email: "twinkle.240101143@iiitbh.ac.in",
+      linkedin: "https://www.linkedin.com/in/twinkle-kumari-b09306325/",
     },
   ];
   const prLeads = [

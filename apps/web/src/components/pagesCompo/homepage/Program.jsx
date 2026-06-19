@@ -162,15 +162,7 @@ const Program = () => {
           ))}
         </div>
 
-        {/* Bottom Tagline */}
-        <div className="flex items-center justify-center gap-3 mt-2">
-          <div className="h-px bg-[#93C5FD] w-8 md:w-16"></div>
-          <div className="flex items-center gap-1.5 text-[#475569] font-semibold text-xs">
-            <FiHeart size={12} className="text-[#3B82F6]" />
-            One Mission. Three Programs. Countless Futures.
-          </div>
-          <div className="h-px bg-[#93C5FD] w-8 md:w-16"></div>
-        </div>
+
 
       </div>
     </section>
