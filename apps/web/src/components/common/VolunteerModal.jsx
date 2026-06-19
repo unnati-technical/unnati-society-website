@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+// eslint-disable-next-line no-unused-vars
 import { motion, AnimatePresence } from 'framer-motion';
 import { 
   FiX, FiClock, FiAward, FiGlobe, FiCalendar, 
@@ -12,33 +13,33 @@ const VolunteerModal = ({ isOpen, onClose }) => {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSuccess, setIsSuccess] = useState(false);
 
-  // Form State
-  const [formData, setFormData] = useState({
-    fullName: '', email: '', phone: '', gender: '',
-    age: '', city: '', state: '', country: '',
-    college: '', currentYear: '', department: '',
-    linkedin: '', portfolio: '', resume: null,
-    
-    interests: [], availability: '', hoursPerWeek: '',
-    mode: '', hasNgoExperience: '', ngoName: '',
-    experienceDesc: '', emergencyName: '', emergencyPhone: '',
-    
-    whyJoin: '', skills: '', careerGoals: '',
-    hearAboutUs: '', startDate: '',
-    consentConduct: false, consentContact: false, consentAccurate: false
-  });
-
   const STORAGE_KEY = 'unnati_volunteer_draft';
   const DRAFT_EXPIRATION = 60 * 60 * 1000; // 1 hour
 
-  useEffect(() => {
+  // Form State
+  const [formData, setFormData] = useState(() => {
+    const defaultState = {
+      fullName: '', email: '', phone: '', gender: '',
+      age: '', city: '', state: '', country: '',
+      college: '', currentYear: '', department: '',
+      linkedin: '', portfolio: '', resume: null,
+      
+      interests: [], availability: '', hoursPerWeek: '',
+      mode: '', hasNgoExperience: '', ngoName: '',
+      experienceDesc: '', emergencyName: '', emergencyPhone: '',
+      
+      whyJoin: '', skills: '', careerGoals: '',
+      hearAboutUs: '', startDate: '',
+      consentConduct: false, consentContact: false, consentAccurate: false
+    };
+
     if (isOpen) {
       const saved = localStorage.getItem(STORAGE_KEY);
       if (saved) {
         try {
           const { data, timestamp } = JSON.parse(saved);
           if (Date.now() - timestamp < DRAFT_EXPIRATION) {
-            setFormData(prev => ({ ...prev, ...data }));
+            return { ...defaultState, ...data };
           } else {
             localStorage.removeItem(STORAGE_KEY);
           }
@@ -47,7 +48,10 @@ const VolunteerModal = ({ isOpen, onClose }) => {
         }
       }
     }
-  }, [isOpen]);
+    return defaultState;
+  });
+
+  const [applicationId] = useState(() => Math.floor(1000 + Math.random() * 9000));
 
   useEffect(() => {
     if (isOpen) {
@@ -66,14 +70,6 @@ const VolunteerModal = ({ isOpen, onClose }) => {
     }));
   };
 
-  const handleInterestToggle = (interest) => {
-    setFormData(prev => ({
-      ...prev,
-      interests: prev.interests.includes(interest) 
-        ? prev.interests.filter(i => i !== interest)
-        : [...prev.interests, interest]
-    }));
-  };
 
   const handleNext = () => setStep(prev => Math.min(prev + 1, 3));
   const handlePrev = () => setStep(prev => Math.max(prev - 1, 1));
@@ -152,7 +148,7 @@ const VolunteerModal = ({ isOpen, onClose }) => {
                 
                 <div className="bg-gray-50 rounded-xl p-4 mb-8 text-left text-sm text-gray-600 space-y-2 border border-gray-100">
                   <div className="flex justify-between"><span>Status:</span> <span className="font-bold text-blue-600">Under Review</span></div>
-                  <div className="flex justify-between"><span>Application ID:</span> <span className="font-mono font-bold text-gray-800">UNN-{Math.floor(1000 + Math.random() * 9000)}</span></div>
+                  <div className="flex justify-between"><span>Application ID:</span> <span className="font-mono font-bold text-gray-800">UNN-{applicationId}</span></div>
                   <div className="flex justify-between"><span>Confirmation:</span> <span className="font-medium text-green-600">Email Sent</span></div>
                 </div>
 

@@ -1,5 +1,5 @@
 import React from 'react';
-import { motion } from 'framer-motion';
+
 import { FaQuoteLeft, FaQuoteRight } from 'react-icons/fa';
 
 const Testimonial1 = () => {

@@ -1,5 +1,5 @@
 import React from 'react';
-import { motion } from 'framer-motion';
+
 import { 
   LayoutDashboard, FolderKanban, Users, CalendarDays, 
   School, FileText, MessageSquare, PieChart, 

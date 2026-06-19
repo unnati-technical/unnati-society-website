@@ -1,9 +1,10 @@
 import React, { useState } from 'react';
-import { useForm } from 'react-hook-form';
+import { useForm, useWatch } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import * as z from 'zod';
 import { MapPin, Mail, Phone, Send, Loader2 } from 'lucide-react';
 import { FaInstagram, FaLinkedinIn, FaYoutube, FaFacebookF } from 'react-icons/fa';
+// eslint-disable-next-line no-unused-vars
 import { motion } from 'framer-motion';
 import { toast } from 'sonner';
 
@@ -23,7 +24,7 @@ const ContactFormSection = () => {
     register,
     handleSubmit,
     reset,
-    watch,
+    control,
     formState: { errors },
   } = useForm({
     resolver: zodResolver(contactSchema),
@@ -32,7 +33,7 @@ const ContactFormSection = () => {
     }
   });
 
-  const messageText = watch("message", "");
+  const messageText = useWatch({ control, name: "message", defaultValue: "" });
 
   const onSubmit = async (data) => {
     setIsSubmitting(true);
@@ -47,7 +48,7 @@ const ContactFormSection = () => {
       
       toast.success('Message sent successfully! We will get back to you soon.');
       reset();
-    } catch (error) {
+    } catch {
       toast.error('Failed to send message. Please try again later.');
     } finally {
       setIsSubmitting(false);

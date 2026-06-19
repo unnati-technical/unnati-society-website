@@ -7,6 +7,62 @@ import prImg from "../../../assets/prsir.png";
 import chetanImg from "../../../assets/chetansir.jpg";
 
 
+const SectionHeader = ({ title }) => (
+  <div className="flex flex-col items-center text-center mb-12">
+    <h2 className="text-3xl md:text-5xl font-extrabold text-gray-900 oswald-font-3 tracking-tight">{title}</h2>
+  </div>
+);
+
+const ProfileCard = ({ member, isCloudinary = true }) => {
+  const isCloudinaryFinal = member.img && typeof member.img === 'string' && member.img.startsWith("http") ? false : isCloudinary;
+  const imgSrc = isCloudinaryFinal ? cloudinaryImage(member.img) : member.img;
+  const hasLinkedin = member.linkedin && member.linkedin !== "#";
+
+  return (
+    <div className="flex flex-col items-center bg-white rounded-xl border border-gray-200 p-8 shadow-sm hover:shadow-lg transition-shadow duration-300 relative group">
+      <div className="w-32 h-32 md:w-40 md:h-40 rounded-full overflow-hidden mb-6 border-[6px] border-gray-50 shadow-inner group-hover:border-blue-50 transition-colors duration-300">
+        <img
+          src={imgSrc}
+          alt={member.name}
+          className="w-full h-full object-cover"
+        />
+      </div>
+
+      <div className="text-center w-full flex flex-col items-center">
+        <h2 className="text-xl md:text-2xl font-bold text-gray-900 tracking-tight mb-1">{member.name}</h2>
+        <p className="text-xs font-semibold text-blue-600 uppercase tracking-widest mb-6 px-4 whitespace-pre-line">
+          {member.post}
+        </p>
+
+        {/* Divider */}
+        <div className="w-12 h-[2px] bg-gray-200 mb-6 group-hover:bg-blue-300 transition-colors duration-300"></div>
+
+        {/* Social Links */}
+        <div className="flex justify-center gap-5 items-center">
+          <a
+            href={`mailto:${member.email}`}
+            className="text-gray-400 group-hover:text-red-300 hover:!text-red-600 transition-colors duration-300 flex items-center"
+            title="Send Email"
+          >
+            <MdEmail size={28} />
+          </a>
+
+          <a
+            href={hasLinkedin ? member.linkedin : "#"}
+            target={hasLinkedin ? "_blank" : "_self"}
+            rel="noreferrer"
+            className={`transition-colors duration-300 flex items-center ${hasLinkedin ? "text-gray-400 group-hover:text-blue-300 hover:!text-[#0A66C2]" : "text-gray-200 cursor-not-allowed"}`}
+            title={hasLinkedin ? "LinkedIn Profile" : "LinkedIn coming soon"}
+            onClick={(e) => { if (!hasLinkedin) e.preventDefault(); }}
+          >
+            <FaLinkedin size={24} />
+          </a>
+        </div>
+      </div>
+    </div>
+  );
+};
+
 const ExecutiveBody = () => {
   const [isVerticalLayout, setIsVerticalLayout] = useState(false);
 
@@ -200,61 +256,6 @@ const ExecutiveBody = () => {
   ]
 
 
-  const ProfileCard = ({ member, isCloudinary = true }) => {
-    const isCloudinaryFinal = member.img && typeof member.img === 'string' && member.img.startsWith("http") ? false : isCloudinary;
-    const imgSrc = isCloudinaryFinal ? cloudinaryImage(member.img) : member.img;
-    const hasLinkedin = member.linkedin && member.linkedin !== "#";
-
-    return (
-      <div className="flex flex-col items-center bg-white rounded-xl border border-gray-200 p-8 shadow-sm hover:shadow-lg transition-shadow duration-300 relative group">
-        <div className="w-32 h-32 md:w-40 md:h-40 rounded-full overflow-hidden mb-6 border-[6px] border-gray-50 shadow-inner group-hover:border-blue-50 transition-colors duration-300">
-          <img
-            src={imgSrc}
-            alt={member.name}
-            className="w-full h-full object-cover"
-          />
-        </div>
-
-        <div className="text-center w-full flex flex-col items-center">
-          <h2 className="text-xl md:text-2xl font-bold text-gray-900 tracking-tight mb-1">{member.name}</h2>
-          <p className="text-xs font-semibold text-blue-600 uppercase tracking-widest mb-6 px-4 whitespace-pre-line">
-            {member.post}
-          </p>
-
-          {/* Divider */}
-          <div className="w-12 h-[2px] bg-gray-200 mb-6 group-hover:bg-blue-300 transition-colors duration-300"></div>
-
-          {/* Social Links */}
-          <div className="flex justify-center gap-5 items-center">
-            <a
-              href={`mailto:${member.email}`}
-              className="text-gray-400 group-hover:text-red-300 hover:!text-red-600 transition-colors duration-300 flex items-center"
-              title="Send Email"
-            >
-              <MdEmail size={28} />
-            </a>
-
-            <a
-              href={hasLinkedin ? member.linkedin : "#"}
-              target={hasLinkedin ? "_blank" : "_self"}
-              rel="noreferrer"
-              className={`transition-colors duration-300 flex items-center ${hasLinkedin ? "text-gray-400 group-hover:text-blue-300 hover:!text-[#0A66C2]" : "text-gray-200 cursor-not-allowed"}`}
-              title={hasLinkedin ? "LinkedIn Profile" : "LinkedIn coming soon"}
-              onClick={(e) => { if (!hasLinkedin) e.preventDefault(); }}
-            >
-              <FaLinkedin size={24} />
-            </a>
-          </div>
-        </div>
-      </div>
-    );
-  };
-
-  const SectionHeader = ({ title }) => (
-    <div className="flex flex-col items-center text-center mb-12">
-      <h2 className="text-3xl md:text-5xl font-extrabold text-gray-900 oswald-font-3 tracking-tight">{title}</h2>
-    </div>
-  );
 
   return (
     <div className="w-full bg-[#FAFAFA] font-sans pb-24">

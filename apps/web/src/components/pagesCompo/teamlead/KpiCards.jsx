@@ -1,6 +1,6 @@
 import React from 'react';
 import { Target, GraduationCap, Users, School, ArrowUp, ArrowDown } from 'lucide-react';
-import { motion } from 'framer-motion';
+
 
 const kpiData = [
   {

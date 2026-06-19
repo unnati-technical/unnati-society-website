@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+// eslint-disable-next-line no-unused-vars
 import { motion, AnimatePresence } from 'framer-motion';
 import { 
   FiX, FiCheckCircle, FiUsers, FiMapPin, FiBookOpen, 
@@ -13,46 +14,46 @@ const CampusVisitModal = ({ isOpen, onClose }) => {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSuccess, setIsSuccess] = useState(false);
 
-  // Form State
-  const [formData, setFormData] = useState({
-    // Step 1
-    institutionName: '',
-    institutionType: '',
-    board: '',
-    website: '',
-    state: '',
-    district: '',
-    city: '',
-    address: '',
-    // Step 2
-    studentsCount: '',
-    teachersCount: '',
-    classes: [],
-    purposes: [],
-    activities: [],
-    prefDate: '',
-    altDate: '',
-    prefTime: '',
-    // Step 3
-    coordinatorName: '',
-    designation: '',
-    email: '',
-    phone: '',
-    whatsapp: '',
-    notes: ''
-  });
-
   const STORAGE_KEY = 'unnati_campus_visit_draft';
   const DRAFT_EXPIRATION = 60 * 60 * 1000; // 1 hour
 
-  useEffect(() => {
+  // Form State
+  const [formData, setFormData] = useState(() => {
+    const defaultState = {
+      // Step 1
+      institutionName: '',
+      institutionType: '',
+      board: '',
+      website: '',
+      state: '',
+      district: '',
+      city: '',
+      address: '',
+      // Step 2
+      studentsCount: '',
+      teachersCount: '',
+      classes: [],
+      purposes: [],
+      activities: [],
+      prefDate: '',
+      altDate: '',
+      prefTime: '',
+      // Step 3
+      coordinatorName: '',
+      designation: '',
+      email: '',
+      phone: '',
+      whatsapp: '',
+      notes: ''
+    };
+
     if (isOpen) {
       const saved = localStorage.getItem(STORAGE_KEY);
       if (saved) {
         try {
           const { data, timestamp } = JSON.parse(saved);
           if (Date.now() - timestamp < DRAFT_EXPIRATION) {
-            setFormData(prev => ({ ...prev, ...data }));
+            return { ...defaultState, ...data };
           } else {
             localStorage.removeItem(STORAGE_KEY);
           }
@@ -61,7 +62,8 @@ const CampusVisitModal = ({ isOpen, onClose }) => {
         }
       }
     }
-  }, [isOpen]);
+    return defaultState;
+  });
 
   useEffect(() => {
     if (isOpen) {

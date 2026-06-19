@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import Navbar from '../components/common/Navbar';
 import NavUnn from '../components/common/NavUnn';
 import Footer from '../components/common/Footer';
-import { motion } from 'framer-motion';
+
 import { 
   FiUsers, FiBookOpen, FiBriefcase, FiHeart, 
   FiCheckCircle, FiArrowRight, FiTarget, FiStar, FiAward, FiMessageSquare

@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { School, GraduationCap, Users, ShieldCheck } from 'lucide-react';
+// eslint-disable-next-line no-unused-vars
 import { motion, useInView } from 'framer-motion';
 
 const Counter = ({ end, duration = 2000, suffix = "+" }) => {

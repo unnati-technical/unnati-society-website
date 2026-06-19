@@ -1,5 +1,5 @@
 import React from 'react';
-import { motion } from 'framer-motion';
+
 import { Clock, Users, ShieldCheck } from 'lucide-react';
 import { cloudinaryImage2 } from '../../../utils/cloudinary';
 

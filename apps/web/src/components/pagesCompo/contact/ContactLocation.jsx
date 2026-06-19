@@ -1,6 +1,6 @@
 import React from 'react';
 import { MapPin, Phone, Mail, Clock, Navigation, Map as MapIcon, PhoneCall } from 'lucide-react';
-import { motion } from 'framer-motion';
+
 
 const ContactLocation = () => {
 

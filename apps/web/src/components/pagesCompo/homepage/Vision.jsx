@@ -1,4 +1,5 @@
 import React from "react";
+// eslint-disable-next-line no-unused-vars
 import { motion } from "framer-motion";
 import { FiUsers, FiTrendingUp } from "react-icons/fi";
 import { FaGraduationCap } from "react-icons/fa";

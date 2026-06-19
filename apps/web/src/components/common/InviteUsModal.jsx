@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+// eslint-disable-next-line no-unused-vars
 import { motion, AnimatePresence } from 'framer-motion';
 import { 
   FiX, FiCheckCircle, FiUser, FiMapPin, FiBookOpen, 
@@ -15,54 +16,54 @@ const InviteUsModal = ({ isOpen, onClose }) => {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSuccess, setIsSuccess] = useState(false);
 
-  // Form State
-  const [formData, setFormData] = useState({
-    // Step 1: Institution
-    institutionName: '',
-    institutionType: '',
-    board: '',
-    studentsCount: '',
-    website: '',
-    state: '',
-    district: '',
-    city: '',
-    address: '',
-    
-    // Step 2: Program Needs
-    programs: [],
-    targetAudience: [],
-    expectedParticipants: '',
-    preferredMode: '',
-    prefDate: '',
-    altDate: '',
-    duration: '',
-
-    // Step 3: Contact Person
-    coordinatorName: '',
-    designation: '',
-    phone: '',
-    whatsapp: '',
-    email: '',
-    availability: '',
-    notes: '',
-    specialReqs: '',
-
-    // Step 4: Review
-    agreement1: false,
-    agreement2: false
-  });
-
   const STORAGE_KEY = 'unnati_invite_us_draft';
   const DRAFT_EXPIRATION = 60 * 60 * 1000; // 1 hour
 
-  useEffect(() => {
+  // Form State
+  const [formData, setFormData] = useState(() => {
+    const defaultState = {
+      // Step 1: Institution
+      institutionName: '',
+      institutionType: '',
+      board: '',
+      studentsCount: '',
+      website: '',
+      state: '',
+      district: '',
+      city: '',
+      address: '',
+      
+      // Step 2: Program Needs
+      programs: [],
+      targetAudience: [],
+      expectedParticipants: '',
+      preferredMode: '',
+      prefDate: '',
+      altDate: '',
+      duration: '',
+
+      // Step 3: Contact Person
+      coordinatorName: '',
+      designation: '',
+      phone: '',
+      whatsapp: '',
+      email: '',
+      availability: '',
+      notes: '',
+      specialReqs: '',
+
+      // Step 4: Review
+      agreement1: false,
+      agreement2: false
+    };
+
     if (isOpen) {
       const saved = localStorage.getItem(STORAGE_KEY);
       if (saved) {
         try {
           const { data, timestamp } = JSON.parse(saved);
           if (Date.now() - timestamp < DRAFT_EXPIRATION) {
-            setFormData(prev => ({ ...prev, ...data }));
+            return { ...defaultState, ...data };
           } else {
             localStorage.removeItem(STORAGE_KEY);
           }
@@ -71,7 +72,8 @@ const InviteUsModal = ({ isOpen, onClose }) => {
         }
       }
     }
-  }, [isOpen]);
+    return defaultState;
+  });
 
   useEffect(() => {
     if (isOpen) {

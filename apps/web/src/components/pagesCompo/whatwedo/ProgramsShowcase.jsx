@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
+// eslint-disable-next-line no-unused-vars
 import { motion, AnimatePresence, animate } from "framer-motion";
-import { cloudinaryImage2, cloudinaryImage } from "../../../utils/cloudinary";
+import { cloudinaryImage } from "../../../utils/cloudinary";
 import { useNavigate } from "react-router-dom";
 
 const AnimatedCounter = ({ value, duration = 1 }) => {

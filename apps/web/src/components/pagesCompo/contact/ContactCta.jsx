@@ -1,5 +1,6 @@
 import React from 'react';
 import { MessagesSquare, Mail } from 'lucide-react';
+// eslint-disable-next-line no-unused-vars
 import { motion } from 'framer-motion';
 
 const ContactCta = () => {

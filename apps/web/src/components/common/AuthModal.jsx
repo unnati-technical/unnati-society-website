@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+// eslint-disable-next-line no-unused-vars
 import { motion, AnimatePresence } from 'framer-motion';
 import { FiX, FiEye, FiEyeOff, FiLock, FiShield, FiCheckCircle } from 'react-icons/fi';
 import { FaGraduationCap, FaUserTie, FaHandsHelping, FaUsers } from 'react-icons/fa';
