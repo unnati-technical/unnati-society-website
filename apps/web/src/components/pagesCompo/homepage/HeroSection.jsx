@@ -66,10 +66,10 @@ const HeroSection = () => {
         {/* Call to Actions */}
         <div className="flex flex-wrap items-center gap-5 mt-6">
           <button 
-            onClick={() => navigate('/about-us')}
+            onClick={() => navigate('/join-us')}
             className="bg-white text-black font-extrabold oswald-font-2 px-8 py-3 text-sm md:text-base tracking-wider hover:bg-gray-100 transition shadow-lg"
           >
-            READ MORE
+            JOIN US
           </button>
           
           <button
