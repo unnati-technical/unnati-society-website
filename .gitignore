@@ -46,4 +46,3 @@ coverage
 # Misc
 *.pem
 .vercel
-pnpm-lock.yaml
