@@ -1,15 +1,17 @@
 import React, { useEffect, useRef, useState } from "react";
 import mission from './../../../assets/mission.jpg';
-import { 
-  FiShield, 
-  FiPieChart, 
-  FiUsers, 
-  FiHeart, 
-  FiArrowRight 
+import {
+  FiShield,
+  FiPieChart,
+  FiUsers,
+  FiHeart,
+  FiArrowRight
 } from "react-icons/fi";
 import { BiDonateHeart } from "react-icons/bi";
+import { useNavigate } from "react-router-dom";
 
 const Data = () => {
+  const navigate = useNavigate();
   const [isVisible, setIsVisible] = useState(false);
   const sectionRef = useRef(null);
 
@@ -36,10 +38,10 @@ const Data = () => {
 
   return (
     <section className="w-full flex flex-col items-center bg-[#F8FAFC] font-sans" ref={sectionRef}>
-      
+
       {/* Top Transparency Section */}
       <div className="w-full max-w-[1400px] px-6 lg:px-16 py-8 lg:py-12 flex flex-col lg:flex-row gap-8 justify-between items-center">
-        
+
         {/* Left Column */}
         <div className="flex flex-col w-full lg:w-[45%]">
           <div className="flex flex-col gap-2 mb-6">
@@ -99,12 +101,12 @@ const Data = () => {
         {/* Right Column - Chart Card */}
         <div className={`w-full lg:w-[55%] flex justify-end transition-all duration-1000 delay-300 ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-12'}`}>
           <div className="bg-white rounded-[24px] shadow-[0_20px_50px_rgba(0,0,0,0.06)] border border-[#F1F5F9] p-6 lg:p-8 w-full lg:max-w-[700px] flex flex-col md:flex-row items-center gap-6">
-            
+
             {/* Donut Chart */}
             <div className="relative w-[180px] h-[180px] shrink-0">
-              <div 
+              <div
                 className="w-full h-full rounded-full transition-all duration-1500 ease-out"
-                style={{ 
+                style={{
                   background: isVisible ? "conic-gradient(#3B82F6 0% 70%, #8B5CF6 70% 90%, #F59E0B 90% 100%)" : "conic-gradient(#E2E8F0 0% 100%)",
                   transform: isVisible ? "scale(1) rotate(0deg)" : "scale(0.9) rotate(-90deg)"
                 }}
@@ -119,7 +121,7 @@ const Data = () => {
 
             {/* Legend List */}
             <div className="flex flex-col gap-4 w-full flex-1">
-              
+
               <div className="flex flex-col gap-1">
                 <div className="flex items-center">
                   <div className="w-3 h-3 rounded-full bg-[#3B82F6] shrink-0 mr-3"></div>
@@ -165,16 +167,16 @@ const Data = () => {
       {/* Bottom CTA Banner */}
       <div className="relative w-full h-auto flex items-center bg-black overflow-hidden">
         {/* Background Image */}
-        <div 
+        <div
           className="absolute inset-0 bg-cover bg-center opacity-40 transition-transform duration-1000 hover:scale-105"
           style={{ backgroundImage: `url(${mission})` }}
         ></div>
-        
+
         {/* Overlay Gradient for better text readability */}
         <div className="absolute inset-0 bg-linear-to-r from-[#0F172A] via-[#0F172A]/90 to-transparent"></div>
 
         <div className="relative z-10 w-full max-w-[1400px] mx-auto px-6 lg:px-16 py-10 lg:py-12 flex flex-col lg:flex-row items-center gap-8">
-          
+
           <div className="flex items-center justify-center w-16 h-16 rounded-full border border-white/30 text-white shrink-0 hidden md:flex">
             <BiDonateHeart size={32} />
           </div>
@@ -189,15 +191,15 @@ const Data = () => {
             </p>
 
             <div className="flex flex-wrap items-center gap-4">
-              <button className="flex items-center gap-2 bg-[#3B82F6] hover:bg-blue-600 text-white font-semibold text-sm px-6 py-3 transition-colors shadow-lg shadow-blue-500/30">
-                JOIN AS VOLUNTEER <FiArrowRight />
+              <button onClick={() => navigate('/join-us')} className="flex items-center gap-2 bg-[#3B82F6] hover:bg-blue-600 text-white font-semibold text-sm px-6 py-3 transition-colors shadow-lg shadow-blue-500/30">
+                JOIN US <FiArrowRight />
               </button>
-              <button className="flex items-center gap-2 border border-white/50 hover:bg-white/10 text-white font-semibold text-sm px-6 py-3 transition-colors">
+              <button onClick={() => navigate('/donate')} className="flex items-center gap-2 border border-white/50 hover:bg-white/10 text-white font-semibold text-sm px-6 py-3 transition-colors">
                 DONATE NOW <FiArrowRight />
               </button>
             </div>
           </div>
-          
+
         </div>
       </div>
 
