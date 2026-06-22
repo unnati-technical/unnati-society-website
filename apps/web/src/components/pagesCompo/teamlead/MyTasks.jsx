@@ -12,7 +12,7 @@ const tasksData = [
     title: 'Share resources with volunteers',
     date: 'May 14, 2025',
     status: 'In Progress',
-    statusColor: 'bg-blue-50 text-blue-600',
+    statusColor: 'bg-brand-light text-brand-primary',
     checked: false
   },
   {
@@ -43,14 +43,14 @@ const MyTasks = () => {
     <div className="bg-white rounded-3xl border border-gray-100 shadow-sm p-6 flex flex-col h-full">
       <div className="flex items-center justify-between mb-6">
         <h2 className="text-lg font-extrabold text-[#0F172A]">My Tasks</h2>
-        <a href="#" className="text-xs font-bold text-[#2563EB] hover:underline">View All</a>
+        <a href="#" className="text-xs font-bold text-brand-primary hover:underline">View All</a>
       </div>
 
       <div className="flex flex-col gap-1 flex-1">
         {tasksData.map((task, idx) => (
           <div key={idx} className="flex items-start gap-4 p-4 rounded-2xl hover:bg-gray-50 border border-transparent transition-colors cursor-pointer group">
             {/* Checkbox (Mocked) */}
-            <div className={`w-5 h-5 rounded-full border-2 flex items-center justify-center shrink-0 mt-0.5 ${task.checked ? 'border-[#2563EB] bg-[#2563EB]' : 'border-gray-300'}`}>
+            <div className={`w-5 h-5 rounded-full border-2 flex items-center justify-center shrink-0 mt-0.5 ${task.checked ? 'border-brand-primary bg-brand-primary' : 'border-gray-300'}`}>
               {task.checked && (
                 <svg viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" className="w-3 h-3">
                   <polyline points="20 6 9 17 4 12"></polyline>

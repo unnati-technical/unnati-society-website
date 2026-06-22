@@ -10,8 +10,8 @@ const Footer = () => {
   const isPeoplePage = location.pathname === '/executive-body';
   const [isAuthOpen, setIsAuthOpen] = useState(false);
   return (
-    <footer className="bg-black text-white px-16 py-14">
-      <div className="max-w-7xl mx-auto grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-16">
+    <footer className="bg-black text-white px-8 md:px-16 py-8">
+      <div className="max-w-7xl mx-auto grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8">
         <div className="flex flex-col gap-6">
           <div className="flex items-center gap-4">
             <img

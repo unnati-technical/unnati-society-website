@@ -11,6 +11,7 @@ import { BiBuildingHouse, BiChalkboard, BiTargetLock } from 'react-icons/bi';
 import { FaHandshake } from 'react-icons/fa';
 import CampusVisitModal from '../components/common/CampusVisitModal';
 import InviteUsModal from '../components/common/InviteUsModal';
+import PartnerModal from '../components/pagesCompo/outreach/PartnerModal';
 
 const Counter = ({ end, duration = 2000, suffix = "" }) => {
   const [count, setCount] = useState(0);
@@ -46,6 +47,7 @@ const Counter = ({ end, duration = 2000, suffix = "" }) => {
 const Outreach = () => {
   const [isCampusVisitModalOpen, setIsCampusVisitModalOpen] = useState(false);
   const [isInviteUsModalOpen, setIsInviteUsModalOpen] = useState(false);
+  const [isPartnerModalOpen, setIsPartnerModalOpen] = useState(false);
 
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -98,7 +100,7 @@ const Outreach = () => {
               <button onClick={() => setIsInviteUsModalOpen(true)} className="flex items-center justify-center gap-2 bg-[#FFC107] hover:bg-[#FFB300] text-black px-6 py-3.5 rounded-xl oswald-font-3 font-bold tracking-wide uppercase transition-all shadow-lg shadow-yellow-400/20 text-sm">
                 <BiBuildingHouse size={16} /> Invite Us To Your School
               </button>
-              <button className="flex items-center justify-center gap-2 bg-white border border-gray-200 hover:border-blue-600 hover:bg-blue-50 text-slate-700 px-6 py-3.5 rounded-xl oswald-font-3 font-bold tracking-wide uppercase transition-all text-sm shadow-sm">
+              <button onClick={() => setIsPartnerModalOpen(true)} className="flex items-center justify-center gap-2 bg-white border border-gray-200 hover:border-blue-600 hover:bg-blue-50 text-slate-700 px-6 py-3.5 rounded-xl oswald-font-3 font-bold tracking-wide uppercase transition-all text-sm shadow-sm">
                 <FaHandshake size={16} className="text-gray-400" /> Partner With Us
               </button>
             </div>
@@ -257,7 +259,7 @@ const Outreach = () => {
               <li className="flex items-center text-sm font-medium text-gray-700"><FiCheckCircle className="text-blue-500 mr-2" /> Volunteer network</li>
               <li className="flex items-center text-sm font-medium text-gray-700"><FiCheckCircle className="text-blue-500 mr-2" /> Long-term partnerships</li>
             </ul>
-            <button className="w-full bg-blue-50 hover:bg-blue-600 hover:text-white text-blue-600 font-bold py-3 rounded-xl transition-colors">
+            <button onClick={() => setIsPartnerModalOpen(true)} className="w-full bg-blue-50 hover:bg-blue-600 hover:text-white text-blue-600 font-bold py-3 rounded-xl transition-colors">
               Partner With Us
             </button>
           </div>
@@ -405,7 +407,7 @@ const Outreach = () => {
               </div>
             </div>
 
-            <button className="border-2 border-blue-600 text-blue-600 hover:bg-blue-600 hover:text-white font-bold py-3 px-8 rounded-full transition-all flex items-center gap-2">
+            <button onClick={() => setIsPartnerModalOpen(true)} className="border-2 border-blue-600 text-blue-600 hover:bg-blue-600 hover:text-white font-bold py-3 px-8 rounded-full transition-all flex items-center gap-2">
               Partner With Us <FiArrowRight />
             </button>
           </div>
@@ -583,6 +585,12 @@ const Outreach = () => {
       <InviteUsModal 
         isOpen={isInviteUsModalOpen} 
         onClose={() => setIsInviteUsModalOpen(false)} 
+      />
+
+      {/* Partner Modal */}
+      <PartnerModal 
+        isOpen={isPartnerModalOpen} 
+        onClose={() => setIsPartnerModalOpen(false)} 
       />
     </div>
   );

@@ -39,7 +39,7 @@ const ActiveVolunteers = () => {
     <div className="bg-white rounded-3xl border border-gray-100 shadow-sm p-6 flex flex-col h-full">
       <div className="flex items-center justify-between mb-6">
         <h2 className="text-lg font-extrabold text-[#0F172A]">Top Active Volunteers</h2>
-        <a href="#" className="text-xs font-bold text-[#2563EB] hover:underline">View All</a>
+        <a href="#" className="text-xs font-bold text-brand-primary hover:underline">View All</a>
       </div>
 
       <div className="flex flex-col gap-2 flex-1">

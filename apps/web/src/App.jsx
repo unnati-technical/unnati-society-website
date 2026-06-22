@@ -36,10 +36,24 @@ import Contact from './pages/Contact'
 import Outreach from './pages/Outreach'
 import JoinUs from './pages/JoinUs'
 import TeamLeadDashboard from './pages/TeamLeadDashboard'
+import TeamLeadInitiatives from './pages/TeamLeadInitiatives'
+import TeamLeadTasks from './pages/TeamLeadTasks'
+import TeamLeadVolunteers from './pages/TeamLeadVolunteers'
+import TeamLeadMessages from './pages/TeamLeadMessages'
+import AdminLogin from './pages/admin/AdminLogin'
+import AdminDashboard from './pages/admin/AdminDashboard'
+import AdminMessages from './pages/admin/AdminMessages'
+import AdminEvents from './pages/admin/AdminEvents'
+import AdminDonations from './pages/admin/AdminDonations'
+import AdminTeamLeads from './pages/admin/AdminTeamLeads'
+import Donate from './pages/Donate'
+
+import { Toaster } from 'sonner'
 
 const App = () => {
   return (
     <div>
+      <Toaster position="top-right" richColors />
       <Routes>
          <Route path="/" element={<Homepage/>}/>
          <Route path="/about-us" element={<AboutUs/>}/>
@@ -85,9 +99,23 @@ const App = () => {
          
          <Route path="/outreach" element={<Outreach/>}/>
          <Route path="/join-us" element={<JoinUs/>}/>
+         <Route path="/donate" element={<Donate/>}/>
 
          {/* Team Lead Portal */}
          <Route path="/teamlead/dashboard" element={<TeamLeadDashboard/>}/>
+         <Route path="/teamlead/initiatives" element={<TeamLeadInitiatives/>}/>
+         <Route path="/teamlead/tasks" element={<TeamLeadTasks/>}/>
+         <Route path="/teamlead/volunteers" element={<TeamLeadVolunteers/>}/>
+         <Route path="/teamlead/messages" element={<TeamLeadMessages/>}/>
+
+         {/* Admin Routes */}
+         <Route path="/admin/login" element={<AdminLogin />} />
+         <Route path="/admin/dashboard" element={<AdminDashboard />} />
+         <Route path="/admin/events" element={<AdminEvents />} />
+         <Route path="/admin/messages" element={<AdminMessages />} />
+         <Route path="/admin/funds" element={<AdminDonations />} />
+         <Route path="/admin/teamleads" element={<AdminTeamLeads />} />
+
       </Routes>
     </div>
   )

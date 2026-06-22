@@ -1,4 +1,35 @@
 @import "tailwindcss";
+
+@theme {
+  --color-brand-primary: var(--brand-primary);
+  --color-brand-dark: var(--brand-dark);
+  --color-brand-secondary: var(--brand-secondary);
+  --color-brand-light: var(--brand-light);
+}
+
+:root {
+  /* Default Theme (IIIT Bhagalpur) */
+  --brand-primary: #2563EB;
+  --brand-dark: #1E3A8A;
+  --brand-secondary: #FBBF24;
+  --brand-light: #EFF6FF;
+}
+
+.theme-school {
+  /* School Branch Theme */
+  --brand-primary: #10B981;
+  --brand-dark: #064E3B;
+  --brand-secondary: #F59E0B;
+  --brand-light: #ECFDF5;
+}
+
+.theme-ngo {
+  /* NGO Partner Theme */
+  --brand-primary: #8B5CF6;
+  --brand-dark: #4C1D95;
+  --brand-secondary: #EC4899;
+  --brand-light: #F5F3FF;
+}
 .oswald-font {
   font-family: "Oswald", sans-serif;
   font-optical-sizing: auto;

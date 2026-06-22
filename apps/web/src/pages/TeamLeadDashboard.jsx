@@ -7,9 +7,17 @@ import MyTasks from '../components/pagesCompo/teamlead/MyTasks';
 import ActiveVolunteers from '../components/pagesCompo/teamlead/ActiveVolunteers';
 import RecentMessages from '../components/pagesCompo/teamlead/RecentMessages';
 import ReportsSnapshot from '../components/pagesCompo/teamlead/ReportsSnapshot';
-import { Users, Clock, Heart } from 'lucide-react';
+import { Users, Clock, Heart, Award, Shield } from 'lucide-react';
+import { useAuth } from '../contexts/AuthContext';
 
 const TeamLeadDashboard = () => {
+  const { currentUser, userProfile } = useAuth();
+  
+  const userAccess = userProfile || {
+    name: currentUser?.displayName || currentUser?.email?.split('@')[0],
+    status: 'Junior Lead',
+    msgAccess: 'No Access'
+  };
   // Scroll to top on mount
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -34,7 +42,17 @@ const TeamLeadDashboard = () => {
         {/* 2-Column Grid for Volunteers & Messages */}
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-8">
           <ActiveVolunteers />
-          <RecentMessages />
+          {userAccess.msgAccess !== 'No Access' ? (
+            <RecentMessages />
+          ) : (
+            <div className="bg-white rounded-3xl border border-gray-100 shadow-sm p-6 lg:p-8 flex flex-col items-center justify-center text-center">
+              <div className="w-16 h-16 bg-gray-50 text-gray-300 rounded-full flex items-center justify-center mb-4">
+                <Shield size={32} />
+              </div>
+              <h3 className="text-lg font-extrabold text-gray-900 mb-2">Restricted Access</h3>
+              <p className="text-sm text-gray-500 max-w-[250px]">You do not have permission to view contact messages. Contact an admin for access.</p>
+            </div>
+          )}
         </div>
 
         {/* Reports Snapshot */}
@@ -46,11 +64,11 @@ const TeamLeadDashboard = () => {
           
           <div className="flex items-center gap-6 z-10">
             <div className="w-20 h-20 shrink-0 bg-gradient-to-br from-yellow-400 to-yellow-600 rounded-2xl flex items-center justify-center shadow-lg shadow-yellow-500/20">
-              <span className="text-4xl">🏆</span>
+              {userAccess.status === 'Sr. Team Lead' ? <Award size={36} className="text-white" /> : <span className="text-4xl">🏆</span>}
             </div>
             <div>
-              <h2 className="text-2xl font-extrabold text-white mb-2">Great job, Team Lead! 🎉</h2>
-              <p className="text-sm text-gray-400 font-medium">Your dedication is making a real difference.<br/>Keep inspiring and empowering!</p>
+              <h2 className="text-2xl font-extrabold text-white mb-2">Great job, {userAccess.name}! 🎉</h2>
+              <p className="text-sm text-gray-400 font-medium">Your dedication as a {userAccess.status} is making a real difference.<br/>Keep inspiring and empowering!</p>
             </div>
           </div>
 

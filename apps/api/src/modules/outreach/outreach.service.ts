@@ -2,6 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { PrismaService } from '../../prisma/prisma.service';
 import { CreateOutreachDto } from './dto/create-outreach.dto';
 import { CreateCampusVisitDto } from './dto/create-campus-visit.dto';
+import { CreatePartnerDto } from './dto/create-partner.dto';
 
 @Injectable()
 export class OutreachService {
@@ -13,5 +14,12 @@ export class OutreachService {
 
   async campusVisit(dto: CreateCampusVisitDto) {
     return { id: 'mock-id-' + Date.now(), ...dto, createdAt: new Date() };
+  }
+
+  async partner(dto: CreatePartnerDto) {
+    const partnerRequest = await this.prisma.partnerRequest.create({
+      data: dto,
+    });
+    return partnerRequest;
   }
 }

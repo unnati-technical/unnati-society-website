@@ -98,6 +98,20 @@ model OutreachRequest {
   updatedAt      DateTime @updatedAt
 }
 
+model PartnerRequest {
+  id                  String   @id @default(uuid())
+  name                String
+  email               String
+  phone               String
+  organizationType    String
+  partnershipInterest String
+  collaborationMode   String
+  message             String?
+  status              String   @default("PENDING") // PENDING, REVIEWED, ACCEPTED, REJECTED
+  createdAt           DateTime @default(now())
+  updatedAt           DateTime @updatedAt
+}
+
 // -------------------------------------
 // Students & Courses
 // -------------------------------------
@@ -126,13 +140,15 @@ model Course {
 // -------------------------------------
 
 model Event {
-  id             String    @id @default(uuid())
-  title          String
-  description    String
-  date           DateTime
-  location       String
-  createdAt      DateTime  @default(now())
-  updatedAt      DateTime  @updatedAt
+  id          String   @id @default(uuid())
+  title       String
+  description String   @default("")
+  date        DateTime
+  location    String   @default("")
+  link        String?  // Deep-link for the arrow button on the card
+  color       String?  // Tailwind class e.g. 'bg-blue-400'
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
 }
 
 // -------------------------------------
@@ -193,3 +209,51 @@ model ContactMessage {
   status    String   @default("PENDING") // PENDING, REVIEWED, REPLIED
   createdAt DateTime @default(now())
 }
+
+model NotificationRecipient {
+  id        String   @id @default(uuid())
+  email     String   @unique
+  name      String?
+  createdAt DateTime @default(now())
+}
+
+// -------------------------------------
+// System Settings
+// -------------------------------------
+
+model SystemSetting {
+  key       String   @id
+  value     String
+  updatedAt DateTime @updatedAt
+}
+
+// -------------------------------------
+// Team Leads & Activity Logs
+// -------------------------------------
+
+model TeamLead {
+  id             String   @id @default(uuid())
+  name           String
+  email          String   @unique
+  phone          String
+  position       String
+  loginEmail     String?  @unique
+  password       String?
+  credStatus     String   @default("Pending Approval") // Approved, Pending Approval, Rejected
+  msgAccess      String   @default("No Access") // Can View & Reply, Can View Only, No Access, Request Pending
+  status         String   @default("Junior Lead") // Junior Lead, Team Lead, Sr. Team Lead
+  avatar         String?  
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+}
+
+model ActivityLog {
+  id        String   @id @default(uuid())
+  action    String
+  leadName  String
+  details   String
+  color     String   @default("blue")
+  icon      String   @default("Info")
+  createdAt DateTime @default(now())
+}
+

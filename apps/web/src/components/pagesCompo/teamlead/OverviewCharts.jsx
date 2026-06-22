@@ -13,7 +13,7 @@ const lineData = [
 ];
 
 const pieData = [
-  { name: 'Digital Literacy', value: 35, color: '#2563EB' },
+  { name: 'Digital Literacy', value: 35, color: 'var(--brand-primary)' },
   { name: 'Education Support', value: 25, color: '#10B981' },
   { name: 'Career Guidance', value: 20, color: '#8B5CF6' },
   { name: 'Awareness', value: 12, color: '#F59E0B' },
@@ -82,8 +82,8 @@ const OverviewCharts = () => {
               <LineChart data={lineData} margin={{ top: 5, right: 20, left: -20, bottom: 0 }}>
                 <defs>
                   <linearGradient id="colorBeneficiaries" x1="0" y1="0" x2="0" y2="1">
-                    <stop offset="5%" stopColor="#2563EB" stopOpacity={0.1}/>
-                    <stop offset="95%" stopColor="#2563EB" stopOpacity={0}/>
+                    <stop offset="5%" stopColor="var(--brand-primary)" stopOpacity={0.1}/>
+                    <stop offset="95%" stopColor="var(--brand-primary)" stopOpacity={0}/>
                   </linearGradient>
                 </defs>
                 <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#f1f5f9" />
@@ -106,10 +106,10 @@ const OverviewCharts = () => {
                 <Line 
                   type="monotone" 
                   dataKey="beneficiaries" 
-                  stroke="#2563EB" 
+                  stroke="var(--brand-primary)" 
                   strokeWidth={3}
-                  dot={{ r: 4, strokeWidth: 2, fill: '#fff', stroke: '#2563EB' }}
-                  activeDot={{ r: 6, fill: '#2563EB', stroke: '#fff', strokeWidth: 2 }}
+                  dot={{ r: 4, strokeWidth: 2, fill: '#fff', stroke: 'var(--brand-primary)' }}
+                  activeDot={{ r: 6, fill: 'var(--brand-primary)', stroke: '#fff', strokeWidth: 2 }}
                 />
               </LineChart>
             </ResponsiveContainer>

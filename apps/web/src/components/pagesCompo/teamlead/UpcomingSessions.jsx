@@ -8,7 +8,7 @@ const sessionsData = [
     time: '10:00 AM – 12:00 PM',
     location: 'Kahalgaon High School',
     type: 'Workshop',
-    typeColor: 'bg-blue-50 text-blue-600'
+    typeColor: 'bg-brand-light text-brand-primary'
   },
   {
     date: 'MAY 14',
@@ -24,7 +24,7 @@ const sessionsData = [
     time: '02:00 PM – 04:00 PM',
     location: 'Jagdishpur High School',
     type: 'Workshop',
-    typeColor: 'bg-blue-50 text-blue-600'
+    typeColor: 'bg-brand-light text-brand-primary'
   },
   {
     date: 'MAY 16',
@@ -41,7 +41,7 @@ const UpcomingSessions = () => {
     <div className="bg-white rounded-3xl border border-gray-100 shadow-sm p-6 flex flex-col h-full">
       <div className="flex items-center justify-between mb-6">
         <h2 className="text-lg font-extrabold text-[#0F172A]">Upcoming Sessions & Events</h2>
-        <a href="#" className="text-xs font-bold text-[#2563EB] hover:underline">View All</a>
+        <a href="#" className="text-xs font-bold text-brand-primary hover:underline">View All</a>
       </div>
 
       <div className="flex flex-col gap-4 flex-1">
@@ -56,7 +56,7 @@ const UpcomingSessions = () => {
             {/* Details */}
             <div className="flex-1 min-w-0">
               <div className="flex items-start justify-between gap-2 mb-1">
-                <h4 className="font-bold text-[#0F172A] text-sm truncate group-hover:text-[#2563EB] transition-colors">{session.title}</h4>
+                <h4 className="font-bold text-[#0F172A] text-sm truncate group-hover:text-brand-primary transition-colors">{session.title}</h4>
                 <span className={`text-[10px] font-bold px-2 py-0.5 rounded-md shrink-0 ${session.typeColor}`}>
                   {session.type}
                 </span>

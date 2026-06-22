@@ -11,8 +11,8 @@ const kpiData = [
     trend: '+ 2 from last week',
     trendUp: true,
     icon: Target,
-    color: 'bg-blue-50 text-[#2563EB]',
-    iconColor: '#2563EB'
+    color: 'bg-brand-light text-brand-primary',
+    iconColor: 'var(--brand-primary)'
   },
   {
     title: 'Sessions This Week',

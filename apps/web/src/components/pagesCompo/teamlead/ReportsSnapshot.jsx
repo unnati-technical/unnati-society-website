@@ -6,7 +6,7 @@ const reportsData = [
     date: 'April 2025',
     metric: '2,450 Beneficiaries',
     bars: [40, 60, 80, 50, 90, 70, 100, 80],
-    color: 'bg-blue-500'
+    color: 'bg-brand-primary'
   },
   {
     title: 'Volunteer Report',
@@ -36,7 +36,7 @@ const ReportsSnapshot = () => {
     <div className="bg-white rounded-3xl border border-gray-100 shadow-sm p-6 lg:p-8 mb-8">
       <div className="flex items-center justify-between mb-8">
         <h2 className="text-lg font-extrabold text-[#0F172A]">Reports Snapshot</h2>
-        <a href="#" className="text-xs font-bold text-[#2563EB] hover:underline">View Full Report</a>
+        <a href="#" className="text-xs font-bold text-brand-primary hover:underline">View Full Report</a>
       </div>
 
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">

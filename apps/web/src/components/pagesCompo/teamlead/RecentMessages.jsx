@@ -41,7 +41,7 @@ const RecentMessages = () => {
     <div className="bg-white rounded-3xl border border-gray-100 shadow-sm p-6 flex flex-col h-full">
       <div className="flex items-center justify-between mb-6">
         <h2 className="text-lg font-extrabold text-[#0F172A]">Recent Messages</h2>
-        <a href="#" className="text-xs font-bold text-[#2563EB] hover:underline">View All</a>
+        <a href="#" className="text-xs font-bold text-brand-primary hover:underline">View All</a>
       </div>
 
       <div className="flex flex-col gap-2 flex-1">
@@ -62,7 +62,7 @@ const RecentMessages = () => {
                 </h4>
                 <div className="flex items-center gap-2 shrink-0">
                   <span className="text-[10px] font-semibold text-gray-400">{msg.time}</span>
-                  {msg.unread && <span className="w-2 h-2 rounded-full bg-[#2563EB]"></span>}
+                  {msg.unread && <span className="w-2 h-2 rounded-full bg-brand-primary"></span>}
                 </div>
               </div>
               <p className={`text-xs truncate ${msg.unread ? 'font-semibold text-gray-700' : 'text-gray-500 font-medium'}`}>

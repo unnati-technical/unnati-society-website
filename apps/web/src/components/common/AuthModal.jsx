@@ -4,6 +4,10 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { FiX, FiEye, FiEyeOff, FiLock, FiShield, FiCheckCircle } from 'react-icons/fi';
 import { FaGraduationCap, FaUserTie, FaHandsHelping, FaUsers } from 'react-icons/fa';
 import UnnatiLogo from '../../assets/Unnati.png';
+import { signInWithEmailAndPassword, createUserWithEmailAndPassword, signInWithPopup } from 'firebase/auth';
+import { auth, googleProvider, githubProvider } from '../../lib/firebase';
+import { useNavigate } from 'react-router-dom';
+import { toast } from 'sonner';
 
 const roles = [
   { 
@@ -29,15 +33,7 @@ const roles = [
     focusRingClass: 'focus:ring-[#F59E0B]',
     textClass: 'text-[#F59E0B] hover:text-orange-700',
     checkboxClass: 'checked:bg-[#F59E0B] checked:border-[#F59E0B]'
-  },
-  { 
-    id: 'admin', label: 'Admin', icon: <FaUserTie size={20} />, 
-    activeClass: 'bg-[#8B5CF6] text-white shadow-md shadow-purple-500/20', 
-    btnClass: 'bg-gradient-to-r from-[#8B5CF6] to-purple-500 hover:from-purple-600 hover:to-purple-700 shadow-purple-500/30',
-    focusRingClass: 'focus:ring-[#8B5CF6]',
-    textClass: 'text-[#8B5CF6] hover:text-purple-700',
-    checkboxClass: 'checked:bg-[#8B5CF6] checked:border-[#8B5CF6]'
-  },
+  }
 ];
 
 const interests = [
@@ -52,12 +48,36 @@ const AuthModal = ({ isOpen, onClose }) => {
   const [showPassword, setShowPassword] = useState(false);
   const [signupStep, setSignupStep] = useState(1); // 1, 2, 3
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const navigate = useNavigate();
 
   const [formData, setFormData] = useState({
     email: '', password: '', confirmPassword: '', name: '', phone: '',
     gender: '', age: '', city: '', state: '', college: '', linkedin: '',
     selectedInterests: [], availability: [], experience: '', termsAccepted: false, consent: false
   });
+
+  const checkTeamLeadApproval = async (user) => {
+    try {
+      const token = await user.getIdToken(true);
+      const res = await fetch('/api/team-leads/me', {
+        headers: { Authorization: `Bearer ${token}` }
+      });
+      if (res.ok) {
+        const profile = await res.json();
+        if (profile.credStatus === 'Approved') {
+          return 'approved';
+        } else if (profile.credStatus === 'Rejected') {
+          return 'rejected';
+        } else {
+          return 'pending';
+        }
+      }
+      return 'not_found';
+    } catch (err) {
+      console.error(err);
+      return 'error';
+    }
+  };
 
   const handleInputChange = (e) => {
     const { name, value, type, checked } = e.target;
@@ -88,11 +108,139 @@ const AuthModal = ({ isOpen, onClose }) => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setIsSubmitting(true);
-    // Mock API call
-    setTimeout(() => {
+    
+    try {
+      if (mode === 'login') {
+        const userCred = await signInWithEmailAndPassword(auth, formData.email, formData.password);
+        if (role === 'team') {
+          const status = await checkTeamLeadApproval(userCred.user);
+          if (status === 'approved') {
+            toast.success(`Successfully logged in as Team Lead!`);
+            navigate('/teamlead/dashboard');
+            onClose();
+          } else if (status === 'pending') {
+            auth.signOut();
+            toast.error('Your application is still pending admin approval.');
+          } else if (status === 'rejected') {
+            auth.signOut();
+            toast.error('Your application was rejected by the admin.');
+          } else {
+            auth.signOut();
+            toast.error('Access Denied. Contact the admin for details.');
+          }
+        } else {
+          toast.success(`Successfully logged in as ${role}!`);
+          resetAndClose();
+        }
+      } else {
+        await createUserWithEmailAndPassword(auth, formData.email, formData.password);
+        
+        if (role === 'team') {
+          await fetch('/api/team-leads/apply', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+              name: formData.name,
+              email: formData.email,
+              phone: formData.phone
+            })
+          });
+        }
+        setMode('success');
+      }
+    } catch (error) {
+      toast.error(error.message || 'Authentication failed');
+    } finally {
       setIsSubmitting(false);
-      setMode('success');
-    }, 1500);
+    }
+  };
+
+  const handleGoogleSignIn = async () => {
+    try {
+      setIsSubmitting(true);
+      const userCred = await signInWithPopup(auth, googleProvider);
+      if (role === 'team') {
+        const status = await checkTeamLeadApproval(userCred.user);
+        if (status === 'approved') {
+          toast.success(`Successfully logged in as Team Lead!`);
+          navigate('/teamlead/dashboard');
+          onClose();
+        } else if (status === 'pending') {
+          auth.signOut();
+          toast.error('Your application is still pending admin approval.');
+        } else if (status === 'not_found') {
+          // Auto-apply if the user doesn't exist in the system yet
+          await fetch('/api/team-leads/apply', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+              name: userCred.user.displayName || 'Unknown User',
+              email: userCred.user.email,
+              phone: 'Not Provided'
+            })
+          });
+          auth.signOut();
+          toast.success('Your Team Lead application has been submitted and is pending admin approval.');
+        } else if (status === 'rejected') {
+          auth.signOut();
+          toast.error('Your application was rejected by the admin.');
+        } else {
+          auth.signOut();
+          toast.error('Access Denied. Contact the admin for details.');
+        }
+      } else {
+        toast.success(`Successfully logged in with Google!`);
+        resetAndClose();
+      }
+    } catch (error) {
+      toast.error(error.message || 'Google Sign-In failed');
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
+
+  const handleGithubSignIn = async () => {
+    try {
+      setIsSubmitting(true);
+      const userCred = await signInWithPopup(auth, githubProvider);
+      if (role === 'team') {
+        const status = await checkTeamLeadApproval(userCred.user);
+        if (status === 'approved') {
+          toast.success(`Successfully logged in as Team Lead!`);
+          navigate('/teamlead/dashboard');
+          onClose();
+        } else if (status === 'pending') {
+          auth.signOut();
+          toast.error('Your application is still pending admin approval.');
+        } else if (status === 'not_found') {
+          // Auto-apply if the user doesn't exist in the system yet
+          await fetch('/api/team-leads/apply', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+              name: userCred.user.displayName || 'Unknown User',
+              email: userCred.user.email,
+              phone: 'Not Provided'
+            })
+          });
+          auth.signOut();
+          toast.success('Your Team Lead application has been submitted and is pending admin approval.');
+        } else if (status === 'rejected') {
+          auth.signOut();
+          toast.error('Your application was rejected by the admin.');
+        } else {
+          auth.signOut();
+          toast.error('Access Denied. Contact the admin for details.');
+        }
+      } else {
+        toast.success(`Successfully logged in with GitHub!`);
+        resetAndClose();
+      }
+    } catch (error) {
+      toast.error(error.message || 'GitHub Sign-In failed');
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   const resetAndClose = () => {
@@ -292,7 +440,7 @@ const AuthModal = ({ isOpen, onClose }) => {
                 </div>
 
                 <div className="flex gap-3">
-                  <button className="flex-1 flex items-center justify-center gap-2 py-3 bg-white border-2 border-gray-200 rounded-xl font-bold text-sm text-gray-700 hover:bg-gray-50 transition-colors">
+                  <button type="button" onClick={handleGoogleSignIn} disabled={isSubmitting} className="flex-1 flex items-center justify-center gap-2 py-3 bg-white border-2 border-gray-200 rounded-xl font-bold text-sm text-gray-700 hover:bg-gray-50 transition-colors">
                     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48" width="20" height="20">
                       <path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.7 17.74 9.5 24 9.5z"/>
                       <path fill="#4285F4" d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z"/>
@@ -301,14 +449,11 @@ const AuthModal = ({ isOpen, onClose }) => {
                     </svg>
                     Google
                   </button>
-                  <button className="flex-1 flex items-center justify-center gap-2 py-3 bg-white border-2 border-gray-200 rounded-xl font-bold text-sm text-gray-700 hover:bg-gray-50 transition-colors">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 21 21">
-                      <rect x="1" y="1" width="9" height="9" fill="#f25022"/>
-                      <rect x="11" y="1" width="9" height="9" fill="#7fba00"/>
-                      <rect x="1" y="11" width="9" height="9" fill="#00a4ef"/>
-                      <rect x="11" y="11" width="9" height="9" fill="#ffb900"/>
+                  <button type="button" onClick={handleGithubSignIn} disabled={isSubmitting} className="flex-1 flex items-center justify-center gap-2 py-3 bg-[#24292e] border-2 border-[#24292e] rounded-xl font-bold text-sm text-white hover:bg-gray-800 transition-colors">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 24 24">
+                      <path fillRule="evenodd" d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.531 1.032 1.531 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z" clipRule="evenodd" />
                     </svg>
-                    Microsoft
+                    GitHub
                   </button>
                 </div>
 
