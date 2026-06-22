@@ -93,15 +93,17 @@ const Outreach = () => {
 
 
             {/* Buttons */}
-            <div className="flex flex-wrap items-center gap-4 mb-6">
-              <button onClick={() => setIsCampusVisitModalOpen(true)} className="flex items-center justify-center gap-2 bg-blue-600 hover:bg-blue-700 text-white px-6 py-3.5 rounded-xl oswald-font-3 font-bold tracking-wide uppercase transition-all shadow-lg shadow-blue-600/20 text-sm">
+            <div className="flex flex-col items-center gap-4 mb-6">
+              <div className="flex items-center gap-4">
+                <button onClick={() => setIsCampusVisitModalOpen(true)} className="flex items-center justify-center gap-2 bg-blue-600 hover:bg-blue-700 text-white px-6 py-3.5 rounded-xl oswald-font-3 font-bold tracking-wide uppercase transition-all shadow-lg shadow-blue-600/20 text-sm">
                 <FiCalendar size={16} /> Book a Campus Visit
               </button>
               <button onClick={() => setIsInviteUsModalOpen(true)} className="flex items-center justify-center gap-2 bg-[#FFC107] hover:bg-[#FFB300] text-black px-6 py-3.5 rounded-xl oswald-font-3 font-bold tracking-wide uppercase transition-all shadow-lg shadow-yellow-400/20 text-sm">
                 <BiBuildingHouse size={16} /> Invite Us To Your School
               </button>
+              </div>
               <button onClick={() => setIsPartnerModalOpen(true)} className="flex items-center justify-center gap-2 bg-white border border-gray-200 hover:border-blue-600 hover:bg-blue-50 text-slate-700 px-6 py-3.5 rounded-xl oswald-font-3 font-bold tracking-wide uppercase transition-all text-sm shadow-sm">
-                <FaHandshake size={16} className="text-gray-400" /> Partner With Us
+                <FaHandshake size={16} className="text-gray-400" /> Partner with Us
               </button>
             </div>
 
@@ -121,18 +123,18 @@ const Outreach = () => {
               <div style={{ position: 'absolute', top: '-24px', right: '-24px', width: '128px', height: '128px', backgroundImage: 'radial-gradient(#3B82F6 2.5px, transparent 2.5px)', backgroundSize: '16px 16px', opacity: 0.3, zIndex: 0 }}></div>
 
               {/* Main Left Image (Teacher) */}
-              <div style={{ position: 'absolute', left: 0, top: '40px', width: '340px', height: '480px', backgroundColor: '#E2E8F0', borderRadius: '120px 24px 24px 24px', overflow: 'hidden', border: '8px solid white', boxShadow: '0 20px 50px rgba(0,0,0,0.1)', zIndex: 10 }}>
-                <img src="https://images.unsplash.com/photo-1544717305-2782549b5136?q=80&w=1000" alt="Teacher interacting with students" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+              <div style={{ position: 'absolute', right: 290, top: '60px', width: '340px', height: '400px', backgroundColor: '#E2E8F0', borderRadius: '24px', overflow: 'hidden', border: '8px solid white', boxShadow: '0 20px 50px rgba(0,0,0,0.1)', zIndex: 10 }}>
+                <img src="https://i.pinimg.com/1200x/f9/95/11/f99511c85b628e69ee6f643c07246667.jpg" alt="Teacher interacting with students" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
               </div>
 
               {/* Top Right Image (Girls) */}
               <div style={{ position: 'absolute', right: '10px', top: '10px', width: '260px', height: '190px', backgroundColor: '#E2E8F0', borderRadius: '24px', overflow: 'hidden', border: '6px solid white', boxShadow: '0 15px 30px rgba(0,0,0,0.1)', zIndex: 20 }}>
-                <img src="https://images.unsplash.com/photo-1427504494785-3a9ca7044f45?q=80&w=1000" alt="Students using laptops" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+                <img src="https://i.pinimg.com/1200x/d8/58/92/d8589252c5464cb4440b64ed091c528d.jpg" alt="Students using laptops" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
               </div>
 
               {/* Bottom Right Image (Boys) */}
               <div style={{ position: 'absolute', right: '10px', top: '220px', width: '260px', height: '280px', backgroundColor: '#E2E8F0', borderRadius: '24px', overflow: 'hidden', border: '6px solid white', boxShadow: '0 15px 30px rgba(0,0,0,0.1)', zIndex: 20 }}>
-                <img src="https://images.unsplash.com/photo-1524178232363-1fb2b075b655?q=80&w=1000" alt="Group of students collaborating" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+                <img src="https://i.pinimg.com/736x/ee/5d/a8/ee5da86f43810f1c93754d837ad0d3eb.jpg" alt="Group of students collaborating" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
               </div>
 
               {/* Blue Impact Box */}
@@ -576,21 +578,21 @@ const Outreach = () => {
       <Footer />
 
       {/* Campus Visit Modal */}
-      <CampusVisitModal 
-        isOpen={isCampusVisitModalOpen} 
-        onClose={() => setIsCampusVisitModalOpen(false)} 
+      <CampusVisitModal
+        isOpen={isCampusVisitModalOpen}
+        onClose={() => setIsCampusVisitModalOpen(false)}
       />
 
       {/* Invite Us Modal */}
-      <InviteUsModal 
-        isOpen={isInviteUsModalOpen} 
-        onClose={() => setIsInviteUsModalOpen(false)} 
+      <InviteUsModal
+        isOpen={isInviteUsModalOpen}
+        onClose={() => setIsInviteUsModalOpen(false)}
       />
 
       {/* Partner Modal */}
-      <PartnerModal 
-        isOpen={isPartnerModalOpen} 
-        onClose={() => setIsPartnerModalOpen(false)} 
+      <PartnerModal
+        isOpen={isPartnerModalOpen}
+        onClose={() => setIsPartnerModalOpen(false)}
       />
     </div>
   );
