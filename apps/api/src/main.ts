@@ -14,14 +14,24 @@ async function bootstrap() {
     serviceAccountPath = join(__dirname, 'config', 'firebase-service-account.json');
   }
 
-  if (fs.existsSync(serviceAccountPath)) {
+  if (process.env.FIREBASE_SERVICE_ACCOUNT_JSON) {
+    try {
+      const serviceAccount = JSON.parse(process.env.FIREBASE_SERVICE_ACCOUNT_JSON);
+      initializeApp({
+        credential: cert(serviceAccount)
+      });
+      console.log("Firebase Admin SDK initialized successfully from environment variable");
+    } catch (e) {
+      console.error("Failed to parse FIREBASE_SERVICE_ACCOUNT_JSON from environment:", e);
+    }
+  } else if (fs.existsSync(serviceAccountPath)) {
     const serviceAccount = require(serviceAccountPath);
     initializeApp({
       credential: cert(serviceAccount)
     });
-    console.log("Firebase Admin SDK initialized successfully");
+    console.log("Firebase Admin SDK initialized successfully from file");
   } else {
-    console.warn("Firebase service account file not found! Looked at: " + serviceAccountPath);
+    console.warn("Firebase service account not found! Please set FIREBASE_SERVICE_ACCOUNT_JSON in your environment.");
   }
 
   const app = await NestFactory.create(AppModule);
