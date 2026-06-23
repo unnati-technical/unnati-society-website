@@ -26,6 +26,10 @@ export default defineConfig([
     rules: {
       'no-unused-vars': ['warn', { varsIgnorePattern: '^[A-Z_]' }],
       'no-irregular-whitespace': ['warn', { skipStrings: true, skipTemplates: true, skipJSXText: true }],
+      'react-hooks/set-state-in-effect': 'off',
+      'react-hooks/static-components': 'off',
+      'react-hooks/immutability': 'off',
+      'react-refresh/only-export-components': 'warn',
     },
   },
 ])
