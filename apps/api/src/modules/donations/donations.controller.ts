@@ -21,7 +21,12 @@ export class DonationsController {
     @Body('razorpay_signature') signature: string,
     @Body('donationId') donationId: string,
   ) {
-    return this.donationsService.verifyPayment(orderId, paymentId, signature, donationId);
+    return this.donationsService.verifyPayment(
+      orderId,
+      paymentId,
+      signature,
+      donationId,
+    );
   }
 
   @Get()

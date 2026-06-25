@@ -6,6 +6,6 @@ import { PrismaModule } from '../../prisma/prisma.module';
 @Module({
   imports: [PrismaModule],
   controllers: [OutreachController],
-  providers: [OutreachService]
+  providers: [OutreachService],
 })
 export class OutreachModule {}

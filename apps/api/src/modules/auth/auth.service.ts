@@ -1,4 +1,8 @@
-import { Injectable, UnauthorizedException, BadRequestException } from '@nestjs/common';
+import {
+  Injectable,
+  UnauthorizedException,
+  BadRequestException,
+} from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import * as bcrypt from 'bcrypt';
 import { PrismaService } from '../../prisma/prisma.service';
@@ -28,7 +32,7 @@ export class AuthService {
     let role = await this.prisma.role.findUnique({
       where: { name: 'USER' },
     });
-    
+
     // If we're starting fresh, create the basic roles
     if (!role) {
       role = await this.prisma.role.create({
@@ -71,10 +75,10 @@ export class AuthService {
       throw new UnauthorizedException('Invalid credentials');
     }
 
-    const payload = { 
-      sub: user.id, 
+    const payload = {
+      sub: user.id,
       email: user.email,
-      role: user.role.name 
+      role: user.role.name,
     };
 
     return {
@@ -84,8 +88,8 @@ export class AuthService {
         email: user.email,
         firstName: user.firstName,
         lastName: user.lastName,
-        role: user.role.name
-      }
+        role: user.role.name,
+      },
     };
   }
 }

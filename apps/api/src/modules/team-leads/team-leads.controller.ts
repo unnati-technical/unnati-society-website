@@ -1,4 +1,15 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, UseGuards, Req, NotFoundException } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Post,
+  Body,
+  Patch,
+  Param,
+  Delete,
+  UseGuards,
+  Req,
+  NotFoundException,
+} from '@nestjs/common';
 import { TeamLeadsService } from './team-leads.service';
 import { Public } from '../auth/decorators/public.decorator';
 import { FirebaseAuthGuard } from '../auth/guards/firebase-auth.guard';
@@ -13,7 +24,9 @@ export class TeamLeadsController {
     // req.user is the decoded Firebase token
     const email = req.user.email;
     const leads = await this.teamLeadsService.findAll();
-    const myProfile = leads.find(l => l.email === email || l.loginEmail === email);
+    const myProfile = leads.find(
+      (l) => l.email === email || l.loginEmail === email,
+    );
     if (!myProfile) {
       throw new NotFoundException('Team Lead profile not found for this user.');
     }
@@ -32,13 +45,22 @@ export class TeamLeadsController {
       leads,
       stats,
       accessStats,
-      activityLogs
+      activityLogs,
     };
   }
 
   @Public()
   @Post()
-  create(@Body() data: { name: string; email: string; phone: string; position: string; msgAccess: string }) {
+  create(
+    @Body()
+    data: {
+      name: string;
+      email: string;
+      phone: string;
+      position: string;
+      msgAccess: string;
+    },
+  ) {
     return this.teamLeadsService.create(data);
   }
 

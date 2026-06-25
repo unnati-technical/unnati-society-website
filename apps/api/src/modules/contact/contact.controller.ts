@@ -45,5 +45,3 @@ export class ContactController {
     return this.contactService.replyToMessage(id, replyText);
   }
 }
-
-

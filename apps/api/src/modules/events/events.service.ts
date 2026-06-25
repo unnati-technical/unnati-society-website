@@ -1,8 +1,10 @@
 import { Injectable } from '@nestjs/common';
 import { PrismaService } from '../../prisma/prisma.service';
 import { CreateEventDto } from './create-event.dto';
+// eslint-disable-next-line @typescript-eslint/no-require-imports
 const Holidays = require('date-holidays');
 
+// eslint-disable-next-line @typescript-eslint/no-require-imports
 const ical = require('node-ical');
 
 let cachedHolidays: any[] = [];
@@ -20,7 +22,7 @@ export class EventsService {
       const startOfToday = new Date();
       startOfToday.setHours(0, 0, 0, 0);
       await this.prisma.event.deleteMany({
-        where: { date: { lt: startOfToday } }
+        where: { date: { lt: startOfToday } },
       });
     } catch (e) {
       // Ignore DB timeouts
@@ -32,7 +34,7 @@ export class EventsService {
     const autoMode = setting ? setting.value === 'true' : true;
 
     const where = includeExpired ? {} : { date: { gte: now } };
-    
+
     const dbEvents = await this.prisma.event.findMany({
       where,
       orderBy: { date: 'asc' },
@@ -40,11 +42,11 @@ export class EventsService {
 
     if (autoMode) {
       let rawHolidays = await this.getSystemHolidays(now);
-      
+
       if (!includeExpired) {
-        rawHolidays = rawHolidays.filter(h => new Date(h.date) >= now);
+        rawHolidays = rawHolidays.filter((h) => new Date(h.date) >= now);
       }
-      
+
       const systemHolidays = rawHolidays.map((h, idx) => ({
         id: `sys-holiday-${h.date.getTime()}-${idx}`,
         title: h.name,
@@ -56,7 +58,9 @@ export class EventsService {
         isHoliday: true,
       }));
 
-      return [...dbEvents, ...systemHolidays].sort((a, b) => a.date.getTime() - b.date.getTime());
+      return [...dbEvents, ...systemHolidays].sort(
+        (a, b) => a.date.getTime() - b.date.getTime(),
+      );
     }
 
     return dbEvents;
@@ -99,12 +103,17 @@ export class EventsService {
 
   // Helper method to get comprehensive holidays
   async getSystemHolidays(now: Date) {
-    if (cachedHolidays.length > 0 && (now.getTime() - lastFetchedHolidays) < 24 * 60 * 60 * 1000) {
-      return cachedHolidays.filter(h => h.date >= now);
+    if (
+      cachedHolidays.length > 0 &&
+      now.getTime() - lastFetchedHolidays < 24 * 60 * 60 * 1000
+    ) {
+      return cachedHolidays.filter((h) => h.date >= now);
     }
 
     try {
-      const events = await ical.async.fromURL('https://calendar.google.com/calendar/ical/en.indian%23holiday%40group.v.calendar.google.com/public/basic.ics');
+      const events = await ical.async.fromURL(
+        'https://calendar.google.com/calendar/ical/en.indian%23holiday%40group.v.calendar.google.com/public/basic.ics',
+      );
       const holidays: any[] = [];
       for (const event of Object.values(events)) {
         const ev = event as any;
@@ -112,26 +121,36 @@ export class EventsService {
           holidays.push({
             name: ev.summary,
             date: new Date(ev.start),
-            type: 'Public/Religious Holiday'
+            type: 'Public/Religious Holiday',
           });
         }
       }
-      
-      cachedHolidays = holidays.sort((a, b) => a.date.getTime() - b.date.getTime());
+
+      cachedHolidays = holidays.sort(
+        (a, b) => a.date.getTime() - b.date.getTime(),
+      );
       lastFetchedHolidays = now.getTime();
-      return cachedHolidays.filter(h => h.date >= now);
+      return cachedHolidays.filter((h) => h.date >= now);
     } catch (error: any) {
-      console.warn('Failed to fetch ICS, falling back to date-holidays', error.message);
+      console.warn(
+        'Failed to fetch ICS, falling back to date-holidays',
+        error.message,
+      );
       const hd = new Holidays('IN');
       let rawHolidays = hd.getHolidays(now.getFullYear());
       if (now.getMonth() === 11) {
-        rawHolidays = [...rawHolidays, ...hd.getHolidays(now.getFullYear() + 1)];
+        rawHolidays = [
+          ...rawHolidays,
+          ...hd.getHolidays(now.getFullYear() + 1),
+        ];
       }
-      return rawHolidays.filter(h => new Date(h.date) >= now).map(h => ({
-        name: h.name,
-        date: new Date(h.date),
-        type: h.type
-      }));
+      return rawHolidays
+        .filter((h) => new Date(h.date) >= now)
+        .map((h) => ({
+          name: h.name,
+          date: new Date(h.date),
+          type: h.type,
+        }));
     }
   }
 
@@ -146,7 +165,7 @@ export class EventsService {
       const startOfToday = new Date();
       startOfToday.setHours(0, 0, 0, 0);
       await this.prisma.event.deleteMany({
-        where: { date: { lt: startOfToday } }
+        where: { date: { lt: startOfToday } },
       });
     } catch (e) {
       // Ignore DB timeouts
@@ -163,24 +182,26 @@ export class EventsService {
         where: { date: { gte: now } },
       });
     } catch (error: any) {
-      console.warn('Database unreachable, gracefully degrading to mathematical holidays.', error.message);
+      console.warn(
+        'Database unreachable, gracefully degrading to mathematical holidays.',
+        error.message,
+      );
     }
 
     if (autoMode) {
       // Fetch comprehensive system holidays
       const rawHolidays = await this.getSystemHolidays(now);
 
-      const systemHolidays = rawHolidays
-        .map((h, idx) => ({
-          id: `sys-holiday-${h.date.getTime()}-${idx}`,
-          title: h.name,
-          description: `System Holiday (${h.type})`,
-          date: h.date,
-          location: 'India',
-          link: null,
-          color: 'bg-slate-300',
-          isHoliday: true,
-        }));
+      const systemHolidays = rawHolidays.map((h, idx) => ({
+        id: `sys-holiday-${h.date.getTime()}-${idx}`,
+        title: h.name,
+        description: `System Holiday (${h.type})`,
+        date: h.date,
+        location: 'India',
+        link: null,
+        color: 'bg-slate-300',
+        isHoliday: true,
+      }));
 
       // Merge, sort chronologically, and take the next 6
       const allUpcoming = [...dbEvents, ...systemHolidays]
@@ -190,7 +211,9 @@ export class EventsService {
       return allUpcoming;
     } else {
       // Manual mode: show only DB events
-      return dbEvents.sort((a, b) => a.date.getTime() - b.date.getTime()).slice(0, 6);
+      return dbEvents
+        .sort((a, b) => a.date.getTime() - b.date.getTime())
+        .slice(0, 6);
     }
   }
 

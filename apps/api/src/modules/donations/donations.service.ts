@@ -1,4 +1,8 @@
-import { Injectable, InternalServerErrorException, BadRequestException } from '@nestjs/common';
+import {
+  Injectable,
+  InternalServerErrorException,
+  BadRequestException,
+} from '@nestjs/common';
 import { PrismaService } from '../../prisma/prisma.service';
 import Razorpay from 'razorpay';
 import * as crypto from 'crypto';
@@ -43,11 +47,18 @@ export class DonationsService {
         currency: order.currency,
       };
     } catch (error) {
-      throw new InternalServerErrorException('Error creating Razorpay order: ' + error.message);
+      throw new InternalServerErrorException(
+        'Error creating Razorpay order: ' + error.message,
+      );
     }
   }
 
-  async verifyPayment(orderId: string, paymentId: string, signature: string, donationId: string) {
+  async verifyPayment(
+    orderId: string,
+    paymentId: string,
+    signature: string,
+    donationId: string,
+  ) {
     try {
       const generatedSignature = crypto
         .createHmac('sha256', process.env.RAZORPAY_KEY_SECRET || 'dummy_secret')
@@ -63,7 +74,11 @@ export class DonationsService {
             transactionId: paymentId,
           },
         });
-        return { success: true, message: 'Payment verified successfully', donation: updatedDonation };
+        return {
+          success: true,
+          message: 'Payment verified successfully',
+          donation: updatedDonation,
+        };
       } else {
         // Payment is fake/tampered
         await this.prisma.donation.update({
@@ -74,7 +89,9 @@ export class DonationsService {
       }
     } catch (error) {
       if (error instanceof BadRequestException) throw error;
-      throw new InternalServerErrorException('Error verifying payment: ' + error.message);
+      throw new InternalServerErrorException(
+        'Error verifying payment: ' + error.message,
+      );
     }
   }
 
@@ -86,7 +103,9 @@ export class DonationsService {
         },
       });
     } catch (error) {
-      throw new InternalServerErrorException('Error fetching donations: ' + error.message);
+      throw new InternalServerErrorException(
+        'Error fetching donations: ' + error.message,
+      );
     }
   }
 }

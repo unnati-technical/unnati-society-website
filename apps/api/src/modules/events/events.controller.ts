@@ -15,7 +15,7 @@ import { Public } from '../auth/decorators/public.decorator';
 
 // TODO: Protect with JwtAuthGuard once the admin login flow is built
 @Public()
-@CacheTTL(0)  // Disable cache – events must be real-time for the admin panel
+@CacheTTL(0) // Disable cache – events must be real-time for the admin panel
 @Controller('events')
 export class EventsController {
   constructor(private readonly eventsService: EventsService) {}

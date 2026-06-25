@@ -13,10 +13,22 @@ export class EmailService {
   ) {}
 
   private async getTransporter() {
-    const smtpHost = await this.settingsService.getSetting('SMTP_HOST', process.env.SMTP_HOST || 'smtp.gmail.com');
-    const smtpPort = await this.settingsService.getSetting('SMTP_PORT', process.env.SMTP_PORT || '587');
-    const smtpUser = await this.settingsService.getSetting('SMTP_USER', process.env.SMTP_USER || '');
-    const smtpPass = await this.settingsService.getSetting('SMTP_PASS', process.env.SMTP_PASS || '');
+    const smtpHost = await this.settingsService.getSetting(
+      'SMTP_HOST',
+      process.env.SMTP_HOST || 'smtp.gmail.com',
+    );
+    const smtpPort = await this.settingsService.getSetting(
+      'SMTP_PORT',
+      process.env.SMTP_PORT || '587',
+    );
+    const smtpUser = await this.settingsService.getSetting(
+      'SMTP_USER',
+      process.env.SMTP_USER || '',
+    );
+    const smtpPass = await this.settingsService.getSetting(
+      'SMTP_PASS',
+      process.env.SMTP_PASS || '',
+    );
 
     return nodemailer.createTransport({
       host: smtpHost,
@@ -32,8 +44,11 @@ export class EmailService {
   async sendContactAutoReply(name: string, email: string) {
     try {
       const transporter = await this.getTransporter();
-      const smtpUser = await this.settingsService.getSetting('SMTP_USER', process.env.SMTP_USER || '');
-      
+      const smtpUser = await this.settingsService.getSetting(
+        'SMTP_USER',
+        process.env.SMTP_USER || '',
+      );
+
       await transporter.sendMail({
         from: `"Unnati Society" <${smtpUser}>`,
         to: email,
@@ -51,22 +66,37 @@ export class EmailService {
       });
       this.logger.log(`Auto-reply sent to ${email}`);
     } catch (error) {
-      this.logger.error(`Failed to send auto-reply to ${email}: ${error.message}`);
+      this.logger.error(
+        `Failed to send auto-reply to ${email}: ${error.message}`,
+      );
     }
   }
 
-  async sendContactAdminNotification(data: { name: string; email: string; subject: string; role: string; message: string }) {
+  async sendContactAdminNotification(data: {
+    name: string;
+    email: string;
+    subject: string;
+    role: string;
+    message: string;
+  }) {
     try {
-      const defaultAdminEmail = await this.settingsService.getSetting('ADMIN_EMAIL', process.env.ADMIN_EMAIL || 'admin@unnatisociety.org');
-      
+      const defaultAdminEmail = await this.settingsService.getSetting(
+        'ADMIN_EMAIL',
+        process.env.ADMIN_EMAIL || 'admin@unnatisociety.org',
+      );
+
       // Fetch dynamic admin recipients
       const recipients = await this.prisma.notificationRecipient.findMany();
-      const adminEmails = recipients.length > 0 
-        ? recipients.map(r => r.email) 
-        : [defaultAdminEmail];
+      const adminEmails =
+        recipients.length > 0
+          ? recipients.map((r) => r.email)
+          : [defaultAdminEmail];
 
       const transporter = await this.getTransporter();
-      const smtpUser = await this.settingsService.getSetting('SMTP_USER', process.env.SMTP_USER || '');
+      const smtpUser = await this.settingsService.getSetting(
+        'SMTP_USER',
+        process.env.SMTP_USER || '',
+      );
 
       await transporter.sendMail({
         from: `"Unnati Society" <${smtpUser}>`,
@@ -86,15 +116,25 @@ export class EmailService {
           </div>
         `,
       });
-      this.logger.log(`Admin notification sent to ${adminEmails.join(', ')} for ${data.email}`);
+      this.logger.log(
+        `Admin notification sent to ${adminEmails.join(', ')} for ${data.email}`,
+      );
     } catch (error) {
       this.logger.error(`Failed to send admin notification: ${error.message}`);
     }
   }
 
-  async sendAdminReply(params: { to: string; toName: string; originalSubject: string; replyText: string }) {
+  async sendAdminReply(params: {
+    to: string;
+    toName: string;
+    originalSubject: string;
+    replyText: string;
+  }) {
     const transporter = await this.getTransporter();
-    const smtpUser = await this.settingsService.getSetting('SMTP_USER', process.env.SMTP_USER || '');
+    const smtpUser = await this.settingsService.getSetting(
+      'SMTP_USER',
+      process.env.SMTP_USER || '',
+    );
 
     await transporter.sendMail({
       from: `"Unnati Society" <${smtpUser}>`,
@@ -123,17 +163,28 @@ export class EmailService {
     this.logger.log(`Admin reply sent to ${params.to}`);
   }
 
-  async sendTeamLeadApplicationNotification(data: { name: string; email: string; phone: string }) {
+  async sendTeamLeadApplicationNotification(data: {
+    name: string;
+    email: string;
+    phone: string;
+  }) {
     try {
-      const defaultAdminEmail = await this.settingsService.getSetting('ADMIN_EMAIL', process.env.ADMIN_EMAIL || 'admin@unnatisociety.org');
-      
+      const defaultAdminEmail = await this.settingsService.getSetting(
+        'ADMIN_EMAIL',
+        process.env.ADMIN_EMAIL || 'admin@unnatisociety.org',
+      );
+
       const recipients = await this.prisma.notificationRecipient.findMany();
-      const adminEmails = recipients.length > 0 
-        ? recipients.map(r => r.email) 
-        : [defaultAdminEmail];
+      const adminEmails =
+        recipients.length > 0
+          ? recipients.map((r) => r.email)
+          : [defaultAdminEmail];
 
       const transporter = await this.getTransporter();
-      const smtpUser = await this.settingsService.getSetting('SMTP_USER', process.env.SMTP_USER || '');
+      const smtpUser = await this.settingsService.getSetting(
+        'SMTP_USER',
+        process.env.SMTP_USER || '',
+      );
 
       await transporter.sendMail({
         from: `"Unnati Society" <${smtpUser}>`,
@@ -150,9 +201,13 @@ export class EmailService {
           </div>
         `,
       });
-      this.logger.log(`Team Lead application notification sent to ${adminEmails.join(', ')}`);
+      this.logger.log(
+        `Team Lead application notification sent to ${adminEmails.join(', ')}`,
+      );
     } catch (error) {
-      this.logger.error(`Failed to send Team Lead application notification: ${error.message}`);
+      this.logger.error(
+        `Failed to send Team Lead application notification: ${error.message}`,
+      );
     }
   }
 }

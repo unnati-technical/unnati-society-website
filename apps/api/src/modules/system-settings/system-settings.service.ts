@@ -10,7 +10,7 @@ export class SystemSettingsService {
 
   constructor(
     private prisma: PrismaService,
-    @Inject(CACHE_MANAGER) private cacheManager: Cache
+    @Inject(CACHE_MANAGER) private cacheManager: Cache,
   ) {}
 
   async getSettings() {
@@ -49,7 +49,9 @@ export class SystemSettingsService {
     });
 
     await Promise.all(updates);
-    this.logger.log(`System settings updated: ${Object.keys(settings).join(', ')}`);
+    this.logger.log(
+      `System settings updated: ${Object.keys(settings).join(', ')}`,
+    );
     return { success: true };
   }
 }

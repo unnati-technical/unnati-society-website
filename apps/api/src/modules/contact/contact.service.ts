@@ -13,25 +13,30 @@ export class ContactService {
     private notificationsService: NotificationsService,
   ) {}
 
-  async createMessage(data: { name: string; email: string; subject: string; role: string; message: string }) {
+  async createMessage(data: {
+    name: string;
+    email: string;
+    subject: string;
+    role: string;
+    message: string;
+  }) {
     try {
       const newMessage = await this.prisma.contactMessage.create({
         data,
       });
-      
+
       this.logger.log(`New contact message received from ${data.email}`);
-      
+
       // Fire and forget emails (no await so we don't block the response)
       this.emailService.sendContactAutoReply(data.name, data.email);
       this.emailService.sendContactAdminNotification(data);
-      
+
       // Create in-app notification for admins
       await this.notificationsService.createAdminNotification(
         'New Contact Message',
-        `Message received from ${data.name} (${data.role}) regarding "${data.subject}"`
+        `Message received from ${data.name} (${data.role}) regarding "${data.subject}"`,
       );
 
-      
       return newMessage;
     } catch (error) {
       this.logger.error(`Error saving contact message: ${error.message}`);
@@ -41,14 +46,14 @@ export class ContactService {
 
   async getAllMessages() {
     return this.prisma.contactMessage.findMany({
-      orderBy: { createdAt: 'desc' }
+      orderBy: { createdAt: 'desc' },
     });
   }
 
   async updateMessageStatus(id: string, status: string) {
     return this.prisma.contactMessage.update({
       where: { id },
-      data: { status }
+      data: { status },
     });
   }
 
@@ -76,4 +81,3 @@ export class ContactService {
     return updated;
   }
 }
-

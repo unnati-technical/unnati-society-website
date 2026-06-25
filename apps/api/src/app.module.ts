@@ -39,7 +39,10 @@ const bullRedisConfig = {
   port: parseInt(process.env.REDIS_PORT || '6379', 10),
   username: process.env.REDIS_USERNAME,
   password: process.env.REDIS_PASSWORD,
-  tls: process.env.REDIS_TLS === 'true' ? { rejectUnauthorized: false } : undefined,
+  tls:
+    process.env.REDIS_TLS === 'true'
+      ? { rejectUnauthorized: false }
+      : undefined,
   maxRetriesPerRequest: null, // Required for BullMQ
   retryStrategy: (times: number) => {
     if (times > 3) return null;
@@ -53,7 +56,10 @@ const redisConfig = {
   port: parseInt(process.env.REDIS_PORT || '6379', 10),
   username: process.env.REDIS_USERNAME,
   password: process.env.REDIS_PASSWORD,
-  tls: process.env.REDIS_TLS === 'true' ? { rejectUnauthorized: false } : undefined,
+  tls:
+    process.env.REDIS_TLS === 'true'
+      ? { rejectUnauthorized: false }
+      : undefined,
   connectTimeout: 10000,
   retryStrategy: (times: number) => {
     if (times > 3) return null;
@@ -84,7 +90,28 @@ const redisConfig = {
       isGlobal: true,
       // Temporarily removed KeyvRedis to prevent 500 errors when connection drops on mobile hotspot.
     }),
-    AuthModule, UsersModule, VolunteersModule, OutreachModule, SchoolsModule, StudentsModule, ProgramsModule, EventsModule, CertificatesModule, DonationsModule, MediaModule, AnalyticsModule, NotificationsModule, EmailModule, CertificateModule, NotificationModule, ReportModule, PrismaModule, ContactModule, NotificationRecipientsModule, SystemSettingsModule, TeamLeadsModule
+    AuthModule,
+    UsersModule,
+    VolunteersModule,
+    OutreachModule,
+    SchoolsModule,
+    StudentsModule,
+    ProgramsModule,
+    EventsModule,
+    CertificatesModule,
+    DonationsModule,
+    MediaModule,
+    AnalyticsModule,
+    NotificationsModule,
+    EmailModule,
+    CertificateModule,
+    NotificationModule,
+    ReportModule,
+    PrismaModule,
+    ContactModule,
+    NotificationRecipientsModule,
+    SystemSettingsModule,
+    TeamLeadsModule,
   ],
   controllers: [AppController],
   providers: [

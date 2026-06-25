@@ -7,17 +7,13 @@ export class AnalyticsService {
 
   async getKpis() {
     // Basic counts
-    const [
-      studentsCount,
-      volunteersCount,
-      eventsCount,
-      schoolsCount
-    ] = await Promise.all([
-      this.prisma.student.count(),
-      this.prisma.volunteer.count({ where: { status: 'ACTIVE' } }),
-      this.prisma.event.count(),
-      this.prisma.school.count()
-    ]);
+    const [studentsCount, volunteersCount, eventsCount, schoolsCount] =
+      await Promise.all([
+        this.prisma.student.count(),
+        this.prisma.volunteer.count({ where: { status: 'ACTIVE' } }),
+        this.prisma.event.count(),
+        this.prisma.school.count(),
+      ]);
 
     // Format matches the frontend kpiData array expectations
     return [
@@ -44,7 +40,7 @@ export class AnalyticsService {
         value: schoolsCount.toLocaleString(),
         trend: '4.2%',
         trendUp: true,
-      }
+      },
     ];
   }
 
@@ -55,12 +51,12 @@ export class AnalyticsService {
       include: {
         volunteer: {
           include: {
-            user: true
-          }
-        }
+            user: true,
+          },
+        },
       },
       take: 5,
-      orderBy: { createdAt: 'desc' }
+      orderBy: { createdAt: 'desc' },
     });
 
     // Fetch pending school visit requests
@@ -68,14 +64,14 @@ export class AnalyticsService {
       where: { status: 'PENDING' },
       include: { school: true },
       take: 5,
-      orderBy: { createdAt: 'desc' }
+      orderBy: { createdAt: 'desc' },
     });
 
     // We can merge them into a single list for the dashboard if needed,
     // or return as separate arrays.
     return {
       volunteers: pendingVolunteers,
-      schools: pendingSchools
+      schools: pendingSchools,
     };
   }
 
@@ -83,18 +79,18 @@ export class AnalyticsService {
     // Recent events
     const recentEvents = await this.prisma.event.findMany({
       take: 5,
-      orderBy: { createdAt: 'desc' }
+      orderBy: { createdAt: 'desc' },
     });
 
     // Recent outreach requests
     const recentOutreach = await this.prisma.outreachRequest.findMany({
       take: 5,
-      orderBy: { createdAt: 'desc' }
+      orderBy: { createdAt: 'desc' },
     });
 
     return {
       events: recentEvents,
-      outreach: recentOutreach
+      outreach: recentOutreach,
     };
   }
 }

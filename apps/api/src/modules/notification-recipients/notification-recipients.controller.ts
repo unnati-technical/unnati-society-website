@@ -3,7 +3,9 @@ import { NotificationRecipientsService } from './notification-recipients.service
 
 @Controller('notification-recipients')
 export class NotificationRecipientsController {
-  constructor(private readonly recipientsService: NotificationRecipientsService) {}
+  constructor(
+    private readonly recipientsService: NotificationRecipientsService,
+  ) {}
 
   @Get()
   async findAll() {

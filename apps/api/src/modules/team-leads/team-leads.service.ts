@@ -1,4 +1,8 @@
-import { Injectable, NotFoundException, ConflictException } from '@nestjs/common';
+import {
+  Injectable,
+  NotFoundException,
+  ConflictException,
+} from '@nestjs/common';
 import { PrismaService } from '../../prisma/prisma.service';
 import { getAuth } from 'firebase-admin/auth';
 import { EmailService } from '../../queues/email/email.service';
@@ -20,8 +24,12 @@ export class TeamLeadsService {
 
   async getDashboardStats() {
     const total = await this.prisma.teamLead.count();
-    const pending = await this.prisma.teamLead.count({ where: { credStatus: 'Pending Approval' } });
-    const inactive = await this.prisma.teamLead.count({ where: { credStatus: 'Rejected' } });
+    const pending = await this.prisma.teamLead.count({
+      where: { credStatus: 'Pending Approval' },
+    });
+    const inactive = await this.prisma.teamLead.count({
+      where: { credStatus: 'Rejected' },
+    });
     const active = total - pending - inactive;
 
     return { total, pending, active, inactive };
@@ -31,7 +39,7 @@ export class TeamLeadsService {
     const all = await this.prisma.teamLead.findMany({
       select: { msgAccess: true },
     });
-    
+
     const counts = {
       'Can View & Reply': 0,
       'Can View Only': 0,
@@ -39,7 +47,7 @@ export class TeamLeadsService {
       'Request Pending': 0,
     };
 
-    all.forEach(lead => {
+    all.forEach((lead) => {
       if (counts[lead.msgAccess] !== undefined) {
         counts[lead.msgAccess]++;
       }
@@ -48,15 +56,31 @@ export class TeamLeadsService {
     return Object.entries(counts).map(([label, value]) => ({ label, value }));
   }
 
-  async create(data: { name: string; email: string; phone: string; position: string; msgAccess: string; password?: string }) {
+  async create(data: {
+    name: string;
+    email: string;
+    phone: string;
+    position: string;
+    msgAccess: string;
+    password?: string;
+  }) {
     // Check if email already exists
-    const existing = await this.prisma.teamLead.findUnique({ where: { email: data.email } });
+    const existing = await this.prisma.teamLead.findUnique({
+      where: { email: data.email },
+    });
     if (existing) {
-      throw new ConflictException('A Team Lead with this email already exists.');
+      throw new ConflictException(
+        'A Team Lead with this email already exists.',
+      );
     }
 
     // Generate initials for avatar
-    const initials = data.name.split(' ').map(n => n[0]).join('').substring(0, 2).toUpperCase();
+    const initials = data.name
+      .split(' ')
+      .map((n) => n[0])
+      .join('')
+      .substring(0, 2)
+      .toUpperCase();
 
     // Create Firebase User if password is provided
     if (data.password) {
@@ -73,12 +97,14 @@ export class TeamLeadsService {
             const user = await getAuth().getUserByEmail(data.email);
             await getAuth().updateUser(user.uid, { password: data.password });
           } catch (updateErr) {
-            console.error("Firebase Update User Error:", updateErr);
-            throw new ConflictException("Failed to update existing Firebase user's password.");
+            console.error('Firebase Update User Error:', updateErr);
+            throw new ConflictException(
+              "Failed to update existing Firebase user's password.",
+            );
           }
         } else {
-          console.error("Firebase Create User Error:", err);
-          throw new ConflictException("Failed to create Firebase user.");
+          console.error('Firebase Create User Error:', err);
+          throw new ConflictException('Failed to create Firebase user.');
         }
       }
     }
@@ -94,24 +120,41 @@ export class TeamLeadsService {
         },
       });
 
-      await this.logActivity('New Team Lead Added', newLead.name, `Added as ${data.position}`, 'blue', 'UserPlus');
+      await this.logActivity(
+        'New Team Lead Added',
+        newLead.name,
+        `Added as ${data.position}`,
+        'blue',
+        'UserPlus',
+      );
 
       return newLead;
     } catch (error: any) {
       if (error.code === 'P2002') {
-        throw new ConflictException('A Team Lead with this email already exists.');
+        throw new ConflictException(
+          'A Team Lead with this email already exists.',
+        );
       }
       throw error;
     }
   }
 
   async apply(data: { name: string; email: string; phone: string }) {
-    const existing = await this.prisma.teamLead.findUnique({ where: { email: data.email } });
+    const existing = await this.prisma.teamLead.findUnique({
+      where: { email: data.email },
+    });
     if (existing) {
-      throw new ConflictException('A Team Lead with this email already exists.');
+      throw new ConflictException(
+        'A Team Lead with this email already exists.',
+      );
     }
 
-    const initials = data.name.split(' ').map(n => n[0]).join('').substring(0, 2).toUpperCase();
+    const initials = data.name
+      .split(' ')
+      .map((n) => n[0])
+      .join('')
+      .substring(0, 2)
+      .toUpperCase();
 
     try {
       const newLead = await this.prisma.teamLead.create({
@@ -128,19 +171,27 @@ export class TeamLeadsService {
         },
       });
 
-      await this.logActivity('New Application', newLead.name, `Applied to be a Team Lead`, 'blue', 'UserPlus');
+      await this.logActivity(
+        'New Application',
+        newLead.name,
+        `Applied to be a Team Lead`,
+        'blue',
+        'UserPlus',
+      );
 
       // Fire and forget notifications
       this.emailService.sendTeamLeadApplicationNotification(data);
       this.notificationsService.createAdminNotification(
         'New Team Lead Application',
-        `${data.name} has applied to become a Team Lead.`
+        `${data.name} has applied to become a Team Lead.`,
       );
 
       return newLead;
     } catch (error: any) {
       if (error.code === 'P2002') {
-        throw new ConflictException('A Team Lead with this email already exists.');
+        throw new ConflictException(
+          'A Team Lead with this email already exists.',
+        );
       }
       throw error;
     }
@@ -159,11 +210,13 @@ export class TeamLeadsService {
     if (data.credStatus && data.credStatus !== lead.credStatus) {
       const isApproved = data.credStatus === 'Approved';
       await this.logActivity(
-        isApproved ? 'Login Credentials Approved' : 'Login Credentials Rejected',
+        isApproved
+          ? 'Login Credentials Approved'
+          : 'Login Credentials Rejected',
         lead.name,
         `Credentials were ${data.credStatus.toLowerCase()}`,
         isApproved ? 'green' : 'red',
-        isApproved ? 'CheckCircle' : 'XCircle'
+        isApproved ? 'CheckCircle' : 'XCircle',
       );
     }
 
@@ -179,7 +232,7 @@ export class TeamLeadsService {
         lead.name,
         `${isPromo ? 'Promoted' : 'Demoted'} to ${data.status}`,
         isPromo ? 'purple' : 'orange',
-        isPromo ? 'TrendingUp' : 'TrendingDown'
+        isPromo ? 'TrendingUp' : 'TrendingDown',
       );
     }
 
@@ -189,7 +242,7 @@ export class TeamLeadsService {
         lead.name,
         `Contact message access changed to: ${data.msgAccess}`,
         'blue',
-        'Shield'
+        'Shield',
       );
     }
 
@@ -203,16 +256,24 @@ export class TeamLeadsService {
     const newPassword = Math.random().toString(36).slice(-8);
 
     try {
-      const firebaseUser = await getAuth().getUserByEmail(lead.loginEmail || lead.email);
+      const firebaseUser = await getAuth().getUserByEmail(
+        lead.loginEmail || lead.email,
+      );
       await getAuth().updateUser(firebaseUser.uid, {
         password: newPassword,
       });
 
-      await this.logActivity('Credentials Generated', lead.name, 'New password generated', 'blue', 'KeyRound');
+      await this.logActivity(
+        'Credentials Generated',
+        lead.name,
+        'New password generated',
+        'blue',
+        'KeyRound',
+      );
       return { success: true, password: newPassword };
     } catch (err: any) {
       console.error(err);
-      
+
       // If user doesn't exist in Firebase yet, create them!
       if (err.code === 'auth/user-not-found') {
         try {
@@ -221,7 +282,13 @@ export class TeamLeadsService {
             password: newPassword,
             displayName: lead.name,
           });
-          await this.logActivity('Credentials Generated', lead.name, 'New password generated (New User)', 'blue', 'KeyRound');
+          await this.logActivity(
+            'Credentials Generated',
+            lead.name,
+            'New password generated (New User)',
+            'blue',
+            'KeyRound',
+          );
           return { success: true, password: newPassword };
         } catch (createErr) {
           console.error(createErr);
@@ -249,14 +316,26 @@ export class TeamLeadsService {
     }
 
     await this.prisma.teamLead.delete({ where: { id } });
-    await this.logActivity('Team Lead Deleted', lead.name, 'Removed from system', 'red', 'Trash2');
-    
+    await this.logActivity(
+      'Team Lead Deleted',
+      lead.name,
+      'Removed from system',
+      'red',
+      'Trash2',
+    );
+
     return { success: true };
   }
 
   // --- Activity Logs ---
 
-  async logActivity(action: string, leadName: string, details: string, color: string, icon: string) {
+  async logActivity(
+    action: string,
+    leadName: string,
+    details: string,
+    color: string,
+    icon: string,
+  ) {
     return this.prisma.activityLog.create({
       data: { action, leadName, details, color, icon },
     });
