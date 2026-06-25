@@ -213,7 +213,7 @@ const AdminEvents = () => {
     <AdminLayout>
       <div className="p-6 max-w-7xl mx-auto">
         {/* Header */}
-        <div className="flex items-center justify-between mb-8">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-8">
           <div>
             <h1 className="text-2xl font-extrabold text-[#0F172A] tracking-tight">Events Management</h1>
             <p className="text-sm text-gray-500 mt-1">Manage the "Our Upcoming Events" section on the homepage</p>
