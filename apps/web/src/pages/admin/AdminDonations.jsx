@@ -10,7 +10,7 @@ const AdminDonations = () => {
   const fetchDonations = async () => {
     setLoading(true);
     try {
-      const response = await fetch('http://localhost:3000/donations');
+      const response = await fetch('/api/donations');
       const data = await response.json();
       setDonations(data);
     } catch (error) {

@@ -111,7 +111,7 @@ const InviteUsModal = ({ isOpen, onClose }) => {
     setIsSubmitting(true);
     
     try {
-      const response = await fetch('http://localhost:3000/outreach/invite', {
+      const response = await fetch('/api/outreach/invite', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(formData),
