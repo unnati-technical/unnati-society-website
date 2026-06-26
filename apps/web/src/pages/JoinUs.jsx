@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 // eslint-disable-next-line no-unused-vars
 import { motion, AnimatePresence } from 'framer-motion';
 import Navbar from '../components/common/Navbar';
@@ -11,10 +12,13 @@ import {
 } from 'react-icons/fi';
 import VolunteerModal from '../components/common/VolunteerModal';
 import ExploreOpportunitiesModal from '../components/common/ExploreOpportunitiesModal';
+import PartnerModal from '../components/pagesCompo/outreach/PartnerModal';
 
 const JoinUs = () => {
+  const navigate = useNavigate();
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isExploreModalOpen, setIsExploreModalOpen] = useState(false);
+  const [isPartnerModalOpen, setIsPartnerModalOpen] = useState(false);
   // Animation variants
   const fadeUpVariant = {
     hidden: { opacity: 0, y: 30 },
@@ -61,17 +65,17 @@ const JoinUs = () => {
             </motion.p>
 
             <motion.div variants={fadeUpVariant} className="flex flex-col sm:flex-row gap-4 w-full sm:w-auto mb-8">
-              <button onClick={() => setIsModalOpen(true)} className="flex items-center justify-center gap-2 bg-[#2563EB] hover:bg-blue-700 text-white px-8 py-4 rounded-xl font-bold transition-all duration-300 shadow-[0_8px_20px_rgba(37,99,235,0.25)] hover:shadow-[0_12px_25px_rgba(37,99,235,0.4)] hover:-translate-y-1">
+              <button onClick={() => setIsModalOpen(true)} className="flex items-center justify-center gap-2 bg-white hover:bg-blue-700 hover:text-white border border-blue-600 text-blue-600 px-8 py-4 rounded-xl font-bold transition-all shadow-md hover:shadow-lg whitespace-nowrap">
                 <FiUsers size={18} /> I Want to Volunteer
               </button>
-              <button onClick={() => setIsExploreModalOpen(true)} className="flex items-center justify-center gap-2 bg-white text-blue-600 border border-blue-200 hover:border-blue-600 hover:bg-blue-50 px-8 py-4 rounded-xl font-bold transition-all duration-300 shadow-sm hover:shadow-md">
+              {/* <button onClick={() => setIsExploreModalOpen(true)} className="flex items-center justify-center gap-2 bg-white text-blue-600 border border-blue-200 hover:border-blue-600 hover:bg-blue-50 px-8 py-4 rounded-xl font-bold transition-all duration-300 shadow-sm hover:shadow-md">
                 <FiBookOpen size={18} /> Explore Opportunities
-              </button>
+              </button> */}
             </motion.div>
 
             <motion.div variants={fadeUpVariant} className="flex items-center gap-2 text-sm font-medium text-gray-600 bg-gray-50 px-4 py-2 rounded-full border border-gray-100">
               <FiCheckCircle className="text-green-500" />
-              Join 500+ changemakers making a difference.
+              Join 200+ changemakers making a difference.
             </motion.div>
           </motion.div>
 
@@ -109,7 +113,7 @@ const JoinUs = () => {
             </div>
 
             {/* Floating Card */}
-            <motion.div
+            {/* <motion.div
               initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.6, duration: 0.6 }}
               className="absolute -bottom-6 right-4 lg:-right-4 bg-white/95 backdrop-blur-xl p-4 rounded-2xl shadow-[0_20px_40px_rgba(0,0,0,0.15)] flex items-center gap-4 w-[260px] z-30 border border-white/50"
             >
@@ -127,7 +131,7 @@ const JoinUs = () => {
                   <p className="text-[11px] text-gray-500 font-medium">Making an impact</p>
                 </div>
               </div>
-            </motion.div>
+            </motion.div> */}
           </motion.div>
         </div>
       </section>
@@ -154,9 +158,9 @@ const JoinUs = () => {
               </div>
               <h3 className="text-2xl font-bold text-[#0F172A] mb-4">Volunteer</h3>
               <p className="text-gray-600 mb-8 flex-grow">Give your time and skills to educational and social initiatives.</p>
-              <a href="#" className="text-blue-600 font-bold flex items-center gap-2 group-hover:gap-3 transition-all">
+              <button onClick={() => setIsModalOpen(true)} className="text-blue-600 font-bold flex items-center gap-2 group-hover:gap-3 transition-all">
                 Apply Now <FiArrowRight />
-              </a>
+              </button>
             </motion.div>
 
             {/* Card 2 */}
@@ -166,7 +170,7 @@ const JoinUs = () => {
               </div>
               <h3 className="text-2xl font-bold text-[#0F172A] mb-4">Mentor</h3>
               <p className="text-gray-600 mb-8 flex-grow">Guide and inspire students to help them achieve their dreams.</p>
-              <a href="#" className="text-orange-500 font-bold flex items-center gap-2 group-hover:gap-3 transition-all">
+              <a href="/contact" className="text-orange-500 font-bold flex items-center gap-2 group-hover:gap-3 transition-all">
                 Join as Mentor <FiArrowRight />
               </a>
             </motion.div>
@@ -178,9 +182,9 @@ const JoinUs = () => {
               </div>
               <h3 className="text-2xl font-bold text-[#0F172A] mb-4">Partner</h3>
               <p className="text-gray-600 mb-8 flex-grow">Collaborate with us as an organization or institution to create larger impact.</p>
-              <a href="#" className="text-purple-600 font-bold flex items-center gap-2 group-hover:gap-3 transition-all">
+              <button onClick={() => setIsPartnerModalOpen(true)} className="text-purple-600 font-bold flex items-center gap-2 group-hover:gap-3 transition-all">
                 Partner With Us <FiArrowRight />
-              </a>
+              </button>
             </motion.div>
 
             {/* Card 4 */}
@@ -190,9 +194,9 @@ const JoinUs = () => {
               </div>
               <h3 className="text-2xl font-bold text-[#0F172A] mb-4">Donate</h3>
               <p className="text-gray-600 mb-8 flex-grow">Your contribution helps us reach more students and communities.</p>
-              <a href="#" className="text-green-600 font-bold flex items-center gap-2 group-hover:gap-3 transition-all">
+              <button onClick={() => navigate('/donate')} className="text-green-600 font-bold flex items-center gap-2 group-hover:gap-3 transition-all">
                 Donate Now <FiArrowRight />
-              </a>
+              </button>
             </motion.div>
           </motion.div>
         </div>
@@ -365,12 +369,12 @@ const JoinUs = () => {
             </div>
 
             <div className="flex flex-col sm:flex-row gap-4 w-full lg:w-auto">
-              <button onClick={() => setIsModalOpen(true)} className="flex items-center justify-center gap-2 bg-[#2563EB] hover:bg-blue-700 text-white px-8 py-4 rounded-xl font-bold transition-all shadow-md hover:shadow-lg whitespace-nowrap">
+              <button onClick={() => setIsModalOpen(true)} className="flex items-center justify-center gap-2 bg-white hover:bg-blue-700 hover:text-white border border-blue-600 text-blue-600 px-8 py-4 rounded-xl font-bold transition-all shadow-md hover:shadow-lg whitespace-nowrap">
                 I Want to Volunteer
               </button>
-              <button onClick={() => setIsExploreModalOpen(true)} className="flex items-center justify-center gap-2 bg-white text-blue-600 border border-blue-200 hover:border-blue-600 px-8 py-4 rounded-xl font-bold transition-all shadow-sm whitespace-nowrap">
+              {/* <button onClick={() => setIsExploreModalOpen(true)} className="flex items-center justify-center gap-2 bg-white text-blue-600 border border-blue-200 hover:border-blue-600 px-8 py-4 rounded-xl font-bold transition-all shadow-sm whitespace-nowrap">
                 Explore Opportunities
-              </button>
+              </button> */}
             </div>
           </div>
         </div>
@@ -386,6 +390,12 @@ const JoinUs = () => {
         isOpen={isExploreModalOpen}
         onClose={() => setIsExploreModalOpen(false)}
         onApplyClick={() => setIsModalOpen(true)}
+      />
+
+      {/* Partner Modal */}
+      <PartnerModal
+        isOpen={isPartnerModalOpen}
+        onClose={() => setIsPartnerModalOpen(false)}
       />
     </div>
   );
