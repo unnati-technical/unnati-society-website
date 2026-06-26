@@ -3,7 +3,7 @@ import React from "react";
 import { motion } from "framer-motion";
 import { FiUsers, FiTrendingUp } from "react-icons/fi";
 import { FaGraduationCap } from "react-icons/fa";
-import mission from "./../../../assets/mission2.jpg";
+const mission = "https://res.cloudinary.com/dyubgh5k4/image/upload/v1782396858/unnati_assets/mission2.jpg";
 
 const Vision = () => {
   const containerVariants = {
@@ -173,7 +173,7 @@ const Vision = () => {
                   clipPath: "polygon(12% 0%, 100% 0%, 100% 88%, 88% 100%, 0% 100%, 0% 12%)",
                 }}
               >
-                <img 
+                <img loading="lazy" 
                   src={mission} 
                   alt="Students in classroom" 
                   className="w-full h-full object-cover"

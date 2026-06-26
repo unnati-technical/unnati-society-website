@@ -10,8 +10,18 @@ export class DonationsController {
     @Body('amount') amount: number,
     @Body('donorName') donorName: string,
     @Body('donorEmail') donorEmail: string,
+    @Body('donorPhone') donorPhone?: string,
+    @Body('donorPan') donorPan?: string,
+    @Body('donorAddress') donorAddress?: string,
   ) {
-    return this.donationsService.createOrder(amount, donorName, donorEmail);
+    return this.donationsService.createOrder(
+      amount,
+      donorName,
+      donorEmail,
+      donorPhone,
+      donorPan,
+      donorAddress,
+    );
   }
 
   @Post('verify-payment')

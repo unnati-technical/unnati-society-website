@@ -89,23 +89,23 @@ const Akshar = () => {
             
             {/* Main Image */}
             <div className="absolute left-8 top-10 bottom-10 w-[60%] rounded-3xl rounded-bl-[80px] overflow-hidden shadow-2xl z-10 bg-gray-200">
-               <img src={cloudinaryImage("WhatsApp_Image_2026-02-03_at_1.39.39_PM_5_ney7sn")} alt="Main class" className="w-full h-full object-cover" />
+               <img loading="lazy" src={cloudinaryImage("WhatsApp_Image_2026-02-03_at_1.39.39_PM_5_ney7sn")} alt="Main class" className="w-full h-full object-cover" />
             </div>
 
             {/* 3 Circular images */}
             {/* Top Right */}
             <div className="absolute -top-4 right-8 sm:right-12 z-20 w-32 h-32 sm:w-44 sm:h-44 rounded-full border-[6px] sm:border-8 border-white shadow-xl overflow-hidden group bg-gray-200">
-               <img src={cloudinaryImage("WhatsApp_Image_2026-02-03_at_1.39.39_PM_4_wemv2f")} alt="Kids smiling" className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" />
+               <img loading="lazy" src={cloudinaryImage("WhatsApp_Image_2026-02-03_at_1.39.39_PM_4_wemv2f")} alt="Kids smiling" className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" />
             </div>
             
             {/* Center Right */}
             <div className="absolute top-1/2 -translate-y-1/2 -right-4 sm:-right-8 z-30 w-40 h-40 sm:w-52 sm:h-52 rounded-full border-[6px] sm:border-8 border-white shadow-2xl overflow-hidden group bg-gray-200">
-               <img src={cloudinaryImage("WhatsApp_Image_2026-02-03_at_1.39.39_PM_1_kmyefy")} alt="Board writing" className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" />
+               <img loading="lazy" src={cloudinaryImage("WhatsApp_Image_2026-02-03_at_1.39.39_PM_1_kmyefy")} alt="Board writing" className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" />
             </div>
             
             {/* Bottom Right */}
             <div className="absolute -bottom-8 right-12 sm:right-16 z-20 w-36 h-36 sm:w-48 sm:h-48 rounded-full border-[6px] sm:border-8 border-white shadow-xl overflow-hidden group bg-gray-200">
-               <img src={cloudinaryImage("WhatsApp_Image_2026-02-03_at_1.39.40_PM_3_hvzrrm")} alt="Boy sitting" className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" />
+               <img loading="lazy" src={cloudinaryImage("WhatsApp_Image_2026-02-03_at_1.39.40_PM_3_hvzrrm")} alt="Boy sitting" className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" />
             </div>
 
           </div>

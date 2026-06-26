@@ -1,0 +1,21 @@
+{
+  "about_unnati": {
+    "title": "About Unnati Society",
+    "description": "Unnati Society is a student-led organization at IIIT Bhagalpur committed to social outreach and community development.",
+    "buttons": [
+      { "label": "Our Mission", "intent": "about_mission" },
+      { "label": "Our Team", "intent": "about_team" }
+    ]
+  },
+  "about_mission": {
+    "title": "Our Mission",
+    "description": "Our mission is to empower communities through education, digital literacy, and sustainable development initiatives."
+  },
+  "about_team": {
+    "title": "Our Team",
+    "description": "We are a group of dedicated students and faculty members from IIIT Bhagalpur.",
+    "buttons": [
+      { "label": "View Executive Body", "action": "nav_team" }
+    ]
+  }
+}

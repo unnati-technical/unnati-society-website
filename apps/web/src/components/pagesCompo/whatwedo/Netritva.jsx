@@ -36,17 +36,17 @@ const Netritva = () => {
 
             {/* Top Right Image */}
             <div className="absolute top-8 sm:top-8 right-2 sm:right-2 z-0 w-36 h-36 sm:w-44 sm:h-44 rounded-full border-[6px] sm:border-8 border-white shadow-xl overflow-hidden group bg-gray-200">
-               <img src={cloudinaryImage("WhatsApp_Image_2026-02-03_at_1.39.38_PM_3_thxqic")} alt="Impact Top" className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" />
+               <img loading="lazy" src={cloudinaryImage("WhatsApp_Image_2026-02-03_at_1.39.38_PM_3_thxqic")} alt="Impact Top" className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" />
             </div>
 
             {/* Center Main Image */}
             <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 z-10 w-64 h-64 sm:w-80 sm:h-80 rounded-full border-[6px] sm:border-8 border-white shadow-2xl overflow-hidden group bg-gray-200">
-               <img src={cloudinaryImage("WhatsApp_Image_2026-02-03_at_1.39.42_PM_xs2pm0")} alt="Impact Center" className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" />
+               <img loading="lazy" src={cloudinaryImage("WhatsApp_Image_2026-02-03_at_1.39.42_PM_xs2pm0")} alt="Impact Center" className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" />
             </div>
 
             {/* Bottom Left Image */}
             <div className="absolute bottom-2 sm:bottom-2 left-0 sm:left-0 z-20 w-44 h-44 sm:w-52 sm:h-52 rounded-full border-[6px] sm:border-8 border-white shadow-xl overflow-hidden group bg-gray-200">
-               <img src={cloudinaryImage("WhatsApp_Image_2026-02-03_at_1.39.39_PM_2_fqc1pi")} alt="Impact Bottom" className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" />
+               <img loading="lazy" src={cloudinaryImage("WhatsApp_Image_2026-02-03_at_1.39.39_PM_2_fqc1pi")} alt="Impact Bottom" className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" />
             </div>
           </div>
 

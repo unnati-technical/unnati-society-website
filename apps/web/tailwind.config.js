@@ -1,5 +1,5 @@
 export default {
-  content: ["./index.html", "./src/**/*.{js,ts,jsx,tsx}"],
+  content: ["./index.html", "./src/**/*.{js,ts,jsx,tsx}", "../../packages/chatbot/src/**/*.{js,ts,jsx,tsx}"],
   theme: {
     extend: {},
   },

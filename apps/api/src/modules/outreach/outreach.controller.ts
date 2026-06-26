@@ -1,4 +1,11 @@
-import { Controller, Post, Body } from '@nestjs/common';
+import {
+  Controller,
+  Post,
+  Body,
+  UseInterceptors,
+  UploadedFile,
+} from '@nestjs/common';
+import { FileInterceptor } from '@nestjs/platform-express';
 import { OutreachService } from './outreach.service';
 import { CreateOutreachDto } from './dto/create-outreach.dto';
 import { CreateCampusVisitDto } from './dto/create-campus-visit.dto';
@@ -23,7 +30,18 @@ export class OutreachController {
 
   @Public()
   @Post('partner')
-  partner(@Body() dto: CreatePartnerDto) {
-    return this.outreachService.partner(dto);
+  @UseInterceptors(FileInterceptor('file'))
+  partner(
+    @Body() dto: CreatePartnerDto,
+    @UploadedFile() file: Express.Multer.File,
+  ) {
+    if (typeof dto.areasOfInterest === 'string') {
+      try {
+        dto.areasOfInterest = JSON.parse(dto.areasOfInterest);
+      } catch (e) {
+        dto.areasOfInterest = [];
+      }
+    }
+    return this.outreachService.partner(dto, file);
   }
 }

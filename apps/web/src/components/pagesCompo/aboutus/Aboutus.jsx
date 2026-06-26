@@ -1,5 +1,5 @@
 import React from "react";
-import vision from "./../../../assets/visionAboutus.jpg";
+const vision = "https://res.cloudinary.com/dyubgh5k4/image/upload/v1782396896/unnati_assets/visionAboutus.jpg";
 
 const Aboutus = () => {
   return (
@@ -22,7 +22,7 @@ const Aboutus = () => {
           </div>
         </div>
         <div className="w-full sm:w-1/2 lg:w-1/3 xl:w-1/4 h-1/2 mt-4 ">
-          <img src={vision} alt="vision" className="object-cover h-96 w-full rounded-2xl shadow-lg hover:shadow-2xl transition-shadow duration-300 border border-gray-100" />
+          <img loading="lazy" src={vision} alt="vision" className="object-cover h-96 w-full rounded-2xl shadow-lg hover:shadow-2xl transition-shadow duration-300 border border-gray-100" />
         </div>
       </div>
     </section>

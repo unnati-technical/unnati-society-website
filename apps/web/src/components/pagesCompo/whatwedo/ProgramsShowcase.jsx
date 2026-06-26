@@ -217,8 +217,7 @@ const ProgramsShowcase = ({ activeProgramId = "digiXplore" }) => {
                 transition={{ type: "spring", stiffness: 100, damping: 20 }}
                 onClick={() => navigate(prog.link)}
               >
-                <img
-                  src={prog.image}
+                <img loading="lazy"                   src={prog.image}
                   className="w-full h-full object-cover opacity-40 group-hover:opacity-70 transition-opacity duration-300"
                 />
                 <span className="absolute text-white font-bold text-sm lg:text-xl drop-shadow-[0_2px_4px_rgba(0,0,0,0.8)] z-10 tracking-wide text-center px-2" style={{ fontFamily: "Oswald, sans-serif" }}>

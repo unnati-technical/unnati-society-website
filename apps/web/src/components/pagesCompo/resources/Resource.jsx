@@ -21,7 +21,7 @@ const Resource = () => {
 
             {/* Background Image */}
             <div className="absolute inset-0">
-                <img 
+                <img loading="lazy" 
                     src={cloudinaryImage("Screenshot_2026-04-18_024047_kwjl9z")} 
                     alt="" 
                     className="w-full h-full object-cover"

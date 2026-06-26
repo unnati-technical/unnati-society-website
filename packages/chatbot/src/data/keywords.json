@@ -1,0 +1,78 @@
+[
+  {
+    "intent": "about_unnati",
+    "keywords": ["about unnati", "what is unnati", "who founded", "established", "vision", "mission", "who are you"]
+  },
+  {
+    "intent": "program_digixplore",
+    "keywords": ["digixplore", "digital literacy", "computer basics"]
+  },
+  {
+    "intent": "program_akshar",
+    "keywords": ["akshar", "primary education", "basic literacy", "school teaching"]
+  },
+  {
+    "intent": "program_netritva",
+    "keywords": ["netritva", "leadership", "career guidance", "financial literacy"]
+  },
+  {
+    "intent": "volunteer_main",
+    "keywords": ["volunteer", "join", "teach", "mentor", "intern", "contribute", "help children", "teach students", "how to join"]
+  },
+  {
+    "intent": "outreach_visit",
+    "keywords": ["campus visit", "book visit", "visit", "iiit", "college visit", "school visit"]
+  },
+  {
+    "intent": "outreach_partner",
+    "keywords": ["partner", "csr", "sponsor", "ngo", "collaborate"]
+  },
+  {
+    "intent": "nav_programs",
+    "keywords": ["programs", "what do you do", "activities", "initiatives"]
+  },
+  {
+    "intent": "nav_donate",
+    "keywords": ["donate", "donation", "fund", "money", "support"]
+  },
+  {
+    "intent": "nav_contact",
+    "keywords": ["contact", "email", "phone", "address", "location", "map"]
+  },
+  {
+    "intent": "nav_resources",
+    "keywords": ["resources", "certificate", "download", "forms", "report"]
+  },
+  {
+    "intent": "faq_paid",
+    "keywords": ["is volunteering paid", "do i get paid", "salary", "stipend"]
+  },
+  {
+    "intent": "faq_certificate",
+    "keywords": ["do i get a certificate", "certificate of appreciation", "proof of work"]
+  },
+  {
+    "intent": "faq_age",
+    "keywords": ["minimum age", "how old", "age limit"]
+  },
+  {
+    "intent": "start_form_volunteer",
+    "keywords": ["apply for volunteer", "start volunteering form", "fill volunteer application"]
+  },
+  {
+    "intent": "start_form_visit",
+    "keywords": ["book a visit now", "schedule visit form"]
+  },
+  {
+    "intent": "faq_founders",
+    "keywords": ["who founded", "founder", "started unnati", "who created"]
+  },
+  {
+    "intent": "faq_vision",
+    "keywords": ["vision", "mission", "goal", "objective", "aim"]
+  },
+  {
+    "intent": "faq_location",
+    "keywords": ["where are you located", "location", "address", "where is unnati", "headquarters"]
+  }
+]

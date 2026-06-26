@@ -1,7 +1,7 @@
 import React from "react";
-import Akshar from "./../../../assets/aksharImg.png";
-import bgImg from "./../../../assets/imageAkshar.png";
-import rangchakraimg from "./../../../assets/rangchakra.jpg";
+const Akshar = "https://res.cloudinary.com/dyubgh5k4/image/upload/v1782396806/unnati_assets/aksharImg.png";
+const bgImg = "https://res.cloudinary.com/dyubgh5k4/image/upload/v1782397308/unnati_assets/za0fhj6fv3ypxemijuum.webp";
+const rangchakraimg = "https://res.cloudinary.com/dyubgh5k4/image/upload/v1782396876/unnati_assets/rangchakra.png";
 import { useNavigate } from "react-router-dom";
 import { cloudinaryImage2 } from "./../../../utils/cloudinary";
 
@@ -16,7 +16,7 @@ const HeroSection = () => {
       <div className="z-20 flex justify-between flex-col items-center w-full">
         <div className="flex justify-center items-center">
           <div className="w-60 h-50 flex justify-center items-center opacity:4000 saturate-400">
-            <img src={Akshar} alt="" />
+            <img loading="lazy" src={Akshar} alt="" />
           </div>
           <div className="z-40">
             <h1 className="stick-no-bills-2 text-5xl text-white tracking-wider">

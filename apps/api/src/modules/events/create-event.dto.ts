@@ -6,4 +6,6 @@ export class CreateEventDto {
   link?: string;
   color?: string;
   autoArchive?: boolean;
+  photos?: string[];
+  eventType?: string;
 }

@@ -35,7 +35,7 @@ const RajUchh = () => {
           {/* Pinterest Layout */}
           <div className="columns-1 sm:columns-2 md:columns-3 gap-4">
             {images.map((id, i) => (
-              <img
+              <img loading="lazy" 
                 key={i}
                 src={cloudinaryImage(id)}
                 alt="Mount Asisi"

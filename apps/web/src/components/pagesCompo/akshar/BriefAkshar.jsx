@@ -37,7 +37,7 @@ const BriefAkshar = () => {
             
             {/* Main Image */}
             <div className="w-full h-full rounded-3xl overflow-hidden shadow-2xl border-4 border-white bg-gray-100">
-              <img src={cloudinaryImage("20250412_121240_qlh9ea")} alt="Vision" className="w-full h-full object-cover -scale-x-100 transition-shadow duration-300 hover:shadow-[0_10px_40px_rgba(0,0,0,0.15)]" />
+              <img loading="lazy" src={cloudinaryImage("20250412_121240_qlh9ea")} alt="Vision" className="w-full h-full object-cover -scale-x-100 transition-shadow duration-300 hover:shadow-[0_10px_40px_rgba(0,0,0,0.15)]" />
             </div>
           </div>
         </div>

@@ -9,7 +9,7 @@ import {
 } from 'react-icons/fi';
 import { FaBuilding } from 'react-icons/fa';
 import { BiBuildingHouse, BiChalkboard } from 'react-icons/bi';
-import UnnatiLogo from '../../assets/Unnati.png';
+const UnnatiLogo = 'https://res.cloudinary.com/dyubgh5k4/image/upload/v1782396887/unnati_assets/Unnati.png';
 
 const InviteUsModal = ({ isOpen, onClose }) => {
   const [step, setStep] = useState(1);
@@ -156,7 +156,7 @@ const InviteUsModal = ({ isOpen, onClose }) => {
           <div className="hidden lg:flex w-[30%] bg-gradient-to-b from-[#0F2C8C] to-[#0A1F66] flex-col p-6 text-white relative shrink-0 overflow-y-auto custom-scrollbar">
             {/* Logo */}
             <div className="w-12 h-12 bg-white rounded-full flex items-center justify-center mb-6 shrink-0 shadow-lg overflow-hidden">
-              <img src={UnnatiLogo} alt="Unnati Logo" className="w-full h-full object-cover scale-125" />
+              <img loading="lazy" src={UnnatiLogo} alt="Unnati Logo" className="w-full h-full object-cover scale-125" />
             </div>
 
             {/* Hero Message */}
@@ -169,7 +169,7 @@ const InviteUsModal = ({ isOpen, onClose }) => {
 
             {/* Hero Illustration */}
             <div className="w-full h-40 rounded-2xl overflow-hidden shadow-xl mb-6 shrink-0 border-4 border-white/10 relative bg-blue-900">
-              <img src="https://images.unsplash.com/photo-1544717305-2782549b5136?q=80&w=800" alt="Workshop" className="w-full h-full object-cover mix-blend-overlay opacity-80" />
+              <img loading="lazy" src="https://images.unsplash.com/photo-1544717305-2782549b5136?q=80&w=800" alt="Workshop" className="w-full h-full object-cover mix-blend-overlay opacity-80" />
             </div>
 
             {/* Benefits Card */}

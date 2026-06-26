@@ -6,7 +6,7 @@ import {
   FiUsers, FiBookOpen, FiBriefcase, FiCheckCircle,
   FiUpload, FiArrowRight, FiArrowLeft, FiHeart
 } from 'react-icons/fi';
-import UnnatiLogo from '../../assets/Unnati.png';
+const UnnatiLogo = 'https://res.cloudinary.com/dyubgh5k4/image/upload/v1782396887/unnati_assets/Unnati.png';
 
 const VolunteerModal = ({ isOpen, onClose }) => {
   const [step, setStep] = useState(1);
@@ -167,7 +167,7 @@ const VolunteerModal = ({ isOpen, onClose }) => {
                 <div className="p-10 flex-1">
                   <div className="flex items-center gap-3 mb-12">
                     <div className="w-12 h-12 flex items-center justify-center bg-white rounded-full shadow-sm overflow-hidden shrink-0 border border-gray-100">
-                      <img src={UnnatiLogo} alt="Unnati Society Logo" className="w-full h-full object-cover scale-125" />
+                      <img loading="lazy" src={UnnatiLogo} alt="Unnati Society Logo" className="w-full h-full object-cover scale-125" />
                     </div>
                     <div>
                       <h3 className="font-extrabold text-[#0F172A] leading-tight tracking-wide">UNNATI SOCIETY</h3>
@@ -182,7 +182,7 @@ const VolunteerModal = ({ isOpen, onClose }) => {
                   <p className="text-gray-600 text-lg mb-10">Your time and skills can help thousands of students dream bigger, learn better, and achieve more.</p>
 
                   <div className="rounded-3xl overflow-hidden shadow-xl mb-12 border-4 border-white">
-                    <img src="https://images.unsplash.com/photo-1577896851231-70ef18881754?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="Teaching" className="w-full h-48 object-cover" />
+                    <img loading="lazy" src="https://images.unsplash.com/photo-1577896851231-70ef18881754?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="Teaching" className="w-full h-48 object-cover" />
                   </div>
 
                   <h3 className="text-xl font-bold text-[#0F172A] mb-6">Why Volunteer?</h3>

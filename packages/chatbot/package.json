@@ -1,0 +1,23 @@
+{
+  "name": "@unnati/chatbot",
+  "private": true,
+  "version": "0.0.0",
+  "description": "Virtual Assistant and Chatbot for Unnati Society apps",
+  "type": "module",
+  "main": "./src/index.jsx",
+  "exports": {
+    ".": "./src/index.jsx"
+  },
+  "files": [
+    "src"
+  ],
+  "dependencies": {
+    "fuse.js": "^7.0.0",
+    "lucide-react": "^0.344.0",
+    "framer-motion": "^11.0.0"
+  },
+  "peerDependencies": {
+    "react": ">=18.0.0",
+    "react-dom": ">=18.0.0"
+  }
+}

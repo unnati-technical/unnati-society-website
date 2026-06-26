@@ -1,6 +1,6 @@
 import React, { useState } from "react";
-import Unnati from "./../../assets/Unnati.png";
-import IIITBh from "./../../assets/IIITBh.png";
+const Unnati = "https://res.cloudinary.com/dyubgh5k4/image/upload/v1782396887/unnati_assets/Unnati.png";
+const IIITBh = "https://res.cloudinary.com/dyubgh5k4/image/upload/v1782396815/unnati_assets/IIITBh.png";
 import { useNavigate, useLocation } from "react-router-dom";
 import AuthModal from "./AuthModal";
 
@@ -14,7 +14,7 @@ const Footer = () => {
       <div className="max-w-7xl mx-auto grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8">
         <div className="flex flex-col gap-6">
           <div className="flex items-center gap-4">
-            <img
+            <img loading="lazy" 
               src={IIITBh}
               alt="IIIT Bhagalpur logo"
               className="h-12 object-contain"
@@ -22,7 +22,7 @@ const Footer = () => {
 
             <div className="w-0.5 h-10 bg-white/60"></div>
 
-            <img
+            <img loading="lazy" 
               src={Unnati}
               alt="Unnati logo"
               className="h-12 object-contain"

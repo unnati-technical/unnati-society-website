@@ -1,5 +1,5 @@
 import React from "react";
-import vision from "./../../../assets/vision2.jpg";
+const vision = "https://res.cloudinary.com/dyubgh5k4/image/upload/v1782396893/unnati_assets/vision2.jpg";
 import { useNavigate } from "react-router-dom";
 
 const Aboutus = () => {
@@ -76,7 +76,7 @@ const Aboutus = () => {
                 </defs>
               </svg>
 
-              <img 
+              <img loading="lazy" 
                 src={vision} 
                 alt="vision" 
                 className="w-full h-full object-cover block bg-white"

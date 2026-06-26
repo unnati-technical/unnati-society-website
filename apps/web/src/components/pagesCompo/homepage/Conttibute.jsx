@@ -1,5 +1,5 @@
 import React from "react";
-import mission from './../../../assets/mission.jpg'
+const mission = 'https://res.cloudinary.com/dyubgh5k4/image/upload/v1782396857/unnati_assets/mission.jpg'
 
 const Conttibute = () => {
   return (

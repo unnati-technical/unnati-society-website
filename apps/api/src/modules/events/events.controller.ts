@@ -7,9 +7,14 @@ import {
   Body,
   Param,
   Query,
+  UseInterceptors,
+  UploadedFiles,
+  NotFoundException,
 } from '@nestjs/common';
+import { FilesInterceptor } from '@nestjs/platform-express';
 import { CacheTTL } from '@nestjs/cache-manager';
 import { EventsService } from './events.service';
+import { CloudinaryService } from '../cloudinary/cloudinary.service';
 import { CreateEventDto } from './create-event.dto';
 import { Public } from '../auth/decorators/public.decorator';
 
@@ -18,7 +23,10 @@ import { Public } from '../auth/decorators/public.decorator';
 @CacheTTL(0) // Disable cache – events must be real-time for the admin panel
 @Controller('events')
 export class EventsController {
-  constructor(private readonly eventsService: EventsService) {}
+  constructor(
+    private readonly eventsService: EventsService,
+    private readonly cloudinaryService: CloudinaryService
+  ) {}
 
   // Public endpoint: returns events for the homepage (depends on auto mode)
   @Public()
@@ -61,5 +69,25 @@ export class EventsController {
   @Delete(':id')
   remove(@Param('id') id: string) {
     return this.eventsService.remove(id);
+  }
+
+  @Post(':id/photos')
+  @UseInterceptors(FilesInterceptor('photos'))
+  async uploadPhotos(
+    @Param('id') id: string,
+    @UploadedFiles() files: Express.Multer.File[],
+  ) {
+    const event = await this.eventsService.findOne(id);
+    if (!event) throw new NotFoundException('Event not found');
+
+    const urls = await Promise.all(
+      files.map((file) => this.cloudinaryService.uploadFile(file)),
+    );
+
+    const updatedEvent = await this.eventsService.update(id, {
+      photos: [...(event.photos || []), ...urls.map((u) => u.secure_url)],
+    });
+
+    return updatedEvent;
   }
 }

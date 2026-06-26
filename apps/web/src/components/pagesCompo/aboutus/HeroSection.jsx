@@ -1,5 +1,5 @@
 import React from "react";
-import swachhtaPakhwara from './../../../assets/swachhtaPakhwara.jpg'
+const swachhtaPakhwara = 'https://res.cloudinary.com/dyubgh5k4/image/upload/v1782396885/unnati_assets/swachhtaPakhwara.jpg'
 
 
 

@@ -1,5 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { PrismaService } from '../../prisma/prisma.service';
+import { CloudinaryService } from '../cloudinary/cloudinary.service';
 import { CreateEventDto } from './create-event.dto';
 // eslint-disable-next-line @typescript-eslint/no-require-imports
 const Holidays = require('date-holidays');
@@ -12,21 +13,41 @@ let lastFetchedHolidays = 0;
 
 @Injectable()
 export class EventsService {
-  constructor(private readonly prisma: PrismaService) {}
+  constructor(
+    private readonly prisma: PrismaService,
+    private readonly cloudinaryService: CloudinaryService
+  ) {}
+
+  private async deleteExpiredAutoEvents() {
+    const startOfToday = new Date();
+    startOfToday.setHours(0, 0, 0, 0);
+
+    try {
+      const expiredAutoEvents = await this.prisma.event.findMany({
+        where: { date: { lt: startOfToday }, eventType: 'AUTO' },
+      });
+
+      for (const event of expiredAutoEvents) {
+        if (event.photos && event.photos.length > 0) {
+          for (const url of event.photos) {
+            const match = url.match(/\/v\d+\/(.+)\.[a-zA-Z]+$/);
+            if (match && match[1]) {
+              await this.cloudinaryService.deleteFile(match[1]).catch(() => {});
+            }
+          }
+        }
+        await this.prisma.event.delete({ where: { id: event.id } });
+      }
+    } catch (e) {
+      console.warn('Failed to auto-delete events', e);
+    }
+  }
 
   async findAll(includeExpired = false) {
     const now = new Date();
 
-    // Auto-delete expired events from the database (events older than today)
-    try {
-      const startOfToday = new Date();
-      startOfToday.setHours(0, 0, 0, 0);
-      await this.prisma.event.deleteMany({
-        where: { date: { lt: startOfToday } },
-      });
-    } catch (e) {
-      // Ignore DB timeouts
-    }
+    // Auto-delete expired AUTO events from the database (events older than today)
+    this.deleteExpiredAutoEvents().catch(() => {});
 
     const setting = await this.prisma.systemSetting.findUnique({
       where: { key: 'AUTO_EVENT_MODE' },
@@ -79,6 +100,8 @@ export class EventsService {
         location: dto.location || '',
         link: dto.link || null,
         color: dto.color || null,
+        photos: dto.photos || [],
+        eventType: dto.eventType || 'AUTO',
       },
     });
   }
@@ -93,11 +116,22 @@ export class EventsService {
         ...(dto.location !== undefined && { location: dto.location }),
         ...(dto.link !== undefined && { link: dto.link }),
         ...(dto.color !== undefined && { color: dto.color }),
+        ...(dto.photos !== undefined && { photos: dto.photos }),
+        ...(dto.eventType !== undefined && { eventType: dto.eventType }),
       },
     });
   }
 
   async remove(id: string) {
+    const event = await this.prisma.event.findUnique({ where: { id } });
+    if (event && event.photos && event.photos.length > 0) {
+      for (const url of event.photos) {
+        const match = url.match(/\/v\d+\/(.+)\.[a-zA-Z]+$/);
+        if (match && match[1]) {
+          await this.cloudinaryService.deleteFile(match[1]).catch(() => {});
+        }
+      }
+    }
     return this.prisma.event.delete({ where: { id } });
   }
 
@@ -160,16 +194,8 @@ export class EventsService {
     let dbEvents: any[] = [];
     const now = new Date();
 
-    // Auto-delete expired events from the database (events older than today)
-    try {
-      const startOfToday = new Date();
-      startOfToday.setHours(0, 0, 0, 0);
-      await this.prisma.event.deleteMany({
-        where: { date: { lt: startOfToday } },
-      });
-    } catch (e) {
-      // Ignore DB timeouts
-    }
+    // Auto-delete expired AUTO events from the database (events older than today)
+    this.deleteExpiredAutoEvents().catch(() => {});
 
     // Attempt to fetch DB settings and events, gracefully degrading if the DB is unreachable
     try {

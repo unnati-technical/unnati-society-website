@@ -1,8 +1,8 @@
 import React from "react";
-import bgimg from "./../../../assets/image.png";
-import digiXplore from "./../../../assets/digiImage.png";
-import netritva from "./../../../assets/netritvaImg.png";
-import akshar from "./../../../assets/aksharImg.png";
+const bgimg = "https://res.cloudinary.com/dyubgh5k4/image/upload/v1782397307/unnati_assets/yx21ld5ujylzkawjvc8i.webp";
+const digiXplore = "https://res.cloudinary.com/dyubgh5k4/image/upload/v1782396808/unnati_assets/digiImage.png";
+const netritva = "https://res.cloudinary.com/dyubgh5k4/image/upload/v1782396866/unnati_assets/netritvaImg.png";
+const akshar = "https://res.cloudinary.com/dyubgh5k4/image/upload/v1782396806/unnati_assets/aksharImg.png";
 import { useNavigate } from "react-router-dom";
 
 const HeroSection = () => {
@@ -21,7 +21,7 @@ const HeroSection = () => {
           <div className="relative w-45 h-40">
             <div className="cursor-pointer w-40 h-40 aspect-square absolute left-0 top-0 bg-[#F5E6DC] flex justify-center items-center rotate-45 z-20 rounded-2xl border border-black">
               <span className="-rotate-45" onClick={() => navigate("/media/digiXplore")}>
-                <img src={digiXplore} alt="" />
+                <img loading="lazy" src={digiXplore} alt="" />
               </span>
             </div>
             <div className="rounded-2xl bg-white/30 w-40 h-40 aspect-square border border-black rotate-45 absolute right-0 z-0"></div>
@@ -32,7 +32,7 @@ const HeroSection = () => {
                 className="-rotate-45"
                 onClick={() => navigate("/media/netritva")}
               >
-                <img src={netritva} alt="" />
+                <img loading="lazy" src={netritva} alt="" />
               </span>
             </div>
             <div className="rounded-2xl bg-white/30 w-40 h-40 aspect-square border border-black rotate-45 absolute right-0 z-0"></div>
@@ -43,7 +43,7 @@ const HeroSection = () => {
                 className="-rotate-45"
                 onClick={() => navigate("/media/akshar")}
               >
-                <img src={akshar} alt="" />
+                <img loading="lazy" src={akshar} alt="" />
               </span>
             </div>
             <div className="rounded-2xl bg-white/30 w-40 h-40 aspect-square border border-black rotate-45 absolute right-0 z-0"></div>

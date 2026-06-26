@@ -13,7 +13,7 @@ const Testimonial3 = () => {
         <div className="absolute top-0 left-0 w-full h-1 bg-linear-to-r from-cyan-400 via-blue-500 to-purple-500" />
         <div className="relative group">
         <div className="absolute inset-0 bg-cyan-300/20 blur-2xl rounded-full scale-90 opacity-0 group-hover:opacity-100 transition-all duration-500" />
-        <img
+        <img loading="lazy" 
           src={cloudinaryImage2("4_wafb1x")}
           alt="testimonial"
           className="relative w-full h-30 object-cover rounded-[28px] shadow-xl transition-all duration-500 group-hover:-translate-y-2"

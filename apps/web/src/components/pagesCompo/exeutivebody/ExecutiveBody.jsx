@@ -2,9 +2,9 @@ import React, { useState } from "react";
 import { MdEmail } from "react-icons/md";
 import { FaLinkedin } from "react-icons/fa";
 import { cloudinaryImage } from "../../../utils/cloudinary";
-import directorImg from "../../../assets/directorsir.png";
-import prImg from "../../../assets/prsir.png";
-import chetanImg from "../../../assets/chetansir.jpg";
+const directorImg = "https://res.cloudinary.com/dyubgh5k4/image/upload/v1782396812/unnati_assets/directorsir.png";
+const prImg = "https://res.cloudinary.com/dyubgh5k4/image/upload/v1782396871/unnati_assets/prsir.png";
+const chetanImg = "https://res.cloudinary.com/dyubgh5k4/image/upload/v1782396807/unnati_assets/chetansir.jpg";
 
 
 const SectionHeader = ({ title }) => (
@@ -21,7 +21,7 @@ const ProfileCard = ({ member, isCloudinary = true }) => {
   return (
     <div className="flex flex-col items-center bg-white rounded-xl border border-gray-200 p-8 shadow-sm hover:shadow-lg transition-shadow duration-300 relative group">
       <div className="w-32 h-32 md:w-40 md:h-40 rounded-full overflow-hidden mb-6 border-[6px] border-gray-50 shadow-inner group-hover:border-blue-50 transition-colors duration-300">
-        <img
+        <img loading="lazy" 
           src={imgSrc}
           alt={member.name}
           className="w-full h-full object-cover"

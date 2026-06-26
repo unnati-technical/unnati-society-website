@@ -2,9 +2,10 @@ import { Module } from '@nestjs/common';
 import { OutreachController } from './outreach.controller';
 import { OutreachService } from './outreach.service';
 import { PrismaModule } from '../../prisma/prisma.module';
+import { CloudinaryModule } from '../cloudinary/cloudinary.module';
 
 @Module({
-  imports: [PrismaModule],
+  imports: [PrismaModule, CloudinaryModule],
   controllers: [OutreachController],
   providers: [OutreachService],
 })

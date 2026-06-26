@@ -18,7 +18,14 @@ export class DonationsService {
     });
   }
 
-  async createOrder(amount: number, donorName: string, donorEmail: string) {
+  async createOrder(
+    amount: number,
+    donorName: string,
+    donorEmail: string,
+    donorPhone?: string,
+    donorPan?: string,
+    donorAddress?: string,
+  ) {
     try {
       // 1. Create a Pending Donation in Database
       const donation = await this.prisma.donation.create({
@@ -26,6 +33,9 @@ export class DonationsService {
           amount,
           donorName,
           donorEmail,
+          donorPhone,
+          donorPan,
+          donorAddress,
           status: 'PENDING',
           currency: 'INR',
         },

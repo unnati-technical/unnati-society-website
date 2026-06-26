@@ -1,7 +1,7 @@
 import React from "react";
-import Unnati from "./../../assets/Unnati.png";
-import IIITBh from "./../../assets/IIITBh.png";
-import locationTag from "./../../assets/location-on-map.svg";
+const Unnati = "https://res.cloudinary.com/dyubgh5k4/image/upload/v1782396887/unnati_assets/Unnati.png";
+const IIITBh = "https://res.cloudinary.com/dyubgh5k4/image/upload/v1782396815/unnati_assets/IIITBh.png";
+const locationTag = "https://res.cloudinary.com/dyubgh5k4/image/upload/v1782396854/unnati_assets/location-on-map.svg";
 
 const Navbar = () => {
   return (
@@ -11,13 +11,13 @@ const Navbar = () => {
       <div className="flex flex-wrap sm:flex-nowrap gap-2 items-center justify-center sm:justify-start">
         
         <div className="flex items-center">
-          <img
+          <img loading="lazy" 
             src={Unnati}
             alt="Unnati logo"
             className="w-8 h-8 sm:w-10 sm:h-10 md:w-12 md:h-12"
           />
           <div className="h-8 sm:h-10 md:h-12 mx-2 border-r-2 border-white"></div>
-          <img
+          <img loading="lazy" 
             src={IIITBh}
             alt="IIITBh logo"
             className="w-8 h-8 sm:w-10 sm:h-10 md:w-12 md:h-12"
@@ -48,7 +48,7 @@ const Navbar = () => {
           </h1>
         </div>
 
-        <img
+        <img loading="lazy" 
           src={locationTag}
           alt="location"
           className="h-5 w-5 sm:h-6 sm:w-6 md:h-8 md:w-8"

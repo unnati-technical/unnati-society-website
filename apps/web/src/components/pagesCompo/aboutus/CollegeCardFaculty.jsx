@@ -85,7 +85,7 @@ const CollegeCardFaculty = () => {
               </div>
 
               <div className="flex-1 flex justify-center lg:justify-end">
-                <img
+                <img loading="lazy" 
                   src={card.image}
                   alt={card.name}
                   className="w-full h-auto max-w-[300px] md:w-96 md:h-96 object-cover rounded-xl mb-8 md:mb-0 shadow-lg border border-gray-700"

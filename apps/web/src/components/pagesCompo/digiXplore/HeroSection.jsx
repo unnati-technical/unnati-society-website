@@ -1,6 +1,6 @@
 import React from 'react'
-import digiXplore from './../../../assets/digiImage.png'
-import bgImg from './../../../assets/imageDigi.png'
+const digiXplore = 'https://res.cloudinary.com/dyubgh5k4/image/upload/v1782396808/unnati_assets/digiImage.png'
+const bgImg = 'https://res.cloudinary.com/dyubgh5k4/image/upload/v1782396841/unnati_assets/imageDigi.png'
 import { useNavigate } from 'react-router-dom'
 
 const HeroSection = () => {
@@ -11,7 +11,7 @@ const HeroSection = () => {
        <div className='z-20 flex flex-col justify-between items-center w-full'>
         <div className='flex justify-center items-center'>
             <div className='w-60 h-50 flex justify-center items-center'>
-                <img src={digiXplore} alt="" />
+                <img loading="lazy" src={digiXplore} alt="" />
             </div>
             <div>
                 <h1 className='stick-no-bills-2 text-5xl text-white tracking-wider'>DIGIXPLORE</h1>

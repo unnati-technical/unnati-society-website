@@ -1,18 +1,108 @@
 @import "tailwindcss";
 
+@theme {
+  --color-brand-primary: var(--brand-primary);
+  --color-brand-dark: var(--brand-dark);
+  --color-brand-secondary: var(--brand-secondary);
+  --color-brand-light: var(--brand-light);
+}
+
 :root {
-  --unnati-primary: #7c3aed;
-  --unnati-secondary: #0ea5e9;
+  /* Default Theme (IIIT Bhagalpur) */
+  --brand-primary: #2563EB;
+  --brand-dark: #1E3A8A;
+  --brand-secondary: #FBBF24;
+  --brand-light: #EFF6FF;
 }
 
-* {
-  box-sizing: border-box;
-  margin: 0;
-  padding: 0;
+.theme-school {
+  /* School Branch Theme */
+  --brand-primary: #10B981;
+  --brand-dark: #064E3B;
+  --brand-secondary: #F59E0B;
+  --brand-light: #ECFDF5;
 }
 
-body {
-  font-family: Inter, system-ui, sans-serif;
-  background: #0f0f0f;
-  color: #f5f5f5;
+.theme-ngo {
+  /* NGO Partner Theme */
+  --brand-primary: #8B5CF6;
+  --brand-dark: #4C1D95;
+  --brand-secondary: #EC4899;
+  --brand-light: #F5F3FF;
+}
+.oswald-font {
+  font-family: "Oswald", sans-serif;
+  font-optical-sizing: auto;
+  font-weight: 700;
+  font-style: normal;
+}
+.oswald-font-2 {
+  font-family: "Oswald", sans-serif;
+  font-optical-sizing: auto;
+  font-weight: 400;
+  font-style: normal;
+}
+.oswald-font-3 {
+  font-family: "Oswald", sans-serif;
+  font-optical-sizing: auto;
+  font-weight: 600;
+  font-style: bold;
+}
+.great-vibes-regular {
+  font-family: "Great Vibes", cursive;
+  font-weight: 400;
+  font-style: normal;
+}
+.inter-font {
+  font-family: "Inter", sans-serif;
+  font-optical-sizing: auto;
+  font-weight: 400;
+  font-style: normal;
+}
+.inter-font-2 {
+  font-family: "Inter", sans-serif;
+  font-optical-sizing: auto;
+  font-weight: 400;
+  font-style: bold;
+}
+.inter-font-3 {
+  font-family: "Inter", sans-serif;
+  font-optical-sizing: auto;
+  font-weight: 600;
+  font-style: bold;
+}
+
+.stick-no-bills {
+  font-family: "Stick No Bills", sans-serif;
+  font-optical-sizing: auto;
+  font-weight: 400;
+  font-style: normal;
+}
+.stick-no-bills-1{
+  font-family: "Stick No Bills", sans-serif;
+  font-optical-sizing: auto;
+  font-weight: 600;
+  font-style: normal;
+}
+
+.stick-no-bills-2 {
+  font-family: "Stick No Bills", sans-serif;
+  font-optical-sizing: auto;
+  font-weight: 800;
+  font-style: normal;
+}
+
+.purple-purse-regular {
+  font-family: "Purple Purse", serif;
+  font-weight: 400;
+  font-style: normal;
+}
+/* --------- events -------- */
+.scrollbar-hide::-webkit-scrollbar {
+  display: none;
+}
+
+.scrollbar-hide {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
 }

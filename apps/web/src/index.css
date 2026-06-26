@@ -1,4 +1,5 @@
 @import "tailwindcss";
+@source "../../../packages/chatbot/src";
 
 @theme {
   --color-brand-primary: var(--brand-primary);

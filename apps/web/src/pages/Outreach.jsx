@@ -124,17 +124,17 @@ const Outreach = () => {
 
               {/* Main Left Image (Teacher) */}
               <div style={{ position: 'absolute', right: 290, top: '60px', width: '340px', height: '400px', backgroundColor: '#E2E8F0', borderRadius: '24px', overflow: 'hidden', border: '8px solid white', boxShadow: '0 20px 50px rgba(0,0,0,0.1)', zIndex: 10 }}>
-                <img src="https://i.pinimg.com/1200x/f9/95/11/f99511c85b628e69ee6f643c07246667.jpg" alt="Teacher interacting with students" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+                <img loading="lazy" src="https://i.pinimg.com/1200x/f9/95/11/f99511c85b628e69ee6f643c07246667.jpg" alt="Teacher interacting with students" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
               </div>
 
               {/* Top Right Image (Girls) */}
               <div style={{ position: 'absolute', right: '10px', top: '10px', width: '260px', height: '190px', backgroundColor: '#E2E8F0', borderRadius: '24px', overflow: 'hidden', border: '6px solid white', boxShadow: '0 15px 30px rgba(0,0,0,0.1)', zIndex: 20 }}>
-                <img src="https://i.pinimg.com/1200x/d8/58/92/d8589252c5464cb4440b64ed091c528d.jpg" alt="Students using laptops" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+                <img loading="lazy" src="https://i.pinimg.com/1200x/d8/58/92/d8589252c5464cb4440b64ed091c528d.jpg" alt="Students using laptops" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
               </div>
 
               {/* Bottom Right Image (Boys) */}
               <div style={{ position: 'absolute', right: '10px', top: '220px', width: '260px', height: '280px', backgroundColor: '#E2E8F0', borderRadius: '24px', overflow: 'hidden', border: '6px solid white', boxShadow: '0 15px 30px rgba(0,0,0,0.1)', zIndex: 20 }}>
-                <img src="https://i.pinimg.com/736x/ee/5d/a8/ee5da86f43810f1c93754d837ad0d3eb.jpg" alt="Group of students collaborating" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+                <img loading="lazy" src="https://i.pinimg.com/736x/ee/5d/a8/ee5da86f43810f1c93754d837ad0d3eb.jpg" alt="Group of students collaborating" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
               </div>
 
               {/* Blue Impact Box */}
@@ -307,14 +307,14 @@ const Outreach = () => {
 
           <div className="w-full lg:w-1/2 flex gap-4 h-[500px]">
             <div className="w-2/3 h-full rounded-3xl overflow-hidden shadow-xl">
-              <img src="https://images.unsplash.com/photo-1541339907198-e08756dedf3f?q=80&w=2070" alt="Campus" className="w-full h-full object-cover" />
+              <img loading="lazy" src="https://images.unsplash.com/photo-1541339907198-e08756dedf3f?q=80&w=2070" alt="Campus" className="w-full h-full object-cover" />
             </div>
             <div className="w-1/3 flex flex-col gap-4 h-full">
               <div className="flex-1 rounded-3xl overflow-hidden shadow-xl">
-                <img src="https://images.unsplash.com/photo-1523240795612-9a054b0db644?q=80&w=2070" alt="Students" className="w-full h-full object-cover" />
+                <img loading="lazy" src="https://images.unsplash.com/photo-1523240795612-9a054b0db644?q=80&w=2070" alt="Students" className="w-full h-full object-cover" />
               </div>
               <div className="flex-1 rounded-3xl overflow-hidden shadow-xl">
-                <img src="https://images.unsplash.com/photo-1511629091441-ee46146481b6?q=80&w=2070" alt="Tour" className="w-full h-full object-cover" />
+                <img loading="lazy" src="https://images.unsplash.com/photo-1511629091441-ee46146481b6?q=80&w=2070" alt="Tour" className="w-full h-full object-cover" />
               </div>
             </div>
           </div>
@@ -368,7 +368,7 @@ const Outreach = () => {
 
           <div className="w-full lg:w-1/2">
             <div className="w-full h-[500px] rounded-[32px] overflow-hidden shadow-2xl relative">
-              <img src="https://images.unsplash.com/photo-1524178232363-1fb2b075b655?q=80&w=2070" alt="Classroom Workshop" className="w-full h-full object-cover" />
+              <img loading="lazy" src="https://images.unsplash.com/photo-1524178232363-1fb2b075b655?q=80&w=2070" alt="Classroom Workshop" className="w-full h-full object-cover" />
               <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent"></div>
             </div>
           </div>
@@ -520,7 +520,7 @@ const Outreach = () => {
             ].map((item, idx) => (
               <div key={idx} className="bg-white rounded-[24px] overflow-hidden border border-gray-100 shadow-lg hover:shadow-2xl hover:-translate-y-2 transition-all duration-300 flex flex-col cursor-pointer group">
                 <div className="h-56 overflow-hidden">
-                  <img src={item.img} alt={item.title} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
+                  <img loading="lazy" src={item.img} alt={item.title} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
                 </div>
                 <div className="p-6 flex-grow flex flex-col">
                   <h4 className="font-bold text-gray-500 text-sm mb-2 uppercase tracking-wide">{item.loc}</h4>

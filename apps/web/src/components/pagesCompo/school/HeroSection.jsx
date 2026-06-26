@@ -1,6 +1,6 @@
 import React from "react";
-import Akshar from "./../../../assets/aksharImg.png";
-import bgImg from "./../../../assets/imageAkshar.png";
+const Akshar = "https://res.cloudinary.com/dyubgh5k4/image/upload/v1782396806/unnati_assets/aksharImg.png";
+const bgImg = "https://res.cloudinary.com/dyubgh5k4/image/upload/v1782397308/unnati_assets/za0fhj6fv3ypxemijuum.webp";
 import { useNavigate } from "react-router-dom";
 import { cloudinaryImage } from "../../../utils/cloudinary";
 

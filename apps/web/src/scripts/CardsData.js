@@ -1,6 +1,6 @@
-import directorImg from '../assets/directorsir.png';
-import prImg from '../assets/prsir.png';
-import chetanImg from '../assets/chetansir.jpg';
+const directorImg = 'https://res.cloudinary.com/dyubgh5k4/image/upload/v1782396812/unnati_assets/directorsir.png';
+const prImg = 'https://res.cloudinary.com/dyubgh5k4/image/upload/v1782396871/unnati_assets/prsir.png';
+const chetanImg = 'https://res.cloudinary.com/dyubgh5k4/image/upload/v1782396807/unnati_assets/chetansir.jpg';
 import { cloudinaryImage } from '../utils/cloudinary';
 
 

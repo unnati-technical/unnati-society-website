@@ -36,7 +36,7 @@ const SchoolCarousel = () => {
           </div>
 
           <div className="w-1/2">
-            <img
+            <img loading="lazy" 
               src="/dummy.jpg"
               className="w-full h-full object-cover"
               alt="school"

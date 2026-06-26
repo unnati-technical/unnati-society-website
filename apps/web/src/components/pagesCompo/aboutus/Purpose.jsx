@@ -1,12 +1,12 @@
 import React from "react";
-import heroSection from "./../../../assets/mission2.png";
+const heroSection = "https://res.cloudinary.com/dyubgh5k4/image/upload/v1782396863/unnati_assets/mission2.png";
 
 const Purpose = () => {
   return (
     <section className="bg-[#F9FAFB] text-black py-10 px-10 md:py-12 md:px-10">
       <div className="flex flex-col-reverse md:flex-row justify-center items-center gap-8 ">
         <div className="w-full sm:w-1/2 lg:w-1/3 xl:w-1/4 h-1/2 mt-4 ">
-          <img src={heroSection} alt="vision" className="object-cover h-96 w-full rounded-2xl shadow-lg hover:shadow-2xl transition-shadow duration-300 border border-gray-100" />
+          <img loading="lazy" src={heroSection} alt="vision" className="object-cover h-96 w-full rounded-2xl shadow-lg hover:shadow-2xl transition-shadow duration-300 border border-gray-100" />
         </div>
         <div className="w-full md:w-1/2 flex flex-col text-right items-end">
           <div className="flex flex-col items-end mb-6">

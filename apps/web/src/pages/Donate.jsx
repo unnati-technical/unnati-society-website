@@ -14,19 +14,58 @@ import Footer from '../components/common/Footer';
 const DonorModal = ({ open, onClose, onSubmit, isProcessing }) => {
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
+  const [phone, setPhone] = useState('');
+  const [wantsTaxReceipt, setWantsTaxReceipt] = useState(false);
+  const [pan, setPan] = useState('');
+  const [address, setAddress] = useState('');
+
   if (!open) return null;
+
+  const handleSubmit = () => {
+    if (!name || !email) return toast.error('Name and Email are required');
+    if (wantsTaxReceipt) {
+      if (!pan || !address || !phone) return toast.error('Phone, PAN, and Address are required for tax exemption');
+      const panRegex = /^[A-Z]{5}[0-9]{4}[A-Z]{1}$/;
+      if (!panRegex.test(pan.toUpperCase())) return toast.error('Invalid PAN Number format');
+    }
+    onSubmit(name, email, phone, wantsTaxReceipt ? pan.toUpperCase() : '', wantsTaxReceipt ? address : '');
+  };
+
   return (
-    <div className="fixed inset-0 z-[999] flex items-center justify-center bg-black/60 backdrop-blur-sm">
-      <div className="bg-white rounded-2xl p-8 w-full max-w-sm shadow-2xl">
+    <div className="fixed inset-0 z-[999] flex items-center justify-center bg-black/60 backdrop-blur-sm p-4">
+      <div className="bg-white rounded-2xl p-6 lg:p-8 w-full max-w-md shadow-2xl max-h-[90vh] overflow-y-auto scrollbar-hide">
         <h3 className="text-lg font-bold text-[#081B3A] mb-1">Almost there!</h3>
         <p className="text-xs text-gray-500 mb-5">Please provide your details to complete the donation.</p>
-        <input type="text" placeholder="Full Name" value={name} onChange={e => setName(e.target.value)}
+        
+        <input type="text" placeholder="Full Name *" value={name} onChange={e => setName(e.target.value)}
           className="w-full border border-gray-200 rounded-lg py-2.5 px-4 text-sm mb-3 focus:outline-none focus:border-[#1E63E9]" />
-        <input type="email" placeholder="Email Address" value={email} onChange={e => setEmail(e.target.value)}
+        
+        <input type="email" placeholder="Email Address *" value={email} onChange={e => setEmail(e.target.value)}
+          className="w-full border border-gray-200 rounded-lg py-2.5 px-4 text-sm mb-3 focus:outline-none focus:border-[#1E63E9]" />
+
+        <input type="tel" placeholder="Phone Number" value={phone} onChange={e => setPhone(e.target.value)}
           className="w-full border border-gray-200 rounded-lg py-2.5 px-4 text-sm mb-5 focus:outline-none focus:border-[#1E63E9]" />
+
+        <div className="flex items-start gap-2 mb-4 bg-[#F0F5FF] p-3 rounded-lg border border-blue-100">
+          <input type="checkbox" id="taxReceipt" checked={wantsTaxReceipt} onChange={e => setWantsTaxReceipt(e.target.checked)} className="mt-1 shrink-0" />
+          <label htmlFor="taxReceipt" className="text-xs text-[#081B3A] cursor-pointer">
+            <span className="font-bold">I want an 80G Tax Exemption Receipt</span>
+            <span className="block text-gray-500 mt-0.5">We need your PAN and Address to issue a valid receipt under Indian law.</span>
+          </label>
+        </div>
+
+        {wantsTaxReceipt && (
+          <div className="space-y-3 mb-5 transition-all duration-300">
+            <input type="text" placeholder="PAN Number (e.g. ABCDE1234F) *" value={pan} onChange={e => setPan(e.target.value)} maxLength={10}
+              className="w-full border border-gray-200 rounded-lg py-2.5 px-4 text-sm uppercase focus:outline-none focus:border-[#1E63E9]" />
+            <textarea placeholder="Full Postal Address *" value={address} onChange={e => setAddress(e.target.value)} rows={2}
+              className="w-full border border-gray-200 rounded-lg py-2.5 px-4 text-sm focus:outline-none focus:border-[#1E63E9] resize-none" />
+          </div>
+        )}
+
         <div className="flex gap-3">
           <button onClick={onClose} className="flex-1 py-2.5 rounded-lg border border-gray-200 text-sm font-semibold text-gray-600 hover:bg-gray-50 transition-colors">Cancel</button>
-          <button onClick={() => onSubmit(name, email)} disabled={isProcessing}
+          <button onClick={handleSubmit} disabled={isProcessing}
             className="flex-1 py-2.5 rounded-lg bg-[#1E63E9] text-white text-sm font-bold hover:bg-blue-700 transition-colors flex items-center justify-center gap-2">
             {isProcessing ? 'Processing...' : <><span>Confirm</span><ArrowRight size={14}/></>}
           </button>
@@ -41,6 +80,7 @@ const Donate = () => {
   const [donationType, setDonationType] = useState('One Time');
   const [amount, setAmount] = useState(500);
   const [customAmount, setCustomAmount] = useState('');
+  const [isEditingAmount, setIsEditingAmount] = useState(false);
   const [isProcessing, setIsProcessing] = useState(false);
   const [modalOpen, setModalOpen] = useState(false);
   const [storyIndex, setStoryIndex] = useState(0);
@@ -60,8 +100,15 @@ const Donate = () => {
   const displayAmount = amount === 'Custom' ? (customAmount || 0) : amount;
 
   const handleAmountClick = (val) => {
-    if (val === 'Custom') { setAmount('Custom'); setCustomAmount(''); }
-    else setAmount(val);
+    if (val === 'Custom') { 
+      setAmount('Custom'); 
+      setCustomAmount(amount === 'Custom' ? customAmount : amount);
+      setIsEditingAmount(true);
+    }
+    else {
+      setAmount(val);
+      setIsEditingAmount(false);
+    }
   };
 
   const handleProceed = () => {
@@ -70,15 +117,14 @@ const Donate = () => {
     setModalOpen(true);
   };
 
-  const handleDonate = async (donorName, donorEmail) => {
-    if (!donorName || !donorEmail) return toast.error('Please enter your Name and Email');
+  const handleDonate = async (donorName, donorEmail, donorPhone, donorPan, donorAddress) => {
     const finalAmount = amount === 'Custom' ? Number(customAmount) : amount;
     setIsProcessing(true);
     try {
       const res = await fetch('/api/donations/create-order', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ amount: finalAmount, donorName, donorEmail })
+        body: JSON.stringify({ amount: finalAmount, donorName, donorEmail, donorPhone, donorPan, donorAddress })
       });
       const order = await res.json();
       if (!order || !order.orderId) throw new Error('Could not create order');
@@ -106,7 +152,7 @@ const Donate = () => {
             else toast.error('Payment verification failed');
           } catch { toast.error('Payment verification error'); }
         },
-        prefill: { name: donorName, email: donorEmail },
+        prefill: { name: donorName, email: donorEmail, contact: donorPhone },
         theme: { color: '#1E63E9' }
       };
       const rzp1 = new window.Razorpay(options);
@@ -157,8 +203,7 @@ const Donate = () => {
       {/* ── HERO ─────────────────────────────────────────────────────── */}
       <section className="relative w-full bg-[#081B3A] min-h-[580px] lg:h-[620px] overflow-hidden">
         <div className="absolute inset-0 w-full h-full z-0">
-          <img
-            src="https://images.unsplash.com/photo-1577896851231-70ef18881754?auto=format&fit=crop&w=2000&q=80"
+          <img loading="lazy"             src="https://images.unsplash.com/photo-1577896851231-70ef18881754?auto=format&fit=crop&w=2000&q=80"
             alt="Students"
             className="w-full h-full object-cover object-top"
           />
@@ -204,9 +249,33 @@ const Donate = () => {
               </div>
 
               {/* Amount Display */}
-              <div className="w-full bg-[#F4F6FA] border border-gray-200 rounded-lg py-3 px-4 flex items-center justify-between mb-4">
-                <span className="font-extrabold text-2xl text-[#081B3A]">₹{displayAmount}</span>
-                <span className="text-[#1E63E9] text-xs cursor-pointer">✎</span>
+              <div 
+                className={`w-full border rounded-lg py-3 px-4 flex items-center justify-between mb-4 transition-colors ${isEditingAmount ? 'border-[#1E63E9] bg-white ring-2 ring-blue-100' : 'bg-[#F4F6FA] border-gray-200 cursor-pointer hover:border-[#1E63E9]'}`}
+                onClick={() => {
+                  if (!isEditingAmount) {
+                    setIsEditingAmount(true);
+                    setAmount('Custom');
+                    setCustomAmount(amount === 'Custom' ? customAmount : amount);
+                  }
+                }}
+              >
+                <div className="flex items-center gap-1 w-full">
+                  <span className="font-extrabold text-2xl text-[#081B3A]">₹</span>
+                  {isEditingAmount ? (
+                    <input 
+                      type="number" 
+                      autoFocus
+                      value={customAmount}
+                      onChange={e => setCustomAmount(e.target.value)}
+                      onBlur={() => { if (!customAmount || Number(customAmount) < 100) { setIsEditingAmount(false); setAmount(100); } }}
+                      className="font-extrabold text-2xl text-[#081B3A] bg-transparent outline-none w-full"
+                      placeholder="Enter amount"
+                    />
+                  ) : (
+                    <span className="font-extrabold text-2xl text-[#081B3A]">{displayAmount}</span>
+                  )}
+                </div>
+                {!isEditingAmount && <span className="text-[#1E63E9] text-xs font-bold">✎</span>}
               </div>
 
               {/* One Time / Monthly Toggle */}
@@ -228,15 +297,6 @@ const Donate = () => {
                   </button>
                 ))}
               </div>
-
-              {/* Custom Amount Input */}
-              {amount === 'Custom' && (
-                <div className="mb-4">
-                  <input type="number" placeholder="Enter amount (min ₹100)" value={customAmount}
-                    onChange={e => setCustomAmount(e.target.value)}
-                    className="w-full border border-gray-300 rounded-lg py-2.5 px-4 text-sm font-bold focus:outline-none focus:border-[#1E63E9]" />
-                </div>
-              )}
 
               {/* Impact Message */}
               <div className="bg-[#F0F5FF] rounded-xl p-3.5 flex gap-3 items-start mb-5 border border-blue-100">
@@ -329,14 +389,14 @@ const Donate = () => {
         <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
           {visibleStories().map((story, idx) => (
             <div key={`${storyIndex}-${idx}`} className="relative h-[230px] rounded-tl-[32px] rounded-br-[32px] overflow-hidden group shadow-md">
-              <img src={story.img} alt={story.name} className="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" />
+              <img loading="lazy" src={story.img} alt={story.name} className="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" />
               <div className="absolute inset-0 bg-gradient-to-t from-[#081B3A]/95 via-[#081B3A]/55 to-[#081B3A]/10" />
               <div className="absolute inset-0 p-5 flex flex-col justify-end">
                 <div className="text-[#F7B500] mb-2 text-3xl font-serif leading-none">"</div>
                 <p className="text-white text-[11px] font-medium leading-relaxed mb-4 italic">{story.quote}"</p>
                 <div className="flex items-center gap-3">
                   <div className="w-8 h-8 rounded-full bg-white overflow-hidden border-2 border-white shrink-0">
-                    <img src={story.img} alt={story.name} className="w-full h-full object-cover" />
+                    <img loading="lazy" src={story.img} alt={story.name} className="w-full h-full object-cover" />
                   </div>
                   <div>
                     <h4 className="text-white text-[11px] font-bold leading-none">– {story.name}</h4>
@@ -390,7 +450,7 @@ const Donate = () => {
                 { img: 'https://images.unsplash.com/photo-1529390079861-591de354faf5?auto=format&fit=crop&w=400&q=80', border: 'border-[#1E63E9]', rounded: 'rounded-tr-full rounded-br-full rounded-bl-full' },
               ].map((item, i) => (
                 <div key={i} className={`aspect-square overflow-hidden border-[6px] ${item.border} ${item.rounded} shadow-lg`}>
-                  <img src={item.img} alt={`Impact ${i + 1}`} className="w-full h-full object-cover hover:scale-110 transition-transform duration-500" />
+                  <img loading="lazy" src={item.img} alt={`Impact ${i + 1}`} className="w-full h-full object-cover hover:scale-110 transition-transform duration-500" />
                 </div>
               ))}
             </div>

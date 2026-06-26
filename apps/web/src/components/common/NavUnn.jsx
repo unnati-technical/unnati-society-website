@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from "react";
-import Unnati from "./../../assets/Unnati.png";
+const Unnati = "https://res.cloudinary.com/dyubgh5k4/image/upload/v1782396887/unnati_assets/Unnati.png";
 import { gsap } from "gsap";
 import './../../styles/navunn.css'
 import { ScrollTrigger } from "gsap/ScrollTrigger";
@@ -39,7 +39,7 @@ const NavUnn = () => {
       <div className="flex items-center">
         
         <div className="img-cont relative w-10 h-10 sm:w-10 sm:h-10 md:w-14 md:h-14 mr-2 sm:mr-3">
-          <img
+          <img loading="lazy" 
             src={Unnati} 
             alt="Unnati logo"
             className="w-full h-full object-contain hidden"

@@ -8,7 +8,7 @@ const Hero = () => {
         <h1 className="text-4xl font-bold text-white z-10">Contact Us</h1>
 
         <div className="absolute right-0 top-0 h-full w-1/3 overflow-hidden">
-          <img
+          <img loading="lazy" 
             src={cloudinaryImage2("contact_vzejk5")}
             alt="support"
             className="h-full w-full object-cover"

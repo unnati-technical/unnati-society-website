@@ -92,7 +92,7 @@ const JoinUs = () => {
 
             {/* Image 1 (Large Main) */}
             <div className="absolute top-4 right-0 lg:right-8 w-3/4 h-[80%] rounded-[2rem] rounded-tl-[6rem] rounded-br-[6rem] overflow-hidden shadow-[0_20px_40px_rgba(0,0,0,0.15)] border-4 border-white z-10">
-              <img 
+              <img loading="lazy" 
                 src="https://images.unsplash.com/photo-1529390079861-591de354faf5?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80" 
                 alt="Unnati Volunteers" 
                 className="w-full h-full object-cover hover:scale-105 transition-transform duration-700"
@@ -101,7 +101,7 @@ const JoinUs = () => {
 
             {/* Image 2 (Small Overlapping) */}
             <div className="absolute bottom-16 left-0 lg:left-4 w-[55%] h-[45%] rounded-[2rem] rounded-tr-[4rem] rounded-bl-[4rem] overflow-hidden shadow-[0_20px_40px_rgba(0,0,0,0.2)] border-4 border-white z-20">
-              <img 
+              <img loading="lazy" 
                 src="https://images.unsplash.com/photo-1542838132-92c53300491e?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" 
                 alt="Students learning" 
                 className="w-full h-full object-cover hover:scale-105 transition-transform duration-700"
@@ -114,8 +114,8 @@ const JoinUs = () => {
               className="absolute -bottom-6 right-4 lg:-right-4 bg-white/95 backdrop-blur-xl p-4 rounded-2xl shadow-[0_20px_40px_rgba(0,0,0,0.15)] flex items-center gap-4 w-[260px] z-30 border border-white/50"
             >
               <div className="flex -space-x-3 shrink-0">
-                <img className="w-10 h-10 rounded-full border-2 border-white object-cover" src="https://randomuser.me/api/portraits/women/44.jpg" alt="volunteer" />
-                <img className="w-10 h-10 rounded-full border-2 border-white object-cover" src="https://randomuser.me/api/portraits/men/32.jpg" alt="volunteer" />
+                <img loading="lazy" className="w-10 h-10 rounded-full border-2 border-white object-cover" src="https://randomuser.me/api/portraits/women/44.jpg" alt="volunteer" />
+                <img loading="lazy" className="w-10 h-10 rounded-full border-2 border-white object-cover" src="https://randomuser.me/api/portraits/men/32.jpg" alt="volunteer" />
                 <div className="w-10 h-10 rounded-full border-2 border-white bg-blue-600 text-white flex items-center justify-center text-[10px] font-bold shadow-inner">
                   500+
                 </div>
@@ -208,7 +208,7 @@ const JoinUs = () => {
             className="relative order-2 lg:order-1"
           >
             <div className="absolute -left-6 -bottom-6 w-24 h-24 opacity-30" style={{ backgroundImage: 'radial-gradient(#2563EB 2px, transparent 2px)', backgroundSize: '12px 12px' }}></div>
-            <img 
+            <img loading="lazy" 
               src="https://images.unsplash.com/photo-1542838132-92c53300491e?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80" 
               alt="Volunteers smiling" 
               className="rounded-3xl shadow-2xl relative z-10 w-full h-[500px] object-cover"
@@ -278,7 +278,7 @@ const JoinUs = () => {
                 </div>
                 <p className="text-gray-600 text-lg mb-8 italic">"{testimonial.text}"</p>
                 <div className="flex items-center gap-4">
-                  <img src={testimonial.img} alt={testimonial.name} className="w-14 h-14 rounded-full object-cover border-2 border-blue-100" />
+                  <img loading="lazy" src={testimonial.img} alt={testimonial.name} className="w-14 h-14 rounded-full object-cover border-2 border-blue-100" />
                   <div>
                     <h5 className="font-bold text-[#0F172A]">{testimonial.name}</h5>
                     <p className="text-sm text-gray-500">{testimonial.role}</p>

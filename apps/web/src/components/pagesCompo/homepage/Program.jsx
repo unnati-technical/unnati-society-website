@@ -122,7 +122,7 @@ const Program = () => {
             >
               {/* Card Image */}
               <div className="w-full aspect-[16/9] overflow-hidden">
-                <img 
+                <img loading="lazy" 
                   src={cloudinaryImage(prog.img)} 
                   alt={prog.name}
                   className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-[1.03]"

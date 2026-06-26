@@ -3,7 +3,7 @@ import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { FiX, FiEye, FiEyeOff, FiLock, FiShield, FiCheckCircle } from 'react-icons/fi';
 import { FaGraduationCap, FaUserTie, FaHandsHelping, FaUsers } from 'react-icons/fa';
-import UnnatiLogo from '../../assets/Unnati.png';
+const UnnatiLogo = 'https://res.cloudinary.com/dyubgh5k4/image/upload/v1782396887/unnati_assets/Unnati.png';
 import { signInWithEmailAndPassword, createUserWithEmailAndPassword, signInWithPopup } from 'firebase/auth';
 import { auth, googleProvider, githubProvider } from '../../lib/firebase';
 import { useNavigate } from 'react-router-dom';
@@ -284,7 +284,7 @@ const AuthModal = ({ isOpen, onClose }) => {
               <div className="flex flex-col items-center mt-12 mb-6">
                 <div className="w-[200px] h-[200px] rounded-full bg-white/10 backdrop-blur-xl border border-white/20 p-4 mb-4 flex items-center justify-center shadow-[0_0_60px_rgba(37,99,235,0.4)] relative shrink-0">
                   <div className="absolute inset-0 rounded-full bg-blue-500/20 blur-xl animate-pulse"></div>
-                  <img src={UnnatiLogo} alt="Unnati Society" className="w-full h-full object-contain relative z-10 scale-110" />
+                  <img loading="lazy" src={UnnatiLogo} alt="Unnati Society" className="w-full h-full object-contain relative z-10 scale-110" />
                 </div>
                 <h1 className="text-2xl font-extrabold tracking-wide mb-1 text-center text-white">UNNATI SOCIETY</h1>
                 <div className="flex items-center gap-2 mb-4">

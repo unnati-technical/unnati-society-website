@@ -1,6 +1,6 @@
 import React from 'react'
-import netritva from './../../../assets/netritvaImgCopy.png'
-import bgImg from './../../../assets/imageNet.png'
+const netritva = 'https://res.cloudinary.com/dyubgh5k4/image/upload/v1782396867/unnati_assets/netritvaImgCopy.png'
+const bgImg = 'https://res.cloudinary.com/dyubgh5k4/image/upload/v1782397310/unnati_assets/yg5shigbq5qpextmlcq3.webp'
 import { useNavigate } from 'react-router-dom'
 
 const HeroSection = () => {
@@ -11,7 +11,7 @@ const HeroSection = () => {
        <div className='z-20 flex justify-between items-center w-full flex-col'>
         <div className='flex justify-center items-center'>
             <div className='w-30 h-60 flex justify-center items-center'>
-                <img src={netritva} alt="" />
+                <img loading="lazy" src={netritva} alt="" />
             </div>
             <div>
                 <h1 className='stick-no-bills-2 text-5xl text-white tracking-wider'>NETRITVA</h1>

@@ -75,16 +75,16 @@ const DigiXplore = () => {
             {/* The 2x2 rotated grid */}
             <div className="absolute inset-0 grid grid-cols-2 gap-4 rotate-45 transform origin-center">
                <div className="overflow-hidden rounded-3xl shadow-xl bg-gray-200 relative group">
-                  <img src={cloudinaryImage("WhatsApp_Image_2026-02-03_at_1.39.40_PM_whvo3l")} alt="Impact" className="w-full h-full object-cover -rotate-45 scale-[1.5] origin-center transition-transform duration-700 group-hover:scale-[1.6]" />
+                  <img loading="lazy" src={cloudinaryImage("WhatsApp_Image_2026-02-03_at_1.39.40_PM_whvo3l")} alt="Impact" className="w-full h-full object-cover -rotate-45 scale-[1.5] origin-center transition-transform duration-700 group-hover:scale-[1.6]" />
                </div>
                <div className="overflow-hidden rounded-3xl shadow-xl bg-gray-200 relative group">
-                  <img src={cloudinaryImage("WhatsApp_Image_2026-02-03_at_1.39.42_PM_1_sgnwyj")} alt="Impact" className="w-full h-full object-cover -rotate-45 scale-[1.5] origin-center transition-transform duration-700 group-hover:scale-[1.6]" />
+                  <img loading="lazy" src={cloudinaryImage("WhatsApp_Image_2026-02-03_at_1.39.42_PM_1_sgnwyj")} alt="Impact" className="w-full h-full object-cover -rotate-45 scale-[1.5] origin-center transition-transform duration-700 group-hover:scale-[1.6]" />
                </div>
                <div className="overflow-hidden rounded-3xl shadow-xl bg-gray-200 relative group">
-                  <img src={cloudinaryImage("WhatsApp_Image_2026-02-03_at_1.39.38_PM_4_khsl6d")} alt="Impact" className="w-full h-full object-cover -rotate-45 scale-[1.5] origin-center transition-transform duration-700 group-hover:scale-[1.6]" />
+                  <img loading="lazy" src={cloudinaryImage("WhatsApp_Image_2026-02-03_at_1.39.38_PM_4_khsl6d")} alt="Impact" className="w-full h-full object-cover -rotate-45 scale-[1.5] origin-center transition-transform duration-700 group-hover:scale-[1.6]" />
                </div>
                <div className="overflow-hidden rounded-3xl shadow-xl bg-gray-200 relative group">
-                  <img src={cloudinaryImage("WhatsApp_Image_2026-02-03_at_1.43.19_PM_1_do5fjx")} alt="Impact" className="w-full h-full object-cover -rotate-45 scale-[1.5] origin-center transition-transform duration-700 group-hover:scale-[1.6]" />
+                  <img loading="lazy" src={cloudinaryImage("WhatsApp_Image_2026-02-03_at_1.43.19_PM_1_do5fjx")} alt="Impact" className="w-full h-full object-cover -rotate-45 scale-[1.5] origin-center transition-transform duration-700 group-hover:scale-[1.6]" />
                </div>
             </div>
             

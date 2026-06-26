@@ -7,7 +7,7 @@ import {
   FiHeart, FiCheckCircle, FiChevronRight, FiFilter,
   FiArrowRight, FiInfo, FiTag
 } from 'react-icons/fi';
-import UnnatiLogo from '../../assets/Unnati.png';
+const UnnatiLogo = 'https://res.cloudinary.com/dyubgh5k4/image/upload/v1782396887/unnati_assets/Unnati.png';
 
 // Mock Data
 const OPPORTUNITIES = [
@@ -227,7 +227,7 @@ const ExploreOpportunitiesModal = ({ isOpen, onClose, onApplyClick }) => {
                 {/* Logo Area */}
                 <div className="flex items-center gap-3 mb-12">
                   <div className="w-12 h-12 flex items-center justify-center bg-white rounded-full shadow-sm overflow-hidden shrink-0 border border-gray-100">
-                    <img src={UnnatiLogo} alt="Unnati Society Logo" className="w-full h-full object-cover scale-125" />
+                    <img loading="lazy" src={UnnatiLogo} alt="Unnati Society Logo" className="w-full h-full object-cover scale-125" />
                   </div>
                   <div>
                     <h3 className="font-extrabold text-[#0F172A] leading-tight tracking-wide">UNNATI SOCIETY</h3>
@@ -294,7 +294,7 @@ const ExploreOpportunitiesModal = ({ isOpen, onClose, onApplyClick }) => {
 
                 {/* Image Section */}
                 <div className="rounded-2xl overflow-hidden shadow-lg">
-                  <img 
+                  <img loading="lazy" 
                     src="https://images.unsplash.com/photo-1528305047817-48f804517316?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" 
                     alt="Volunteers" 
                     className="w-full h-40 object-cover" 
@@ -438,7 +438,7 @@ const ExploreOpportunitiesModal = ({ isOpen, onClose, onApplyClick }) => {
 
                 {/* Bottom CTA Section */}
                 <div className="rounded-2xl p-8 text-white text-center shadow-lg relative overflow-hidden bg-blue-900">
-                  <img 
+                  <img loading="lazy" 
                     src="https://images.unsplash.com/photo-1559027615-cd4628902d4a?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80" 
                     alt="Volunteers Background" 
                     className="absolute inset-0 w-full h-full object-cover mix-blend-overlay opacity-50" 

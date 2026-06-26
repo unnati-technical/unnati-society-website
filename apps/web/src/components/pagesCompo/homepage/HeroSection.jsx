@@ -1,7 +1,7 @@
 import React, { useEffect, useRef } from "react";
-import play from './../../../assets/play.png'
+const play = 'https://res.cloudinary.com/dyubgh5k4/image/upload/v1782396870/unnati_assets/play.png'
 import { useNavigate } from "react-router-dom";
-import homeHeroVideo from './../../../assets/home_hero.mp4';
+const homeHeroVideo = "https://res.cloudinary.com/dyubgh5k4/video/upload/v1782397100/unnati_assets/cc5agh6nevpynajlzkxs.mp4";
 
 const HeroSection = () => {
   const navigate = useNavigate();
@@ -77,7 +77,7 @@ const HeroSection = () => {
             className="flex items-center gap-3 border-2 border-white px-6 py-2.5 hover:bg-white/10 transition shadow-lg"
           >
             <div className="bg-white rounded-full p-1.5 flex items-center justify-center">
-              <img src={play} alt="play" className="w-3 h-3 ml-[1px]" />
+              <img loading="lazy" src={play} alt="play" className="w-3 h-3 ml-[1px]" />
             </div>
             <span className="oswald-font-3 font-bold text-sm md:text-base tracking-wider">
               Impact Film

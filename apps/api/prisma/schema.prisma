@@ -103,10 +103,17 @@ model PartnerRequest {
   name                String
   email               String
   phone               String
+  organization        String?
+  website             String?
+  linkedin            String?
   organizationType    String
   partnershipInterest String
-  collaborationMode   String
+  collaborationMode   String?
+  areasOfInterest     String[]
   message             String?
+  meetingMode         String?
+  meetingDate         DateTime?
+  documentUrl         String?
   status              String   @default("PENDING") // PENDING, REVIEWED, ACCEPTED, REJECTED
   createdAt           DateTime @default(now())
   updatedAt           DateTime @updatedAt
@@ -147,6 +154,8 @@ model Event {
   location    String   @default("")
   link        String?  // Deep-link for the arrow button on the card
   color       String?  // Tailwind class e.g. 'bg-blue-400'
+  photos      String[] @default([])
+  eventType   String   @default("AUTO") // MANUAL, AUTO
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
 }
@@ -172,6 +181,9 @@ model Donation {
   id             String    @id @default(uuid())
   donorName      String
   donorEmail     String
+  donorPhone     String?
+  donorPan       String?
+  donorAddress   String?
   amount         Float
   currency       String    @default("INR")
   status         String    @default("PENDING") // PENDING, COMPLETED, FAILED

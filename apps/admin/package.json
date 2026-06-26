@@ -10,21 +10,29 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@fortawesome/free-solid-svg-icons": "^7.2.0",
+    "@fortawesome/react-fontawesome": "^3.3.1",
+    "@unnati/hooks": "workspace:*",
+    "@unnati/types": "workspace:*",
+    "@unnati/ui": "workspace:*",
+    "@unnati/utils": "workspace:*",
+    "firebase": "^12.15.0",
+    "framer-motion": "^12.40.0",
+    "lucide-react": "^1.21.0",
     "react": "^19.2.0",
     "react-dom": "^19.2.0",
+    "react-icons": "^5.6.0",
     "react-router-dom": "^7.12.0",
-    "@unnati/ui": "workspace:*",
-    "@unnati/types": "workspace:*",
-    "@unnati/utils": "workspace:*",
-    "@unnati/hooks": "workspace:*"
+    "recharts": "^3.8.1",
+    "sonner": "^2.0.7"
   },
   "devDependencies": {
-    "@vitejs/plugin-react": "^5.1.1",
-    "@tailwindcss/vite": "^4.1.18",
-    "tailwindcss": "^4.1.18",
-    "vite": "^7.2.4",
-    "eslint": "^9.39.1",
     "@eslint/js": "^9.39.1",
-    "globals": "^16.5.0"
+    "@tailwindcss/vite": "^4.1.18",
+    "@vitejs/plugin-react": "^5.1.1",
+    "eslint": "^9.39.1",
+    "globals": "^16.5.0",
+    "tailwindcss": "^4.1.18",
+    "vite": "^7.2.4"
   }
 }

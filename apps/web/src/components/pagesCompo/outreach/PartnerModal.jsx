@@ -1,18 +1,38 @@
-import React, { useState } from 'react';
-import { X, Handshake, ShieldCheck, ArrowRight, ChevronDown } from 'lucide-react';
+import React, { useState, useEffect } from 'react';
+import { X, Handshake, ShieldCheck, ArrowRight, ChevronDown, Check, UploadCloud, Calendar, Download, Home, FileText, Send, Shield } from 'lucide-react';
 import { toast } from 'sonner';
+
+const AREA_OPTIONS = [
+  'Digital Literacy', 'Career Guidance', 'STEM', 'Innovation', 'AI', 'Coding', 'Cyber Safety',
+  'Skill Development', 'Teacher Training', 'Leadership', 'Scholarships', 'Research',
+  'Community Outreach', 'Women Empowerment', 'Environment', 'Healthcare', 'Other'
+];
 
 const PartnerModal = ({ isOpen, onClose }) => {
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [isSuccess, setIsSuccess] = useState(false);
+  const [referenceId, setReferenceId] = useState('');
+  
   const [formData, setFormData] = useState({
     name: '',
+    organization: '',
     email: '',
     phone: '',
-    organizationType: '',
     partnershipInterest: '',
-    collaborationMode: '',
-    message: ''
+    areasOfInterest: [],
+    message: '',
+    meetingDate: '',
+    documentUrl: ''
   });
+
+  const [uploadedFile, setUploadedFile] = useState(null);
+  const [showAreas, setShowAreas] = useState(false);
+
+  useEffect(() => {
+    const handleEsc = (e) => { if (e.key === 'Escape') onClose(); };
+    window.addEventListener('keydown', handleEsc);
+    return () => window.removeEventListener('keydown', handleEsc);
+  }, [onClose]);
 
   if (!isOpen) return null;
 
@@ -21,32 +41,58 @@ const PartnerModal = ({ isOpen, onClose }) => {
     setFormData(prev => ({ ...prev, [name]: value }));
   };
 
+  const toggleArea = (area) => {
+    setFormData(prev => ({
+      ...prev,
+      areasOfInterest: prev.areasOfInterest.includes(area)
+        ? prev.areasOfInterest.filter(a => a !== area)
+        : [...prev.areasOfInterest, area]
+    }));
+  };
+
+  const handleFile = (e) => {
+    const file = e.target.files[0];
+    if (!file) return;
+    if (file.size > 5 * 1024 * 1024) return toast.error("File exceeds 5MB limit");
+    setUploadedFile(file);
+    setFormData(prev => ({ ...prev, documentUrl: file.name }));
+  };
+
+  const isValid = formData.name && formData.organization && formData.email && formData.phone && formData.partnershipInterest && formData.areasOfInterest.length > 0 && formData.message;
+
   const handleSubmit = async (e) => {
     e.preventDefault();
-    if (!formData.name || !formData.email || !formData.phone || !formData.organizationType || !formData.partnershipInterest || !formData.collaborationMode) {
-      toast.error('Please fill all required fields');
-      return;
-    }
+    if (!isValid) return toast.error('Please fill all required fields');
 
     setIsSubmitting(true);
     try {
-      const response = await fetch('/api/outreach/partner', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(formData),
+      const data = new FormData();
+      Object.keys(formData).forEach(key => {
+        if (key === 'areasOfInterest') {
+          data.append(key, JSON.stringify(formData[key]));
+        } else if (key !== 'documentUrl') {
+          data.append(key, formData[key]);
+        }
       });
+      
+      data.append('organizationType', 'Not Specified');
+      data.append('collaborationMode', 'Not Specified');
+      data.append('meetingMode', 'Not Specified');
+      data.append('website', '');
+      data.append('linkedin', '');
 
-      if (!response.ok) {
-        throw new Error('Failed to submit request');
+      if (uploadedFile) {
+        data.append('file', uploadedFile);
       }
 
-      toast.success('Partnership request submitted successfully! Our team will contact you soon.');
-      onClose();
-      // Reset form
-      setFormData({
-        name: '', email: '', phone: '', organizationType: '',
-        partnershipInterest: '', collaborationMode: '', message: ''
+      const response = await fetch('/api/outreach/partner', {
+        method: 'POST',
+        body: data,
       });
+
+      if (!response.ok) throw new Error('Failed to submit request');
+      setReferenceId(`PART-${new Date().getFullYear()}-${Math.floor(1000 + Math.random() * 9000)}`);
+      setIsSuccess(true);
     } catch (error) {
       toast.error(error.message || 'Something went wrong');
     } finally {
@@ -54,205 +100,244 @@ const PartnerModal = ({ isOpen, onClose }) => {
     }
   };
 
+  const resetAndClose = () => {
+    setIsSuccess(false);
+    setFormData({
+      name: '', organization: '', email: '', phone: '',
+      partnershipInterest: '', areasOfInterest: [],
+      message: '', meetingDate: '', documentUrl: ''
+    });
+    setUploadedFile(null);
+    onClose();
+  };
+
   return (
-    <div className="fixed inset-0 z-[100] flex items-center justify-center p-4">
+    <div className="fixed inset-0 z-[9999] flex items-center justify-center font-sans px-2 lg:px-4">
+      {/* Backdrop */}
+      <div className="absolute inset-0 bg-[#0C1220]/70 backdrop-blur-[12px]" onClick={isSuccess ? undefined : resetAndClose} />
+
+      {/* Modal Container */}
       <div 
-        className="absolute inset-0 bg-[#081B3A]/80 backdrop-blur-sm"
-        onClick={onClose}
-      />
-      
-      <div className="relative bg-white rounded-2xl shadow-2xl w-full max-w-3xl flex flex-col max-h-[90vh] overflow-hidden animate-in fade-in zoom-in duration-200">
+        className="relative bg-white w-full max-w-[1200px] h-[92vh] max-h-[850px] rounded-[24px] shadow-[0_30px_80px_rgba(0,0,0,0.25)] overflow-hidden flex flex-col md:flex-row animate-in fade-in zoom-in-95 duration-300"
+      >
         
-        {/* Close Button */}
-        <button 
-          onClick={onClose}
-          className="absolute top-6 right-6 w-8 h-8 flex items-center justify-center rounded-full bg-gray-100 hover:bg-gray-200 text-gray-600 transition-colors z-10"
-        >
-          <X size={18} />
-        </button>
-
-        {/* Scrollable Content Area */}
-        <div className="overflow-y-auto px-8 lg:px-12 py-10">
-          
-          {/* Header */}
-          <div className="flex flex-col items-center text-center mb-8">
-            <div className="w-14 h-14 rounded-full bg-blue-50 flex items-center justify-center text-[#1E63E9] mb-4">
-              <Handshake size={28} />
+        {/* Left Panel */}
+        <div className="hidden md:flex w-[38%] bg-[#081B3A] flex-col relative text-white overflow-hidden">
+          <div className="absolute inset-0 bg-gradient-to-b from-[#081B3A] to-[#040C1D] z-0" />
+          <div className="p-5 lg:p-8 xl:p-12 flex-1 z-10 flex flex-col overflow-y-auto scrollbar-none min-h-0">
+            <div className="w-12 h-12 xl:w-16 xl:h-16 rounded-full border border-white/20 flex items-center justify-center mb-4 xl:mb-8 relative shrink-0">
+              <Handshake size={24} className="text-[#FBBF24] xl:w-8 xl:h-8" />
+              <div className="absolute -inset-1 border border-[#FBBF24]/30 rounded-full animate-pulse" />
             </div>
-            <h2 className="text-3xl font-extrabold text-[#081B3A] mb-3 tracking-tight">Partner With Us</h2>
-            <p className="text-[13px] text-gray-500 max-w-sm">
-              Fill out the form below and our team will connect with you to explore partnership opportunities.
-            </p>
-          </div>
 
-          {/* Form */}
-          <form onSubmit={handleSubmit} className="space-y-6">
+            <h1 className="text-[28px] lg:text-[32px] xl:text-[44px] font-bold leading-tight mb-2 xl:mb-4 tracking-tight shrink-0" style={{ fontFamily: 'Poppins, sans-serif' }}>
+              Partner With <span className="text-[#FBBF24]">Us</span>
+            </h1>
+            <div className="w-[40px] xl:w-[60px] h-1 bg-[#FBBF24] mb-3 xl:mb-6 rounded-full shrink-0" />
             
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              {/* Name */}
-              <div className="space-y-2">
-                <label className="text-[11px] font-bold text-[#081B3A]">
-                  Full Name / Organization Name <span className="text-red-500">*</span>
-                </label>
-                <input 
-                  type="text" 
-                  name="name"
-                  value={formData.name}
-                  onChange={handleChange}
-                  placeholder="Enter your name or organization"
-                  className="w-full border border-gray-200 rounded-lg px-4 py-2.5 text-sm focus:border-[#1E63E9] focus:ring-1 focus:ring-[#1E63E9] outline-none transition-all placeholder:text-gray-400"
-                />
-              </div>
+            <p className="text-[13px] lg:text-[14px] xl:text-[16px] text-white/90 leading-[150%] xl:leading-[170%] mb-5 xl:mb-10 font-normal shrink-0">
+              Together, we can create meaningful impact through education, innovation, and outreach. Let's build a better tomorrow for our students and communities.
+            </p>
 
-              {/* Email */}
-              <div className="space-y-2">
-                <label className="text-[11px] font-bold text-[#081B3A]">
-                  Email Address <span className="text-red-500">*</span>
-                </label>
-                <input 
-                  type="email" 
-                  name="email"
-                  value={formData.email}
-                  onChange={handleChange}
-                  placeholder="Enter your email"
-                  className="w-full border border-gray-200 rounded-lg px-4 py-2.5 text-sm focus:border-[#1E63E9] focus:ring-1 focus:ring-[#1E63E9] outline-none transition-all placeholder:text-gray-400"
-                />
-              </div>
+            <div className="space-y-2.5 lg:space-y-4 xl:space-y-5 mt-auto">
+              {[
+                { title: 'Create Impact', desc: 'Help us empower more students and communities.', icon: <ArrowRight size={18} className="xl:w-5 xl:h-5"/> },
+                { title: 'Collaborate', desc: 'Work together on initiatives that bring real change.', icon: <Handshake size={18} className="xl:w-5 xl:h-5"/> },
+                { title: 'Sustainable Growth', desc: 'Build long-term value through meaningful partnerships.', icon: <Check size={18} className="xl:w-5 xl:h-5"/> },
+                { title: 'Stronger Communities', desc: 'Support inclusive development across regions.', icon: <ShieldCheck size={18} className="xl:w-5 xl:h-5"/> }
+              ].map((card, i) => (
+                <div key={i} className="flex items-start gap-3 xl:gap-4 cursor-default group">
+                  <div className="w-9 h-9 xl:w-12 xl:h-12 rounded-[10px] bg-white/5 border border-white/10 flex items-center justify-center shrink-0 group-hover:scale-105 group-hover:bg-white/10 transition-all text-[#8BA5E4]">
+                    {card.icon}
+                  </div>
+                  <div>
+                    <h3 className="font-semibold text-[13px] xl:text-[15px] mb-0.5 xl:mb-1">{card.title}</h3>
+                    <p className="text-[11px] xl:text-[13px] text-white/60 leading-relaxed">{card.desc}</p>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+          
+          <div className="h-[120px] xl:h-[200px] w-full shrink-0 relative mt-auto overflow-hidden z-10 bg-[#040C1D]">
+             <img loading="lazy" src="https://res.cloudinary.com/dyubgh5k4/image/upload/v1782396803/unnati_assets/iiit-bhagalpur.png" alt="IIIT Bhagalpur Building" className="absolute inset-0 w-full h-full object-cover opacity-70" />
+             <div className="absolute inset-0 bg-gradient-to-t from-[#040C1D] via-[#040C1D]/60 to-transparent" />
+          </div>
+        </div>
 
-              {/* Phone */}
-              <div className="space-y-2">
-                <label className="text-[11px] font-bold text-[#081B3A]">
-                  Phone Number <span className="text-red-500">*</span>
-                </label>
-                <input 
-                  type="tel" 
-                  name="phone"
-                  value={formData.phone}
-                  onChange={handleChange}
-                  placeholder="Enter your phone number"
-                  className="w-full border border-gray-200 rounded-lg px-4 py-2.5 text-sm focus:border-[#1E63E9] focus:ring-1 focus:ring-[#1E63E9] outline-none transition-all placeholder:text-gray-400"
-                />
-              </div>
+        {/* Right Panel (Form or Success) */}
+        <div className="w-full md:w-[62%] h-full bg-white relative flex flex-col">
+          
+          {/* Close Button */}
+          <button 
+            onClick={resetAndClose}
+            className="absolute top-4 right-4 xl:top-6 xl:right-6 w-10 h-10 xl:w-12 xl:h-12 flex items-center justify-center rounded-full hover:bg-gray-100 text-gray-500 transition-colors z-50"
+          >
+            <X size={24} />
+          </button>
 
-              {/* Organization Type */}
-              <div className="space-y-2 relative">
-                <label className="text-[11px] font-bold text-[#081B3A]">
-                  Organization Type <span className="text-red-500">*</span>
-                </label>
-                <div className="relative">
-                  <select 
-                    name="organizationType"
-                    value={formData.organizationType}
-                    onChange={handleChange}
-                    className="w-full border border-gray-200 rounded-lg px-4 py-2.5 text-sm focus:border-[#1E63E9] focus:ring-1 focus:ring-[#1E63E9] outline-none transition-all appearance-none bg-white text-gray-700"
-                  >
-                    <option value="" disabled>Select organization type</option>
-                    <option value="Corporate">Corporate / CSR</option>
-                    <option value="NGO">NGO / Non-Profit</option>
-                    <option value="Educational">Educational Institution</option>
-                    <option value="Government">Government Body</option>
-                    <option value="Individual">Individual Philanthropist</option>
-                    <option value="Other">Other</option>
-                  </select>
-                  <ChevronDown className="absolute right-4 top-1/2 -translate-y-1/2 text-gray-400 pointer-events-none" size={16} />
+          <div className="p-6 lg:p-8 xl:p-12 h-full flex flex-col overflow-y-auto scrollbar-thin scrollbar-thumb-gray-200 pb-20 md:pb-8">
+            
+            {!isSuccess ? (
+              <>
+                <div className="mb-6 xl:mb-8 flex items-center gap-3 shrink-0 pr-10">
+                  <div className="w-12 h-12 xl:w-14 xl:h-14 bg-white border border-[#E5E7EB] rounded-[14px] flex items-center justify-center text-[#2563EB] shrink-0 shadow-sm">
+                    <Handshake size={24} className="xl:w-7 xl:h-7" />
+                  </div>
+                  <div>
+                    <h2 className="text-[24px] lg:text-[28px] xl:text-[32px] font-bold text-[#0F172A] leading-none tracking-tight mb-2" style={{ fontFamily: 'Poppins, sans-serif' }}>Become a Partner</h2>
+                    <p className="text-[13px] xl:text-[14px] text-[#475569] font-medium leading-tight">Fill out the form below and our team will connect with you.</p>
+                  </div>
+                </div>
+
+                <form onSubmit={handleSubmit} className="space-y-4 xl:space-y-5 flex-1 flex flex-col">
+                  
+                  {/* Row 1 */}
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4 xl:gap-6 shrink-0">
+                    <div className="space-y-1.5">
+                      <label className="text-[13px] font-semibold text-[#334155]">Full Name <span className="text-red-500">*</span></label>
+                      <input required type="text" name="name" value={formData.name} onChange={handleChange} className="w-full h-11 border border-[#E2E8F0] rounded-[8px] px-4 text-[14px] focus:outline-none focus:border-[#2563EB] focus:ring-2 focus:ring-blue-50 transition-all placeholder:text-gray-400" placeholder="Enter your full name" />
+                    </div>
+                    <div className="space-y-1.5">
+                      <label className="text-[13px] font-semibold text-[#334155]">Organization / Company <span className="text-red-500">*</span></label>
+                      <input required type="text" name="organization" value={formData.organization} onChange={handleChange} className="w-full h-11 border border-[#E2E8F0] rounded-[8px] px-4 text-[14px] focus:outline-none focus:border-[#2563EB] focus:ring-2 focus:ring-blue-50 transition-all placeholder:text-gray-400" placeholder="Enter organization name" />
+                    </div>
+                  </div>
+
+                  {/* Row 2 */}
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4 xl:gap-6 shrink-0">
+                    <div className="space-y-1.5">
+                      <label className="text-[13px] font-semibold text-[#334155]">Email Address <span className="text-red-500">*</span></label>
+                      <input required type="email" name="email" value={formData.email} onChange={handleChange} className="w-full h-11 border border-[#E2E8F0] rounded-[8px] px-4 text-[14px] focus:outline-none focus:border-[#2563EB] focus:ring-2 focus:ring-blue-50 transition-all placeholder:text-gray-400" placeholder="Enter your email" />
+                    </div>
+                    <div className="space-y-1.5">
+                      <label className="text-[13px] font-semibold text-[#334155]">Phone Number <span className="text-red-500">*</span></label>
+                      <input required type="tel" name="phone" value={formData.phone} onChange={handleChange} className="w-full h-11 border border-[#E2E8F0] rounded-[8px] px-4 text-[14px] focus:outline-none focus:border-[#2563EB] focus:ring-2 focus:ring-blue-50 transition-all placeholder:text-gray-400" placeholder="Enter your phone number" />
+                    </div>
+                  </div>
+
+                  {/* Row 3 - Partnership Type */}
+                  <div className="space-y-1.5 relative shrink-0">
+                    <label className="text-[13px] font-semibold text-[#334155]">Partnership Type <span className="text-red-500">*</span></label>
+                    <select required name="partnershipInterest" value={formData.partnershipInterest} onChange={handleChange} className="w-full h-11 border border-[#E2E8F0] rounded-[8px] px-4 text-[14px] focus:outline-none focus:border-[#2563EB] focus:ring-2 focus:ring-blue-50 transition-all appearance-none bg-white text-[#0F172A]">
+                      <option value="" disabled>Select partnership type</option>
+                      {['CSR Partnership', 'Educational Partnership', 'Technology Partnership', 'Internship Collaboration', 'Research Collaboration', 'Funding', 'Other'].map(o => <option key={o} value={o}>{o}</option>)}
+                    </select>
+                    <ChevronDown className="absolute right-4 top-[34px] text-gray-400 pointer-events-none" size={16} />
+                  </div>
+
+                  {/* Row 4 - Area of Interest (Multi-Select Fake) */}
+                  <div className="space-y-1.5 relative shrink-0">
+                    <label className="text-[13px] font-semibold text-[#334155]">Area of Interest <span className="text-red-500">*</span></label>
+                    <div 
+                      className="w-full min-h-[44px] border border-[#E2E8F0] rounded-[8px] px-4 py-2 flex flex-wrap gap-2 items-center cursor-pointer focus-within:border-[#2563EB] focus-within:ring-2 focus-within:ring-blue-50 transition-all bg-white"
+                      onClick={() => setShowAreas(!showAreas)}
+                    >
+                      {formData.areasOfInterest.length === 0 && <span className="text-gray-400 text-[14px]">Select area of interest</span>}
+                      {formData.areasOfInterest.map(area => (
+                        <span key={area} className="bg-[#F1F5F9] border border-gray-200 text-[#334155] text-[12px] px-2 py-1 rounded-[6px] flex items-center gap-1 font-medium">
+                          {area}
+                          <X size={12} className="cursor-pointer text-gray-400 hover:text-red-500" onClick={(e) => { e.stopPropagation(); toggleArea(area); }}/>
+                        </span>
+                      ))}
+                      <ChevronDown className="absolute right-4 top-[14px] text-gray-400 pointer-events-none" size={16} />
+                    </div>
+                    {showAreas && (
+                      <div className="absolute z-50 top-full left-0 w-full mt-2 bg-white border border-[#E2E8F0] rounded-[8px] shadow-lg p-3 grid grid-cols-2 lg:grid-cols-3 gap-2 max-h-[200px] overflow-y-auto">
+                        {AREA_OPTIONS.map(area => (
+                          <label key={area} className="flex items-center gap-2 cursor-pointer p-1.5 hover:bg-slate-50 rounded-md transition-colors text-[13px] text-[#475569]">
+                            <input type="checkbox" checked={formData.areasOfInterest.includes(area)} onChange={() => toggleArea(area)} className="accent-[#2563EB] w-4 h-4 rounded" />
+                            {area}
+                          </label>
+                        ))}
+                      </div>
+                    )}
+                  </div>
+
+                  {/* Row 5 - Message */}
+                  <div className="space-y-1.5 relative shrink-0">
+                    <label className="text-[13px] font-semibold text-[#334155]">How can you collaborate with us? <span className="text-red-500">*</span></label>
+                    <textarea 
+                      required name="message" value={formData.message} onChange={handleChange} maxLength={1000} rows={4}
+                      className="w-full border border-[#E2E8F0] rounded-[8px] px-4 py-3 text-[14px] focus:outline-none focus:border-[#2563EB] focus:ring-2 focus:ring-blue-50 transition-all resize-none placeholder:text-gray-400"
+                      placeholder="Tell us about your ideas, resources, and how you'd like to contribute..."
+                    />
+                    <div className="absolute bottom-3 right-3 text-[11px] font-medium text-gray-400">{formData.message.length}/1000</div>
+                  </div>
+
+                  {/* Row 6 - Date & File */}
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4 xl:gap-6 shrink-0 mt-2">
+                    <div className="space-y-1.5 relative">
+                      <label className="text-[13px] font-semibold text-[#334155]">Preferred Time to Connect</label>
+                      <div className="relative">
+                        <Calendar size={18} className="absolute left-4 top-[13px] text-gray-400" />
+                        <input type="date" name="meetingDate" value={formData.meetingDate} onChange={handleChange} className="w-full h-11 border border-[#E2E8F0] rounded-[8px] pl-10 pr-4 text-[14px] focus:outline-none focus:border-[#2563EB] focus:ring-2 focus:ring-blue-50 transition-all text-[#0F172A]" />
+                      </div>
+                    </div>
+                    <div className="space-y-1.5">
+                      <label className="text-[13px] font-semibold text-[#334155]">Additional Documents (Optional)</label>
+                      <div className="flex items-center gap-3 h-11">
+                        <input type="file" className="hidden" id="fileUpload" accept=".pdf,.doc,.docx" onChange={handleFile} />
+                        <label htmlFor="fileUpload" className="h-full px-4 rounded-[8px] border border-[#E2E8F0] bg-white text-[#2563EB] text-[13px] font-semibold flex items-center justify-center gap-2 cursor-pointer hover:bg-blue-50 transition-colors shrink-0">
+                          <UploadCloud size={16} /> Upload File
+                        </label>
+                        {uploadedFile ? (
+                          <div className="text-[12px] font-medium text-gray-700 truncate">{uploadedFile.name}</div>
+                        ) : (
+                          <span className="text-[12px] text-gray-400">PDF, DOC, DOCX (Max. 5MB)</span>
+                        )}
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Privacy Alert */}
+                  <div className="bg-[#F0FDF4] border border-[#BBF7D0] rounded-[8px] p-3 xl:p-4 flex gap-3 items-center mt-6 shrink-0">
+                    <ShieldCheck className="text-[#16A34A] shrink-0" size={20} />
+                    <p className="text-[13px] text-[#15803D] font-medium">
+                      Your information is safe with us. We respect your privacy.
+                    </p>
+                  </div>
+
+                  {/* Submit Button */}
+                  <div className="pt-4 shrink-0 mt-auto">
+                    <button 
+                      type="submit"
+                      disabled={!isValid || isSubmitting}
+                      className="w-full h-12 rounded-[8px] bg-[#2563EB] text-white text-[15px] font-bold hover:bg-[#1D4ED8] transition-all flex items-center justify-center gap-2 shadow-[0_4px_14px_rgba(37,99,235,0.3)] disabled:opacity-50 disabled:cursor-not-allowed"
+                    >
+                      {isSubmitting ? (
+                        <div className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin" />
+                      ) : (
+                        <><Send size={18}/> Submit Partnership Request</>
+                      )}
+                    </button>
+                  </div>
+
+                </form>
+              </>
+            ) : (
+              // Success Screen
+              <div className="flex-1 flex flex-col items-center justify-center text-center animate-in fade-in slide-in-from-bottom-8 duration-500 p-8">
+                <div className="w-24 h-24 xl:w-32 xl:h-32 bg-blue-50 rounded-[20px] flex items-center justify-center mb-6 xl:mb-8 relative">
+                  <Handshake size={48} className="text-[#2563EB] xl:w-16 xl:h-16" />
+                </div>
+                <h2 className="text-[28px] xl:text-[36px] font-bold text-[#0F172A] mb-3 xl:mb-4 tracking-tight" style={{ fontFamily: 'Poppins, sans-serif' }}>Partnership Request Submitted</h2>
+                <p className="text-[14px] xl:text-[16px] text-[#475569] max-w-md mx-auto leading-relaxed mb-6 xl:mb-8">
+                  Thank you for reaching out. Our team will review your request and connect with you shortly.
+                </p>
+                <div className="bg-[#F8FAFC] border border-[#E2E8F0] rounded-[12px] px-6 py-3 mb-8 xl:mb-10">
+                  <p className="text-[11px] xl:text-[12px] text-gray-500 font-semibold uppercase tracking-wider mb-1">Reference ID</p>
+                  <p className="text-[14px] xl:text-[16px] font-bold text-[#0F172A] font-mono">{referenceId}</p>
+                </div>
+                
+                <div className="flex gap-3 xl:gap-4 w-full max-w-md">
+                  <button onClick={resetAndClose} className="flex-1 h-12 rounded-[8px] bg-[#2563EB] text-white font-bold text-[14px] xl:text-[15px] flex items-center justify-center gap-2 hover:bg-[#1D4ED8] transition-all">
+                    <Home size={18} /> Return Home
+                  </button>
                 </div>
               </div>
-
-              {/* Partnership Interest */}
-              <div className="space-y-2 relative">
-                <label className="text-[11px] font-bold text-[#081B3A]">
-                  Partnership Interest <span className="text-red-500">*</span>
-                </label>
-                <div className="relative">
-                  <select 
-                    name="partnershipInterest"
-                    value={formData.partnershipInterest}
-                    onChange={handleChange}
-                    className="w-full border border-gray-200 rounded-lg px-4 py-2.5 text-sm focus:border-[#1E63E9] focus:ring-1 focus:ring-[#1E63E9] outline-none transition-all appearance-none bg-white text-gray-700"
-                  >
-                    <option value="" disabled>Select partnership interest</option>
-                    <option value="Funding">Funding & Grants</option>
-                    <option value="Mentorship">Mentorship Programs</option>
-                    <option value="Resource">Resource Sharing</option>
-                    <option value="Volunteering">Corporate Volunteering</option>
-                    <option value="Awareness">Awareness Campaigns</option>
-                  </select>
-                  <ChevronDown className="absolute right-4 top-1/2 -translate-y-1/2 text-gray-400 pointer-events-none" size={16} />
-                </div>
-              </div>
-
-              {/* Collaboration Mode */}
-              <div className="space-y-2 relative">
-                <label className="text-[11px] font-bold text-[#081B3A]">
-                  Preferred Mode of Collaboration <span className="text-red-500">*</span>
-                </label>
-                <div className="relative">
-                  <select 
-                    name="collaborationMode"
-                    value={formData.collaborationMode}
-                    onChange={handleChange}
-                    className="w-full border border-gray-200 rounded-lg px-4 py-2.5 text-sm focus:border-[#1E63E9] focus:ring-1 focus:ring-[#1E63E9] outline-none transition-all appearance-none bg-white text-gray-700"
-                  >
-                    <option value="" disabled>Select collaboration type</option>
-                    <option value="Financial">Financial Support</option>
-                    <option value="InKind">In-Kind Contributions</option>
-                    <option value="Knowledge">Knowledge & Skill Sharing</option>
-                    <option value="Joint">Joint Initiatives/Events</option>
-                  </select>
-                  <ChevronDown className="absolute right-4 top-1/2 -translate-y-1/2 text-gray-400 pointer-events-none" size={16} />
-                </div>
-              </div>
-            </div>
-
-            {/* Message Area */}
-            <div className="space-y-2">
-              <label className="text-[11px] font-bold text-[#081B3A]">
-                Message / Additional Information
-              </label>
-              <div className="relative">
-                <textarea 
-                  name="message"
-                  value={formData.message}
-                  onChange={handleChange}
-                  maxLength={500}
-                  rows={4}
-                  placeholder="Tell us more about your vision and how you'd like to partner with us..."
-                  className="w-full border border-gray-200 rounded-lg px-4 py-3 text-sm focus:border-[#1E63E9] focus:ring-1 focus:ring-[#1E63E9] outline-none transition-all resize-none placeholder:text-gray-400"
-                ></textarea>
-                <span className="absolute bottom-3 right-3 text-[10px] text-gray-400 font-medium">
-                  {formData.message.length}/500
-                </span>
-              </div>
-            </div>
-
-            {/* Security Banner */}
-            <div className="bg-[#F4F7FE] rounded-lg p-4 flex items-start gap-3 mt-2 border border-blue-50/50">
-              <ShieldCheck className="text-[#1E63E9] shrink-0" size={18} />
-              <p className="text-[11px] text-[#081B3A]/80 font-medium leading-relaxed">
-                Your information is safe with us. We respect your privacy and will never share your details.
-              </p>
-            </div>
-
-            {/* Actions */}
-            <div className="flex flex-col sm:flex-row gap-4 pt-4">
-              <button 
-                type="button"
-                onClick={onClose}
-                className="flex-1 py-3.5 rounded-xl border border-gray-200 text-sm font-bold text-[#081B3A] hover:bg-gray-50 transition-colors"
-              >
-                Cancel
-              </button>
-              <button 
-                type="submit"
-                disabled={isSubmitting}
-                className="flex-1 py-3.5 rounded-xl bg-[#1E63E9] text-white text-sm font-bold hover:bg-blue-700 transition-colors flex items-center justify-center gap-2 shadow-lg shadow-blue-200 disabled:opacity-70"
-              >
-                {isSubmitting ? 'Submitting...' : <>Submit Request <ArrowRight size={16}/></>}
-              </button>
-            </div>
-
-          </form>
-
+            )}
+          </div>
         </div>
       </div>
     </div>
