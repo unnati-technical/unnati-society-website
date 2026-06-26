@@ -6,7 +6,11 @@
   z-index: 50;
   animation: slideDown 0.3s ease-out;
   padding-bottom: 4px;
-  background: white;
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.08);
+  border-bottom: 1px solid rgba(0, 0, 0, 0.05);
 }
 
 .fixed-header h1, 

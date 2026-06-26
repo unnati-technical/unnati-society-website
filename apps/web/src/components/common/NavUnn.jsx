@@ -3,12 +3,13 @@ const Unnati = "https://res.cloudinary.com/dyubgh5k4/image/upload/v1782396887/un
 import { gsap } from "gsap";
 import './../../styles/navunn.css'
 import { ScrollTrigger } from "gsap/ScrollTrigger";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 
 gsap.registerPlugin(ScrollTrigger);
 
 const NavUnn = () => {
   const navigate = useNavigate();
+  const location = useLocation();
   const [show, setShow] = useState(false);
   const header2Ref = useRef(null);
 
@@ -28,6 +29,31 @@ const NavUnn = () => {
       trigger.kill();
     };
   }, []);
+
+  const isActive = (path) => {
+    if (path === "/") return location.pathname === "/";
+    return location.pathname.startsWith(path);
+  };
+
+  const getDesktopClass = (path) => {
+    const base = "px-1 sm:px-3 py-1 cursor-pointer text-[10px] sm:text-[11px] md:text-[12px] hover:text-blue-400 hover:underline underline-offset-4 decoration-2 transition-colors";
+    return isActive(path) ? `${base} text-blue-400 underline` : base;
+  };
+
+  const getMobileClass = (path) => {
+    const base = "cursor-pointer text-[11px] transition-colors";
+    return isActive(path) ? `${base} text-blue-600 font-extrabold` : base;
+  };
+
+  const navLinks = [
+    { name: "HOME", path: "/" },
+    { name: "ABOUT", path: "/about-us" },
+    { name: "OUTREACH", path: "/outreach" },
+    { name: "PROGRAMS", path: "/programs" },
+    { name: "PEOPLE", path: "/executive-body" },
+    { name: "MEDIA", path: "/media" },
+    { name: "RESOURCES", path: "/resources" },
+  ];
 
   return (
     <header 
@@ -58,13 +84,15 @@ const NavUnn = () => {
 
       {/* Desktop Menu */}
       <div className="hidden text-gray-100 sm:flex gap-2 sm:gap-3 md:gap-5 font-semibold">
-        <h3 className="px-1 sm:px-3 py-1 cursor-pointer text-[10px] sm:text-[11px] md:text-[12px]" onClick={() => navigate("/")}>HOME</h3>
-        <h3 className="px-1 sm:px-3 py-1 cursor-pointer text-[10px] sm:text-[11px] md:text-[12px]" onClick={() => navigate("/about-us")}>ABOUT</h3>
-        <h3 className="px-1 sm:px-3 py-1 cursor-pointer text-[10px] sm:text-[11px] md:text-[12px]" onClick={() => navigate("/media")}>MEDIA</h3>
-        <h3 className="px-1 sm:px-3 py-1 cursor-pointer text-[10px] sm:text-[11px] md:text-[12px] hover:text-blue-400 hover:underline underline-offset-4 decoration-2" onClick={() => navigate("/outreach")}>OUTREACH</h3>
-        <h3 className="px-1 sm:px-3 py-1 cursor-pointer text-[10px] sm:text-[11px] md:text-[12px] hover:text-blue-400 hover:underline underline-offset-4 decoration-2" onClick={() => navigate("/programs")}>PROGRAMS</h3>
-        <h3 className="px-1 sm:px-3 py-1 cursor-pointer text-[10px] sm:text-[11px] md:text-[12px] hover:text-blue-400 hover:underline underline-offset-4 decoration-2" onClick={() => navigate('/executive-body')}>PEOPLE</h3>
-        <h3 className="px-1 sm:px-3 py-1 cursor-pointer text-[10px] sm:text-[11px] md:text-[12px] hover:text-blue-400 hover:underline underline-offset-4 decoration-2" onClick={() => navigate('/resources')}>RESOURCES</h3>
+        {navLinks.map((link) => (
+          <h3 
+            key={link.name}
+            className={getDesktopClass(link.path)} 
+            onClick={() => navigate(link.path)}
+          >
+            {link.name}
+          </h3>
+        ))}
         <h3 className="bg-[#2563EB] hover:bg-blue-600 text-white px-3 py-1 cursor-pointer text-[10px] sm:text-[11px] md:text-[12px] rounded-md transition-colors font-bold tracking-wide shadow-md hover:shadow-lg" onClick={() => navigate('/donate')}>DONATE</h3>
       </div>
 
@@ -81,13 +109,15 @@ const NavUnn = () => {
       {/* Mobile Dropdown */}
       {show && (
         <div className="flex flex-col text-black gap-3 font-bold absolute right-2 top-14 w-40 bg-white p-3 shadow-lg rounded-lg sm:hidden z-50">
-          <h3 className="cursor-pointer text-[11px]" onClick={() => navigate("/")}>HOME</h3>
-          <h3 className="cursor-pointer text-[11px]" onClick={() => navigate("/about-us")}>ABOUT</h3>
-          <h3 className="cursor-pointer text-[11px]" onClick={() => navigate("/media")}>MEDIA</h3>
-          <h3 className="cursor-pointer text-[11px]" onClick={() => navigate("/outreach")}>OUTREACH</h3>
-          <h3 className="cursor-pointer text-[11px]" onClick={() => navigate("/programs")}>PROGRAMS</h3>
-          <h3 className="cursor-pointer text-[11px]" onClick={() => navigate("/executive-body")}>PEOPLE</h3>
-          <h3 className="cursor-pointer text-[11px]" onClick={() => navigate("/resources")}>RESOURCES</h3>
+          {navLinks.map((link) => (
+            <h3 
+              key={link.name}
+              className={getMobileClass(link.path)} 
+              onClick={() => { navigate(link.path); setShow(false); }}
+            >
+              {link.name}
+            </h3>
+          ))}
           <h3 className="bg-[#2563EB] px-2 py-1.5 cursor-pointer text-[11px] text-white text-center rounded font-bold tracking-wide" onClick={() => { navigate("/donate"); setShow(false); }}>DONATE</h3>
         </div>
       )}

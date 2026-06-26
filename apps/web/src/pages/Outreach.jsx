@@ -5,7 +5,7 @@ import Footer from '../components/common/Footer';
 import {
   FiMapPin, FiCalendar, FiBookOpen, FiUsers,
   FiCheckCircle, FiArrowRight, FiMonitor, FiClock,
-  FiBriefcase, FiAward, FiShield, FiHeart
+  FiBriefcase, FiAward, FiShield, FiHeart, FiLayers
 } from 'react-icons/fi';
 import { BiBuildingHouse, BiChalkboard, BiTargetLock } from 'react-icons/bi';
 import { FaHandshake } from 'react-icons/fa';
@@ -13,36 +13,7 @@ import CampusVisitModal from '../components/common/CampusVisitModal';
 import InviteUsModal from '../components/common/InviteUsModal';
 import PartnerModal from '../components/pagesCompo/outreach/PartnerModal';
 
-const Counter = ({ end, duration = 2000, suffix = "" }) => {
-  const [count, setCount] = useState(0);
-  const [hasAnimated, setHasAnimated] = useState(false);
-  const ref = useRef(null);
-
-  useEffect(() => {
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        if (entry.isIntersecting && !hasAnimated) {
-          setHasAnimated(true);
-          let startTimestamp = null;
-          const step = (timestamp) => {
-            if (!startTimestamp) startTimestamp = timestamp;
-            const progress = Math.min((timestamp - startTimestamp) / duration, 1);
-            setCount(Math.floor(progress * end));
-            if (progress < 1) {
-              window.requestAnimationFrame(step);
-            }
-          };
-          window.requestAnimationFrame(step);
-        }
-      },
-      { threshold: 0.5 }
-    );
-    if (ref.current) observer.observe(ref.current);
-    return () => observer.disconnect();
-  }, [end, duration, hasAnimated]);
-
-  return <span ref={ref}>{count}{suffix}</span>;
-};
+import AnimatedCounter from '../components/common/AnimatedCounter';
 
 const Outreach = () => {
   const [isCampusVisitModalOpen, setIsCampusVisitModalOpen] = useState(false);
@@ -96,11 +67,11 @@ const Outreach = () => {
             <div className="flex flex-col items-center gap-4 mb-6">
               <div className="flex items-center gap-4">
                 <button onClick={() => setIsCampusVisitModalOpen(true)} className="flex items-center justify-center gap-2 bg-blue-600 hover:bg-blue-700 text-white px-6 py-3.5 rounded-xl oswald-font-3 font-bold tracking-wide uppercase transition-all shadow-lg shadow-blue-600/20 text-sm">
-                <FiCalendar size={16} /> Book a Campus Visit
-              </button>
-              <button onClick={() => setIsInviteUsModalOpen(true)} className="flex items-center justify-center gap-2 bg-[#FFC107] hover:bg-[#FFB300] text-black px-6 py-3.5 rounded-xl oswald-font-3 font-bold tracking-wide uppercase transition-all shadow-lg shadow-yellow-400/20 text-sm">
-                <BiBuildingHouse size={16} /> Invite Us To Your School
-              </button>
+                  <FiCalendar size={16} /> Book a Campus Visit
+                </button>
+                <button onClick={() => setIsInviteUsModalOpen(true)} className="flex items-center justify-center gap-2 bg-[#FFC107] hover:bg-[#FFB300] text-black px-6 py-3.5 rounded-xl oswald-font-3 font-bold tracking-wide uppercase transition-all shadow-lg shadow-yellow-400/20 text-sm">
+                  <BiBuildingHouse size={16} /> Invite Us To Your School
+                </button>
               </div>
               <button onClick={() => setIsPartnerModalOpen(true)} className="flex items-center justify-center gap-2 bg-white border border-gray-200 hover:border-blue-600 hover:bg-blue-50 text-slate-700 px-6 py-3.5 rounded-xl oswald-font-3 font-bold tracking-wide uppercase transition-all text-sm shadow-sm">
                 <FaHandshake size={16} className="text-gray-400" /> Partner with Us
@@ -174,38 +145,38 @@ const Outreach = () => {
 
           {/* Stat Card 1 */}
           <div className="bg-white rounded-[32px] p-8 shadow-[0_20px_60px_rgba(0,0,0,0.06)] border border-gray-100 hover:-translate-y-2 transition-all duration-500 group flex flex-col items-center text-center">
-            <div className="w-[68px] h-[68px] rounded-[20px] bg-blue-50 text-blue-600 flex items-center justify-center mb-6 group-hover:scale-110 group-hover:bg-blue-600 group-hover:text-white group-hover:shadow-[0_10px_30px_rgba(37,99,235,0.3)] transition-all duration-300">
-              <BiBuildingHouse size={32} />
+            <div className="w-[68px] h-[68px] rounded-[20px] bg-[#FFF8E1] text-[#FFB300] flex items-center justify-center mb-6 group-hover:scale-110 group-hover:bg-[#FFC107] group-hover:text-black group-hover:shadow-[0_10px_30px_rgba(255,193,7,0.3)] transition-all duration-300">
+              <FiUsers size={32} />
             </div>
-            <h3 className="oswald-font-3 text-5xl font-extrabold text-[#0F172A] mb-2 tracking-tight group-hover:text-blue-600 transition-colors">500<span className="text-[#FFC107]">++</span></h3>
-            <p className="inter-font text-[13px] font-bold text-gray-500 uppercase tracking-widest">Schools Reached</p>
+            <h3 className="oswald-font-3 text-5xl font-extrabold text-[#0F172A] mb-2 tracking-tight group-hover:text-[#FFB300] transition-colors"><AnimatedCounter value={4000} suffix="+" /><span className="text-blue-600"></span></h3>
+            <p className="inter-font text-[13px] font-bold text-gray-500 uppercase tracking-widest">Students Impacted</p>
           </div>
 
           {/* Stat Card 2 */}
           <div className="bg-white rounded-[32px] p-8 shadow-[0_20px_60px_rgba(0,0,0,0.06)] border border-gray-100 hover:-translate-y-2 transition-all duration-500 group flex flex-col items-center text-center">
-            <div className="w-[68px] h-[68px] rounded-[20px] bg-[#FFF8E1] text-[#FFB300] flex items-center justify-center mb-6 group-hover:scale-110 group-hover:bg-[#FFC107] group-hover:text-black group-hover:shadow-[0_10px_30px_rgba(255,193,7,0.3)] transition-all duration-300">
-              <FiUsers size={32} />
+            <div className="w-[68px] h-[68px] rounded-[20px] bg-blue-50 text-blue-600 flex items-center justify-center mb-6 group-hover:scale-110 group-hover:bg-blue-600 group-hover:text-white group-hover:shadow-[0_10px_30px_rgba(37,99,235,0.3)] transition-all duration-300">
+              <BiChalkboard size={32} />
             </div>
-            <h3 className="oswald-font-3 text-5xl font-extrabold text-[#0F172A] mb-2 tracking-tight group-hover:text-[#FFB300] transition-colors">25k<span className="text-blue-600">+</span></h3>
-            <p className="inter-font text-[13px] font-bold text-gray-500 uppercase tracking-widest">Students Impacted</p>
+            <h3 className="oswald-font-3 text-5xl font-extrabold text-[#0F172A] mb-2 tracking-tight group-hover:text-blue-600 transition-colors"><AnimatedCounter value={360} suffix="+" /><span className="text-[#FFC107]"></span></h3>
+            <p className="inter-font text-[13px] font-bold text-gray-500 uppercase tracking-widest">Sessions Conducted</p>
           </div>
 
           {/* Stat Card 3 */}
           <div className="bg-white rounded-[32px] p-8 shadow-[0_20px_60px_rgba(0,0,0,0.06)] border border-gray-100 hover:-translate-y-2 transition-all duration-500 group flex flex-col items-center text-center">
             <div className="w-[68px] h-[68px] rounded-[20px] bg-blue-50 text-blue-600 flex items-center justify-center mb-6 group-hover:scale-110 group-hover:bg-blue-600 group-hover:text-white group-hover:shadow-[0_10px_30px_rgba(37,99,235,0.3)] transition-all duration-300">
-              <BiChalkboard size={32} />
+              <BiBuildingHouse size={32} />
             </div>
-            <h3 className="oswald-font-3 text-5xl font-extrabold text-[#0F172A] mb-2 tracking-tight group-hover:text-blue-600 transition-colors">250<span className="text-[#FFC107]">+</span></h3>
-            <p className="inter-font text-[13px] font-bold text-gray-500 uppercase tracking-widest">Programs Conducted</p>
+            <h3 className="oswald-font-3 text-5xl font-extrabold text-[#0F172A] mb-2 tracking-tight group-hover:text-blue-600 transition-colors"><AnimatedCounter value={15} suffix="+" /><span className="text-[#FFC107]"></span></h3>
+            <p className="inter-font text-[13px] font-bold text-gray-500 uppercase tracking-widest">Schools Reached</p>
           </div>
 
           {/* Stat Card 4 */}
           <div className="bg-white rounded-[32px] p-8 shadow-[0_20px_60px_rgba(0,0,0,0.06)] border border-gray-100 hover:-translate-y-2 transition-all duration-500 group flex flex-col items-center text-center">
             <div className="w-[68px] h-[68px] rounded-[20px] bg-[#FFF8E1] text-[#FFB300] flex items-center justify-center mb-6 group-hover:scale-110 group-hover:bg-[#FFC107] group-hover:text-black group-hover:shadow-[0_10px_30px_rgba(255,193,7,0.3)] transition-all duration-300">
-              <FiMapPin size={32} />
+              <FiLayers size={32} />
             </div>
-            <h3 className="oswald-font-3 text-5xl font-extrabold text-[#0F172A] mb-2 tracking-tight group-hover:text-[#FFB300] transition-colors">15<span className="text-blue-600">+</span></h3>
-            <p className="inter-font text-[13px] font-bold text-gray-500 uppercase tracking-widest">Districts Covered</p>
+            <h3 className="oswald-font-3 text-5xl font-extrabold text-[#0F172A] mb-2 tracking-tight group-hover:text-[#FFB300] transition-colors"><AnimatedCounter value={6} suffix="+" /><span className="text-blue-600"></span></h3>
+            <p className="inter-font text-[13px] font-bold text-gray-500 uppercase tracking-widest">Programs Initiated</p>
           </div>
 
         </div>

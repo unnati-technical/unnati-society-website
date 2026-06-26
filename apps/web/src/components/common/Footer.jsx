@@ -14,7 +14,7 @@ const Footer = () => {
       <div className="max-w-7xl mx-auto grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8">
         <div className="flex flex-col gap-6">
           <div className="flex items-center gap-4">
-            <img loading="lazy" 
+            <img loading="lazy"
               src={IIITBh}
               alt="IIIT Bhagalpur logo"
               className="h-12 object-contain"
@@ -22,7 +22,7 @@ const Footer = () => {
 
             <div className="w-0.5 h-10 bg-white/60"></div>
 
-            <img loading="lazy" 
+            <img loading="lazy"
               src={Unnati}
               alt="Unnati logo"
               className="h-12 object-contain"
@@ -30,15 +30,15 @@ const Footer = () => {
           </div>
           <div className="flex gap-4 text-white/70">
             <span className="w-8 h-8 rounded-full border border-white/40 flex items-center justify-center cursor-pointer"
-              onClick={()=>navigate("https://www.instagram.com/unnati_society_iiitbh_/")}>        
+              onClick={() => navigate("https://www.instagram.com/unnati_society_iiitbh_/")}>
               i
             </span>
             <span className="w-8 h-8 rounded-full border border-white/40 flex items-center justify-center cursor-pointer"
-              onClick={()=>navigate("https://x.com/Unnati_Welfare")}>
+              onClick={() => navigate("https://x.com/Unnati_Welfare")}>
               x
             </span>
             <span className="w-8 h-8 rounded-full border border-white/40 flex items-center justify-center cursor-pointer"
-              onClick={()=>navigate("https://www.linkedin.com/company/unnati-society-iiit-bhagalpur/")}>
+              onClick={() => navigate("https://www.linkedin.com/company/unnati-society-iiit-bhagalpur/")}>
               in
             </span>
           </div>
@@ -70,9 +70,9 @@ const Footer = () => {
               Impact
             </li>
             <li className="hover:text-white cursor-pointer"
-                onClick={()=>navigate("/contact")}
-                >
-                Contact
+              onClick={() => navigate("/contact")}
+            >
+              Contact
             </li>
             <li
               className="hover:text-white cursor-pointer"
@@ -115,7 +115,7 @@ const Footer = () => {
           </h1>
 
           <p className="text-sm text-white/60 hover:text-white transition-colors duration-200 cursor-pointer">
-            email: <span className="text-blue-400">unnati.ir@iiitbh.ac.in</span>
+            Email: <span className="text-blue-400">unnati.ir@iiitbh.ac.in</span>
           </p>
 
           <p className="text-sm text-white/60 mb-3">Get the latest updates</p>
@@ -129,10 +129,10 @@ const Footer = () => {
               OK
             </button>
           </div>
-          
+
           {isPeoplePage && (
             <div className="mt-8 pt-4 border-t border-white/10">
-              <button 
+              <button
                 onClick={() => setIsAuthOpen(true)}
                 className="text-xs text-white/40 hover:text-white/80 transition-colors tracking-widest uppercase font-semibold"
               >
@@ -142,7 +142,7 @@ const Footer = () => {
           )}
         </div>
       </div>
-      
+
       <AuthModal isOpen={isAuthOpen} onClose={() => setIsAuthOpen(false)} />
     </footer>
   );

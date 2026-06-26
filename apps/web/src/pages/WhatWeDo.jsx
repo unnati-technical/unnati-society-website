@@ -1,7 +1,7 @@
 import React from 'react'
 import Navbar from '../components/common/Navbar'
 import NavUnn from '../components/common/NavUnn'
-import Program from '../components/pagesCompo/whatwedo/Program'
+import ProgramsShowcase from '../components/pagesCompo/whatwedo/ProgramsShowcase'
 import DigiXplore from '../components/pagesCompo/whatwedo/DigiXplore'
 import Netritva from '../components/pagesCompo/whatwedo/Netritva'
 import Akshar from '../components/pagesCompo/whatwedo/Akshar'
@@ -13,7 +13,7 @@ const WhatWeDo = () => {
     <div>
         <Navbar/>
         <NavUnn/>
-        <Program/>
+        <ProgramsShowcase/>
         <DigiXplore/>
         <Netritva/>
         <Akshar/>

@@ -2,22 +2,9 @@ import React, { useState, useEffect } from "react";
 // eslint-disable-next-line no-unused-vars
 import { motion, AnimatePresence, animate } from "framer-motion";
 import { cloudinaryImage } from "../../../utils/cloudinary";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 
-const AnimatedCounter = ({ value, duration = 1 }) => {
-  const [count, setCount] = useState(0);
-
-  useEffect(() => {
-    const controls = animate(0, value, {
-      duration: duration,
-      onUpdate: (v) => setCount(Math.round(v)),
-      ease: "easeOut",
-    });
-    return () => controls.stop();
-  }, [value, duration]);
-
-  return <span>{count}</span>;
-};
+import AnimatedCounter from "../../common/AnimatedCounter";
 
 const programsData = [
   {
@@ -25,7 +12,7 @@ const programsData = [
     name: "DigiXplore",
     title: "Digital Literacy Program",
     description: "Empowering students with essential digital literacy skills through engaging workshops.",
-    stats: { value: 280, suffix: "+", label: "Students Reached" },
+    stats: { value: 2800, suffix: "+", label: "Students Reached" },
     tags: ["Digital Literacy", "Technology", "Computer Skills", "Future Ready"],
     image: cloudinaryImage("WhatsApp_Image_2026-02-03_at_1.39.40_PM_whvo3l"),
     link: "/programs/digiXplore",
@@ -35,8 +22,8 @@ const programsData = [
     name: "Netritva",
     title: "Career Guidance Program",
     description: "Guiding the youth towards a brighter future with mentorship and leadership training.",
-    stats: { value: 80, suffix: "+", label: "Careers Guided" },
-    tags: ["Career Guidance", "Mentorship", "Leadership", "Confidence"],
+    stats: { value: 600, suffix: "+", label: "Students Guided" },
+    tags: ["Career Guidance", "Mentorship", "Leadership", "Awareness"],
     image: cloudinaryImage("WhatsApp_Image_2026-02-03_at_1.39.38_PM_3_thxqic"),
     link: "/programs/netritva",
   },
@@ -45,7 +32,7 @@ const programsData = [
     name: "Akshar",
     title: "English Literacy Program",
     description: "Fostering communication and literacy skills for a better tomorrow.",
-    stats: { value: 30, suffix: "+", label: "Literacy Camps" },
+    stats: { value: 200, suffix: "+", label: "Students Taught" },
     tags: ["English Learning", "Communication", "Literacy", "Education"],
     image: cloudinaryImage("WhatsApp_Image_2026-02-03_at_1.39.39_PM_5_ney7sn"),
     link: "/programs/akshar",
@@ -54,6 +41,7 @@ const programsData = [
 
 const ProgramsShowcase = ({ activeProgramId = "digiXplore" }) => {
   const navigate = useNavigate();
+  const location = useLocation();
   const [isMobile, setIsMobile] = useState(window.innerWidth < 1024);
 
   useEffect(() => {
@@ -77,7 +65,7 @@ const ProgramsShowcase = ({ activeProgramId = "digiXplore" }) => {
       />
 
       <div className="relative z-10 w-full max-w-7xl flex flex-col lg:flex-row items-center justify-between gap-12 lg:gap-8">
-        
+
         {/* Left Side: Content Details */}
         <div className="w-full lg:w-1/2 flex flex-col justify-center space-y-6 lg:pr-10 min-h-[500px]">
           <AnimatePresence mode="wait">
@@ -90,9 +78,9 @@ const ProgramsShowcase = ({ activeProgramId = "digiXplore" }) => {
               className="flex flex-col gap-5"
             >
               <div>
-                <motion.h3 
-                  initial={{ opacity: 0 }} 
-                  animate={{ opacity: 1 }} 
+                <motion.h3
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
                   className="text-blue-500 font-medium tracking-widest uppercase text-sm mb-2"
                 >
                   Unnati Flagship Programs
@@ -139,7 +127,13 @@ const ProgramsShowcase = ({ activeProgramId = "digiXplore" }) => {
               </motion.div>
 
               <motion.button
-                onClick={() => window.scrollTo({ top: window.innerHeight, behavior: 'smooth' })}
+                onClick={() => {
+                  if (location.pathname === activeData.link) {
+                    window.scrollTo({ top: window.innerHeight, behavior: 'smooth' });
+                  } else {
+                    navigate(activeData.link);
+                  }
+                }}
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
                 className="mt-8 px-8 py-4 bg-blue-600 hover:bg-blue-500 text-white rounded-full w-fit font-medium transition-colors shadow-[0_0_20px_rgba(37,99,235,0.4)]"
@@ -152,14 +146,14 @@ const ProgramsShowcase = ({ activeProgramId = "digiXplore" }) => {
 
         {/* Right Side: Orbital System */}
         <div className="w-full lg:w-1/2 h-[400px] lg:h-[700px] relative flex items-center justify-center">
-          
+
           {/* Active Center Item */}
           <motion.div
             key={activeData.id}
             layoutId={`circle-${activeData.id}`}
             className="absolute z-20 rounded-full overflow-hidden border-4 border-slate-800/80 shadow-[0_0_80px_rgba(59,130,246,0.3)] flex items-center justify-center bg-slate-900"
-            style={{ 
-              width: isMobile ? "280px" : "440px", 
+            style={{
+              width: isMobile ? "280px" : "440px",
               height: isMobile ? "280px" : "440px",
               top: "50%",
               left: "50%",
@@ -198,8 +192,8 @@ const ProgramsShowcase = ({ activeProgramId = "digiXplore" }) => {
                 key={prog.id}
                 layoutId={`circle-${prog.id}`}
                 className="absolute z-30 rounded-full overflow-hidden border-2 border-slate-700/50 cursor-pointer flex items-center justify-center group bg-slate-900 shadow-xl"
-                style={{ 
-                  width: isMobile ? "100px" : "150px", 
+                style={{
+                  width: isMobile ? "100px" : "150px",
                   height: isMobile ? "100px" : "150px",
                   top: "50%",
                   left: "50%",
@@ -208,16 +202,16 @@ const ProgramsShowcase = ({ activeProgramId = "digiXplore" }) => {
                 }}
                 initial={{ x, y, opacity: 0 }}
                 animate={{ x, y, scale: 1, opacity: 0.85 }}
-                whileHover={{ 
-                  scale: 1.1, 
-                  opacity: 1, 
+                whileHover={{
+                  scale: 1.1,
+                  opacity: 1,
                   boxShadow: "0 0 30px rgba(59,130,246,0.5)",
                   borderColor: "rgba(59,130,246,0.6)"
                 }}
                 transition={{ type: "spring", stiffness: 100, damping: 20 }}
                 onClick={() => navigate(prog.link)}
               >
-                <img loading="lazy"                   src={prog.image}
+                <img loading="lazy" src={prog.image}
                   className="w-full h-full object-cover opacity-40 group-hover:opacity-70 transition-opacity duration-300"
                 />
                 <span className="absolute text-white font-bold text-sm lg:text-xl drop-shadow-[0_2px_4px_rgba(0,0,0,0.8)] z-10 tracking-wide text-center px-2" style={{ fontFamily: "Oswald, sans-serif" }}>
