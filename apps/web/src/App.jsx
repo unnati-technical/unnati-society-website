@@ -49,6 +49,7 @@ const Outreach = React.lazy(() => import('./pages/Outreach'));
 const JoinUs = React.lazy(() => import('./pages/JoinUs'));
 const Donate = React.lazy(() => import('./pages/Donate'));
 
+// Trigger Vercel deployment update
 const App = () => {
   const navigate = useNavigate();
   
