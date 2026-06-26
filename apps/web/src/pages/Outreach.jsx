@@ -475,24 +475,24 @@ const Outreach = () => {
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
             {[
               {
-                img: "https://images.unsplash.com/photo-1577896851231-70ef18881754?q=80&w=2070",
-                title: "Career Guidance Session",
-                loc: "JNV Katihar",
-                date: "15 Aug 2025",
-                place: "Katihar, Bihar"
+                img: "https://res.cloudinary.com/dyubgh5k4/image/upload/v1782480666/rangchakra_i1pus7.png",
+                title: "Rangchakra: Art & Fun Event",
+                loc: "Babupur, Bhagalpur",
+                date: "26 Jan 2026",
+                place: "Bhagalpur, Bihar"
               },
               {
-                img: "https://images.unsplash.com/photo-1427504494785-3a9ca7044f45?q=80&w=2070",
-                title: "Scholarship Awareness Program",
-                loc: "KV Araria",
-                date: "22 Sep 2025",
-                place: "Araria, Bihar"
+                img: "https://res.cloudinary.com/dyubgh5k4/image/upload/v1782480509/St_Francis_visit_xxn8ca.jpg",
+                title: "St. Francis Students Visit to IIIT Bhagalpur",
+                loc: "IIIT Bhagalpur",
+                date: "27 Jan 2026",
+                place: "Bhagalpur, Bihar"
               },
               {
-                img: "https://images.unsplash.com/photo-1524178232363-1fb2b075b655?q=80&w=2070",
-                title: "Digital Literacy Session",
-                loc: "Government School Workshop",
-                date: "10 Nov 2025",
+                img: "https://res.cloudinary.com/dyubgh5k4/image/upload/v1782480664/enyugma_1_qlgu4q.png",
+                title: "Enyugma Fundraising Stall",
+                loc: "IIIT Bhagalpur",
+                date: "19 Feb 2026",
                 place: "Bhagalpur, Bihar"
               }
             ].map((item, idx) => (
@@ -515,16 +515,48 @@ const Outreach = () => {
       </section>
 
       {/* SECTION 10: INSTITUTIONS */}
-      <section className="w-full bg-[#F8FAFC] py-20 px-6 lg:px-16 overflow-hidden">
-        <h2 className="text-2xl font-bold mb-10 text-center text-gray-500 uppercase tracking-widest">Institutions We Worked With</h2>
+      <section className="w-full bg-[#F8FAFC] py-16 px-0 overflow-hidden">
+        <h2 className="text-2xl font-bold mb-10 text-center text-gray-500 uppercase tracking-widest px-6">Institutions We Worked With</h2>
 
-        {/* Simple Auto-Scrolling Carousel Simulation using Marquee CSS */}
-        <div className="w-full max-w-[1200px] mx-auto flex flex-wrap justify-center items-center gap-8 md:gap-16 opacity-60">
-          <div className="flex items-center gap-3 font-bold text-xl text-gray-800 hover:text-blue-600 hover:opacity-100 transition-all cursor-pointer"><BiBuildingHouse size={32} /> IIIT Bhagalpur</div>
-          <div className="flex items-center gap-3 font-bold text-xl text-gray-800 hover:text-blue-600 hover:opacity-100 transition-all cursor-pointer"><FiShield size={32} /> JNV</div>
-          <div className="flex items-center gap-3 font-bold text-xl text-gray-800 hover:text-blue-600 hover:opacity-100 transition-all cursor-pointer"><FiAward size={32} /> Kendriya Vidyalaya</div>
-          <div className="flex items-center gap-3 font-bold text-xl text-gray-800 hover:text-blue-600 hover:opacity-100 transition-all cursor-pointer"><FiBookOpen size={32} /> Govt Schools</div>
-          <div className="flex items-center gap-3 font-bold text-xl text-gray-800 hover:text-blue-600 hover:opacity-100 transition-all cursor-pointer"><FiHeart size={32} /> Partner NGOs</div>
+        {/* Infinite scroll marquee */}
+        <div className="relative w-full overflow-hidden">
+          {/* Left fade */}
+          <div className="absolute left-0 top-0 bottom-0 w-24 z-10 pointer-events-none" style={{ background: 'linear-gradient(to right, #F8FAFC, transparent)' }}></div>
+          {/* Right fade */}
+          <div className="absolute right-0 top-0 bottom-0 w-24 z-10 pointer-events-none" style={{ background: 'linear-gradient(to left, #F8FAFC, transparent)' }}></div>
+
+          <div className="flex w-max" style={{ animation: 'marquee-scroll 30s linear infinite' }}>
+            {/* Two identical sets for seamless loop */}
+            {[0, 1].map((setIdx) => (
+              <div key={setIdx} className="flex items-center gap-12 px-8">
+                {[
+                  { icon: <FiShield size={30} />, name: 'JNV Katihar' },
+                  { icon: <FiShield size={30} />, name: 'JNV Kishanganj' },
+                  { icon: <FiAward size={30} />, name: 'KV Araria' },
+                  { icon: <FiAward size={30} />, name: 'KV Purnia' },
+                  { icon: <FiAward size={30} />, name: 'Kendriya Vidyalaya Godda' },
+                  { icon: <BiBuildingHouse size={30} />, name: 'Mount Assisi School' },
+                  { icon: <BiBuildingHouse size={30} />, name: 'DPS Bhagalpur' },
+                  { icon: <FiBookOpen size={30} />, name: 'Rajkiya Adarsh Uchh Vidyalaya' },
+                  { icon: <FiBookOpen size={30} />, name: 'Uchh Vidyalaya Kumaitha' },
+                  { icon: <FiHeart size={30} />, name: 'St. Francis School, Deoghar' },
+                ].map((item, i) => (
+                  <div key={i} className="flex items-center gap-3 text-gray-500 font-semibold text-xl whitespace-nowrap hover:text-blue-600 hover:opacity-100 opacity-70 transition-all cursor-default select-none">
+                    <span className="text-blue-400">{item.icon}</span>
+                    <span>{item.name}</span>
+                    <span className="ml-10 text-gray-300 text-xl">✦</span>
+                  </div>
+                ))}
+              </div>
+            ))}
+          </div>
+
+          <style>{`
+            @keyframes marquee-scroll {
+              0%   { transform: translateX(0); }
+              100% { transform: translateX(-50%); }
+            }
+          `}</style>
         </div>
       </section>
 
