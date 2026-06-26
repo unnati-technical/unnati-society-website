@@ -16,7 +16,7 @@ const ImpactNet = () => {
             
             {/* Main Image */}
             <div className="w-full h-full rounded-3xl overflow-hidden shadow-xl border-4 border-white bg-gray-100">
-              <img loading="lazy" src={cloudinaryImage("IMG-20250412-WA0001_geachy")} alt="Impact" className="w-full h-full object-cover transition-shadow duration-300 hover:shadow-[0_10px_40px_rgba(0,0,0,0.15)]" />
+              <img loading="lazy" src="https://res.cloudinary.com/dyubgh5k4/image/upload/v1782502575/IMG_0556_hcrduk.jpg" alt="Impact" className="w-full h-full object-cover transition-shadow duration-300 hover:shadow-[0_10px_40px_rgba(0,0,0,0.15)]" />
             </div>
           </div>
         </div>
