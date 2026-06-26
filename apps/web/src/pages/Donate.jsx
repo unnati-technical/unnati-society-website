@@ -1,9 +1,9 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { toast } from 'sonner';
 import {
   GraduationCap, Users, Heart, BookOpen, Target,
-  MapPin, CheckCircle2, ShieldCheck, FileText,
-  ArrowRight, Quote, ChevronLeft, ChevronRight,
+  MapPin, ShieldCheck, FileText,
+  ArrowRight,
   Laptop, Lightbulb, Building2
 } from 'lucide-react';
 import Navbar from '../components/common/Navbar';
@@ -15,20 +15,23 @@ const DonorModal = ({ open, onClose, onSubmit, isProcessing }) => {
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [phone, setPhone] = useState('');
-  const [wantsTaxReceipt, setWantsTaxReceipt] = useState(false);
-  const [pan, setPan] = useState('');
-  const [address, setAddress] = useState('');
+
+  useEffect(() => {
+    if (open) {
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = '';
+    }
+    return () => {
+      document.body.style.overflow = '';
+    };
+  }, [open]);
 
   if (!open) return null;
 
   const handleSubmit = () => {
     if (!name || !email) return toast.error('Name and Email are required');
-    if (wantsTaxReceipt) {
-      if (!pan || !address || !phone) return toast.error('Phone, PAN, and Address are required for tax exemption');
-      const panRegex = /^[A-Z]{5}[0-9]{4}[A-Z]{1}$/;
-      if (!panRegex.test(pan.toUpperCase())) return toast.error('Invalid PAN Number format');
-    }
-    onSubmit(name, email, phone, wantsTaxReceipt ? pan.toUpperCase() : '', wantsTaxReceipt ? address : '');
+    onSubmit(name, email, phone, '', '');
   };
 
   return (
@@ -45,23 +48,6 @@ const DonorModal = ({ open, onClose, onSubmit, isProcessing }) => {
 
         <input type="tel" placeholder="Phone Number" value={phone} onChange={e => setPhone(e.target.value)}
           className="w-full border border-gray-200 rounded-lg py-2.5 px-4 text-sm mb-5 focus:outline-none focus:border-[#1E63E9]" />
-
-        <div className="flex items-start gap-2 mb-4 bg-[#F0F5FF] p-3 rounded-lg border border-blue-100">
-          <input type="checkbox" id="taxReceipt" checked={wantsTaxReceipt} onChange={e => setWantsTaxReceipt(e.target.checked)} className="mt-1 shrink-0" />
-          <label htmlFor="taxReceipt" className="text-xs text-[#081B3A] cursor-pointer">
-            <span className="font-bold">I want an 80G Tax Exemption Receipt</span>
-            <span className="block text-gray-500 mt-0.5">We need your PAN and Address to issue a valid receipt under Indian law.</span>
-          </label>
-        </div>
-
-        {wantsTaxReceipt && (
-          <div className="space-y-3 mb-5 transition-all duration-300">
-            <input type="text" placeholder="PAN Number (e.g. ABCDE1234F) *" value={pan} onChange={e => setPan(e.target.value)} maxLength={10}
-              className="w-full border border-gray-200 rounded-lg py-2.5 px-4 text-sm uppercase focus:outline-none focus:border-[#1E63E9]" />
-            <textarea placeholder="Full Postal Address *" value={address} onChange={e => setAddress(e.target.value)} rows={2}
-              className="w-full border border-gray-200 rounded-lg py-2.5 px-4 text-sm focus:outline-none focus:border-[#1E63E9] resize-none" />
-          </div>
-        )}
 
         <div className="flex gap-3">
           <button onClick={onClose} className="flex-1 py-2.5 rounded-lg border border-gray-200 text-sm font-semibold text-gray-600 hover:bg-gray-50 transition-colors">Cancel</button>
@@ -83,7 +69,6 @@ const Donate = () => {
   const [isEditingAmount, setIsEditingAmount] = useState(false);
   const [isProcessing, setIsProcessing] = useState(false);
   const [modalOpen, setModalOpen] = useState(false);
-  const [storyIndex, setStoryIndex] = useState(0);
 
   const presetAmounts = [100, 500, 1000, 2500, 5000, 'Custom'];
 
@@ -115,6 +100,10 @@ const Donate = () => {
     const finalAmount = amount === 'Custom' ? Number(customAmount) : amount;
     if (!finalAmount || finalAmount < 100) return toast.error('Minimum donation amount is ₹100');
     setModalOpen(true);
+  };
+
+  const handleScrollToCard = () => {
+    document.getElementById('donation-card')?.scrollIntoView({ behavior: 'smooth' });
   };
 
   const handleDonate = async (donorName, donorEmail, donorPhone, donorPan, donorAddress) => {
@@ -165,33 +154,6 @@ const Donate = () => {
     }
   };
 
-  const stories = [
-    {
-      quote: "Unnati Society's programs opened doors I never imagined possible. Today, I am confident and ready for the future.",
-      name: 'Priya Kumari', role: 'DigiXplore Student',
-      img: 'https://images.unsplash.com/photo-1517486808906-6ca8b3f04846?auto=format&fit=crop&w=800&q=80'
-    },
-    {
-      quote: 'The career guidance sessions helped me choose the right path. I now dream of becoming a software engineer.',
-      name: 'Rohit Verma', role: 'Netritva Student',
-      img: 'https://images.unsplash.com/photo-1555840939-b9d10e82eafc?auto=format&fit=crop&w=800&q=80'
-    },
-    {
-      quote: 'I learned communication skills and now I can speak with confidence. Thank you Unnati Society!',
-      name: 'Anjali Singh', role: 'Akshar Student',
-      img: 'https://images.unsplash.com/photo-1544717305-2782549b5136?auto=format&fit=crop&w=800&q=80'
-    },
-    {
-      quote: 'The workshops changed how I think. I now have the courage to dream beyond my circumstances.',
-      name: 'Manoj Kumar', role: 'Akshar Student',
-      img: 'https://images.unsplash.com/photo-1529390079861-591de354faf5?auto=format&fit=crop&w=800&q=80'
-    },
-  ];
-
-  const visibleStories = () => {
-    const total = stories.length;
-    return [0, 1, 2].map(offset => stories[(storyIndex + offset) % total]);
-  };
 
   return (
     <div className="w-full bg-[#F4F6FA] font-sans text-[#111827]">
@@ -241,7 +203,7 @@ const Donate = () => {
           </div>
 
           {/* Right: Donation Card */}
-          <div className="flex justify-center lg:justify-end">
+          <div className="flex justify-center lg:justify-end" id="donation-card">
             <div className="bg-white rounded-2xl p-6 shadow-2xl w-full max-w-[380px] text-[#111827]">
               <div className="flex items-center justify-between mb-4">
                 <h3 className="text-base font-bold text-[#081B3A]">I want to Donate</h3>
@@ -318,8 +280,6 @@ const Donate = () => {
                 <span className="flex items-center gap-1"><ShieldCheck size={10} className="text-green-500" /> Secure</span>
                 <span>•</span>
                 <span className="flex items-center gap-1"><FileText size={10} /> Transparent</span>
-                <span>•</span>
-                <span className="flex items-center gap-1"><CheckCircle2 size={10} className="text-blue-500" /> Tax Exempted</span>
               </div>
             </div>
           </div>
@@ -331,9 +291,9 @@ const Donate = () => {
         <div className="bg-white rounded-2xl shadow-xl flex flex-col md:flex-row overflow-hidden border border-gray-100">
           <div className="flex-1 grid grid-cols-1 sm:grid-cols-3 divide-y sm:divide-y-0 sm:divide-x divide-gray-100">
             {[
-              { icon: <Users size={26} />, stat: '1500+', label: 'Students Reached' },
-              { icon: <BookOpen size={26} />, stat: '75+', label: 'Workshops Conducted' },
-              { icon: <MapPin size={26} />, stat: '20+', label: 'Communities Served' },
+              { icon: <Users size={26} />, stat: '4000+', label: 'Students Reached' },
+              { icon: <BookOpen size={26} />, stat: '350+', label: 'Sessions Conducted' },
+              { icon: <MapPin size={26} />, stat: '20+', label: 'Schools Reached' },
             ].map((s, i) => (
               <div key={i} className="flex items-center gap-5 py-7 px-8">
                 <div className="w-14 h-14 rounded-full border-2 border-blue-100 bg-blue-50 text-[#1E63E9] flex items-center justify-center shrink-0">
@@ -347,7 +307,7 @@ const Donate = () => {
             ))}
           </div>
 
-          {/* Reports */}
+          {/* Reports Section (Commented out for future release)
           <div className="w-full md:w-[280px] bg-[#F8FAFF] p-7 border-t md:border-t-0 md:border-l border-gray-100 flex flex-col justify-center">
             <div className="flex items-center gap-2 mb-4">
               <FileText size={16} className="text-[#1E63E9]" />
@@ -364,58 +324,10 @@ const Donate = () => {
               View Reports
             </button>
           </div>
+          */}
         </div>
       </section>
 
-      {/* ── STORIES OF CHANGE ─────────────────────────────────────────── */}
-      <section className="w-full max-w-[1320px] mx-auto px-5 lg:px-10 mb-24">
-        <div className="flex items-end justify-between mb-8">
-          <div>
-            <h2 className="text-xl font-extrabold text-[#081B3A] uppercase tracking-widest">STORIES OF CHANGE</h2>
-            <div className="w-12 h-1 bg-[#F7B500] mt-2 rounded-full" />
-          </div>
-          <div className="flex gap-2">
-            <button onClick={() => setStoryIndex(i => (i - 1 + stories.length) % stories.length)}
-              className="w-9 h-9 rounded-full border border-gray-300 flex items-center justify-center hover:bg-[#081B3A] hover:border-[#081B3A] hover:text-white transition-all text-gray-600">
-              <ChevronLeft size={18} />
-            </button>
-            <button onClick={() => setStoryIndex(i => (i + 1) % stories.length)}
-              className="w-9 h-9 rounded-full border border-gray-300 flex items-center justify-center hover:bg-[#081B3A] hover:border-[#081B3A] hover:text-white transition-all text-gray-600">
-              <ChevronRight size={18} />
-            </button>
-          </div>
-        </div>
-
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
-          {visibleStories().map((story, idx) => (
-            <div key={`${storyIndex}-${idx}`} className="relative h-[230px] rounded-tl-[32px] rounded-br-[32px] overflow-hidden group shadow-md">
-              <img loading="lazy" src={story.img} alt={story.name} className="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" />
-              <div className="absolute inset-0 bg-gradient-to-t from-[#081B3A]/95 via-[#081B3A]/55 to-[#081B3A]/10" />
-              <div className="absolute inset-0 p-5 flex flex-col justify-end">
-                <div className="text-[#F7B500] mb-2 text-3xl font-serif leading-none">"</div>
-                <p className="text-white text-[11px] font-medium leading-relaxed mb-4 italic">{story.quote}"</p>
-                <div className="flex items-center gap-3">
-                  <div className="w-8 h-8 rounded-full bg-white overflow-hidden border-2 border-white shrink-0">
-                    <img loading="lazy" src={story.img} alt={story.name} className="w-full h-full object-cover" />
-                  </div>
-                  <div>
-                    <h4 className="text-white text-[11px] font-bold leading-none">– {story.name}</h4>
-                    <p className="text-gray-300 text-[10px] mt-0.5">{story.role}</p>
-                  </div>
-                </div>
-              </div>
-            </div>
-          ))}
-        </div>
-
-        {/* Dots */}
-        <div className="flex justify-center gap-2 mt-5">
-          {stories.map((_, i) => (
-            <button key={i} onClick={() => setStoryIndex(i)}
-              className={`w-2 h-2 rounded-full transition-all ${i === storyIndex ? 'bg-[#1E63E9] w-5' : 'bg-gray-300'}`} />
-          ))}
-        </div>
-      </section>
 
       {/* ── IMPACT ────────────────────────────────────────────────────── */}
       <section className="w-full bg-white py-20">
@@ -444,10 +356,10 @@ const Donate = () => {
             {/* Center: 2x2 Circular Images */}
             <div className="grid grid-cols-2 gap-4 w-full max-w-[440px] shrink-0">
               {[
-                { img: 'https://images.unsplash.com/photo-1509062522246-3755977927d7?auto=format&fit=crop&w=400&q=80', border: 'border-[#1E63E9]', rounded: 'rounded-tl-full rounded-tr-full rounded-br-full' },
-                { img: 'https://images.unsplash.com/photo-1522202176988-66273c2fd55f?auto=format&fit=crop&w=400&q=80', border: 'border-[#F7B500]', rounded: 'rounded-tl-full rounded-tr-full rounded-bl-full' },
-                { img: 'https://images.unsplash.com/photo-1543269865-cbf427effbad?auto=format&fit=crop&w=400&q=80', border: 'border-[#F7B500]', rounded: 'rounded-tl-full rounded-br-full rounded-bl-full' },
-                { img: 'https://images.unsplash.com/photo-1529390079861-591de354faf5?auto=format&fit=crop&w=400&q=80', border: 'border-[#1E63E9]', rounded: 'rounded-tr-full rounded-br-full rounded-bl-full' },
+                { img: 'https://res.cloudinary.com/dyubgh5k4/image/upload/v1782502259/IMG_1207_ap4tzu.jpg', border: 'border-[#1E63E9]', rounded: 'rounded-tl-full rounded-tr-full rounded-br-full' },
+                { img: 'https://res.cloudinary.com/dyubgh5k4/image/upload/v1782502260/IMG_0736_dmevg9.jpg', border: 'border-[#F7B500]', rounded: 'rounded-tl-full rounded-tr-full rounded-bl-full' },
+                { img: 'https://res.cloudinary.com/dyubgh5k4/image/upload/v1782502260/IMG_20250301_110601_ozuxbh.jpg', border: 'border-[#F7B500]', rounded: 'rounded-tl-full rounded-br-full rounded-bl-full' },
+                { img: 'https://res.cloudinary.com/dyubgh5k4/image/upload/v1782502260/IMG_20260405_164312_ykh2k8.jpg', border: 'border-[#1E63E9]', rounded: 'rounded-tr-full rounded-br-full rounded-bl-full' },
               ].map((item, i) => (
                 <div key={i} className={`aspect-square overflow-hidden border-[6px] ${item.border} ${item.rounded} shadow-lg`}>
                   <img loading="lazy" src={item.img} alt={`Impact ${i + 1}`} className="w-full h-full object-cover hover:scale-110 transition-transform duration-500" />
@@ -489,7 +401,7 @@ const Donate = () => {
               <p className="text-[#081B3A]/80 text-[12px] font-medium">Your small contribution today can create a big change in a student's life.</p>
             </div>
           </div>
-          <button onClick={handleProceed}
+          <button onClick={handleScrollToCard}
             className="bg-[#081B3A] text-[#F7B500] hover:bg-[#0c2a5e] px-7 py-3 rounded-xl text-sm font-bold flex items-center gap-2 transition-all shrink-0 z-10 shadow-md">
             Donate Now <ArrowRight size={15} />
           </button>

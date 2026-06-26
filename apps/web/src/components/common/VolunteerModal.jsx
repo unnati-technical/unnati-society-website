@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 // eslint-disable-next-line no-unused-vars
 import { motion, AnimatePresence } from 'framer-motion';
+import { toast } from 'sonner';
 import { 
   FiX, FiClock, FiAward, FiGlobe, FiCalendar, 
   FiUsers, FiBookOpen, FiBriefcase, FiCheckCircle,
@@ -62,6 +63,17 @@ const VolunteerModal = ({ isOpen, onClose }) => {
     }
   }, [formData, isOpen]);
 
+  useEffect(() => {
+    if (isOpen) {
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = '';
+    }
+    return () => {
+      document.body.style.overflow = '';
+    };
+  }, [isOpen]);
+
   const handleInputChange = (e) => {
     const { name, value, type, checked } = e.target;
     setFormData(prev => ({
@@ -71,11 +83,84 @@ const VolunteerModal = ({ isOpen, onClose }) => {
   };
 
 
-  const handleNext = () => setStep(prev => Math.min(prev + 1, 3));
+  const validateStep = (currentStep) => {
+    if (currentStep === 1) {
+      if (!formData.fullName || !formData.fullName.trim()) {
+        toast.error('Full Name is required');
+        return false;
+      }
+      if (!formData.email || !formData.email.trim()) {
+        toast.error('Email Address is required');
+        return false;
+      }
+      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      if (!emailRegex.test(formData.email.trim())) {
+        toast.error('Please enter a valid email address');
+        return false;
+      }
+      if (!formData.phone || !formData.phone.trim()) {
+        toast.error('Phone number is required');
+        return false;
+      }
+      const phoneClean = formData.phone.replace(/\D/g, '');
+      if (phoneClean.length < 10) {
+        toast.error('Please enter a valid 10-digit phone number');
+        return false;
+      }
+      if (!formData.gender) {
+        toast.error('Gender selection is required');
+        return false;
+      }
+      if (!formData.age) {
+        toast.error('Age is required');
+        return false;
+      }
+      const ageVal = parseInt(formData.age, 10);
+      if (isNaN(ageVal) || ageVal < 16 || ageVal > 99) {
+        toast.error('Please enter a valid age (minimum 16)');
+        return false;
+      }
+      if (!formData.city || !formData.city.trim()) {
+        toast.error('Current City is required');
+        return false;
+      }
+      if (!formData.college || !formData.college.trim()) {
+        toast.error('College / Organization is required');
+        return false;
+      }
+    } else if (currentStep === 3) {
+      if (!formData.whyJoin || !formData.whyJoin.trim()) {
+        toast.error('Please describe why you want to join Unnati Society');
+        return false;
+      }
+      if (!formData.skills || !formData.skills.trim()) {
+        toast.error('Please describe what skills you can contribute');
+        return false;
+      }
+      if (!formData.consentConduct) {
+        toast.error('You must agree to the volunteer code of conduct');
+        return false;
+      }
+      if (!formData.consentAccurate) {
+        toast.error('You must confirm that your information is accurate');
+        return false;
+      }
+    }
+    return true;
+  };
+
+  const handleNext = () => {
+    if (validateStep(step)) {
+      setStep(prev => Math.min(prev + 1, 3));
+    }
+  };
   const handlePrev = () => setStep(prev => Math.max(prev - 1, 1));
 
   const handleSubmit = (e) => {
     e.preventDefault();
+    if (!validateStep(1) || !validateStep(3)) {
+      return;
+    }
     setIsSubmitting(true);
     // Simulate API call
     setTimeout(() => {

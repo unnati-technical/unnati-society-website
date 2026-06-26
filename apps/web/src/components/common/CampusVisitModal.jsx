@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 // eslint-disable-next-line no-unused-vars
 import { motion, AnimatePresence } from 'framer-motion';
+import { toast } from 'sonner';
 import { 
   FiX, FiCheckCircle, FiUsers, FiMapPin, FiBookOpen, 
   FiBriefcase, FiPhone, FiMail, FiCalendar, FiClock,
@@ -66,13 +67,24 @@ const CampusVisitModal = ({ isOpen, onClose }) => {
   });
 
   useEffect(() => {
+     if (isOpen) {
+       localStorage.setItem(STORAGE_KEY, JSON.stringify({
+         data: formData,
+         timestamp: Date.now()
+       }));
+     }
+   }, [formData, isOpen]);
+
+  useEffect(() => {
     if (isOpen) {
-      localStorage.setItem(STORAGE_KEY, JSON.stringify({
-        data: formData,
-        timestamp: Date.now()
-      }));
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = '';
     }
-  }, [formData, isOpen]);
+    return () => {
+      document.body.style.overflow = '';
+    };
+  }, [isOpen]);
 
   const handleInputChange = (e) => {
     const { name, value, type, checked } = e.target;
@@ -93,11 +105,107 @@ const CampusVisitModal = ({ isOpen, onClose }) => {
     });
   };
 
-  const handleNext = () => setStep(prev => Math.min(prev + 1, 3));
+  const validateStep = (currentStep) => {
+    if (currentStep === 1) {
+      if (!formData.institutionName || !formData.institutionName.trim()) {
+        toast.error('Institution Name is required');
+        return false;
+      }
+      if (!formData.institutionType) {
+        toast.error('Institution Type is required');
+        return false;
+      }
+      if (!formData.state) {
+        toast.error('State is required');
+        return false;
+      }
+      if (!formData.district) {
+        toast.error('District is required');
+        return false;
+      }
+      if (!formData.city || !formData.city.trim()) {
+        toast.error('City/Town is required');
+        return false;
+      }
+      if (!formData.address || !formData.address.trim()) {
+        toast.error('Complete Address is required');
+        return false;
+      }
+    } else if (currentStep === 2) {
+      if (!formData.studentsCount) {
+        toast.error('Student Count is required');
+        return false;
+      }
+      if (parseInt(formData.studentsCount, 10) <= 0) {
+        toast.error('Student Count must be greater than 0');
+        return false;
+      }
+      if (!formData.teachersCount) {
+        toast.error('Teacher Count is required');
+        return false;
+      }
+      if (parseInt(formData.teachersCount, 10) <= 0) {
+        toast.error('Teacher Count must be greater than 0');
+        return false;
+      }
+      if (!formData.prefDate) {
+        toast.error('Preferred Date is required');
+        return false;
+      }
+      if (!formData.prefTime) {
+        toast.error('Preferred Time Slot is required');
+        return false;
+      }
+    } else if (currentStep === 3) {
+      if (!formData.coordinatorName || !formData.coordinatorName.trim()) {
+        toast.error('Coordinator Name is required');
+        return false;
+      }
+      if (!formData.designation || !formData.designation.trim()) {
+        toast.error('Designation is required');
+        return false;
+      }
+      if (!formData.email || !formData.email.trim()) {
+        toast.error('Email Address is required');
+        return false;
+      }
+      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      if (!emailRegex.test(formData.email.trim())) {
+        toast.error('Please enter a valid email address');
+        return false;
+      }
+      if (!formData.phone || !formData.phone.trim()) {
+        toast.error('Phone number is required');
+        return false;
+      }
+      const phoneClean = formData.phone.replace(/\D/g, '');
+      if (phoneClean.length < 10) {
+        toast.error('Please enter a valid 10-digit phone number');
+        return false;
+      }
+      if (formData.whatsapp && formData.whatsapp.trim()) {
+        const whatsappClean = formData.whatsapp.replace(/\D/g, '');
+        if (whatsappClean.length < 10) {
+          toast.error('Please enter a valid 10-digit WhatsApp number');
+          return false;
+        }
+      }
+    }
+    return true;
+  };
+
+  const handleNext = () => {
+    if (validateStep(step)) {
+      setStep(prev => Math.min(prev + 1, 3));
+    }
+  };
   const handlePrev = () => setStep(prev => Math.max(prev - 1, 1));
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    if (!validateStep(1) || !validateStep(2) || !validateStep(3)) {
+      return;
+    }
     setIsSubmitting(true);
     
     try {
@@ -115,7 +223,7 @@ const CampusVisitModal = ({ isOpen, onClose }) => {
       localStorage.removeItem(STORAGE_KEY);
     } catch (error) {
       console.error('Error submitting form:', error);
-      // In a real app we might show a toast error here
+      toast.error(error.message || 'Error submitting request. Please try again.');
     } finally {
       setIsSubmitting(false);
     }
@@ -186,7 +294,7 @@ const CampusVisitModal = ({ isOpen, onClose }) => {
               {/* LEFT SIDEBAR */}
               <div className="hidden lg:flex w-[320px] bg-white border-r border-gray-200 flex-col p-6 shrink-0 h-fit min-h-full">
                 <div className="rounded-xl overflow-hidden mb-6 h-36 shrink-0 relative">
-                  <img loading="lazy" src="https://images.unsplash.com/photo-1541339907198-e08756dedf3f?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80" alt="Campus" className="w-full h-full object-cover" />
+                  <img loading="lazy" src="https://res.cloudinary.com/dyubgh5k4/image/upload/v1782476427/outreach_campus_visit3_zii4fj.jpg" alt="Campus" className="w-full h-full object-cover" />
                   <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent"></div>
                 </div>
 
@@ -215,31 +323,31 @@ const CampusVisitModal = ({ isOpen, onClose }) => {
                     <div className="flex items-start gap-3">
                       <div className="w-8 h-8 rounded-lg bg-blue-100 text-blue-600 flex items-center justify-center shrink-0"><FiUsers size={14}/></div>
                       <div>
-                        <div className="font-bold text-[#0F172A] text-sm">5000+</div>
+                        <div className="font-bold text-[#0F172A] text-sm">4000+</div>
                         <div className="text-[10px] text-gray-500 font-medium">Students Guided</div>
                       </div>
                     </div>
                     <div className="flex items-start gap-3">
                       <div className="w-8 h-8 rounded-lg bg-green-100 text-green-600 flex items-center justify-center shrink-0"><FaBuilding size={14}/></div>
                       <div>
-                        <div className="font-bold text-[#0F172A] text-sm">100+</div>
+                        <div className="font-bold text-[#0F172A] text-sm">20+</div>
                         <div className="text-[10px] text-gray-500 font-medium">Schools Visited</div>
                       </div>
                     </div>
                     <div className="flex items-start gap-3">
                       <div className="w-8 h-8 rounded-lg bg-purple-100 text-purple-600 flex items-center justify-center shrink-0"><FiMapPin size={14}/></div>
                       <div>
-                        <div className="font-bold text-[#0F172A] text-sm">Across Bihar & Nearby</div>
+                        <div className="font-bold text-[#0F172A] text-sm">Across Bhaglpur & Nearby</div>
                         <div className="text-[10px] text-gray-500 font-medium">Our Reach</div>
                       </div>
                     </div>
-                    <div className="flex items-start gap-3">
+                    {/* <div className="flex items-start gap-3">
                       <div className="w-8 h-8 rounded-lg bg-orange-100 text-orange-600 flex items-center justify-center shrink-0"><FiPhone size={14}/></div>
                       <div>
                         <div className="font-bold text-[#0F172A] text-sm">95%</div>
                         <div className="text-[10px] text-gray-500 font-medium">Positive Feedback</div>
                       </div>
-                    </div>
+                    </div> */}
                   </div>
                 </div>
               </div>
@@ -498,18 +606,6 @@ const CampusVisitModal = ({ isOpen, onClose }) => {
 
               {/* RIGHT SIDEBAR */}
               <div className="hidden xl:flex w-[280px] bg-white border-l border-gray-200 flex-col p-6 shrink-0 space-y-6 h-fit min-h-full">
-                
-                <div className="bg-orange-50/50 border border-orange-100 rounded-xl p-5">
-                  <h4 className="text-orange-600 font-bold text-sm mb-3 flex items-center gap-2"><FiTarget /> Visit Highlights</h4>
-                  <ul className="space-y-2.5">
-                    {['Campus Tour', 'Student Interaction', 'Career Guidance', 'Innovation Showcase', 'Research Labs Visit'].map((item, i) => (
-                      <li key={i} className="flex items-start gap-2 text-xs text-orange-900 font-medium">
-                        <div className="text-orange-500 mt-0.5"><FiCheckCircle size={12}/></div>
-                        {item}
-                      </li>
-                    ))}
-                  </ul>
-                </div>
 
                 <div className="bg-blue-50/30 border border-blue-100 rounded-xl p-5">
                   <h4 className="text-blue-600 font-bold text-sm mb-3 flex items-center gap-2"><FiShield /> Important Guidelines</h4>
@@ -523,12 +619,12 @@ const CampusVisitModal = ({ isOpen, onClose }) => {
                   </ul>
                 </div>
 
-                <div className="bg-green-50/50 border border-green-100 rounded-xl p-5 flex-1 flex flex-col justify-end">
+                <div className="bg-green-50/50 border border-green-100 rounded-xl p-5">
                   <h4 className="text-green-700 font-bold text-sm mb-2 flex items-center gap-2"><FiHeadphones /> Need Help?</h4>
                   <p className="text-[11px] text-green-900 mb-4 leading-relaxed">Our outreach team is here to help you plan the perfect visit.</p>
                   <div className="space-y-2 text-[11px] text-green-800 font-medium">
-                    <div className="flex items-center gap-2"><FiMail className="text-green-600"/> outreach@iiitbh.ac.in</div>
-                    <div className="flex items-center gap-2"><FiPhone className="text-green-600"/> +91 93341 17404</div>
+                    <div className="flex items-center gap-2"><FiMail className="text-green-600"/> outreach.ir@iiitbh.ac.in</div>
+                    <div className="flex items-center gap-2"><FiPhone className="text-green-600"/> +91 7348145325</div>
                   </div>
                 </div>
 

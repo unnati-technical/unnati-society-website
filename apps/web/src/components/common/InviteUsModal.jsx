@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 // eslint-disable-next-line no-unused-vars
 import { motion, AnimatePresence } from 'framer-motion';
+import { toast } from 'sonner';
 import { 
   FiX, FiCheckCircle, FiUser, FiMapPin, FiBookOpen, 
   FiBriefcase, FiPhone, FiMail, FiCalendar, FiClock,
@@ -84,6 +85,17 @@ const InviteUsModal = ({ isOpen, onClose }) => {
     }
   }, [formData, isOpen]);
 
+  useEffect(() => {
+    if (isOpen) {
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = '';
+    }
+    return () => {
+      document.body.style.overflow = '';
+    };
+  }, [isOpen]);
+
   const handleInputChange = (e) => {
     const { name, value, type, checked } = e.target;
     setFormData(prev => ({
@@ -103,11 +115,88 @@ const InviteUsModal = ({ isOpen, onClose }) => {
     });
   };
 
-  const handleNext = () => setStep(prev => Math.min(prev + 1, 4));
+  const validateStep = (currentStep) => {
+    if (currentStep === 1) {
+      if (!formData.institutionName || !formData.institutionName.trim()) {
+        toast.error('Institution Name is required');
+        return false;
+      }
+      if (!formData.institutionType) {
+        toast.error('Institution Type is required');
+        return false;
+      }
+      if (!formData.state) {
+        toast.error('State is required');
+        return false;
+      }
+      if (!formData.district) {
+        toast.error('District is required');
+        return false;
+      }
+      if (!formData.city || !formData.city.trim()) {
+        toast.error('City/Town is required');
+        return false;
+      }
+      if (!formData.address || !formData.address.trim()) {
+        toast.error('Complete Address is required');
+        return false;
+      }
+    } else if (currentStep === 3) {
+      if (!formData.coordinatorName || !formData.coordinatorName.trim()) {
+        toast.error('Coordinator Name is required');
+        return false;
+      }
+      if (!formData.designation || !formData.designation.trim()) {
+        toast.error('Designation is required');
+        return false;
+      }
+      if (!formData.email || !formData.email.trim()) {
+        toast.error('Email Address is required');
+        return false;
+      }
+      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      if (!emailRegex.test(formData.email.trim())) {
+        toast.error('Please enter a valid email address');
+        return false;
+      }
+      if (!formData.phone || !formData.phone.trim()) {
+        toast.error('Phone number is required');
+        return false;
+      }
+      const phoneClean = formData.phone.replace(/\D/g, '');
+      if (phoneClean.length < 10) {
+        toast.error('Please enter a valid 10-digit phone number');
+        return false;
+      }
+      if (!formData.whatsapp || !formData.whatsapp.trim()) {
+        toast.error('WhatsApp number is required');
+        return false;
+      }
+      const whatsappClean = formData.whatsapp.replace(/\D/g, '');
+      if (whatsappClean.length < 10) {
+        toast.error('Please enter a valid 10-digit WhatsApp number');
+        return false;
+      }
+    }
+    return true;
+  };
+
+  const handleNext = () => {
+    if (validateStep(step)) {
+      setStep(prev => Math.min(prev + 1, 4));
+    }
+  };
   const handlePrev = () => setStep(prev => Math.max(prev - 1, 1));
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    if (!validateStep(1) || !validateStep(3)) {
+      return;
+    }
+    if (!formData.agreement1 || !formData.agreement2) {
+      toast.error('Please accept all agreements before submitting');
+      return;
+    }
     setIsSubmitting(true);
     
     try {
@@ -125,7 +214,7 @@ const InviteUsModal = ({ isOpen, onClose }) => {
       localStorage.removeItem(STORAGE_KEY);
     } catch (error) {
       console.error('Error submitting form:', error);
-      // In a real app we might show a toast error here
+      toast.error(error.message || 'Error submitting form. Please try again.');
     } finally {
       setIsSubmitting(false);
     }
@@ -168,14 +257,13 @@ const InviteUsModal = ({ isOpen, onClose }) => {
             </div>
 
             {/* Hero Illustration */}
-            <div className="w-full h-40 rounded-2xl overflow-hidden shadow-xl mb-6 shrink-0 border-4 border-white/10 relative bg-blue-900">
-              <img loading="lazy" src="https://images.unsplash.com/photo-1544717305-2782549b5136?q=80&w=800" alt="Workshop" className="w-full h-full object-cover mix-blend-overlay opacity-80" />
+            <div className="w-full h-40 rounded-2xl overflow-hidden shadow-xl mb-6 shrink-0 border-4 border-white/10 relative">
+              <img loading="lazy" src="https://res.cloudinary.com/dyubgh5k4/image/upload/v1782475437/outreach_4_ju0fxm.jpg" alt="Workshop" className="w-full h-full object-cover" />
             </div>
 
-            {/* Benefits Card */}
-            <div className="bg-white rounded-xl p-4 text-[#0F172A] mb-4 shrink-0 shadow-lg flex-1 min-h-0 flex flex-col">
+            <div className="bg-white rounded-xl p-4 text-[#0F172A] mb-4 shrink-0 shadow-lg flex flex-col">
               <h4 className="font-bold text-sm mb-3 text-blue-900">What You Get</h4>
-              <ul className="space-y-3 overflow-hidden flex-1">
+              <ul className="space-y-3">
                 {[
                   { title: "Expert-led Sessions", desc: "Career guidance & digital literacy", icon: <FiUsers /> },
                   { title: "Engaging Workshops", desc: "Hands-on learning & skill development", icon: <BiChalkboard /> },
