@@ -17,7 +17,7 @@ const HeroSection = () => {
         </div>
         <div>
           <p className="border-4 text-justify border-l-blue-400 border-r-0 border-t-0 border-b-0 pl-4 text-sm md:text-xl font-[Open_Sans]">
-            At UNNATI WELFARE SOCIETY, we are dedicated to bridging the digital divide by providing underprivileged students with essential technology education and basic knowledge. Our mission is to empower these young minds, equipping them with the skills and confidence needed to excel in the digital age. By revolutionizing the present with hands-on tech training and nurturing a passion for learning, we aim to transform their futures, creating a brighter, more inclusive world for the next generation. Join us in making a difference today and shaping a better tomorrow.
+            At UNNATI SOCIETY, we are dedicated to bridging the digital divide by providing underprivileged students with essential technology education and basic knowledge. Our mission is to empower these young minds, equipping them with the skills and confidence needed to excel in the digital age. By revolutionizing the present with hands-on tech training and nurturing a passion for learning, we aim to transform their futures, creating a brighter, more inclusive world for the next generation. Join us in making a difference today and shaping a better tomorrow.
           </p>
         </div>
       </div>
