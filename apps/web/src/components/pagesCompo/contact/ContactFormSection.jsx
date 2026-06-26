@@ -45,7 +45,7 @@ const ContactFormSection = () => {
       });
 
       if (!response.ok) throw new Error('Failed to send message');
-      
+
       toast.success('Message sent successfully! We will get back to you soon.');
       reset();
     } catch {
@@ -58,10 +58,10 @@ const ContactFormSection = () => {
   return (
     <section className="w-full bg-[#F8FAFC] py-8 lg:py-10">
       <div className="container mx-auto px-6 lg:px-12">
-        
+
         <div className="flex flex-col lg:flex-row gap-8 lg:gap-12">
           {/* Left Column - Contact Info */}
-          <motion.div 
+          <motion.div
             initial={{ opacity: 0, x: -20 }}
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true }}
@@ -88,8 +88,8 @@ const ContactFormSection = () => {
                 <div>
                   <h4 className="font-bold text-[#0F172A] mb-2">Our Location</h4>
                   <p className="text-sm text-gray-600 leading-relaxed mb-3">
-                    Indian Institute of Information Technology<br/>
-                    Bhagalpur<br/>
+                    Indian Institute of Information Technology<br />
+                    Bhagalpur<br />
                     Sabour, Bihar – 813210, India
                   </p>
                   <a href="https://maps.google.com/?q=IIIT+Bhagalpur" target="_blank" rel="noopener noreferrer" className="text-[#2563EB] font-bold text-sm hover:underline flex items-center gap-1">
@@ -105,8 +105,8 @@ const ContactFormSection = () => {
                 </div>
                 <div>
                   <h4 className="font-bold text-[#0F172A] mb-1">Email Us</h4>
-                  <a href="mailto:contact@unnatisociety.org" className="block text-sm text-gray-600 hover:text-[#2563EB] mb-0.5">contact@unnatisociety.org</a>
-                  <a href="mailto:partnerships@unnatisociety.org" className="block text-sm text-gray-600 hover:text-[#2563EB]">partnerships@unnatisociety.org</a>
+                  <a href="mailto:contact@unnatisociety.org" className="block text-sm text-gray-600 hover:text-[#2563EB] mb-0.5">unnati.ir@iiitbh.ac.in</a>
+                  <a href="mailto:partnerships@unnatisociety.org" className="block text-sm text-gray-600 hover:text-[#2563EB]">outreach.ir@iiitbh.ac.in</a>
                 </div>
               </div>
 
@@ -117,7 +117,7 @@ const ContactFormSection = () => {
                 </div>
                 <div>
                   <h4 className="font-bold text-[#0F172A] mb-1">Call Us</h4>
-                  <a href="tel:+919334117404" className="block text-sm text-gray-600 hover:text-[#2563EB] mb-0.5">+91 93341 17404</a>
+                  <a href="tel:+919334117404" className="block text-sm text-gray-600 hover:text-[#2563EB] mb-0.5">+91 7348145325</a>
                   <p className="text-[11px] font-bold text-gray-400 uppercase tracking-wider">Mon-Sat 9AM-6PM</p>
                 </div>
               </div>
@@ -147,7 +147,7 @@ const ContactFormSection = () => {
           </motion.div>
 
           {/* Right Column - Contact Form */}
-          <motion.div 
+          <motion.div
             initial={{ opacity: 0, x: 20 }}
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true }}
@@ -159,16 +159,16 @@ const ContactFormSection = () => {
                 <Send className="text-[#2563EB]" size={28} />
                 <h3 className="text-xl md:text-2xl font-extrabold text-[#0F172A]">Send Us a Message</h3>
               </div>
-              
+
               <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-4">
-                
+
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   {/* Name */}
                   <div>
                     <label className="block text-sm font-bold text-[#0F172A] mb-2">Your Name <span className="text-red-500">*</span></label>
-                    <input 
+                    <input
                       {...register("name")}
-                      type="text" 
+                      type="text"
                       placeholder="Enter your name"
                       className={`w-full px-3 py-2 text-sm rounded-lg border ${errors.name ? 'border-red-500 focus:ring-red-500' : 'border-gray-200 focus:ring-[#2563EB]'} bg-gray-50/50 focus:bg-white focus:outline-none focus:ring-2 focus:border-transparent transition-all`}
                     />
@@ -178,9 +178,9 @@ const ContactFormSection = () => {
                   {/* Email */}
                   <div>
                     <label className="block text-sm font-bold text-[#0F172A] mb-2">Email Address <span className="text-red-500">*</span></label>
-                    <input 
+                    <input
                       {...register("email")}
-                      type="email" 
+                      type="email"
                       placeholder="Enter your email"
                       className={`w-full px-3 py-2 text-sm rounded-lg border ${errors.email ? 'border-red-500 focus:ring-red-500' : 'border-gray-200 focus:ring-[#2563EB]'} bg-gray-50/50 focus:bg-white focus:outline-none focus:ring-2 focus:border-transparent transition-all`}
                     />
@@ -191,9 +191,9 @@ const ContactFormSection = () => {
                 {/* Subject */}
                 <div>
                   <label className="block text-sm font-bold text-[#0F172A] mb-2">Subject <span className="text-red-500">*</span></label>
-                  <input 
+                  <input
                     {...register("subject")}
-                    type="text" 
+                    type="text"
                     placeholder="What is this regarding?"
                     className={`w-full px-3 py-2 text-sm rounded-lg border ${errors.subject ? 'border-red-500 focus:ring-red-500' : 'border-gray-200 focus:ring-[#2563EB]'} bg-gray-50/50 focus:bg-white focus:outline-none focus:ring-2 focus:border-transparent transition-all`}
                   />
@@ -203,7 +203,7 @@ const ContactFormSection = () => {
                 {/* Role/Persona */}
                 <div>
                   <label className="block text-sm font-bold text-[#0F172A] mb-2">I am writing as a <span className="text-red-500">*</span></label>
-                  <select 
+                  <select
                     {...register("role")}
                     className={`w-full px-3 py-2 text-sm rounded-lg border ${errors.role ? 'border-red-500 focus:ring-red-500' : 'border-gray-200 focus:ring-[#2563EB]'} bg-gray-50/50 focus:bg-white focus:outline-none focus:ring-2 focus:border-transparent transition-all appearance-none`}
                   >
@@ -225,7 +225,7 @@ const ContactFormSection = () => {
                 <div>
                   <label className="block text-sm font-bold text-[#0F172A] mb-2">Message <span className="text-red-500">*</span></label>
                   <div className="relative">
-                    <textarea 
+                    <textarea
                       {...register("message")}
                       rows="4"
                       placeholder="Type your message here..."
@@ -239,8 +239,8 @@ const ContactFormSection = () => {
                 </div>
 
                 {/* Submit Button */}
-                <button 
-                  type="submit" 
+                <button
+                  type="submit"
                   disabled={isSubmitting}
                   className="w-full mt-2 py-3 bg-[#2563EB] hover:bg-blue-700 text-white font-bold rounded-lg transition-all shadow-lg shadow-blue-500/30 flex items-center justify-center gap-2 disabled:opacity-70 disabled:cursor-not-allowed"
                 >

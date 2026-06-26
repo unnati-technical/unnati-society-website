@@ -15,12 +15,12 @@ const Counter = ({ end, duration = 2000, suffix = "+" }) => {
         if (!startTime) startTime = timestamp;
         const progress = timestamp - startTime;
         const percentage = Math.min(progress / duration, 1);
-        
+
         // Easing function for smooth deceleration
         const easeOutQuart = 1 - Math.pow(1 - percentage, 4);
-        
+
         setCount(Math.floor(end * easeOutQuart));
-        
+
         if (progress < duration) {
           requestAnimationFrame(animateCount);
         }
@@ -36,11 +36,11 @@ const ContactStats = () => {
   return (
     <section className="w-full bg-[#F8FAFC] py-4 pb-6">
       <div className="container mx-auto px-4 lg:px-8">
-        
+
         <div className="bg-white rounded-2xl border border-gray-100 shadow-[0_10px_30px_rgba(0,0,0,0.02)] p-4 lg:p-6">
           <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 lg:gap-6 divide-x-0 lg:divide-x divide-gray-100">
-            
-            <motion.div 
+
+            <motion.div
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
@@ -51,12 +51,12 @@ const ContactStats = () => {
                 <School size={20} />
               </div>
               <h3 className="text-2xl font-extrabold text-[#0F172A] mb-0.5">
-                <Counter end={100} />
+                <Counter end={20} />
               </h3>
               <p className="text-[11px] font-medium text-gray-500 uppercase tracking-wide">Schools Connected</p>
             </motion.div>
 
-            <motion.div 
+            <motion.div
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
@@ -67,12 +67,12 @@ const ContactStats = () => {
                 <GraduationCap size={20} />
               </div>
               <h3 className="text-2xl font-extrabold text-[#0F172A] mb-0.5">
-                <Counter end={25000} />
+                <Counter end={4000} />
               </h3>
               <p className="text-[11px] font-medium text-gray-500 uppercase tracking-wide">Students Impacted</p>
             </motion.div>
 
-            <motion.div 
+            <motion.div
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
@@ -83,12 +83,12 @@ const ContactStats = () => {
                 <Users size={28} />
               </div>
               <h3 className="text-3xl md:text-4xl font-extrabold text-[#0F172A] mb-1">
-                <Counter end={500} />
+                <Counter end={200} />
               </h3>
               <p className="text-sm font-medium text-gray-500">Active Volunteers</p>
             </motion.div>
 
-            <motion.div 
+            <motion.div
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
@@ -99,9 +99,9 @@ const ContactStats = () => {
                 <ShieldCheck size={28} />
               </div>
               <h3 className="text-3xl md:text-4xl font-extrabold text-[#0F172A] mb-1">
-                <Counter end={250} />
+                <Counter end={350} />
               </h3>
-              <p className="text-sm font-medium text-gray-500">Programs Conducted</p>
+              <p className="text-sm font-medium text-gray-500">Sessions Conducted</p>
             </motion.div>
 
           </div>

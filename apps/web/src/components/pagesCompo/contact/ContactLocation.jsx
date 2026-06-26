@@ -53,7 +53,7 @@ const ContactLocation = () => {
                 </div>
                 <div>
                   <h4 className="font-bold text-[#0F172A] text-sm mb-0.5">Phone</h4>
-                  <a href="tel:+919334117404" className="text-[12px] text-gray-600 hover:text-[#2563EB] transition-colors">+91 93341 17404</a>
+                  <a href="tel:+919334117404" className="text-[12px] text-gray-600 hover:text-[#2563EB] transition-colors">+91 7348145325</a>
                 </div>
               </div>
 
@@ -63,7 +63,7 @@ const ContactLocation = () => {
                 </div>
                 <div>
                   <h4 className="font-bold text-[#0F172A] text-sm mb-0.5">Email</h4>
-                  <a href="mailto:contact@unnatisociety.org" className="text-[12px] text-gray-600 hover:text-[#2563EB] transition-colors">contact@unnatisociety.org</a>
+                  <a href="mailto:contact@unnatisociety.org" className="text-[12px] text-gray-600 hover:text-[#2563EB] transition-colors">unnati.ir@iiitbh.ac.in</a>
                 </div>
               </div>
 

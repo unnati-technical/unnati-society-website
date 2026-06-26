@@ -2,6 +2,7 @@ import React, { useState } from "react";
 const Unnati = "https://res.cloudinary.com/dyubgh5k4/image/upload/v1782396887/unnati_assets/Unnati.png";
 const IIITBh = "https://res.cloudinary.com/dyubgh5k4/image/upload/v1782396815/unnati_assets/IIITBh.png";
 import { useNavigate, useLocation } from "react-router-dom";
+import { FaInstagram, FaLinkedin, FaXTwitter } from "react-icons/fa6";
 import AuthModal from "./AuthModal";
 
 const Footer = () => {
@@ -29,18 +30,27 @@ const Footer = () => {
             />
           </div>
           <div className="flex gap-4 text-white/70">
-            <span className="w-8 h-8 rounded-full border border-white/40 flex items-center justify-center cursor-pointer"
-              onClick={() => navigate("https://www.instagram.com/unnati_society_iiitbh_/")}>
-              i
-            </span>
-            <span className="w-8 h-8 rounded-full border border-white/40 flex items-center justify-center cursor-pointer"
-              onClick={() => navigate("https://x.com/Unnati_Welfare")}>
-              x
-            </span>
-            <span className="w-8 h-8 rounded-full border border-white/40 flex items-center justify-center cursor-pointer"
-              onClick={() => navigate("https://www.linkedin.com/company/unnati-society-iiit-bhagalpur/")}>
-              in
-            </span>
+            <a href="https://www.instagram.com/unnati_society_iiitbh_/"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="w-8 h-8 rounded-full border border-white/40 flex items-center justify-center cursor-pointer hover:border-[#E1306C] hover:text-[#E1306C] hover:bg-[#E1306C]/10 transition-all duration-200"
+              aria-label="Instagram">
+              <FaInstagram size={16} />
+            </a>
+            <a href="https://x.com/Unnati_Welfare"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="w-8 h-8 rounded-full border border-white/40 flex items-center justify-center cursor-pointer hover:border-white hover:text-white hover:bg-white/10 transition-all duration-200"
+              aria-label="X (formerly Twitter)">
+              <FaXTwitter size={15} />
+            </a>
+            <a href="https://www.linkedin.com/company/unnati-society-iiit-bhagalpur/"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="w-8 h-8 rounded-full border border-white/40 flex items-center justify-center cursor-pointer hover:border-[#0A66C2] hover:text-[#0A66C2] hover:bg-[#0A66C2]/10 transition-all duration-200"
+              aria-label="LinkedIn">
+              <FaLinkedin size={16} />
+            </a>
           </div>
           <div className="text-sm leading-relaxed">
             IIIT Bhagalpur, Sabour, Bhagalpur, Bihar, 813210
@@ -74,11 +84,16 @@ const Footer = () => {
             >
               Contact
             </li>
+            <li className="hover:text-white cursor-pointer"
+              onClick={() => navigate("/join-us")}
+            >
+              Join Us
+            </li>
             <li
               className="hover:text-white cursor-pointer"
               onClick={() => navigate("/executive-body")}
             >
-              Executive Body
+              People
             </li>
           </ul>
         </div>
