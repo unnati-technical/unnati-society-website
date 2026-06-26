@@ -475,24 +475,24 @@ const Outreach = () => {
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
             {[
               {
-                img: "https://images.unsplash.com/photo-1577896851231-70ef18881754?q=80&w=2070",
-                title: "Career Guidance Session",
-                loc: "JNV Katihar",
-                date: "15 Aug 2025",
-                place: "Katihar, Bihar"
+                img: "https://res.cloudinary.com/dyubgh5k4/image/upload/v1782480666/rangchakra_i1pus7.png",
+                title: "Rangchakra: Art & Fun Event",
+                loc: "Babupur, Bhagalpur",
+                date: "26 Jan 2026",
+                place: "Bhagalpur, Bihar"
               },
               {
-                img: "https://images.unsplash.com/photo-1427504494785-3a9ca7044f45?q=80&w=2070",
-                title: "Scholarship Awareness Program",
-                loc: "KV Araria",
-                date: "22 Sep 2025",
-                place: "Araria, Bihar"
+                img: "https://res.cloudinary.com/dyubgh5k4/image/upload/v1782480509/St_Francis_visit_xxn8ca.jpg",
+                title: "St. Francis Students Visit to IIIT Bhagalpur",
+                loc: "IIIT Bhagalpur",
+                date: "27 Jan 2026",
+                place: "Bhagalpur, Bihar"
               },
               {
-                img: "https://images.unsplash.com/photo-1524178232363-1fb2b075b655?q=80&w=2070",
-                title: "Digital Literacy Session",
-                loc: "Government School Workshop",
-                date: "10 Nov 2025",
+                img: "https://res.cloudinary.com/dyubgh5k4/image/upload/v1782480664/enyugma_1_qlgu4q.png",
+                title: "Enyugma Fundraising Stall",
+                loc: "IIIT Bhagalpur",
+                date: "19 Feb 2026",
                 place: "Bhagalpur, Bihar"
               }
             ].map((item, idx) => (
