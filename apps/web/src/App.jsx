@@ -1,5 +1,5 @@
-import React, { Suspense } from 'react'
-import { Route, Routes, useNavigate } from 'react-router-dom'
+import React, { Suspense, useEffect } from 'react'
+import { Route, Routes, useNavigate, useLocation } from 'react-router-dom'
 import { UnnatiChatbot } from '@unnati/chatbot'
 import { Toaster } from 'sonner'
 import { Loader2 } from 'lucide-react'
@@ -10,6 +10,17 @@ const GlobalLoader = () => (
     <Loader2 className="w-8 h-8 text-blue-600 animate-spin" />
   </div>
 );
+
+// Scroll to Top on Route Change
+const ScrollToTop = () => {
+  const { pathname } = useLocation();
+
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, [pathname]);
+
+  return null;
+};
 
 // Lazy Loaded Routes
 const Homepage = React.lazy(() => import('./pages/Homepage'));
@@ -68,6 +79,7 @@ const App = () => {
 
   return (
     <div>
+      <ScrollToTop />
       <Toaster position="top-right" richColors />
       <UnnatiChatbot onNavigate={handleBotNavigate} />
       <Suspense fallback={<GlobalLoader />}>

@@ -20,8 +20,23 @@ const Outreach = () => {
   const [isInviteUsModalOpen, setIsInviteUsModalOpen] = useState(false);
   const [isPartnerModalOpen, setIsPartnerModalOpen] = useState(false);
 
+  const lineRef = useRef(null);
+  const [lineVisible, setLineVisible] = useState(false);
+
   useEffect(() => {
     window.scrollTo(0, 0);
+  }, []);
+
+  useEffect(() => {
+    if (!lineRef.current) return;
+    const observer = new IntersectionObserver(([entry]) => {
+      if (entry.isIntersecting) {
+        setLineVisible(true);
+      }
+    }, { threshold: 0.5 });
+
+    observer.observe(lineRef.current);
+    return () => observer.disconnect();
   }, []);
 
   return (
@@ -94,7 +109,7 @@ const Outreach = () => {
               <div style={{ position: 'absolute', top: '-24px', right: '-24px', width: '128px', height: '128px', backgroundImage: 'radial-gradient(#3B82F6 2.5px, transparent 2.5px)', backgroundSize: '16px 16px', opacity: 0.3, zIndex: 0 }}></div>
 
               {/* Main Left Image (Teacher) */}
-              <div 
+              <div
                 className="transition-all duration-300 hover:scale-[1.03] hover:!z-50 cursor-pointer"
                 style={{ position: 'absolute', right: 200, top: '60px', width: '450px', height: '400px', backgroundColor: '#E2E8F0', borderRadius: '24px', overflow: 'hidden', border: '8px solid white', boxShadow: '0 20px 50px rgba(0,0,0,0.1)', zIndex: 10 }}
               >
@@ -102,7 +117,7 @@ const Outreach = () => {
               </div>
 
               {/* Top Right Image (Girls) */}
-              <div 
+              <div
                 className="transition-all duration-300 hover:scale-[1.03] hover:!z-50 cursor-pointer"
                 style={{ position: 'absolute', right: '10px', top: '10px', width: '360px', height: '260px', backgroundColor: '#E2E8F0', borderRadius: '24px', overflow: 'hidden', border: '6px solid white', boxShadow: '0 15px 30px rgba(0,0,0,0.1)', zIndex: 20 }}
               >
@@ -110,7 +125,7 @@ const Outreach = () => {
               </div>
 
               {/* Bottom Right Image (Boys) */}
-              <div 
+              <div
                 className="transition-all duration-300 hover:scale-[1.03] hover:!z-50 cursor-pointer"
                 style={{ position: 'absolute', right: '10px', top: '220px', width: '300px', height: '280px', backgroundColor: '#E2E8F0', borderRadius: '24px', overflow: 'hidden', border: '6px solid white', boxShadow: '0 15px 30px rgba(0,0,0,0.1)', zIndex: 20 }}
               >
@@ -166,7 +181,7 @@ const Outreach = () => {
             <div className="w-[68px] h-[68px] rounded-[20px] bg-blue-50 text-blue-600 flex items-center justify-center mb-6 group-hover:scale-110 group-hover:bg-blue-600 group-hover:text-white group-hover:shadow-[0_10px_30px_rgba(37,99,235,0.3)] transition-all duration-300">
               <BiBuildingHouse size={32} />
             </div>
-            <h3 className="oswald-font-3 text-5xl font-extrabold text-[#0F172A] mb-2 tracking-tight group-hover:text-blue-600 transition-colors"><AnimatedCounter value={15} suffix="+" /><span className="text-[#FFC107]"></span></h3>
+            <h3 className="oswald-font-3 text-5xl font-extrabold text-[#0F172A] mb-2 tracking-tight group-hover:text-blue-600 transition-colors"><AnimatedCounter value={20} suffix="+" /><span className="text-[#FFC107]"></span></h3>
             <p className="inter-font text-[13px] font-bold text-gray-500 uppercase tracking-widest">Schools Reached</p>
           </div>
 
@@ -182,72 +197,6 @@ const Outreach = () => {
         </div>
       </section>
 
-      {/* SECTION 2: THREE OUTREACH OPTIONS */}
-      <section className="w-full bg-white py-20 px-6 lg:px-16">
-        <div className="max-w-[1400px] mx-auto grid grid-cols-1 md:grid-cols-3 gap-8">
-
-          {/* Card 1 */}
-          <div className="bg-[#F8FAFC] border border-gray-100 p-8 rounded-[24px] hover:shadow-xl hover:-translate-y-2 transition-all duration-300 flex flex-col h-full group">
-            <div className="w-16 h-16 rounded-2xl bg-blue-100 text-blue-600 flex items-center justify-center mb-6 group-hover:bg-blue-600 group-hover:text-white transition-colors">
-              <BiBuildingHouse size={32} />
-            </div>
-            <h3 className="text-2xl font-bold mb-3">Campus Visit</h3>
-            <p className="text-gray-600 mb-6 flex-grow">
-              Bring your students to IIIT Bhagalpur for an inspiring campus experience.
-            </p>
-            <ul className="space-y-3 mb-8">
-              <li className="flex items-center text-sm font-medium text-gray-700"><FiCheckCircle className="text-blue-500 mr-2" /> Campus tour</li>
-              <li className="flex items-center text-sm font-medium text-gray-700"><FiCheckCircle className="text-blue-500 mr-2" /> Student interaction</li>
-              <li className="flex items-center text-sm font-medium text-gray-700"><FiCheckCircle className="text-blue-500 mr-2" /> Career guidance</li>
-              <li className="flex items-center text-sm font-medium text-gray-700"><FiCheckCircle className="text-blue-500 mr-2" /> Exposure visit</li>
-            </ul>
-            <button onClick={() => setIsCampusVisitModalOpen(true)} className="w-full bg-blue-50 hover:bg-blue-600 hover:text-white text-blue-600 font-bold py-3 rounded-xl transition-colors">
-              Request Campus Visit
-            </button>
-          </div>
-
-          {/* Card 2 */}
-          <div className="bg-[#F8FAFC] border border-gray-100 p-8 rounded-[24px] hover:shadow-xl hover:-translate-y-2 transition-all duration-300 flex flex-col h-full group">
-            <div className="w-16 h-16 rounded-2xl bg-yellow-100 text-yellow-600 flex items-center justify-center mb-6 group-hover:bg-yellow-500 group-hover:text-white transition-colors">
-              <BiChalkboard size={32} />
-            </div>
-            <h3 className="text-2xl font-bold mb-3">Invite Us To School</h3>
-            <p className="text-gray-600 mb-6 flex-grow">
-              We conduct workshops and educational sessions at your school.
-            </p>
-            <ul className="space-y-3 mb-8">
-              <li className="flex items-center text-sm font-medium text-gray-700"><FiCheckCircle className="text-blue-500 mr-2" /> Digital literacy</li>
-              <li className="flex items-center text-sm font-medium text-gray-700"><FiCheckCircle className="text-blue-500 mr-2" /> Career guidance</li>
-              <li className="flex items-center text-sm font-medium text-gray-700"><FiCheckCircle className="text-blue-500 mr-2" /> Awareness programs</li>
-              <li className="flex items-center text-sm font-medium text-gray-700"><FiCheckCircle className="text-blue-500 mr-2" /> Interactive workshops</li>
-            </ul>
-            <button onClick={() => setIsInviteUsModalOpen(true)} className="w-full bg-yellow-100 hover:bg-yellow-500 hover:text-white text-yellow-700 font-bold py-3 rounded-xl transition-colors">
-              Invite Us
-            </button>
-          </div>
-
-          {/* Card 3 */}
-          <div className="bg-[#F8FAFC] border border-gray-100 p-8 rounded-[24px] hover:shadow-xl hover:-translate-y-2 transition-all duration-300 flex flex-col h-full group">
-            <div className="w-16 h-16 rounded-2xl bg-blue-100 text-blue-600 flex items-center justify-center mb-6 group-hover:bg-blue-600 group-hover:text-white transition-colors">
-              <FaHandshake size={32} />
-            </div>
-            <h3 className="text-2xl font-bold mb-3">Collaborate / Partner</h3>
-            <p className="text-gray-600 mb-6 flex-grow">
-              Partner with us to create sustainable educational impact.
-            </p>
-            <ul className="space-y-3 mb-8">
-              <li className="flex items-center text-sm font-medium text-gray-700"><FiCheckCircle className="text-blue-500 mr-2" /> Joint programs</li>
-              <li className="flex items-center text-sm font-medium text-gray-700"><FiCheckCircle className="text-blue-500 mr-2" /> CSR projects</li>
-              <li className="flex items-center text-sm font-medium text-gray-700"><FiCheckCircle className="text-blue-500 mr-2" /> Volunteer network</li>
-              <li className="flex items-center text-sm font-medium text-gray-700"><FiCheckCircle className="text-blue-500 mr-2" /> Long-term partnerships</li>
-            </ul>
-            <button onClick={() => setIsPartnerModalOpen(true)} className="w-full bg-blue-50 hover:bg-blue-600 hover:text-white text-blue-600 font-bold py-3 rounded-xl transition-colors">
-              Partner With Us
-            </button>
-          </div>
-
-        </div>
-      </section>
 
       {/* SECTION 3: CAMPUS VISIT DETAILS */}
       <section className="w-full bg-[#F8FAFC] py-20 px-6 lg:px-16">
@@ -280,7 +229,7 @@ const Outreach = () => {
               </div>
             </div>
 
-            <button onClick={() => setIsCampusVisitModalOpen(true)} className="bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-8 rounded-full transition-all shadow-lg shadow-blue-600/30 flex items-center gap-2">
+            <button onClick={() => setIsCampusVisitModalOpen(true)} className="bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-8 rounded-full transition-all shadow-lg shadow-blue-600/30 flex items-center gap-2 w-fit">
               Request Campus Visit <FiArrowRight />
             </button>
           </div>
@@ -344,6 +293,10 @@ const Outreach = () => {
               </div>
             </div>
 
+            <button onClick={() => setIsInviteUsModalOpen(true)} className="mt-8 bg-[#FBBF24] hover:bg-yellow-500 text-[#0F172A] font-bold py-3 px-8 rounded-full transition-all shadow-lg shadow-yellow-400/30 flex items-center gap-2 w-fit">
+              Invite Us <FiArrowRight />
+            </button>
+
           </div>
 
           <div className="w-full lg:w-1/2">
@@ -395,14 +348,14 @@ const Outreach = () => {
           </div>
 
           <div className="w-full lg:w-1/2 flex justify-center items-center h-[400px]">
-  <div className="w-full h-full max-w-[500px] rounded-[40px] overflow-hidden shadow-2xl border border-gray-200 shadow-lg shadow-gray-50">
-    <img
-      src="https://res.cloudinary.com/dyubgh5k4/image/upload/v1782397307/unnati_assets/yx21ld5ujylzkawjvc8i.webp"
-      alt="Outreach"
-      className="w-full h-full object-cover transition-transform duration-500 hover:scale-105"
-    />
-  </div>
-</div>
+            <div className="w-full h-full max-w-[500px] rounded-[40px] overflow-hidden shadow-2xl border border-gray-200 shadow-lg shadow-gray-50">
+              <img
+                src="https://res.cloudinary.com/dyubgh5k4/image/upload/v1782397307/unnati_assets/yx21ld5ujylzkawjvc8i.webp"
+                alt="Outreach"
+                className="w-full h-full object-cover transition-transform duration-500 hover:scale-105"
+              />
+            </div>
+          </div>
         </div>
       </section>
 
@@ -411,59 +364,42 @@ const Outreach = () => {
         <div className="max-w-[1200px] mx-auto text-center">
           <h2 className="text-4xl font-extrabold mb-16 text-[#0F172A]">How Outreach Works</h2>
 
-          <div className="flex flex-col md:flex-row justify-between items-center relative">
+          <div className="flex flex-col md:flex-row justify-between items-center relative gap-8 md:gap-4">
             {/* Connecting Line */}
-            <div className="hidden md:block absolute top-[40px] left-[10%] right-[10%] h-1 bg-gray-100 -z-10">
-              <div className="h-full bg-blue-500 w-full rounded-full opacity-30"></div>
+            <div ref={lineRef} className="hidden md:block absolute top-[40px] left-[8%] right-[8%] h-1 bg-gray-200 z-0 rounded-full overflow-hidden">
+              <div
+                className="h-full bg-blue-500 rounded-full transition-all duration-[2000ms] ease-in-out"
+                style={{ width: lineVisible ? '100%' : '0%' }}
+              ></div>
             </div>
 
             {[
-              { step: 1, title: 'Submit Request', icon: <FiMonitor size={32} /> },
-              { step: 2, title: 'We Connect', icon: <FiUsers size={32} /> },
-              { step: 3, title: 'Schedule & Confirm', icon: <FiCalendar size={32} /> },
-              { step: 4, title: 'Visit / Delivery', icon: <FiCheckCircle size={32} /> },
+              { step: 1, title: 'Submit Request', icon: <FiMonitor size={28} /> },
+              { step: 2, title: 'Connect & Discuss', icon: <FiUsers size={28} /> },
+              { step: 3, title: 'Approval', icon: <FiCheckCircle size={28} /> },
+              { step: 4, title: 'Schedule', icon: <FiCalendar size={28} /> },
+              { step: 5, title: 'Visit', icon: <BiBuildingHouse size={28} /> },
+              { step: 6, title: 'Feedback', icon: <FiHeart size={28} /> },
             ].map((item, index) => (
-              <div key={index} className="flex flex-col items-center bg-white px-4 mb-8 md:mb-0">
-                <div className="w-20 h-20 bg-blue-50 rounded-full flex items-center justify-center text-blue-600 mb-4 border-4 border-white shadow-lg relative">
+              <div key={index} className="flex flex-col items-center bg-white px-2 mb-8 md:mb-0 z-10 w-full md:w-auto">
+                <div
+                  className={`w-16 h-16 md:w-20 md:h-20 rounded-full flex items-center justify-center mb-4 border-4 border-white shadow-lg relative transition-all duration-500 ease-out ${lineVisible ? 'bg-blue-50 text-blue-600 scale-100' : 'bg-gray-100 text-gray-400 scale-95'}`}
+                  style={{ transitionDelay: lineVisible ? `${index * 400}ms` : '0ms' }}
+                >
                   {item.icon}
-                  <div className="absolute -top-2 -right-2 w-8 h-8 bg-[#FBBF24] text-white rounded-full flex items-center justify-center font-bold text-sm shadow-md">
-                    {item.step}
-                  </div>
                 </div>
-                <h4 className="font-bold text-[#0F172A] text-lg">{item.title}</h4>
+                <h4
+                  className={`font-bold text-sm md:text-base max-w-[120px] mx-auto leading-tight transition-all duration-500 ${lineVisible ? 'text-[#0F172A]' : 'text-gray-400'}`}
+                  style={{ transitionDelay: lineVisible ? `${index * 400}ms` : '0ms' }}
+                >
+                  {item.title}
+                </h4>
               </div>
             ))}
           </div>
         </div>
       </section>
 
-      {/* SECTION 7: GUIDELINES */}
-      <section className="w-full bg-[#F8FAFC] py-20 px-6 lg:px-16">
-        <div className="max-w-[1200px] mx-auto grid grid-cols-1 md:grid-cols-2 gap-8">
-          <div className="bg-white p-10 rounded-[32px] border border-gray-100 shadow-xl shadow-gray-200/40 hover:-translate-y-1 transition-transform">
-            <h3 className="text-2xl font-bold mb-6 flex items-center gap-3">
-              <BiBuildingHouse className="text-blue-600" size={32} /> Campus Visit Guidelines
-            </h3>
-            <ul className="space-y-4">
-              <li className="flex items-start text-gray-600 font-medium"><div className="mt-1 mr-3 text-[#FBBF24]"><FiCheckCircle size={18} /></div> Best for classes 9–12</li>
-              <li className="flex items-start text-gray-600 font-medium"><div className="mt-1 mr-3 text-[#FBBF24]"><FiCheckCircle size={18} /></div> Advance permission required from institute</li>
-              <li className="flex items-start text-gray-600 font-medium"><div className="mt-1 mr-3 text-[#FBBF24]"><FiCheckCircle size={18} /></div> School manages transport and logistics</li>
-              <li className="flex items-start text-gray-600 font-medium"><div className="mt-1 mr-3 text-[#FBBF24]"><FiCheckCircle size={18} /></div> Prior scheduling mandatory</li>
-            </ul>
-          </div>
-          <div className="bg-white p-10 rounded-[32px] border border-gray-100 shadow-xl shadow-gray-200/40 hover:-translate-y-1 transition-transform">
-            <h3 className="text-2xl font-bold mb-6 flex items-center gap-3">
-              <BiChalkboard className="text-blue-600" size={32} /> School Visit Guidelines
-            </h3>
-            <ul className="space-y-4">
-              <li className="flex items-start text-gray-600 font-medium"><div className="mt-1 mr-3 text-[#FBBF24]"><FiCheckCircle size={18} /></div> Classroom or hall space required</li>
-              <li className="flex items-start text-gray-600 font-medium"><div className="mt-1 mr-3 text-[#FBBF24]"><FiCheckCircle size={18} /></div> Projector and screen preferred</li>
-              <li className="flex items-start text-gray-600 font-medium"><div className="mt-1 mr-3 text-[#FBBF24]"><FiCheckCircle size={18} /></div> Government schools prioritized</li>
-              <li className="flex items-start text-gray-600 font-medium"><div className="mt-1 mr-3 text-[#FBBF24]"><FiCheckCircle size={18} /></div> Timely coordination appreciated</li>
-            </ul>
-          </div>
-        </div>
-      </section>
 
       {/* The Impact Footprint section has been moved to directly below the hero per the image layout */}
 

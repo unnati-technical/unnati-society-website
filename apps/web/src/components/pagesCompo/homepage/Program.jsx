@@ -106,7 +106,7 @@ const Program = () => {
               <FaSchool size={22} />
             </div>
             <div className="flex flex-col">
-              <h3 className="text-2xl font-black text-[#0F172A] leading-none tracking-tight oswald-font-3"><AnimatedCounter value={15} suffix="+" /></h3>
+              <h3 className="text-2xl font-black text-[#0F172A] leading-none tracking-tight oswald-font-3"><AnimatedCounter value={20} suffix="+" /></h3>
               <p className="text-gray-500 text-[11px] uppercase tracking-widest font-bold mt-1.5">Schools</p>
             </div>
           </div>

@@ -13,58 +13,61 @@ const SectionHeader = ({ title }) => (
   </div>
 );
 
-const ProfileCard = ({ member, isCloudinary = true }) => {
+const ProfileCard = ({ member, isCloudinary = true, showSocials = true }) => {
   const isCloudinaryFinal = member.img && typeof member.img === 'string' && member.img.startsWith("http") ? false : isCloudinary;
   const imgSrc = isCloudinaryFinal ? cloudinaryImage(member.img) : member.img;
   const hasLinkedin = member.linkedin && member.linkedin !== "#";
 
   return (
-    <div className="flex flex-col items-center bg-white rounded-xl border border-gray-200 p-8 shadow-sm hover:shadow-lg transition-shadow duration-300 relative group">
-      <div className="w-32 h-32 md:w-40 md:h-40 rounded-full overflow-hidden mb-6 border-[6px] border-gray-50 shadow-inner group-hover:border-blue-50 transition-colors duration-300">
-        <img loading="lazy" 
+    <div className="flex flex-col items-center bg-white rounded-xl border border-gray-200 p-8 shadow-sm hover:shadow-lg transition-shadow duration-300 relative group h-full">
+      <div className="w-32 h-32 md:w-40 md:h-40 rounded-full overflow-hidden mb-6 border-[6px] border-gray-50 shadow-inner group-hover:border-blue-50 transition-colors duration-300 flex-shrink-0">
+        <img loading="lazy"
           src={imgSrc}
           alt={member.name}
           className="w-full h-full object-cover"
         />
       </div>
 
-      <div className="text-center w-full flex flex-col items-center">
+      <div className="text-center w-full flex flex-col items-center h-full flex-grow">
         <h2 className="text-xl md:text-2xl font-bold text-gray-900 tracking-tight mb-1">{member.name}</h2>
-        <p className="text-xs font-semibold text-blue-600 uppercase tracking-widest mb-6 px-4 whitespace-pre-line">
+        <p className="text-xs font-semibold text-blue-600 uppercase tracking-widest mb-6 px-4 whitespace-pre-line flex-grow">
           {member.post}
         </p>
 
-        {/* Divider */}
-        <div className="w-12 h-[2px] bg-gray-200 mb-6 group-hover:bg-blue-300 transition-colors duration-300"></div>
+        {showSocials && (
+          <div className="w-full flex flex-col items-center mt-auto">
+            {/* Divider */}
+            <div className="w-12 h-[2px] bg-gray-200 mb-6 group-hover:bg-blue-300 transition-colors duration-300"></div>
 
-        {/* Social Links */}
-        <div className="flex justify-center gap-5 items-center">
-          <a
-            href={`mailto:${member.email}`}
-            className="text-gray-400 group-hover:text-red-300 hover:!text-red-600 transition-colors duration-300 flex items-center"
-            title="Send Email"
-          >
-            <MdEmail size={28} />
-          </a>
+            {/* Social Links */}
+            <div className="flex justify-center gap-5 items-center">
+              <a
+                href={`mailto:${member.email}`}
+                className="text-gray-400 group-hover:text-red-300 hover:!text-red-600 transition-colors duration-300 flex items-center"
+                title="Send Email"
+              >
+                <MdEmail size={28} />
+              </a>
 
-          <a
-            href={hasLinkedin ? member.linkedin : "#"}
-            target={hasLinkedin ? "_blank" : "_self"}
-            rel="noreferrer"
-            className={`transition-colors duration-300 flex items-center ${hasLinkedin ? "text-gray-400 group-hover:text-blue-300 hover:!text-[#0A66C2]" : "text-gray-200 cursor-not-allowed"}`}
-            title={hasLinkedin ? "LinkedIn Profile" : "LinkedIn coming soon"}
-            onClick={(e) => { if (!hasLinkedin) e.preventDefault(); }}
-          >
-            <FaLinkedin size={24} />
-          </a>
-        </div>
+              <a
+                href={hasLinkedin ? member.linkedin : "#"}
+                target={hasLinkedin ? "_blank" : "_self"}
+                rel="noreferrer"
+                className={`transition-colors duration-300 flex items-center ${hasLinkedin ? "text-gray-400 group-hover:text-blue-300 hover:!text-[#0A66C2]" : "text-gray-200 cursor-not-allowed"}`}
+                title={hasLinkedin ? "LinkedIn Profile" : "LinkedIn coming soon"}
+                onClick={(e) => { if (!hasLinkedin) e.preventDefault(); }}
+              >
+                <FaLinkedin size={24} />
+              </a>
+            </div>
+          </div>
+        )}
       </div>
     </div>
   );
 };
 
 const ExecutiveBody = () => {
-  const [isVerticalLayout, setIsVerticalLayout] = useState(false);
 
   const facultyExecutive = [
     {
@@ -97,13 +100,6 @@ const ExecutiveBody = () => {
       img: "dheeraj_cuclko",
       email: "dheeraj.230101050@iiitbh.ac.in",
       linkedin: "https://www.linkedin.com/in/dheeraj-yadav-681325218",
-    },
-    {
-      name: "Divyanshu Pal",
-      post: "VICE-PRESIDENT",
-      img: "divyanshusir_zb2xxd",
-      email: "divyanshu.230101051@iiitbh.ac.in",
-      linkedin: "https://www.linkedin.com/in/divyaanshu/",
     },
     {
       name: "Ayush Thakur",
@@ -239,7 +235,7 @@ const ExecutiveBody = () => {
     },
   ]
   const technicalLeads = [
-    { 
+    {
       name: "Twinkle Kumari",
       post: "Web Developmnt Lead",
       img: "twinkle_akhjbq",
@@ -260,26 +256,28 @@ const ExecutiveBody = () => {
   return (
     <div className="w-full bg-[#FAFAFA] font-sans pb-24">
       {/* Hero Section */}
-      <div className="w-full bg-[#0F172A] py-20 md:py-28 px-6 relative overflow-hidden">
+      <div className="w-full bg-[#0F172A] py-8 md:py-10 px-6 relative overflow-hidden">
         {/* Abstract Background Shapes */}
         <div className="absolute top-[-50%] right-[-10%] w-[500px] h-[500px] rounded-full bg-blue-600/20 blur-[100px]"></div>
         <div className="absolute bottom-[-50%] left-[-10%] w-[400px] h-[400px] rounded-full bg-blue-500/20 blur-[100px]"></div>
 
         <div className="max-w-4xl mx-auto relative z-10 text-center">
-          <h1 className="text-xs md:text-sm font-bold text-blue-400 uppercase tracking-[0.2em] mb-4">Our People</h1>
-          <h2 className="text-4xl md:text-6xl lg:text-7xl font-extrabold text-white leading-[1.1] mb-6 oswald-font-3 tracking-tight">The Minds Behind Unnati</h2>
-          <p className="text-base md:text-xl text-slate-300 max-w-2xl mx-auto leading-relaxed">Meet the dedicated team of faculty, leaders, and student volunteers who drive our mission of equitable education forward.</p>
+          <h1 className="text-xs md:text-sm font-bold text-blue-400 uppercase tracking-[0.2em] mb-2">Our People</h1>
+          <h2 className="text-4xl md:text-5xl lg:text-6xl font-extrabold text-white leading-[1.1] mb-2 oswald-font-3 tracking-tight">The Minds Behind Unnati</h2>
+          <p className="text-base md:text-lg text-slate-300 max-w-2xl mx-auto leading-relaxed">Meet the dedicated team of faculty, leaders, and students who drive our mission of equitable education forward.</p>
         </div>
       </div>
 
-      <div className="max-w-[1400px] mx-auto px-6 md:px-12 lg:px-16 pt-20">
+      <div className="max-w-[1400px] w-full mx-auto px-4 md:px-6 pt-8">
 
         {/* GOVERNING BODY */}
         <section className="mb-24">
           <SectionHeader title="Governing Body" />
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 max-w-5xl mx-auto">
+          <div className="flex flex-wrap justify-center gap-6 max-w-5xl mx-auto">
             {facultyExecutive.map((member, index) => (
-              <ProfileCard key={index} member={member} isCloudinary={false} />
+              <div key={index} className="w-full sm:w-[320px]">
+                <ProfileCard member={member} isCloudinary={false} showSocials={false} />
+              </div>
             ))}
           </div>
         </section>
@@ -287,9 +285,11 @@ const ExecutiveBody = () => {
         {/* EXECUTIVE BODY */}
         <section className="mb-24">
           <SectionHeader title="Executive Body 2025-26" />
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3 gap-8">
+          <div className="flex flex-wrap justify-center gap-4 w-full">
             {membersExecutive.map((member, index) => (
-              <ProfileCard key={index} member={member} />
+              <div key={index} className="w-full sm:w-[210px] lg:w-[220px] xl:w-[240px]">
+                <ProfileCard member={member} />
+              </div>
             ))}
           </div>
         </section>
@@ -297,104 +297,50 @@ const ExecutiveBody = () => {
         {/* TEAM LEADS */}
         <section>
           <SectionHeader title="Team Leads" />
+          {/* Team Leads Layout */}
+          <div className="flex flex-col gap-16">
+            {/* Programs */}
+            <div className="flex flex-col gap-8">
+              <div className="bg-blue-600 text-white rounded-2xl py-4 px-6 text-center shadow-lg max-w-sm mx-auto w-full">
+                <h3 className="oswald-font-3 text-2xl tracking-wide">PROGRAMS LEADS</h3>
+              </div>
+              <div className="flex flex-wrap justify-center gap-4">
+                {programLeads.map((member, index) => (
+                  <div key={index} className="w-full sm:w-[210px] lg:w-[220px] xl:w-[240px]">
+                    <ProfileCard member={member} showSocials={true} />
+                  </div>
+                ))}
+              </div>
+            </div>
 
-          {/* Toggle Button */}
-          <div className="flex justify-center mb-10">
-            <div className="bg-gray-100 p-1 rounded-full inline-flex relative shadow-sm border border-gray-200">
-              <button
-                onClick={() => setIsVerticalLayout(false)}
-                className={`px-6 py-2 rounded-full text-sm font-bold transition-all duration-300 z-10 ${!isVerticalLayout ? "bg-white text-blue-600 shadow-sm" : "text-gray-500 hover:text-gray-700"}`}
-              >
-                Horizontal Stack
-              </button>
-              <button
-                onClick={() => setIsVerticalLayout(true)}
-                className={`px-6 py-2 rounded-full text-sm font-bold transition-all duration-300 z-10 ${isVerticalLayout ? "bg-white text-blue-600 shadow-sm" : "text-gray-500 hover:text-gray-700"}`}
-              >
-                Vertical Columns
-              </button>
+            {/* PR & Operations */}
+            <div className="flex flex-col gap-8">
+              <div className="bg-[#FFC107] text-black rounded-2xl py-4 px-6 text-center shadow-lg max-w-sm mx-auto w-full">
+                <h3 className="oswald-font-3 text-2xl tracking-wide">PUBLIC RELATIONS LEADS</h3>
+              </div>
+              <div className="flex flex-wrap justify-center gap-4">
+                {prLeads.map((member, index) => (
+                  <div key={index} className="w-full sm:w-[210px] lg:w-[220px] xl:w-[240px]">
+                    <ProfileCard member={member} showSocials={true} />
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            {/* Technical */}
+            <div className="flex flex-col gap-8">
+              <div className="bg-blue-600 text-white rounded-2xl py-4 px-6 text-center shadow-lg max-w-sm mx-auto w-full">
+                <h3 className="oswald-font-3 text-2xl tracking-wide">TECHNICAL LEADS</h3>
+              </div>
+              <div className="flex flex-wrap justify-center gap-4">
+                {technicalLeads.map((member, index) => (
+                  <div key={index} className="w-full sm:w-[210px] lg:w-[220px] xl:w-[240px]">
+                    <ProfileCard member={member} showSocials={true} />
+                  </div>
+                ))}
+              </div>
             </div>
           </div>
-
-          {!isVerticalLayout ? (
-            /* Horizontal Stack Layout (New) */
-            <div className="flex flex-col gap-16">
-              {/* Programs */}
-              <div className="flex flex-col gap-8">
-                <div className="bg-blue-600 text-white rounded-2xl py-4 px-6 text-center shadow-lg max-w-sm mx-auto w-full">
-                  <h3 className="oswald-font-3 text-2xl tracking-wide">PROGRAMS </h3>
-                </div>
-                <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-6 justify-center">
-                  {programLeads.map((member, index) => (
-                    <ProfileCard key={index} member={member} />
-                  ))}
-                </div>
-              </div>
-
-              {/* PR & Operations */}
-              <div className="flex flex-col gap-8">
-                <div className="bg-[#FFC107] text-black rounded-2xl py-4 px-6 text-center shadow-lg max-w-sm mx-auto w-full">
-                  <h3 className="oswald-font-3 text-2xl tracking-wide"> PUBLIC RELATIONS</h3>
-                </div>
-                <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-6 justify-center">
-                  {prLeads.map((member, index) => (
-                    <ProfileCard key={index} member={member} />
-                  ))}
-                </div>
-              </div>
-
-              {/* Technical */}
-              <div className="flex flex-col gap-8">
-                <div className="bg-blue-600 text-white rounded-2xl py-4 px-6 text-center shadow-lg max-w-sm mx-auto w-full">
-                  <h3 className="oswald-font-3 text-2xl tracking-wide">TECHNICAL</h3>
-                </div>
-                <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-6 justify-center">
-                  {technicalLeads.map((member, index) => (
-                    <ProfileCard key={index} member={member} />
-                  ))}
-                </div>
-              </div>
-            </div>
-          ) : (
-            /* Vertical Columns Layout (Original) */
-            <div className="grid grid-cols-1 lg:grid-cols-3 gap-12 lg:gap-8">
-              {/* Programs */}
-              <div className="flex flex-col gap-6">
-                <div className="bg-blue-600 text-white rounded-2xl py-4 px-6 text-center shadow-lg">
-                  <h3 className="oswald-font-3 text-2xl tracking-wide">PROGRAMS </h3>
-                </div>
-                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-1 gap-6">
-                  {programLeads.map((member, index) => (
-                    <ProfileCard key={index} member={member} />
-                  ))}
-                </div>
-              </div>
-
-              {/* PR & Operations */}
-              <div className="flex flex-col gap-6">
-                <div className="bg-[#FFC107] text-black rounded-2xl py-4 px-6 text-center shadow-lg">
-                  <h3 className="oswald-font-3 text-2xl tracking-wide">PERSONAL RELATIONS</h3>
-                </div>
-                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-1 gap-6">
-                  {prLeads.map((member, index) => (
-                    <ProfileCard key={index} member={member} />
-                  ))}
-                </div>
-              </div>
-
-              {/* Technical */}
-              <div className="flex flex-col gap-6">
-                <div className="bg-blue-600 text-white rounded-2xl py-4 px-6 text-center shadow-lg">
-                  <h3 className="oswald-font-3 text-2xl tracking-wide">TECHNICAL</h3>
-                </div>
-                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-1 gap-6">
-                  {technicalLeads.map((member, index) => (
-                    <ProfileCard key={index} member={member} />
-                  ))}
-                </div>
-              </div>
-            </div>
-          )}
         </section>
 
       </div>
