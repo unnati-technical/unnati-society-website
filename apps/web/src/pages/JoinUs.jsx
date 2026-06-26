@@ -5,8 +5,8 @@ import Navbar from '../components/common/Navbar';
 import NavUnn from '../components/common/NavUnn';
 import Footer from '../components/common/Footer';
 
-import { 
-  FiUsers, FiBookOpen, FiBriefcase, FiHeart, 
+import {
+  FiUsers, FiBookOpen, FiBriefcase, FiHeart,
   FiCheckCircle, FiArrowRight, FiTarget, FiStar, FiAward, FiMessageSquare
 } from 'react-icons/fi';
 import VolunteerModal from '../components/common/VolunteerModal';
@@ -40,7 +40,7 @@ const JoinUs = () => {
 
         <div className="max-w-[1400px] mx-auto grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
           {/* Left Column */}
-          <motion.div 
+          <motion.div
             initial="hidden" animate="visible" variants={staggerContainer}
             className="flex flex-col items-start z-10"
           >
@@ -50,7 +50,7 @@ const JoinUs = () => {
             </motion.div>
 
             <motion.h1 variants={fadeUpVariant} className="text-5xl lg:text-7xl font-extrabold text-[#0F172A] leading-[1.1] mb-6">
-              Be the Change.<br/>
+              Be the Change.<br />
               <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-blue-400">
                 Build a Better Tomorrow.
               </span>
@@ -76,13 +76,13 @@ const JoinUs = () => {
           </motion.div>
 
           {/* Right Column (Redesigned Image Frame) */}
-          <motion.div 
+          <motion.div
             initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }} transition={{ duration: 0.8 }}
             className="relative w-full h-[500px] lg:h-[600px] z-10 flex items-center justify-center"
           >
             {/* Background Blob/Shape */}
             <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[350px] h-[350px] lg:w-[450px] lg:h-[450px] bg-blue-100 rounded-full blur-3xl opacity-60"></div>
-            
+
             {/* Decorative organic shape */}
             <div className="absolute -top-4 right-10 w-24 h-24 pointer-events-none opacity-40">
               <svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
@@ -92,24 +92,24 @@ const JoinUs = () => {
 
             {/* Image 1 (Large Main) */}
             <div className="absolute top-4 right-0 lg:right-8 w-3/4 h-[80%] rounded-[2rem] rounded-tl-[6rem] rounded-br-[6rem] overflow-hidden shadow-[0_20px_40px_rgba(0,0,0,0.15)] border-4 border-white z-10">
-              <img loading="lazy" 
-                src="https://images.unsplash.com/photo-1529390079861-591de354faf5?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80" 
-                alt="Unnati Volunteers" 
+              <img loading="lazy"
+                src="https://res.cloudinary.com/dyubgh5k4/image/upload/v1782396863/unnati_assets/mission2.png"
+                alt="Unnati Volunteers"
                 className="w-full h-full object-cover hover:scale-105 transition-transform duration-700"
               />
             </div>
 
             {/* Image 2 (Small Overlapping) */}
             <div className="absolute bottom-16 left-0 lg:left-4 w-[55%] h-[45%] rounded-[2rem] rounded-tr-[4rem] rounded-bl-[4rem] overflow-hidden shadow-[0_20px_40px_rgba(0,0,0,0.2)] border-4 border-white z-20">
-              <img loading="lazy" 
-                src="https://images.unsplash.com/photo-1542838132-92c53300491e?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" 
-                alt="Students learning" 
+              <img loading="lazy"
+                src="https://res.cloudinary.com/dyubgh5k4/image/upload/v1782396896/unnati_assets/visionAboutus.jpg"
+                alt="Students learning"
                 className="w-full h-full object-cover hover:scale-105 transition-transform duration-700"
               />
             </div>
 
             {/* Floating Card */}
-            <motion.div 
+            <motion.div
               initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.6, duration: 0.6 }}
               className="absolute -bottom-6 right-4 lg:-right-4 bg-white/95 backdrop-blur-xl p-4 rounded-2xl shadow-[0_20px_40px_rgba(0,0,0,0.15)] flex items-center gap-4 w-[260px] z-30 border border-white/50"
             >
@@ -135,7 +135,7 @@ const JoinUs = () => {
       {/* SECTION 2 - WAYS TO GET INVOLVED */}
       <section className="py-24 px-6 lg:px-16 bg-[#F8FAFC]">
         <div className="max-w-[1400px] mx-auto">
-          <motion.div 
+          <motion.div
             initial="hidden" whileInView="visible" viewport={{ once: true, margin: "-100px" }} variants={fadeUpVariant}
             className="text-center max-w-3xl mx-auto mb-16"
           >
@@ -143,7 +143,7 @@ const JoinUs = () => {
             <p className="text-gray-600 text-lg">Whether you have time, skills, or resources to share, there's a place for you in our journey.</p>
           </motion.div>
 
-          <motion.div 
+          <motion.div
             initial="hidden" whileInView="visible" viewport={{ once: true, margin: "-100px" }} variants={staggerContainer}
             className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8"
           >
@@ -201,22 +201,34 @@ const JoinUs = () => {
       {/* SECTION 3 - WHY JOIN UNNATI */}
       <section className="py-24 px-6 lg:px-16 bg-white overflow-hidden">
         <div className="max-w-[1400px] mx-auto grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
-          
+
           {/* Left - Image */}
-          <motion.div 
-            initial={{ opacity: 0, x: -50 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true, margin: "-100px" }} transition={{ duration: 0.8 }}
+          <motion.div
+            initial={{ opacity: 0, x: -50 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            viewport={{ once: true, margin: "-100px" }}
+            transition={{ duration: 0.8 }}
             className="relative order-2 lg:order-1"
           >
-            <div className="absolute -left-6 -bottom-6 w-24 h-24 opacity-30" style={{ backgroundImage: 'radial-gradient(#2563EB 2px, transparent 2px)', backgroundSize: '12px 12px' }}></div>
-            <img loading="lazy" 
-              src="https://images.unsplash.com/photo-1542838132-92c53300491e?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80" 
-              alt="Volunteers smiling" 
+            <div
+              className="absolute -left-6 -bottom-6 w-24 h-24 opacity-30"
+              style={{
+                backgroundImage: "radial-gradient(#2563EB 2px, transparent 2px)",
+                backgroundSize: "12px 12px",
+              }}
+            ></div>
+
+            <img
+              loading="lazy"
+              src="https://res.cloudinary.com/dyubgh5k4/image/upload/v1782485434/IMG_20250126_160514_ewbb1t.jpg"
+              alt="Volunteers smiling"
               className="rounded-3xl shadow-2xl relative z-10 w-full h-[500px] object-cover"
+              style={{ objectPosition: "center 20%" }}
             />
           </motion.div>
 
           {/* Right - Content */}
-          <motion.div 
+          <motion.div
             initial="hidden" whileInView="visible" viewport={{ once: true, margin: "-100px" }} variants={staggerContainer}
             className="order-1 lg:order-2"
           >
@@ -253,7 +265,7 @@ const JoinUs = () => {
       {/* SECTION 4 - TESTIMONIALS */}
       <section className="py-24 px-6 lg:px-16 bg-[#F8FAFC]">
         <div className="max-w-[1400px] mx-auto">
-          <motion.div 
+          <motion.div
             initial="hidden" whileInView="visible" viewport={{ once: true, margin: "-100px" }} variants={fadeUpVariant}
             className="text-center max-w-3xl mx-auto mb-16"
           >
@@ -261,7 +273,7 @@ const JoinUs = () => {
             <div className="w-16 h-1 bg-blue-600 mx-auto rounded-full"></div>
           </motion.div>
 
-          <motion.div 
+          <motion.div
             initial="hidden" whileInView="visible" viewport={{ once: true, margin: "-100px" }} variants={staggerContainer}
             className="grid grid-cols-1 md:grid-cols-3 gap-8"
           >
@@ -287,7 +299,7 @@ const JoinUs = () => {
               </motion.div>
             ))}
           </motion.div>
-          
+
           {/* Slider Indicators Placeholder */}
           <div className="flex justify-center gap-2 mt-10">
             <div className="w-3 h-3 rounded-full bg-blue-600"></div>
@@ -302,9 +314,9 @@ const JoinUs = () => {
       <section className="py-24 px-6 lg:px-16 bg-gradient-to-br from-[#0F172A] to-blue-900 text-white relative overflow-hidden">
         {/* Subtle background glow */}
         <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] bg-blue-500 rounded-full blur-[150px] opacity-20 pointer-events-none"></div>
-        
+
         <div className="max-w-[1400px] mx-auto relative z-10">
-          <motion.div 
+          <motion.div
             initial="hidden" whileInView="visible" viewport={{ once: true, margin: "-100px" }} variants={fadeUpVariant}
             className="text-center mb-20"
           >
@@ -312,7 +324,7 @@ const JoinUs = () => {
             <p className="text-blue-100 text-lg">Joining us is simple. Take the first step today!</p>
           </motion.div>
 
-          <motion.div 
+          <motion.div
             initial="hidden" whileInView="visible" viewport={{ once: true, margin: "-100px" }} variants={staggerContainer}
             className="flex flex-col md:flex-row justify-between items-start md:items-center relative"
           >
@@ -351,7 +363,7 @@ const JoinUs = () => {
                 <p className="text-gray-600 text-lg">Join Unnati Society and be part of something bigger than yourself.</p>
               </div>
             </div>
-            
+
             <div className="flex flex-col sm:flex-row gap-4 w-full lg:w-auto">
               <button onClick={() => setIsModalOpen(true)} className="flex items-center justify-center gap-2 bg-[#2563EB] hover:bg-blue-700 text-white px-8 py-4 rounded-xl font-bold transition-all shadow-md hover:shadow-lg whitespace-nowrap">
                 I Want to Volunteer
@@ -365,14 +377,14 @@ const JoinUs = () => {
       </section>
 
       <Footer />
-      
+
       {/* Volunteer Application Modal */}
       <VolunteerModal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} />
 
       {/* Explore Opportunities Modal */}
-      <ExploreOpportunitiesModal 
-        isOpen={isExploreModalOpen} 
-        onClose={() => setIsExploreModalOpen(false)} 
+      <ExploreOpportunitiesModal
+        isOpen={isExploreModalOpen}
+        onClose={() => setIsExploreModalOpen(false)}
         onApplyClick={() => setIsModalOpen(true)}
       />
     </div>
