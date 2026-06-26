@@ -123,18 +123,27 @@ const Outreach = () => {
               <div style={{ position: 'absolute', top: '-24px', right: '-24px', width: '128px', height: '128px', backgroundImage: 'radial-gradient(#3B82F6 2.5px, transparent 2.5px)', backgroundSize: '16px 16px', opacity: 0.3, zIndex: 0 }}></div>
 
               {/* Main Left Image (Teacher) */}
-              <div style={{ position: 'absolute', right: 290, top: '60px', width: '340px', height: '400px', backgroundColor: '#E2E8F0', borderRadius: '24px', overflow: 'hidden', border: '8px solid white', boxShadow: '0 20px 50px rgba(0,0,0,0.1)', zIndex: 10 }}>
-                <img loading="lazy" src="https://i.pinimg.com/1200x/f9/95/11/f99511c85b628e69ee6f643c07246667.jpg" alt="Teacher interacting with students" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+              <div 
+                className="transition-all duration-300 hover:scale-[1.03] hover:!z-50 cursor-pointer"
+                style={{ position: 'absolute', right: 200, top: '60px', width: '450px', height: '400px', backgroundColor: '#E2E8F0', borderRadius: '24px', overflow: 'hidden', border: '8px solid white', boxShadow: '0 20px 50px rgba(0,0,0,0.1)', zIndex: 10 }}
+              >
+                <img loading="lazy" src="https://res.cloudinary.com/dyubgh5k4/image/upload/v1782473411/outreach/outreach_2.jpg" alt="Teacher interacting with students" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
               </div>
 
               {/* Top Right Image (Girls) */}
-              <div style={{ position: 'absolute', right: '10px', top: '10px', width: '260px', height: '190px', backgroundColor: '#E2E8F0', borderRadius: '24px', overflow: 'hidden', border: '6px solid white', boxShadow: '0 15px 30px rgba(0,0,0,0.1)', zIndex: 20 }}>
-                <img loading="lazy" src="https://i.pinimg.com/1200x/d8/58/92/d8589252c5464cb4440b64ed091c528d.jpg" alt="Students using laptops" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+              <div 
+                className="transition-all duration-300 hover:scale-[1.03] hover:!z-50 cursor-pointer"
+                style={{ position: 'absolute', right: '10px', top: '10px', width: '360px', height: '260px', backgroundColor: '#E2E8F0', borderRadius: '24px', overflow: 'hidden', border: '6px solid white', boxShadow: '0 15px 30px rgba(0,0,0,0.1)', zIndex: 20 }}
+              >
+                <img loading="lazy" src="https://res.cloudinary.com/dyubgh5k4/image/upload/v1782473407/outreach/outreach_1.jpg" alt="Students using laptops" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
               </div>
 
               {/* Bottom Right Image (Boys) */}
-              <div style={{ position: 'absolute', right: '10px', top: '220px', width: '260px', height: '280px', backgroundColor: '#E2E8F0', borderRadius: '24px', overflow: 'hidden', border: '6px solid white', boxShadow: '0 15px 30px rgba(0,0,0,0.1)', zIndex: 20 }}>
-                <img loading="lazy" src="https://i.pinimg.com/736x/ee/5d/a8/ee5da86f43810f1c93754d837ad0d3eb.jpg" alt="Group of students collaborating" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+              <div 
+                className="transition-all duration-300 hover:scale-[1.03] hover:!z-50 cursor-pointer"
+                style={{ position: 'absolute', right: '10px', top: '220px', width: '300px', height: '280px', backgroundColor: '#E2E8F0', borderRadius: '24px', overflow: 'hidden', border: '6px solid white', boxShadow: '0 15px 30px rgba(0,0,0,0.1)', zIndex: 20 }}
+              >
+                <img loading="lazy" src="https://res.cloudinary.com/dyubgh5k4/image/upload/v1782473413/outreach/outreach_3.jpg" alt="Group of students collaborating" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
               </div>
 
               {/* Blue Impact Box */}
@@ -306,15 +315,15 @@ const Outreach = () => {
           </div>
 
           <div className="w-full lg:w-1/2 flex gap-4 h-[500px]">
-            <div className="w-2/3 h-full rounded-3xl overflow-hidden shadow-xl">
-              <img loading="lazy" src="https://images.unsplash.com/photo-1541339907198-e08756dedf3f?q=80&w=2070" alt="Campus" className="w-full h-full object-cover" />
+            <div className="w-2/3 h-full rounded-3xl overflow-hidden shadow-xl hover:scale-101 hover: duration-500">
+              <img loading="lazy" src="https://res.cloudinary.com/dyubgh5k4/image/upload/v1782476058/outreach_5_pegoeh.jpg" alt="Campus" className="w-full h-full object-cover" />
             </div>
             <div className="w-1/3 flex flex-col gap-4 h-full">
-              <div className="flex-1 rounded-3xl overflow-hidden shadow-xl">
-                <img loading="lazy" src="https://images.unsplash.com/photo-1523240795612-9a054b0db644?q=80&w=2070" alt="Students" className="w-full h-full object-cover" />
+              <div className="flex-1 rounded-3xl overflow-hidden shadow-xl hover:scale-101 hover: duration-500">
+                <img loading="lazy" src="https://res.cloudinary.com/dyubgh5k4/image/upload/v1782476427/outreach_campus_visit3_zii4fj.jpg" alt="Students" className="w-full h-full object-cover" />
               </div>
-              <div className="flex-1 rounded-3xl overflow-hidden shadow-xl">
-                <img loading="lazy" src="https://images.unsplash.com/photo-1511629091441-ee46146481b6?q=80&w=2070" alt="Tour" className="w-full h-full object-cover" />
+              <div className="flex-1 rounded-3xl overflow-hidden shadow-xl hover:scale-101 hover: duration-500">
+                <img loading="lazy" src="https://res.cloudinary.com/dyubgh5k4/image/upload/v1782476427/outreach_campus_visit1_i1beoh.jpg" alt="Tour" className="w-full h-full object-cover" />
               </div>
             </div>
           </div>
@@ -368,7 +377,7 @@ const Outreach = () => {
 
           <div className="w-full lg:w-1/2">
             <div className="w-full h-[500px] rounded-[32px] overflow-hidden shadow-2xl relative">
-              <img loading="lazy" src="https://images.unsplash.com/photo-1524178232363-1fb2b075b655?q=80&w=2070" alt="Classroom Workshop" className="w-full h-full object-cover" />
+              <img loading="lazy" src="https://res.cloudinary.com/dyubgh5k4/image/upload/v1782475437/outreach_4_ju0fxm.jpg" alt="Classroom Workshop" className="w-full h-full object-cover" />
               <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent"></div>
             </div>
           </div>
@@ -415,16 +424,14 @@ const Outreach = () => {
           </div>
 
           <div className="w-full lg:w-1/2 flex justify-center items-center h-[400px]">
-            {/* Using a nice placeholder pattern instead of an image for the illustration */}
-            <div className="w-full h-full max-w-[500px] bg-gradient-to-tr from-blue-100 to-indigo-50 rounded-[40px] flex items-center justify-center relative overflow-hidden shadow-inner border border-white">
-              <FaHandshake className="text-[200px] text-blue-200 opacity-50" />
-              <div className="absolute top-10 left-10 w-20 h-20 bg-yellow-400 rounded-full mix-blend-multiply filter blur-xl opacity-70"></div>
-              <div className="absolute bottom-10 right-10 w-32 h-32 bg-blue-400 rounded-full mix-blend-multiply filter blur-xl opacity-70"></div>
-              <div className="absolute inset-0 flex items-center justify-center">
-                <h3 className="text-2xl font-bold text-blue-900/40 text-center">Collaboration<br />Illustration</h3>
-              </div>
-            </div>
-          </div>
+  <div className="w-full h-full max-w-[500px] rounded-[40px] overflow-hidden shadow-2xl border border-gray-200 shadow-lg shadow-gray-50">
+    <img
+      src="https://res.cloudinary.com/dyubgh5k4/image/upload/v1782397307/unnati_assets/yx21ld5ujylzkawjvc8i.webp"
+      alt="Outreach"
+      className="w-full h-full object-cover transition-transform duration-500 hover:scale-105"
+    />
+  </div>
+</div>
         </div>
       </section>
 

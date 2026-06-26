@@ -203,11 +203,11 @@ const ExecutiveBody = () => {
       linkedin: "https://www.linkedin.com/in/divya-patlan-4a2018324",
     },
     {
-      name: "Twinkle Kumari",
-      post: "Web Developmnt Lead",
-      img: "twinkle_akhjbq",
-      email: "twinkle.240101143@iiitbh.ac.in",
-      linkedin: "https://www.linkedin.com/in/twinkle-kumari-b09306325/",
+      name: "Jayanshu Bhardwaj",
+      post: "Netritva Lead",
+      img: "jayanshu_gdrakx",
+      email: "jayanshu18@gmail.com",
+      linkedin: "https://www.linkedin.com/in/jayanshu-bhardwaj-05a791322/",
     },
     {
       name: "Sumendra Singh",
@@ -239,12 +239,12 @@ const ExecutiveBody = () => {
     },
   ]
   const technicalLeads = [
-    {
-      name: "Jayanshu Bhardwaj",
-      post: "Netritva Lead",
-      img: "jayanshu_gdrakx",
-      email: "jayanshu18@gmail.com",
-      linkedin: "https://www.linkedin.com/in/jayanshu-bhardwaj-05a791322/",
+    { 
+      name: "Twinkle Kumari",
+      post: "Web Developmnt Lead",
+      img: "twinkle_akhjbq",
+      email: "twinkle.240101143@iiitbh.ac.in",
+      linkedin: "https://www.linkedin.com/in/twinkle-kumari-b09306325/",
     },
     {
       name: "Ishani Karpoor",
