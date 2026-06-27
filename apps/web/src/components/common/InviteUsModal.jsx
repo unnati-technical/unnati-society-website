@@ -10,7 +10,7 @@ import {
 } from 'react-icons/fi';
 import { FaBuilding } from 'react-icons/fa';
 import { BiBuildingHouse, BiChalkboard } from 'react-icons/bi';
-const UnnatiLogo = 'https://res.cloudinary.com/dyubgh5k4/image/upload/v1782396887/unnati_assets/Unnati.png';
+const UnnatiLogo = 'https://res.cloudinary.com/drhkvdtw2/image/upload/v1782396887/unnati_assets/Unnati.png';
 
 const InviteUsModal = ({ isOpen, onClose }) => {
   const [step, setStep] = useState(1);
@@ -258,7 +258,7 @@ const InviteUsModal = ({ isOpen, onClose }) => {
 
             {/* Hero Illustration */}
             <div className="w-full h-40 rounded-2xl overflow-hidden shadow-xl mb-6 shrink-0 border-4 border-white/10 relative">
-              <img loading="lazy" src="https://res.cloudinary.com/dyubgh5k4/image/upload/v1782475437/outreach_4_ju0fxm.jpg" alt="Workshop" className="w-full h-full object-cover" />
+              <img loading="lazy" src="https://res.cloudinary.com/drhkvdtw2/image/upload/v1782475437/outreach_4_ju0fxm.jpg" alt="Workshop" className="w-full h-full object-cover" />
             </div>
 
             <div className="bg-white rounded-xl p-4 text-[#0F172A] mb-4 shrink-0 shadow-lg flex flex-col">

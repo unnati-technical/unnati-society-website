@@ -1,5 +1,5 @@
 import React from "react";
-const vision = "https://res.cloudinary.com/dyubgh5k4/image/upload/v1782396893/unnati_assets/vision2.jpg";
+const vision = "https://res.cloudinary.com/drhkvdtw2/image/upload/v1782396893/unnati_assets/vision2.jpg";
 import { useNavigate } from "react-router-dom";
 
 const Aboutus = () => {

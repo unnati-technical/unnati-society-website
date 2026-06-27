@@ -3,7 +3,7 @@ import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { FiX, FiEye, FiEyeOff, FiLock, FiShield, FiCheckCircle } from 'react-icons/fi';
 import { FaGraduationCap, FaUserTie, FaHandsHelping, FaUsers } from 'react-icons/fa';
-const UnnatiLogo = 'https://res.cloudinary.com/dyubgh5k4/image/upload/v1782396887/unnati_assets/Unnati.png';
+const UnnatiLogo = 'https://res.cloudinary.com/drhkvdtw2/image/upload/v1782396887/unnati_assets/Unnati.png';
 import { signInWithEmailAndPassword, createUserWithEmailAndPassword, signInWithPopup } from 'firebase/auth';
 import { auth, googleProvider, githubProvider } from '../../lib/firebase';
 import { useNavigate } from 'react-router-dom';

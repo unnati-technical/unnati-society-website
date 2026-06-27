@@ -99,7 +99,7 @@ const JoinUs = () => {
             {/* Image 1 (Large Main) */}
             <div className="absolute top-4 right-0 lg:right-8 w-3/4 h-[80%] rounded-[2rem] rounded-tl-[6rem] rounded-br-[6rem] overflow-hidden shadow-[0_20px_40px_rgba(0,0,0,0.15)] border-4 border-white z-10">
               <img loading="lazy"
-                src="https://res.cloudinary.com/dyubgh5k4/image/upload/v1782396863/unnati_assets/mission2.png"
+                src="https://res.cloudinary.com/drhkvdtw2/image/upload/v1782396863/unnati_assets/mission2.png"
                 alt="Unnati Volunteers"
                 className="w-full h-full object-cover hover:scale-105 transition-transform duration-700"
               />
@@ -108,7 +108,7 @@ const JoinUs = () => {
             {/* Image 2 (Small Overlapping) */}
             <div className="absolute bottom-16 left-0 lg:left-4 w-[55%] h-[45%] rounded-[2rem] rounded-tr-[4rem] rounded-bl-[4rem] overflow-hidden shadow-[0_20px_40px_rgba(0,0,0,0.2)] border-4 border-white z-20">
               <img loading="lazy"
-                src="https://res.cloudinary.com/dyubgh5k4/image/upload/v1782396896/unnati_assets/visionAboutus.jpg"
+                src="https://res.cloudinary.com/drhkvdtw2/image/upload/v1782396896/unnati_assets/visionAboutus.jpg"
                 alt="Students learning"
                 className="w-full h-full object-cover hover:scale-105 transition-transform duration-700"
               />
@@ -226,7 +226,7 @@ const JoinUs = () => {
 
             <img
               loading="lazy"
-              src="https://res.cloudinary.com/dyubgh5k4/image/upload/v1782485434/IMG_20250126_160514_ewbb1t.jpg"
+              src="https://res.cloudinary.com/drhkvdtw2/image/upload/v1782485434/IMG_20250126_160514_ewbb1t.jpg"
               alt="Volunteers smiling"
               className="rounded-3xl shadow-2xl relative z-10 w-full h-[500px] object-cover"
               style={{ objectPosition: "center 20%" }}

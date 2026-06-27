@@ -1,4 +1,4 @@
-const CLOUD_NAME = import.meta.env.VITE_CLOUDINARY_CLOUD_NAME || "dyubgh5k4";
+const CLOUD_NAME = import.meta.env.VITE_CLOUDINARY_CLOUD_NAME || "drhkvdtw2";
 
 export const cloudinaryImage = (publicId) => {
   return `https://res.cloudinary.com/${CLOUD_NAME}/image/upload/w_2560,dpr_auto,q_auto:best,f_auto/${publicId}`;

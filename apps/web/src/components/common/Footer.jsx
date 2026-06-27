@@ -1,6 +1,6 @@
 import React, { useState } from "react";
-const Unnati = "https://res.cloudinary.com/dyubgh5k4/image/upload/v1782396887/unnati_assets/Unnati.png";
-const IIITBh = "https://res.cloudinary.com/dyubgh5k4/image/upload/v1782396815/unnati_assets/IIITBh.png";
+const Unnati = "https://res.cloudinary.com/drhkvdtw2/image/upload/v1782396887/unnati_assets/Unnati.png";
+const IIITBh = "https://res.cloudinary.com/drhkvdtw2/image/upload/v1782396815/unnati_assets/IIITBh.png";
 import { useNavigate, useLocation } from "react-router-dom";
 import { FaInstagram, FaLinkedin, FaXTwitter } from "react-icons/fa6";
 import AuthModal from "./AuthModal";

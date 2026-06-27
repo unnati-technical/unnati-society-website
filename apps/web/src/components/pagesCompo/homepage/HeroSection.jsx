@@ -1,7 +1,7 @@
 import React, { useEffect, useRef } from "react";
-const play = 'https://res.cloudinary.com/dyubgh5k4/image/upload/v1782396870/unnati_assets/play.png'
+const play = 'https://res.cloudinary.com/drhkvdtw2/image/upload/v1782396870/unnati_assets/play.png'
 import { useNavigate } from "react-router-dom";
-const homeHeroVideo = "https://res.cloudinary.com/dyubgh5k4/video/upload/v1782397100/unnati_assets/cc5agh6nevpynajlzkxs.mp4";
+const homeHeroVideo = "https://res.cloudinary.com/drhkvdtw2/video/upload/v1782397100/unnati_assets/cc5agh6nevpynajlzkxs.mp4";
 
 const HeroSection = () => {
   const navigate = useNavigate();
@@ -17,7 +17,7 @@ const HeroSection = () => {
   }, []);
 
   const openVideo = () => {
-    const cloudName = import.meta.env.VITE_CLOUDINARY_CLOUD_NAME || "dyubgh5k4";
+    const cloudName = import.meta.env.VITE_CLOUDINARY_CLOUD_NAME || "drhkvdtw2";
     window.open(`https://player.cloudinary.com/embed/?cloud_name=${cloudName}&public_id=home_video_dq0ac8`, "_blank");
   };
 

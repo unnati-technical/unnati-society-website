@@ -1,5 +1,5 @@
 import React from "react";
-const heroSection = "https://res.cloudinary.com/dyubgh5k4/image/upload/v1782396863/unnati_assets/mission2.png";
+const heroSection = "https://res.cloudinary.com/drhkvdtw2/image/upload/v1782396863/unnati_assets/mission2.png";
 
 const Purpose = () => {
   return (

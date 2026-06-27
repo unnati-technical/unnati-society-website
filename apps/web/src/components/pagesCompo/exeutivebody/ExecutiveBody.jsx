@@ -2,9 +2,9 @@ import React, { useState } from "react";
 import { MdEmail } from "react-icons/md";
 import { FaLinkedin } from "react-icons/fa";
 import { cloudinaryImage } from "../../../utils/cloudinary";
-const directorImg = "https://res.cloudinary.com/dyubgh5k4/image/upload/v1782396812/unnati_assets/directorsir.png";
-const prImg = "https://res.cloudinary.com/dyubgh5k4/image/upload/v1782396871/unnati_assets/prsir.png";
-const chetanImg = "https://res.cloudinary.com/dyubgh5k4/image/upload/v1782396807/unnati_assets/chetansir.jpg";
+const directorImg = "https://res.cloudinary.com/drhkvdtw2/image/upload/v1782396812/unnati_assets/directorsir.png";
+const prImg = "https://res.cloudinary.com/drhkvdtw2/image/upload/v1782396871/unnati_assets/prsir.png";
+const chetanImg = "https://res.cloudinary.com/drhkvdtw2/image/upload/v1782396807/unnati_assets/chetansir.jpg";
 
 
 const SectionHeader = ({ title }) => (

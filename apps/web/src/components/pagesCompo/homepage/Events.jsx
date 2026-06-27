@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-const icon = 'https://res.cloudinary.com/dyubgh5k4/image/upload/v1782396879/unnati_assets/right-arrow.png'
+const icon = 'https://res.cloudinary.com/drhkvdtw2/image/upload/v1782396879/unnati_assets/right-arrow.png'
 import { useNavigate } from "react-router-dom";
 
 const CARD_COLORS = [

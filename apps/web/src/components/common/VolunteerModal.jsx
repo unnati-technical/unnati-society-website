@@ -7,7 +7,7 @@ import {
   FiUsers, FiBookOpen, FiBriefcase, FiCheckCircle,
   FiUpload, FiArrowRight, FiArrowLeft, FiHeart
 } from 'react-icons/fi';
-const UnnatiLogo = 'https://res.cloudinary.com/dyubgh5k4/image/upload/v1782396887/unnati_assets/Unnati.png';
+const UnnatiLogo = 'https://res.cloudinary.com/drhkvdtw2/image/upload/v1782396887/unnati_assets/Unnati.png';
 
 const VolunteerModal = ({ isOpen, onClose }) => {
   const [step, setStep] = useState(1);

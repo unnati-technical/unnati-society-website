@@ -1,6 +1,6 @@
 import React from "react";
-const Akshar = "https://res.cloudinary.com/dyubgh5k4/image/upload/v1782396806/unnati_assets/aksharImg.png";
-const bgImg = "https://res.cloudinary.com/dyubgh5k4/image/upload/v1782397308/unnati_assets/za0fhj6fv3ypxemijuum.webp";
+const Akshar = "https://res.cloudinary.com/drhkvdtw2/image/upload/v1782396806/unnati_assets/aksharImg.png";
+const bgImg = "https://res.cloudinary.com/drhkvdtw2/image/upload/v1782397308/unnati_assets/za0fhj6fv3ypxemijuum.webp";
 import { useNavigate } from "react-router-dom";
 import { cloudinaryImage } from "../../../utils/cloudinary";
 

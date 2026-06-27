@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { FiArrowLeft, FiLoader, FiChevronLeft, FiChevronRight, FiMaximize, FiMinimize } from 'react-icons/fi';
-const UnnatiLogo = "https://res.cloudinary.com/dyubgh5k4/image/upload/v1782396887/unnati_assets/Unnati.png";
+const UnnatiLogo = "https://res.cloudinary.com/drhkvdtw2/image/upload/v1782396887/unnati_assets/Unnati.png";
 
 // Canvas Renderer Component for a single PDF page
 const PdfPageCanvas = ({ pdf, pageNumber, width, height }) => {

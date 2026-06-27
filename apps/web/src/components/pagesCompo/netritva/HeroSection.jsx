@@ -1,6 +1,6 @@
 import React from 'react'
-const netritva = 'https://res.cloudinary.com/dyubgh5k4/image/upload/v1782396867/unnati_assets/netritvaImgCopy.png'
-const bgImg = 'https://res.cloudinary.com/dyubgh5k4/image/upload/v1782397310/unnati_assets/yg5shigbq5qpextmlcq3.webp'
+const netritva = 'https://res.cloudinary.com/drhkvdtw2/image/upload/v1782396867/unnati_assets/netritvaImgCopy.png'
+const bgImg = 'https://res.cloudinary.com/drhkvdtw2/image/upload/v1782397310/unnati_assets/yg5shigbq5qpextmlcq3.webp'
 import { useNavigate } from 'react-router-dom'
 
 const HeroSection = () => {

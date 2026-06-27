@@ -1,8 +1,8 @@
 import React from "react";
-const bgimg = "https://res.cloudinary.com/dyubgh5k4/image/upload/v1782397307/unnati_assets/yx21ld5ujylzkawjvc8i.webp";
-const digiXplore = "https://res.cloudinary.com/dyubgh5k4/image/upload/v1782396808/unnati_assets/digiImage.png";
-const netritva = "https://res.cloudinary.com/dyubgh5k4/image/upload/v1782396866/unnati_assets/netritvaImg.png";
-const akshar = "https://res.cloudinary.com/dyubgh5k4/image/upload/v1782396806/unnati_assets/aksharImg.png";
+const bgimg = "https://res.cloudinary.com/drhkvdtw2/image/upload/v1782397307/unnati_assets/yx21ld5ujylzkawjvc8i.webp";
+const digiXplore = "https://res.cloudinary.com/drhkvdtw2/image/upload/v1782396808/unnati_assets/digiImage.png";
+const netritva = "https://res.cloudinary.com/drhkvdtw2/image/upload/v1782396866/unnati_assets/netritvaImg.png";
+const akshar = "https://res.cloudinary.com/drhkvdtw2/image/upload/v1782396806/unnati_assets/aksharImg.png";
 import { useNavigate } from "react-router-dom";
 
 const HeroSection = () => {

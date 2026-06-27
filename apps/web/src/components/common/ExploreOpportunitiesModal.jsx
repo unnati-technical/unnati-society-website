@@ -7,7 +7,7 @@ import {
   FiHeart, FiCheckCircle, FiChevronRight, FiFilter,
   FiArrowRight, FiInfo, FiTag
 } from 'react-icons/fi';
-const UnnatiLogo = 'https://res.cloudinary.com/dyubgh5k4/image/upload/v1782396887/unnati_assets/Unnati.png';
+const UnnatiLogo = 'https://res.cloudinary.com/drhkvdtw2/image/upload/v1782396887/unnati_assets/Unnati.png';
 
 // Mock Data
 const OPPORTUNITIES = [
