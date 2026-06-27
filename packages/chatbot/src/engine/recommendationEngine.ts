@@ -7,12 +7,16 @@ export function getRecommendations() {
   const recommendations = [];
 
   // Logic to determine recommendations based on profile
-  if (profile.skills === 'computer science' || profile.skills === 'cs' || profile.skills === 'coding') {
-    recommendations.push("• DigiXplore Volunteer\n• Web Development\n• Technical Volunteer");
+  if (profile.skills === 'computer science' || profile.skills === 'cs' || profile.skills === 'coding' || profile.skills === 'web development' || profile.skills === 'app development') {
+    recommendations.push("• DigiXplore Volunteer\n• Web Development Lead\n• Technical Team");
   } else if (profile.skills === 'design' || profile.skills === 'photography' || profile.skills === 'writing') {
-    recommendations.push("• Creative Content Volunteer\n• Social Media Team");
-  } else if (profile.profession === 'teacher') {
+    recommendations.push("• Creative Content Volunteer\n• Social Media Team\n• Design Lead");
+  } else if (profile.skills === 'management' || profile.skills === 'pr' || profile.skills === 'public relations' || profile.skills === 'event management' || profile.skills === 'public speaking') {
+    recommendations.push("• Public Relations Team\n• Event Coordinator\n• Outreach Ambassador");
+  } else if (profile.skills === 'teaching' || profile.profession === 'teacher') {
     recommendations.push("• Akshar Volunteer (Primary Education)\n• Digital Literacy Workshop Mentor");
+  } else if (profile.skills === 'finance') {
+    recommendations.push("• Netritva Volunteer (Financial Literacy)\n• Operations & Logistics Team");
   } else {
     // Default recommendations
     recommendations.push("• DigiXplore Volunteer\n• Akshar Volunteer\n• Outreach Ambassador");

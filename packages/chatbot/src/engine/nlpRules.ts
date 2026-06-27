@@ -1,7 +1,7 @@
 import { ContextManager } from './contextManager';
 
-const CITIES = ['patna', 'bhagalpur', 'delhi', 'mumbai', 'bangalore', 'kolkata'];
-const SKILLS = ['computer science', 'cs', 'coding', 'design', 'photography', 'writing', 'public speaking', 'marketing', 'teaching'];
+const CITIES = ['patna', 'bhagalpur', 'delhi', 'mumbai', 'bangalore', 'kolkata', 'pune', 'hyderabad', 'chennai', 'noida', 'gurgaon', 'jaipur', 'lucknow', 'ranchi'];
+const SKILLS = ['computer science', 'cs', 'coding', 'design', 'photography', 'writing', 'public speaking', 'marketing', 'teaching', 'web development', 'app development', 'management', 'finance', 'pr', 'public relations', 'event management'];
 const PROFESSIONS = ['student', 'teacher', 'professional', 'ngo', 'corporate'];
 
 export function parseEntities(userInput: string) {

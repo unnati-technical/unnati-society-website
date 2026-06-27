@@ -74,5 +74,29 @@
   {
     "intent": "faq_location",
     "keywords": ["where are you located", "location", "address", "where is unnati", "headquarters"]
+  },
+  {
+    "intent": "greeting",
+    "keywords": ["hello", "hi", "hey", "greetings", "good morning", "good afternoon", "good evening", "namaste"]
+  },
+  {
+    "intent": "farewell",
+    "keywords": ["bye", "goodbye", "see you", "thanks", "thank you", "appreciate it"]
+  },
+  {
+    "intent": "how_are_you",
+    "keywords": ["how are you", "how do you do", "what's up", "how's it going"]
+  },
+  {
+    "intent": "who_are_you",
+    "keywords": ["who are you", "what are you", "are you a bot", "are you human", "your name"]
+  },
+  {
+    "intent": "help",
+    "keywords": ["help", "what can you do", "assist me", "support", "options", "menu"]
+  },
+  {
+    "intent": "executive_body",
+    "keywords": ["team", "team members", "leaders", "executive body", "governing body", "who is the lead", "core team"]
   }
 ]

@@ -163,6 +163,44 @@ export function getResponse(intent: string, language: string = 'en') {
     };
   }
 
+  // Conversational Intents
+  if (intent === 'greeting') {
+    return { type: 'text', data: { text: "Hello there! 👋 I'm the Unnati Assistant. How can I help you today?" } };
+  }
+  if (intent === 'farewell') {
+    return { type: 'text', data: { text: "You're very welcome! Let me know if you need anything else. Have a great day! 😊" } };
+  }
+  if (intent === 'how_are_you') {
+    return { type: 'text', data: { text: "I'm just a bot, but I'm doing great! Ready to help you learn more about Unnati Society." } };
+  }
+  if (intent === 'who_are_you') {
+    return { type: 'text', data: { text: "I'm the Unnati AI Assistant, designed to help you navigate our website, learn about our programs, and help you get involved!" } };
+  }
+  if (intent === 'help') {
+    return {
+      type: 'rich_card',
+      data: {
+        title: "How I can help",
+        description: "I can help you explore our programs, find volunteering opportunities, or connect with our team. What would you like to do?",
+        buttons: [
+          { label: "📚 Programs", action: "nav_programs" },
+          { label: "🤝 Volunteer", action: "volunteer_main" },
+          { label: "📞 Contact Us", action: "nav_contact" }
+        ]
+      }
+    };
+  }
+  if (intent === 'executive_body') {
+    return {
+      type: 'rich_card',
+      data: {
+        title: "Our Team",
+        description: "Unnati Society is driven by a passionate executive body and governing team. You can view our core members and leads here.",
+        buttons: [{ label: "View Team", action: "nav_team" }]
+      }
+    };
+  }
+
   // Final fallback
   return {
     type: 'rich_card',
