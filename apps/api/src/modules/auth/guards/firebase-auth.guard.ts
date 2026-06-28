@@ -26,10 +26,16 @@ export class FirebaseAuthGuard implements CanActivate {
       request.user = decodedToken;
       return true;
     } catch (error: any) {
-      console.error('Firebase Auth Verification Error:', error.message || error);
-      
+      console.error(
+        'Firebase Auth Verification Error:',
+        error.message || error,
+      );
+
       // Fallback for mismatched dev environments (e.g., frontend unnati-website01 vs backend unnati-2b7e3)
-      if (error.code === 'auth/argument-error' || error.message?.includes('aud')) {
+      if (
+        error.code === 'auth/argument-error' ||
+        error.message?.includes('aud')
+      ) {
         try {
           const payload = token.split('.')[1];
           const decoded = JSON.parse(Buffer.from(payload, 'base64').toString());
@@ -39,7 +45,7 @@ export class FirebaseAuthGuard implements CanActivate {
           // ignore
         }
       }
-      
+
       throw new UnauthorizedException('Invalid Firebase Token');
     }
   }

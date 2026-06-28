@@ -74,10 +74,7 @@ export class OutreachController {
   @Public()
   @UseGuards(FirebaseAuthGuard)
   @Patch('invite/:id/status')
-  updateInviteStatus(
-    @Param('id') id: string,
-    @Body('status') status: string,
-  ) {
+  updateInviteStatus(@Param('id') id: string, @Body('status') status: string) {
     return this.outreachService.updateInviteStatus(id, status);
   }
 
@@ -94,20 +91,14 @@ export class OutreachController {
   @Public()
   @UseGuards(FirebaseAuthGuard)
   @Patch('partner-request/:id/status')
-  updatePartnerStatus(
-    @Param('id') id: string,
-    @Body('status') status: string,
-  ) {
+  updatePartnerStatus(@Param('id') id: string, @Body('status') status: string) {
     return this.outreachService.updatePartnerStatus(id, status);
   }
 
   @Public()
   @UseGuards(FirebaseAuthGuard)
   @Patch('partner-request/:id/notes')
-  updatePartnerNotes(
-    @Param('id') id: string,
-    @Body('notes') notes: string,
-  ) {
+  updatePartnerNotes(@Param('id') id: string, @Body('notes') notes: string) {
     return this.outreachService.updatePartnerNotes(id, notes);
   }
 }

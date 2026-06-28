@@ -8,7 +8,7 @@ import AdminLayout from '../components/admin/AdminLayout';
 import { VolunteerTable } from '../components/admin/volunteers/VolunteerTable';
 import { VolunteerDetails } from '../components/admin/volunteers/VolunteerDetails';
 import { useVolunteerStore } from '../store/useVolunteerStore';
-import { mockVolunteers } from '../data/mockVolunteers';
+
 import { useQuery } from '@tanstack/react-query';
 import { auth } from '../lib/firebase';
 import { AdminAddVolunteerModal } from '../components/admin/volunteers/AdminAddVolunteerModal';

@@ -20,7 +20,11 @@ export class CloudinaryService {
         },
         (error, result) => {
           if (error || !result) {
-            return reject(error instanceof Error ? error : new Error(error?.message || 'Upload failed'));
+            return reject(
+              error instanceof Error
+                ? error
+                : new Error(error?.message || 'Upload failed'),
+            );
           }
           resolve(result);
         },
@@ -33,7 +37,12 @@ export class CloudinaryService {
   deleteFile(publicId: string): Promise<any> {
     return new Promise((resolve, reject) => {
       cloudinary.uploader.destroy(publicId, (error, result) => {
-        if (error) return reject(error instanceof Error ? error : new Error(error?.message || 'Delete failed'));
+        if (error)
+          return reject(
+            error instanceof Error
+              ? error
+              : new Error(error?.message || 'Delete failed'),
+          );
         resolve(result);
       });
     });

@@ -7,7 +7,7 @@ export class SchoolsService {
 
   async findAll() {
     return this.prisma.school.findMany({
-      orderBy: { createdAt: 'desc' }
+      orderBy: { createdAt: 'desc' },
     });
   }
 

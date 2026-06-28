@@ -28,17 +28,25 @@ export class OutreachService {
     });
 
     // Create in-app notification for admins
-    await this.notificationsService.createAdminNotification(
-      'New School Invite',
-      `${dto.coordinatorName} from ${dto.institutionName} has invited Unnati Society to their school.`,
-    ).catch(err => console.error('Failed to create invite notification:', err));
+    await this.notificationsService
+      .createAdminNotification(
+        'New School Invite',
+        `${dto.coordinatorName} from ${dto.institutionName} has invited Unnati Society to their school.`,
+      )
+      .catch((err) =>
+        console.error('Failed to create invite notification:', err),
+      );
 
     // Send confirmation email to school
-    await this.emailService.sendSchoolInviteReceivedEmail({
-      coordinatorName: dto.coordinatorName,
-      email: dto.email,
-      institutionName: dto.institutionName,
-    }).catch(err => console.error('Failed to send school invite received email:', err));
+    await this.emailService
+      .sendSchoolInviteReceivedEmail({
+        coordinatorName: dto.coordinatorName,
+        email: dto.email,
+        institutionName: dto.institutionName,
+      })
+      .catch((err) =>
+        console.error('Failed to send school invite received email:', err),
+      );
 
     return inviteRequest;
   }
@@ -49,17 +57,25 @@ export class OutreachService {
     });
 
     // Create in-app notification for admins
-    await this.notificationsService.createAdminNotification(
-      'New Campus Visit Request',
-      `${dto.coordinatorName} from ${dto.institutionName} wants to book a campus visit.`,
-    ).catch(err => console.error('Failed to create visit notification:', err));
+    await this.notificationsService
+      .createAdminNotification(
+        'New Campus Visit Request',
+        `${dto.coordinatorName} from ${dto.institutionName} wants to book a campus visit.`,
+      )
+      .catch((err) =>
+        console.error('Failed to create visit notification:', err),
+      );
 
     // Send confirmation email to school
-    await this.emailService.sendCampusVisitReceivedEmail({
-      coordinatorName: dto.coordinatorName,
-      email: dto.email,
-      institutionName: dto.institutionName,
-    }).catch(err => console.error('Failed to send campus visit confirmation email:', err));
+    await this.emailService
+      .sendCampusVisitReceivedEmail({
+        coordinatorName: dto.coordinatorName,
+        email: dto.email,
+        institutionName: dto.institutionName,
+      })
+      .catch((err) =>
+        console.error('Failed to send campus visit confirmation email:', err),
+      );
 
     return visitRequest;
   }
@@ -86,17 +102,28 @@ export class OutreachService {
     });
 
     // Create in-app notification for admins
-    await this.notificationsService.createAdminNotification(
-      'New Partner Request',
-      `${dto.name} from ${dto.organization || 'an organization'} wants to partner with us.`,
-    ).catch(err => console.error('Failed to create partner notification:', err));
+    await this.notificationsService
+      .createAdminNotification(
+        'New Partner Request',
+        `${dto.name} from ${dto.organization || 'an organization'} wants to partner with us.`,
+      )
+      .catch((err) =>
+        console.error('Failed to create partner notification:', err),
+      );
 
     // Send confirmation email to the partner
-    await this.emailService.sendPartnerRequestReceivedEmail({
-      name: dto.name,
-      email: dto.email,
-      organization: dto.organization || '',
-    }).catch(err => console.error('Failed to send partner request confirmation email:', err));
+    await this.emailService
+      .sendPartnerRequestReceivedEmail({
+        name: dto.name,
+        email: dto.email,
+        organization: dto.organization || '',
+      })
+      .catch((err) =>
+        console.error(
+          'Failed to send partner request confirmation email:',
+          err,
+        ),
+      );
 
     return partnerRequest;
   }
@@ -126,12 +153,19 @@ export class OutreachService {
     });
 
     if (updatedRequest) {
-      await this.emailService.sendSchoolInviteStatusUpdateEmail({
-        coordinatorName: updatedRequest.coordinatorName,
-        email: updatedRequest.email,
-        institutionName: updatedRequest.institutionName,
-        status: status,
-      }).catch(err => console.error('Failed to send school invite status update email:', err));
+      await this.emailService
+        .sendSchoolInviteStatusUpdateEmail({
+          coordinatorName: updatedRequest.coordinatorName,
+          email: updatedRequest.email,
+          institutionName: updatedRequest.institutionName,
+          status: status,
+        })
+        .catch((err) =>
+          console.error(
+            'Failed to send school invite status update email:',
+            err,
+          ),
+        );
     }
 
     return updatedRequest;
@@ -144,12 +178,19 @@ export class OutreachService {
     });
 
     if (updatedRequest) {
-      await this.emailService.sendCampusVisitStatusUpdateEmail({
-        coordinatorName: updatedRequest.coordinatorName,
-        email: updatedRequest.email,
-        institutionName: updatedRequest.institutionName,
-        status: status,
-      }).catch(err => console.error('Failed to send campus visit status update email:', err));
+      await this.emailService
+        .sendCampusVisitStatusUpdateEmail({
+          coordinatorName: updatedRequest.coordinatorName,
+          email: updatedRequest.email,
+          institutionName: updatedRequest.institutionName,
+          status: status,
+        })
+        .catch((err) =>
+          console.error(
+            'Failed to send campus visit status update email:',
+            err,
+          ),
+        );
     }
 
     return updatedRequest;
@@ -162,12 +203,16 @@ export class OutreachService {
     });
 
     if (updatedRequest) {
-      await this.emailService.sendPartnerStatusUpdateEmail({
-        name: updatedRequest.name,
-        email: updatedRequest.email,
-        organization: updatedRequest.organization || '',
-        status: status,
-      }).catch(err => console.error('Failed to send partner status update email:', err));
+      await this.emailService
+        .sendPartnerStatusUpdateEmail({
+          name: updatedRequest.name,
+          email: updatedRequest.email,
+          organization: updatedRequest.organization || '',
+          status: status,
+        })
+        .catch((err) =>
+          console.error('Failed to send partner status update email:', err),
+        );
     }
 
     return updatedRequest;

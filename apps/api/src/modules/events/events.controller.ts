@@ -25,7 +25,7 @@ import { Public } from '../auth/decorators/public.decorator';
 export class EventsController {
   constructor(
     private readonly eventsService: EventsService,
-    private readonly cloudinaryService: CloudinaryService
+    private readonly cloudinaryService: CloudinaryService,
   ) {}
 
   // Public endpoint: returns events for the homepage (depends on auto mode)

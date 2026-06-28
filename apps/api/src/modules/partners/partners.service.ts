@@ -7,7 +7,7 @@ export class PartnersService {
 
   async findAll() {
     return this.prisma.partner.findMany({
-      orderBy: { createdAt: 'desc' }
+      orderBy: { createdAt: 'desc' },
     });
   }
 

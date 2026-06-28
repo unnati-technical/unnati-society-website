@@ -288,8 +288,11 @@ export class EmailService {
   }) {
     try {
       const transporter = await this.getTransporter();
-      const smtpUser = await this.settingsService.getSetting('SMTP_USER', process.env.SMTP_USER || '');
-      
+      const smtpUser = await this.settingsService.getSetting(
+        'SMTP_USER',
+        process.env.SMTP_USER || '',
+      );
+
       await transporter.sendMail({
         from: `"Unnati Society" <${smtpUser}>`,
         to: data.email,
@@ -309,7 +312,9 @@ export class EmailService {
       });
       this.logger.log(`Campus visit received email sent to ${data.email}`);
     } catch (error) {
-      this.logger.error(`Failed to send campus visit received email to ${data.email}: ${error.message}`);
+      this.logger.error(
+        `Failed to send campus visit received email to ${data.email}: ${error.message}`,
+      );
     }
   }
 
@@ -321,8 +326,11 @@ export class EmailService {
   }) {
     try {
       const transporter = await this.getTransporter();
-      const smtpUser = await this.settingsService.getSetting('SMTP_USER', process.env.SMTP_USER || '');
-      
+      const smtpUser = await this.settingsService.getSetting(
+        'SMTP_USER',
+        process.env.SMTP_USER || '',
+      );
+
       let subject = 'Update on your Campus Visit Request';
       let messageContent = '';
 
@@ -363,7 +371,9 @@ export class EmailService {
       });
       this.logger.log(`Campus visit status email sent to ${data.email}`);
     } catch (error) {
-      this.logger.error(`Failed to send campus visit status email to ${data.email}: ${error.message}`);
+      this.logger.error(
+        `Failed to send campus visit status email to ${data.email}: ${error.message}`,
+      );
     }
   }
 
@@ -374,8 +384,11 @@ export class EmailService {
   }) {
     try {
       const transporter = await this.getTransporter();
-      const smtpUser = await this.settingsService.getSetting('SMTP_USER', process.env.SMTP_USER || '');
-      
+      const smtpUser = await this.settingsService.getSetting(
+        'SMTP_USER',
+        process.env.SMTP_USER || '',
+      );
+
       await transporter.sendMail({
         from: `"Unnati Society" <${smtpUser}>`,
         to: data.email,
@@ -395,7 +408,9 @@ export class EmailService {
       });
       this.logger.log(`School invite received email sent to ${data.email}`);
     } catch (error) {
-      this.logger.error(`Failed to send school invite received email to ${data.email}: ${error.message}`);
+      this.logger.error(
+        `Failed to send school invite received email to ${data.email}: ${error.message}`,
+      );
     }
   }
 
@@ -407,8 +422,11 @@ export class EmailService {
   }) {
     try {
       const transporter = await this.getTransporter();
-      const smtpUser = await this.settingsService.getSetting('SMTP_USER', process.env.SMTP_USER || '');
-      
+      const smtpUser = await this.settingsService.getSetting(
+        'SMTP_USER',
+        process.env.SMTP_USER || '',
+      );
+
       let subject = 'Update on your School Invitation';
       let messageContent = '';
 
@@ -426,7 +444,10 @@ export class EmailService {
           <p>Unfortunately, we are unable to accept your invitation at this time.</p>
           <p>We appreciate your interest and hope to collaborate with you in the future.</p>
         `;
-      } else if (data.status === 'INFO_REQUESTED' || data.status === 'Need More Information') {
+      } else if (
+        data.status === 'INFO_REQUESTED' ||
+        data.status === 'Need More Information'
+      ) {
         messageContent = `
           <h2 style="color: #F59E0B;">Hello ${data.coordinatorName},</h2>
           <p>We have reviewed your invitation for <strong>${data.institutionName}</strong>, but we need some additional information to proceed.</p>
@@ -455,7 +476,9 @@ export class EmailService {
       });
       this.logger.log(`School invite status email sent to ${data.email}`);
     } catch (error) {
-      this.logger.error(`Failed to send school invite status email to ${data.email}: ${error.message}`);
+      this.logger.error(
+        `Failed to send school invite status email to ${data.email}: ${error.message}`,
+      );
     }
   }
 
@@ -466,8 +489,11 @@ export class EmailService {
   }) {
     try {
       const transporter = await this.getTransporter();
-      const smtpUser = await this.settingsService.getSetting('SMTP_USER', process.env.SMTP_USER || '');
-      
+      const smtpUser = await this.settingsService.getSetting(
+        'SMTP_USER',
+        process.env.SMTP_USER || '',
+      );
+
       await transporter.sendMail({
         from: `"Unnati Society" <${smtpUser}>`,
         to: data.email,
@@ -486,7 +512,9 @@ export class EmailService {
       });
       this.logger.log(`Partner request received email sent to ${data.email}`);
     } catch (error) {
-      this.logger.error(`Failed to send partner request received email to ${data.email}: ${error.message}`);
+      this.logger.error(
+        `Failed to send partner request received email to ${data.email}: ${error.message}`,
+      );
     }
   }
 
@@ -498,8 +526,11 @@ export class EmailService {
   }) {
     try {
       const transporter = await this.getTransporter();
-      const smtpUser = await this.settingsService.getSetting('SMTP_USER', process.env.SMTP_USER || '');
-      
+      const smtpUser = await this.settingsService.getSetting(
+        'SMTP_USER',
+        process.env.SMTP_USER || '',
+      );
+
       let subject = 'Update on your Partnership Request';
       let messageContent = '';
 
@@ -517,7 +548,11 @@ export class EmailService {
           <p>Unfortunately, we are unable to accept your request at this time.</p>
           <p>We appreciate your interest and hope to collaborate with you in the future.</p>
         `;
-      } else if (data.status === 'INFO_REQUESTED' || data.status === 'NEED_MORE_INFO' || data.status === 'Need More Info') {
+      } else if (
+        data.status === 'INFO_REQUESTED' ||
+        data.status === 'NEED_MORE_INFO' ||
+        data.status === 'Need More Info'
+      ) {
         messageContent = `
           <h2 style="color: #F59E0B;">Hello ${data.name},</h2>
           <p>We have reviewed your partnership request for <strong>${data.organization || 'your organization'}</strong>, but we need some additional information to proceed.</p>
@@ -546,7 +581,9 @@ export class EmailService {
       });
       this.logger.log(`Partner status email sent to ${data.email}`);
     } catch (error) {
-      this.logger.error(`Failed to send partner status email to ${data.email}: ${error.message}`);
+      this.logger.error(
+        `Failed to send partner status email to ${data.email}: ${error.message}`,
+      );
     }
   }
 }

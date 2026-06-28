@@ -15,7 +15,7 @@ let lastFetchedHolidays = 0;
 export class EventsService {
   constructor(
     private readonly prisma: PrismaService,
-    private readonly cloudinaryService: CloudinaryService
+    private readonly cloudinaryService: CloudinaryService,
   ) {}
 
   private async deleteExpiredAutoEvents() {
