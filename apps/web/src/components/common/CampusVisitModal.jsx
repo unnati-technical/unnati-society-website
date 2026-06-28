@@ -9,6 +9,7 @@ import {
   FiTarget, FiMessageSquare, FiImage, FiGlobe
 } from 'react-icons/fi';
 import { FaBuilding } from 'react-icons/fa';
+import { jsPDF } from 'jspdf';
 
 const CampusVisitModal = ({ isOpen, onClose }) => {
   const [step, setStep] = useState(1);
@@ -229,6 +230,88 @@ const CampusVisitModal = ({ isOpen, onClose }) => {
     }
   };
 
+  const handleDownloadSummary = () => {
+    const doc = new jsPDF();
+    
+    // Header
+    doc.setFontSize(22);
+    doc.setTextColor(37, 99, 235);
+    doc.text("UNNATI SOCIETY", 105, 20, { align: "center" });
+    
+    doc.setFontSize(14);
+    doc.setTextColor(71, 85, 105);
+    doc.text("Campus Visit Request Summary", 105, 30, { align: "center" });
+    
+    doc.setFontSize(10);
+    doc.setTextColor(0, 0, 0);
+    doc.text(`Reference ID: CV-2026-00125`, 20, 45);
+    doc.text(`Date Submitted: ${new Date().toLocaleDateString()}`, 20, 52);
+    
+    doc.setDrawColor(226, 232, 240);
+    doc.line(20, 57, 190, 57);
+    
+    let y = 67;
+    const addSection = (title) => {
+      if (y > 270) { doc.addPage(); y = 20; }
+      doc.setFontSize(11);
+      doc.setFont("helvetica", "bold");
+      doc.setTextColor(15, 23, 42);
+      doc.text(title, 20, y);
+      y += 8;
+    };
+    
+    const addLine = (label, value) => {
+      if (y > 280) { doc.addPage(); y = 20; }
+      doc.setFontSize(10);
+      doc.setFont("helvetica", "bold");
+      doc.setTextColor(71, 85, 105);
+      doc.text(`${label}:`, 20, y);
+      doc.setFont("helvetica", "normal");
+      doc.setTextColor(15, 23, 42);
+      const textLines = doc.splitTextToSize(String(value), 120);
+      doc.text(textLines, 60, y);
+      y += (textLines.length * 5) + 2;
+    };
+
+    addSection("INSTITUTION DETAILS");
+    addLine("Name", formData.institutionName);
+    addLine("Type", formData.institutionType);
+    addLine("Board", formData.board || 'N/A');
+    addLine("Website", formData.website || 'N/A');
+    addLine("Location", `${formData.city}, ${formData.district}, ${formData.state}`);
+    addLine("Address", formData.address);
+    
+    y += 5;
+    addSection("CONTACT PERSON");
+    addLine("Name", formData.coordinatorName);
+    addLine("Designation", formData.designation);
+    addLine("Email", formData.email);
+    addLine("Phone", formData.phone);
+    addLine("WhatsApp", formData.whatsapp || 'N/A');
+    
+    y += 5;
+    addSection("VISIT SPECIFICATIONS");
+    addLine("Students Count", formData.studentsCount);
+    addLine("Teachers Count", formData.teachersCount);
+    addLine("Preferred Date", formData.prefDate);
+    addLine("Alternate Date", formData.altDate || 'N/A');
+    addLine("Preferred Time", formData.prefTime);
+    
+    y += 5;
+    addSection("PROGRAM DETAILS");
+    addLine("Classes Involved", formData.classes.join(', ') || 'None');
+    addLine("Purposes", formData.purposes.join(', ') || 'None');
+    addLine("Activities", formData.activities.join(', ') || 'None');
+    
+    if (formData.notes) {
+      y += 5;
+      addSection("ADDITIONAL NOTES");
+      addLine("Notes", formData.notes);
+    }
+    
+    doc.save(`CampusVisit_Summary_${formData.institutionName.replace(/\\s+/g, '_')}.pdf`);
+  };
+
   const resetAndClose = () => {
     setStep(1);
     setIsSuccess(false);
@@ -280,7 +363,7 @@ const CampusVisitModal = ({ isOpen, onClose }) => {
                    <p className="text-lg font-mono font-bold text-gray-800">CV-2026-00125</p>
                  </div>
                  <div className="flex gap-4 justify-center">
-                   <button className="px-6 py-2.5 bg-white border border-gray-200 text-gray-700 font-bold rounded-lg hover:bg-gray-50 text-sm transition-colors">
+                   <button onClick={handleDownloadSummary} className="px-6 py-2.5 bg-white border border-gray-200 text-gray-700 font-bold rounded-lg hover:bg-gray-50 text-sm transition-colors">
                      Download Summary
                    </button>
                    <button onClick={resetAndClose} className="px-6 py-2.5 bg-blue-600 text-white font-bold rounded-lg hover:bg-blue-700 text-sm transition-colors">

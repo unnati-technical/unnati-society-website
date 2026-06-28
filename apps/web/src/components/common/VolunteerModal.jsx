@@ -13,6 +13,7 @@ const VolunteerModal = ({ isOpen, onClose }) => {
   const [step, setStep] = useState(1);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSuccess, setIsSuccess] = useState(false);
+  const [isUploading, setIsUploading] = useState(false);
 
   const STORAGE_KEY = 'unnati_volunteer_draft';
   const DRAFT_EXPIRATION = 60 * 60 * 1000; // 1 hour
@@ -80,6 +81,49 @@ const VolunteerModal = ({ isOpen, onClose }) => {
       ...prev,
       [name]: type === 'checkbox' ? checked : value
     }));
+  };
+
+  const toggleInterest = (interest) => {
+    setFormData(prev => {
+      const interests = prev.interests.includes(interest)
+        ? prev.interests.filter(i => i !== interest)
+        : [...prev.interests, interest];
+      return { ...prev, interests };
+    });
+  };
+
+  const handleFileUpload = async (e) => {
+    const file = e.target.files[0];
+    if (!file) return;
+
+    if (file.size > 5 * 1024 * 1024) {
+      toast.error('File size must be less than 5MB');
+      return;
+    }
+
+    setIsUploading(true);
+    const formDataUpload = new FormData();
+    formDataUpload.append('file', file);
+    formDataUpload.append('upload_preset', 'unnati_preset'); // Requires this unsigned preset to be created in Cloudinary
+
+    try {
+      const res = await fetch('https://api.cloudinary.com/v1_1/drhkvdtw2/upload', {
+        method: 'POST',
+        body: formDataUpload
+      });
+      const data = await res.json();
+      if (data.secure_url) {
+        setFormData(prev => ({ ...prev, resume: data.secure_url }));
+        toast.success('Resume uploaded successfully!');
+      } else {
+        throw new Error(data.error?.message || 'Upload failed');
+      }
+    } catch (err) {
+      console.error(err);
+      toast.error('Failed to upload resume. Make sure upload preset "unnati_preset" exists.');
+    } finally {
+      setIsUploading(false);
+    }
   };
 
 
@@ -156,18 +200,30 @@ const VolunteerModal = ({ isOpen, onClose }) => {
   };
   const handlePrev = () => setStep(prev => Math.max(prev - 1, 1));
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     if (!validateStep(1) || !validateStep(3)) {
       return;
     }
     setIsSubmitting(true);
-    // Simulate API call
-    setTimeout(() => {
+    
+    try {
+      const res = await fetch('/api/volunteers/apply', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(formData)
+      });
+      
+      if (!res.ok) throw new Error('Failed to submit application');
+      
       setIsSubmitting(false);
       setIsSuccess(true);
       localStorage.removeItem(STORAGE_KEY);
-    }, 2000);
+    } catch (error) {
+      console.error(error);
+      toast.error('Failed to submit application. Please try again.');
+      setIsSubmitting(false);
+    }
   };
 
   const resetAndClose = () => {
@@ -391,12 +447,30 @@ const VolunteerModal = ({ isOpen, onClose }) => {
 
                             <div className="mt-6">
                               <label className="block text-sm font-bold text-gray-700 mb-2">Resume / CV Upload (Optional)</label>
-                              <div className="border-2 border-dashed border-blue-200 bg-blue-50/50 rounded-xl p-8 text-center hover:bg-blue-50 transition-colors cursor-pointer flex flex-col items-center justify-center">
-                                <div className="w-12 h-12 bg-white rounded-full flex items-center justify-center text-blue-500 shadow-sm mb-3">
-                                  <FiUpload size={20} />
-                                </div>
-                                <p className="font-bold text-blue-600 mb-1">Click to upload or drag and drop</p>
-                                <p className="text-xs text-gray-500">PDF or DOCX (Max 5MB)</p>
+                              <div className="relative border-2 border-dashed border-blue-200 bg-blue-50/50 rounded-xl p-8 text-center hover:bg-blue-50 transition-colors cursor-pointer flex flex-col items-center justify-center overflow-hidden">
+                                <input type="file" accept=".pdf,.doc,.docx" onChange={handleFileUpload} className="absolute inset-0 w-full h-full opacity-0 cursor-pointer z-10" />
+                                {isUploading ? (
+                                  <div className="flex flex-col items-center">
+                                    <div className="w-8 h-8 border-2 border-blue-600 border-t-transparent rounded-full animate-spin mb-2"></div>
+                                    <p className="font-bold text-blue-600">Uploading...</p>
+                                  </div>
+                                ) : formData.resume ? (
+                                  <div className="flex flex-col items-center">
+                                    <div className="w-12 h-12 bg-green-100 rounded-full flex items-center justify-center text-green-500 shadow-sm mb-3">
+                                      <FiCheckCircle size={20} />
+                                    </div>
+                                    <p className="font-bold text-green-600 mb-1">Resume Uploaded Successfully!</p>
+                                    <p className="text-xs text-gray-500">Click to replace</p>
+                                  </div>
+                                ) : (
+                                  <div className="flex flex-col items-center">
+                                    <div className="w-12 h-12 bg-white rounded-full flex items-center justify-center text-blue-500 shadow-sm mb-3">
+                                      <FiUpload size={20} />
+                                    </div>
+                                    <p className="font-bold text-blue-600 mb-1">Click to upload or drag and drop</p>
+                                    <p className="text-xs text-gray-500">PDF or DOCX (Max 5MB)</p>
+                                  </div>
+                                )}
                               </div>
                             </div>
                           </motion.div>
@@ -413,7 +487,11 @@ const VolunteerModal = ({ isOpen, onClose }) => {
                               <label className="block text-sm font-bold text-gray-700 mb-4">Areas of Interest (Select multiple)</label>
                               <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
                                 {['DigiXplore', 'Akshar', 'Netritva', 'Event Mgmt', 'Social Media', 'Content Writing', 'Graphic Design', 'Photography', 'Web Dev', 'Research'].map(interest => (
-                                  <label key={interest} className={`flex items-center gap-3 p-3 rounded-xl border cursor-pointer transition-all ${formData.interests.includes(interest) ? 'border-blue-500 bg-blue-50/50 text-blue-700 shadow-sm' : 'border-gray-200 bg-white hover:border-blue-200'}`}>
+                                  <label 
+                                    key={interest} 
+                                    onClick={() => toggleInterest(interest)}
+                                    className={`flex items-center gap-3 p-3 rounded-xl border cursor-pointer transition-all ${formData.interests.includes(interest) ? 'border-blue-500 bg-blue-50/50 text-blue-700 shadow-sm' : 'border-gray-200 bg-white hover:border-blue-200'}`}
+                                  >
                                     <div className={`w-5 h-5 rounded flex items-center justify-center border ${formData.interests.includes(interest) ? 'bg-blue-600 border-blue-600' : 'border-gray-300'}`}>
                                       {formData.interests.includes(interest) && <FiCheckCircle size={14} className="text-white"/>}
                                     </div>

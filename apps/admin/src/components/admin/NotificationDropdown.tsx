@@ -3,6 +3,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Bell, Check, Clock, Trash2, ShieldAlert } from 'lucide-react';
 import { toast } from 'sonner';
+import { auth } from '../../lib/firebase';
 
 const NotificationDropdown = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -12,7 +13,12 @@ const NotificationDropdown = () => {
 
   const fetchNotifications = async () => {
     try {
-      const res = await fetch('/api/notifications');
+      const token = await auth.currentUser?.getIdToken();
+      if (!token) return; // Don't fetch if not logged in
+      const res = await fetch(`/api/notifications?t=${Date.now()}`, { 
+        cache: 'no-store',
+        headers: { 'Authorization': `Bearer ${token}` }
+      });
       if (!res.ok) throw new Error('Failed to fetch notifications');
       const data = await res.json();
       setNotifications(data);
@@ -36,7 +42,14 @@ const NotificationDropdown = () => {
       setNotifications(prev => prev.map(n => ({ ...n, status: 'READ' })));
       setUnreadCount(0);
       // Persist to backend
-      fetch('/api/notifications/read-all', { method: 'PATCH' }).catch(() => {});
+      auth.currentUser?.getIdToken().then(token => {
+        if (token) {
+          fetch('/api/notifications/read-all', { 
+            method: 'PATCH',
+            headers: { 'Authorization': `Bearer ${token}` }
+          }).catch(() => {});
+        }
+      });
     }
 
   }, [isOpen]);
@@ -56,7 +69,11 @@ const NotificationDropdown = () => {
       setNotifications(prev => prev.map(n => n.id === id ? { ...n, status: 'READ' } : n));
       setUnreadCount(prev => Math.max(0, prev - 1));
       
-      const res = await fetch(`/api/notifications/${id}/read`, { method: 'PATCH' });
+      const token = await auth.currentUser?.getIdToken();
+      const res = await fetch(`/api/notifications/${id}/read`, { 
+        method: 'PATCH',
+        headers: { 'Authorization': `Bearer ${token}` }
+      });
       if (!res.ok) throw new Error('Failed to mark read');
     } catch (err) {
       toast.error('Failed to update notification');
@@ -69,7 +86,11 @@ const NotificationDropdown = () => {
       setNotifications(prev => prev.map(n => ({ ...n, status: 'READ' })));
       setUnreadCount(0);
       
-      const res = await fetch('/api/notifications/read-all', { method: 'PATCH' });
+      const token = await auth.currentUser?.getIdToken();
+      const res = await fetch('/api/notifications/read-all', { 
+        method: 'PATCH',
+        headers: { 'Authorization': `Bearer ${token}` }
+      });
       if (!res.ok) throw new Error('Failed to mark all read');
     } catch (err) {
       toast.error('Failed to update notifications');

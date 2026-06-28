@@ -1,7 +1,10 @@
 import {
   Controller,
+  Get,
   Post,
+  Patch,
   Body,
+  Param,
   UseInterceptors,
   UploadedFile,
 } from '@nestjs/common';
@@ -11,6 +14,8 @@ import { CreateOutreachDto } from './dto/create-outreach.dto';
 import { CreateCampusVisitDto } from './dto/create-campus-visit.dto';
 import { CreatePartnerDto } from './dto/create-partner.dto';
 import { Public } from '../auth/decorators/public.decorator';
+import { FirebaseAuthGuard } from '../auth/guards/firebase-auth.guard';
+import { UseGuards } from '@nestjs/common';
 
 @Controller('outreach')
 export class OutreachController {
@@ -43,5 +48,66 @@ export class OutreachController {
       }
     }
     return this.outreachService.partner(dto, file);
+  }
+
+  @Public()
+  @UseGuards(FirebaseAuthGuard)
+  @Get('invites')
+  findAllInvites() {
+    return this.outreachService.findAllInvites();
+  }
+
+  @Public()
+  @UseGuards(FirebaseAuthGuard)
+  @Get('campus-visits')
+  findAllCampusVisits() {
+    return this.outreachService.findAllCampusVisits();
+  }
+
+  @Public()
+  @UseGuards(FirebaseAuthGuard)
+  @Get('partner-requests')
+  findAllPartnerRequests() {
+    return this.outreachService.findAllPartnerRequests();
+  }
+
+  @Public()
+  @UseGuards(FirebaseAuthGuard)
+  @Patch('invite/:id/status')
+  updateInviteStatus(
+    @Param('id') id: string,
+    @Body('status') status: string,
+  ) {
+    return this.outreachService.updateInviteStatus(id, status);
+  }
+
+  @Public()
+  @UseGuards(FirebaseAuthGuard)
+  @Patch('campus-visit/:id/status')
+  updateCampusVisitStatus(
+    @Param('id') id: string,
+    @Body('status') status: string,
+  ) {
+    return this.outreachService.updateCampusVisitStatus(id, status);
+  }
+
+  @Public()
+  @UseGuards(FirebaseAuthGuard)
+  @Patch('partner-request/:id/status')
+  updatePartnerStatus(
+    @Param('id') id: string,
+    @Body('status') status: string,
+  ) {
+    return this.outreachService.updatePartnerStatus(id, status);
+  }
+
+  @Public()
+  @UseGuards(FirebaseAuthGuard)
+  @Patch('partner-request/:id/notes')
+  updatePartnerNotes(
+    @Param('id') id: string,
+    @Body('notes') notes: string,
+  ) {
+    return this.outreachService.updatePartnerNotes(id, notes);
   }
 }

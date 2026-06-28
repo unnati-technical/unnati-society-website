@@ -51,13 +51,43 @@ model Volunteer {
 }
 
 model VolunteerApplication {
-  id             String    @id @default(uuid())
-  volunteerId    String
-  volunteer      Volunteer @relation(fields: [volunteerId], references: [id])
-  status         String    @default("PENDING") // PENDING, APPROVED, REJECTED
-  experienceDesc String?
-  createdAt      DateTime  @default(now())
-  updatedAt      DateTime  @updatedAt
+  id                String    @id @default(uuid())
+  volunteerId       String
+  volunteer         Volunteer @relation(fields: [volunteerId], references: [id])
+  status            String    @default("PENDING") // PENDING, APPROVED, REJECTED, UNDER REVIEW
+  
+  // Application details
+  program           String    @default("General")
+  roleAppliedFor    String    @default("Volunteer")
+  phone             String    @default("")
+  dob               String    @default("")
+  gender            String    @default("")
+  education         String    @default("")
+  college           String    @default("")
+  currentYear       String    @default("")
+  availability      String    @default("")
+  preferredMode     String    @default("Online")
+  preferredLocation String    @default("")
+  address           String    @default("")
+  whyVolunteer      String    @default("")
+  linkedinUrl       String?
+  portfolioUrl      String?
+  resumeUrl         String?
+  howDidYouHear     String    @default("")
+  
+  // New captured fields
+  department        String    @default("")
+  hoursPerWeek      String    @default("")
+  hasNgoExperience  String    @default("no")
+  ngoName           String    @default("")
+  experienceDesc    String    @default("")
+  emergencyName     String    @default("")
+  emergencyPhone    String    @default("")
+  careerGoals       String    @default("")
+  startDate         String    @default("")
+  
+  createdAt         DateTime  @default(now())
+  updatedAt         DateTime  @updatedAt
 }
 
 // -------------------------------------
@@ -66,36 +96,111 @@ model VolunteerApplication {
 
 model School {
   id             String               @id @default(uuid())
+  logo           String?
   name           String
+  city           String               @default("")
+  district       String               @default("")
   address        String
   contactPerson  String
   contactEmail   String
   contactPhone   String
-  visitRequests  SchoolVisitRequest[]
+  programs       String[]             @default([])
+  status         String               @default("Active")
+  studentsCount  Int                  @default(0)
+  
+  // Detailed info
+  schoolType     String               @default("Government")
+  schoolCategory String               @default("Secondary")
+  affiliation    String               @default("BSEB")
+  establishedYear String              @default("")
+  grades         String               @default("")
+  teachersCount  Int                  @default(0)
+  about          String               @default("")
+  focusAreas     String[]             @default([])
+
   createdAt      DateTime             @default(now())
   updatedAt      DateTime             @updatedAt
 }
 
-model SchoolVisitRequest {
-  id             String   @id @default(uuid())
-  schoolId       String
-  school         School   @relation(fields: [schoolId], references: [id])
-  requestedDate  DateTime
-  status         String   @default("PENDING")
-  purpose        String
-  createdAt      DateTime @default(now())
-  updatedAt      DateTime @updatedAt
+model Partner {
+  id                  String   @id @default(uuid())
+  logo                String?
+  organization        String
+  type                String   @default("NGO")
+  contactPerson       String
+  email               String
+  phone               String
+  focusArea           String   @default("")
+  status              String   @default("Active")
+  since               DateTime @default(now())
+  website             String?
+  city                String   @default("")
+  address             String   @default("")
+  about               String   @default("")
+  highlights          String[] @default([])
+  
+  createdAt           DateTime @default(now())
+  updatedAt           DateTime @updatedAt
+}
+
+model CampusVisitRequest {
+  id               String   @id @default(uuid())
+  institutionName  String
+  institutionType  String?
+  board            String?
+  website          String?
+  state            String?
+  district         String?
+  city             String?
+  address          String?
+  studentsCount    String?
+  teachersCount    String?
+  classes          String[] @default([])
+  purposes         String[] @default([])
+  activities       String[] @default([])
+  prefDate         String?
+  altDate          String?
+  prefTime         String?
+  coordinatorName  String
+  designation      String?
+  email            String
+  phone            String?
+  whatsapp         String?
+  notes            String?
+  status           String   @default("PENDING")
+  createdAt        DateTime @default(now())
+  updatedAt        DateTime @updatedAt
 }
 
 model OutreachRequest {
-  id             String   @id @default(uuid())
-  institution    String
-  contactName    String
-  contactEmail   String
-  programs       String[]
-  status         String   @default("PENDING")
-  createdAt      DateTime @default(now())
-  updatedAt      DateTime @updatedAt
+  id                   String   @id @default(uuid())
+  institutionName      String
+  institutionType      String?
+  board                String?
+  studentsCount        String?
+  website              String?
+  state                String?
+  district             String?
+  city                 String?
+  address              String?
+  programs             String[] @default([])
+  targetAudience       String[] @default([])
+  expectedParticipants String?
+  preferredMode        String?
+  prefDate             String?
+  altDate              String?
+  duration             String?
+  coordinatorName      String
+  designation          String?
+  phone                String?
+  whatsapp             String?
+  email                String
+  availability         String?
+  notes                String?
+  specialReqs          String?
+  status               String   @default("PENDING")
+  createdAt            DateTime @default(now())
+  updatedAt            DateTime @updatedAt
 }
 
 model PartnerRequest {
@@ -114,7 +219,8 @@ model PartnerRequest {
   meetingMode         String?
   meetingDate         DateTime?
   documentUrl         String?
-  status              String   @default("PENDING") // PENDING, REVIEWED, ACCEPTED, REJECTED
+  adminNotes          String?
+  status              String   @default("PENDING") // PENDING, REVIEWED, ACCEPTED, REJECTED, HOLD, NEED_MORE_INFO
   createdAt           DateTime @default(now())
   updatedAt           DateTime @updatedAt
 }

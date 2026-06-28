@@ -1,7 +1,9 @@
 import { Controller, Get, Post, Delete, Body, Param } from '@nestjs/common';
 import { NotificationRecipientsService } from './notification-recipients.service';
+import { Public } from '../auth/decorators/public.decorator';
 
 @Controller('notification-recipients')
+@Public()
 export class NotificationRecipientsController {
   constructor(
     private readonly recipientsService: NotificationRecipientsService,

@@ -7,6 +7,7 @@ import {
 } from 'lucide-react';
 import { toast } from 'sonner';
 import AdminLayout from '../components/admin/AdminLayout';
+import { auth } from '../lib/firebase';
 
 const AdminMessages = () => {
   const [messages, setMessages] = useState([]);
@@ -22,7 +23,11 @@ const AdminMessages = () => {
   const fetchMessages = async () => {
     setIsLoading(true);
     try {
-      const res = await fetch('/api/contact');
+      const token = await auth.currentUser?.getIdToken();
+      const res = await fetch(`/api/contact?t=${Date.now()}`, { 
+        cache: 'no-store',
+        headers: { 'Authorization': `Bearer ${token}` }
+      });
       if (!res.ok) throw new Error('Failed to fetch messages');
       const data = await res.json();
       setMessages(data);
@@ -51,9 +56,13 @@ const AdminMessages = () => {
       setMessages(prev => prev.map(m => m.id === id ? { ...m, status: newStatus } : m));
       if (selectedMessage?.id === id) setSelectedMessage(prev => ({ ...prev, status: newStatus }));
 
+      const token = await auth.currentUser?.getIdToken();
       const res = await fetch(`/api/contact/${id}/status`, {
         method: 'PATCH',
-        headers: { 'Content-Type': 'application/json' },
+        headers: { 
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`
+        },
         body: JSON.stringify({ status: newStatus }),
       });
       if (!res.ok) throw new Error('Failed to update status');
@@ -71,9 +80,13 @@ const AdminMessages = () => {
     }
     setIsSending(true);
     try {
+      const token = await auth.currentUser?.getIdToken();
       const res = await fetch(`/api/contact/${selectedMessage.id}/reply`, {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers: { 
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`
+        },
         body: JSON.stringify({ replyText: replyText.trim() }),
       });
       if (!res.ok) throw new Error('Failed to send reply');

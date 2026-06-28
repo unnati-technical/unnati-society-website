@@ -10,6 +10,7 @@ import {
 } from 'react-icons/fi';
 import { FaBuilding } from 'react-icons/fa';
 import { BiBuildingHouse, BiChalkboard } from 'react-icons/bi';
+import { jsPDF } from 'jspdf';
 const UnnatiLogo = 'https://res.cloudinary.com/drhkvdtw2/image/upload/v1782396887/unnati_assets/Unnati.png';
 
 const InviteUsModal = ({ isOpen, onClose }) => {
@@ -220,6 +221,85 @@ const InviteUsModal = ({ isOpen, onClose }) => {
     }
   };
 
+  const handleDownloadSummary = () => {
+    const doc = new jsPDF();
+    
+    // Header
+    doc.setFontSize(22);
+    doc.setTextColor(37, 99, 235);
+    doc.text("UNNATI SOCIETY", 105, 20, { align: "center" });
+    
+    doc.setFontSize(14);
+    doc.setTextColor(71, 85, 105);
+    doc.text("School Invite Request Summary", 105, 30, { align: "center" });
+    
+    doc.setFontSize(10);
+    doc.setTextColor(0, 0, 0);
+    doc.text(`Reference ID: INV-2026-00125`, 20, 45);
+    doc.text(`Date Submitted: ${new Date().toLocaleDateString()}`, 20, 52);
+    
+    doc.setDrawColor(226, 232, 240);
+    doc.line(20, 57, 190, 57);
+    
+    let y = 67;
+    const addSection = (title) => {
+      if (y > 270) { doc.addPage(); y = 20; }
+      doc.setFontSize(11);
+      doc.setFont("helvetica", "bold");
+      doc.setTextColor(15, 23, 42);
+      doc.text(title, 20, y);
+      y += 8;
+    };
+    
+    const addLine = (label, value) => {
+      if (y > 280) { doc.addPage(); y = 20; }
+      doc.setFontSize(10);
+      doc.setFont("helvetica", "bold");
+      doc.setTextColor(71, 85, 105);
+      doc.text(`${label}:`, 20, y);
+      doc.setFont("helvetica", "normal");
+      doc.setTextColor(15, 23, 42);
+      const textLines = doc.splitTextToSize(String(value), 120);
+      doc.text(textLines, 60, y);
+      y += (textLines.length * 5) + 2;
+    };
+
+    addSection("INSTITUTION DETAILS");
+    addLine("Name", formData.institutionName);
+    addLine("Type", formData.institutionType);
+    addLine("Board", formData.board || 'N/A');
+    addLine("Website", formData.website || 'N/A');
+    addLine("Location", `${formData.city}, ${formData.district}, ${formData.state}`);
+    addLine("Address", formData.address);
+    addLine("Total Students", formData.studentsCount || 'N/A');
+    
+    y += 5;
+    addSection("CONTACT PERSON");
+    addLine("Name", formData.coordinatorName);
+    addLine("Designation", formData.designation);
+    addLine("Email", formData.email);
+    addLine("Phone", formData.phone);
+    addLine("WhatsApp", formData.whatsapp || 'N/A');
+    addLine("Availability", formData.availability || 'N/A');
+    
+    y += 5;
+    addSection("PROGRAM REQUIREMENTS");
+    addLine("Programs Required", formData.programs.join(', ') || 'None');
+    addLine("Target Audience", formData.targetAudience.join(', ') || 'None');
+    addLine("Expected Participants", formData.expectedParticipants || 'N/A');
+    addLine("Preferred Mode", formData.preferredMode || 'N/A');
+    addLine("Preferred Date", formData.prefDate || 'N/A');
+    addLine("Alternate Date", formData.altDate || 'N/A');
+    addLine("Duration", formData.duration || 'N/A');
+    
+    y += 5;
+    addSection("ADDITIONAL DETAILS");
+    addLine("Notes", formData.notes || 'None');
+    addLine("Special Requirements", formData.specialReqs || 'None');
+    
+    doc.save(`SchoolInvite_Summary_${formData.institutionName.replace(/\\s+/g, '_')}.pdf`);
+  };
+
   const resetAndClose = () => {
     setStep(1);
     setIsSuccess(false);
@@ -325,7 +405,7 @@ const InviteUsModal = ({ isOpen, onClose }) => {
                      <p className="text-xl font-mono font-bold text-gray-800">OUT-2026-00152</p>
                    </div>
                    <div className="flex flex-col gap-3">
-                     <button className="w-full px-6 py-3 bg-white border border-gray-200 text-gray-700 font-bold rounded-xl hover:bg-gray-50 text-sm transition-colors">
+                     <button onClick={handleDownloadSummary} className="px-6 py-2.5 bg-white border border-gray-200 text-gray-700 font-bold rounded-lg hover:bg-gray-50 text-sm transition-colors">
                        Download Summary
                      </button>
                      <button onClick={resetAndClose} className="w-full px-6 py-3 bg-blue-600 text-white font-bold rounded-xl hover:bg-blue-700 text-sm transition-colors shadow-lg shadow-blue-600/30">

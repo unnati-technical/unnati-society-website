@@ -3,7 +3,7 @@ import {
   LayoutDashboard, Users, GraduationCap, UserSquare2, School, Handshake,
   FolderKanban, CalendarDays, CheckSquare, BarChart3, Settings, ShieldAlert,
   Bell, MessageSquare, ChevronDown, Menu, Search, FileText, IndianRupee,
-  Activity, Zap, X, PanelRight
+  Activity, Zap, X, PanelRight, LogOut
 } from 'lucide-react';
 import { Link, useLocation, Navigate } from 'react-router-dom';
 import NotificationDropdown from './NotificationDropdown';
@@ -18,7 +18,9 @@ const sidebarGroups = [
       { name: 'Team Leads', icon: UserSquare2, path: '/admin/teamleads' },
       { name: 'Volunteers', icon: Handshake, path: '/admin/volunteers' },
       { name: 'Students', icon: GraduationCap, path: '/admin/students' },
-      { name: 'Schools & Partners', icon: School, path: '/admin/schools' },
+      { name: 'Campus Visits', icon: School, path: '/admin/campus-visits' },
+      { name: 'School Invites', icon: School, path: '/admin/school-invites' },
+      { name: 'Partner Requests', icon: Handshake, path: '/admin/partner-requests' },
       { name: 'Roles & Permissions', icon: ShieldAlert, path: '/admin/roles' },
     ]
   },
@@ -61,7 +63,6 @@ const AdminLayout = ({ children }) => {
   const currentPath = location.pathname;
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [isLeftCollapsed, setIsLeftCollapsed] = useState(false);
-  const [isRightCollapsed, setIsRightCollapsed] = useState(false);
   const { currentUser, logout } = useAuth();
 
   // Protect Admin Dashboard
@@ -195,13 +196,6 @@ const AdminLayout = ({ children }) => {
             <div className="h-6 w-px bg-gray-200 hidden lg:block"></div>
 
             {/* Icons */}
-            <button 
-              className="hidden xl:block relative text-gray-500 hover:text-[#2563EB] transition-colors"
-              onClick={() => setIsRightCollapsed(!isRightCollapsed)}
-              title={isRightCollapsed ? "Show Analytics Panel" : "Hide Analytics Panel"}
-            >
-              <PanelRight size={20} />
-            </button>
             <NotificationDropdown />
             <MessageNotification />
 
@@ -215,7 +209,7 @@ const AdminLayout = ({ children }) => {
                 A
               </div>
               <button onClick={handleLogout} className="p-2 text-gray-400 hover:text-red-500 transition-colors ml-2" title="Logout">
-                <X size={18} />
+                <LogOut size={18} />
               </button>
             </div>
           </div>
@@ -227,13 +221,7 @@ const AdminLayout = ({ children }) => {
           {/* Main Dashboard Scroll Area */}
           <main className="flex-1 overflow-y-auto p-4 lg:p-8 scrollbar-hide">
             
-            {/* Page Header (Optional, if children don't provide it) */}
-            <div className="mb-8">
-              <h1 className="text-2xl font-extrabold text-[#0F172A] tracking-tight flex items-center gap-2">
-                Welcome back, Admin! <span className="text-2xl">👋</span>
-              </h1>
-              <p className="text-sm text-gray-500 font-medium mt-1">Here's an overview of everything happening in Unnati Society.</p>
-            </div>
+
 
             {children}
             
@@ -257,147 +245,12 @@ const AdminLayout = ({ children }) => {
 
               <div className="text-[10px] text-blue-300/50 font-medium text-center md:text-right">
                 <p>&copy; 2026 Unnati Society. All Rights Reserved.</p>
-                <p className="mt-1">Designed with ❤️ for a better tomorrow.</p>
+                <p className="mt-1">Building Brighter Futures, Together.</p>
               </div>
             </footer>
           </main>
 
-          {/* RIGHT SIDEBAR (Desktop Only, collapses on smaller screens or stacks) */}
-          <aside className={`hidden xl:flex bg-white border-l border-gray-100 flex-col overflow-y-auto scrollbar-hide shrink-0 transition-all duration-300 ${isRightCollapsed ? 'w-0 border-none p-0 opacity-0 overflow-hidden' : 'w-80 p-6 opacity-100'}`}>
-            <div className="w-[272px]"> {/* Fixed width inner container to prevent text wrapping during animation */}
-              {/* Quick Actions */}
-            <div className="mb-8">
-              <h3 className="text-xs font-extrabold text-[#0F172A] uppercase tracking-wider mb-4">Quick Actions</h3>
-              <div className="space-y-2">
-                <button className="w-full py-2.5 px-4 rounded-xl border border-[#2563EB]/20 bg-[#2563EB]/5 text-[#2563EB] font-bold text-xs hover:bg-[#2563EB] hover:text-white transition-all text-center">Add New User</button>
-                <button className="w-full py-2.5 px-4 rounded-xl border border-gray-200 text-gray-600 font-bold text-xs hover:bg-gray-50 transition-all text-center">Create Initiative</button>
-                <button className="w-full py-2.5 px-4 rounded-xl border border-gray-200 text-gray-600 font-bold text-xs hover:bg-gray-50 transition-all text-center">Schedule Session</button>
-                <button className="w-full py-2.5 px-4 rounded-xl border border-gray-200 text-gray-600 font-bold text-xs hover:bg-gray-50 transition-all text-center">Generate Report</button>
-                <button className="w-full py-2.5 px-4 rounded-xl border border-gray-200 text-gray-600 font-bold text-xs hover:bg-gray-50 transition-all text-center">Send Announcement</button>
-                <button className="w-full py-2.5 px-4 rounded-xl border border-gray-200 text-gray-600 font-bold text-xs hover:bg-gray-50 transition-all text-center">Manage Roles</button>
-              </div>
-            </div>
 
-            {/* System Alerts */}
-            <div className="mb-8">
-              <div className="flex items-center justify-between mb-4">
-                <h3 className="text-xs font-extrabold text-[#0F172A] uppercase tracking-wider">System Alerts</h3>
-                <span className="text-[10px] font-bold text-[#2563EB] cursor-pointer hover:underline">View All</span>
-              </div>
-              <div className="space-y-3">
-                <div className="flex items-start gap-3 p-3 rounded-xl bg-orange-50 border border-orange-100">
-                  <ShieldAlert size={16} className="text-orange-500 shrink-0 mt-0.5" />
-                  <div>
-                    <p className="text-xs font-bold text-orange-900 leading-tight">3 pending volunteer approvals</p>
-                  </div>
-                </div>
-                <div className="flex items-start gap-3 p-3 rounded-xl bg-green-50 border border-green-100">
-                  <CheckSquare size={16} className="text-green-500 shrink-0 mt-0.5" />
-                  <div>
-                    <p className="text-xs font-bold text-green-900 leading-tight">Server backup completed successfully</p>
-                  </div>
-                </div>
-                <div className="flex items-start gap-3 p-3 rounded-xl bg-red-50 border border-red-100">
-                  <ShieldAlert size={16} className="text-red-500 shrink-0 mt-0.5" />
-                  <div>
-                    <p className="text-xs font-bold text-red-900 leading-tight">2 support tickets need attention</p>
-                  </div>
-                </div>
-                <div className="flex items-start gap-3 p-3 rounded-xl bg-blue-50 border border-blue-100">
-                  <Activity size={16} className="text-[#2563EB] shrink-0 mt-0.5" />
-                  <div>
-                    <p className="text-xs font-bold text-blue-900 leading-tight">Monthly report is ready to download</p>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            {/* Data Usage */}
-            <div className="mb-8">
-              <div className="flex items-center justify-between mb-4">
-                <h3 className="text-xs font-extrabold text-[#0F172A] uppercase tracking-wider">Data Usage</h3>
-                <div className="flex items-center gap-1 text-[10px] font-bold text-gray-500 cursor-pointer">
-                  This Month <ChevronDown size={12}/>
-                </div>
-              </div>
-              
-              <div className="mb-4">
-                <div className="flex justify-between text-xs font-bold mb-1">
-                  <span className="text-gray-500">Storage Usage</span>
-                  <span className="text-[#0F172A]">65%</span>
-                </div>
-                <div className="h-1.5 w-full bg-gray-100 rounded-full overflow-hidden">
-                  <div className="h-full bg-[#2563EB] rounded-full" style={{ width: '65%' }}></div>
-                </div>
-                <p className="text-[10px] text-gray-400 font-medium mt-1">6.5 GB / 10 GB</p>
-              </div>
-
-              <div>
-                <div className="flex justify-between text-xs font-bold mb-1">
-                  <span className="text-gray-500">Bandwidth Usage</span>
-                  <span className="text-[#0F172A]">45%</span>
-                </div>
-                <div className="h-1.5 w-full bg-gray-100 rounded-full overflow-hidden">
-                  <div className="h-full bg-indigo-500 rounded-full" style={{ width: '45%' }}></div>
-                </div>
-                <p className="text-[10px] text-gray-400 font-medium mt-1">45 GB / 100 GB</p>
-              </div>
-            </div>
-
-            {/* Active Users */}
-            <div className="mb-8">
-              <h3 className="text-xs font-extrabold text-[#0F172A] uppercase tracking-wider mb-4">Active Users</h3>
-              <div className="bg-gray-50 rounded-xl p-4 border border-gray-100 relative overflow-hidden mb-3">
-                <p className="text-[10px] font-extrabold text-gray-500 uppercase">Online Now</p>
-                <div className="flex items-end gap-2 mt-1">
-                  <span className="text-2xl font-extrabold text-[#0F172A] leading-none">128</span>
-                </div>
-                <p className="text-[10px] font-bold text-gray-400 mt-2">vs last hour <span className="text-green-500 ml-1">↑ 18%</span></p>
-                {/* Mock Sparkline */}
-                <svg className="absolute bottom-0 right-0 w-24 h-12 opacity-50" viewBox="0 0 100 30" preserveAspectRatio="none">
-                  <path d="M0,30 L0,20 L10,25 L20,15 L30,22 L40,10 L50,18 L60,5 L70,12 L80,2 L90,8 L100,0 L100,30 Z" fill="#22c55e" opacity="0.2"/>
-                  <path d="M0,20 L10,25 L20,15 L30,22 L40,10 L50,18 L60,5 L70,12 L80,2 L90,8 L100,0" fill="none" stroke="#22c55e" strokeWidth="2"/>
-                </svg>
-              </div>
-
-              <div className="bg-gray-50 rounded-xl p-4 border border-gray-100 relative overflow-hidden">
-                <p className="text-[10px] font-extrabold text-gray-500 uppercase">This Week</p>
-                <div className="flex items-end gap-2 mt-1">
-                  <span className="text-2xl font-extrabold text-[#0F172A] leading-none">1,245</span>
-                </div>
-                <p className="text-[10px] font-bold text-gray-400 mt-2">vs last week <span className="text-green-500 ml-1">↑ 12%</span></p>
-                {/* Mock Sparkline */}
-                <svg className="absolute bottom-0 right-0 w-24 h-12 opacity-50" viewBox="0 0 100 30" preserveAspectRatio="none">
-                  <path d="M0,30 L0,15 L10,20 L20,10 L30,15 L40,5 L50,12 L60,2 L70,8 L80,0 L90,5 L100,0 L100,30 Z" fill="#3b82f6" opacity="0.2"/>
-                  <path d="M0,15 L10,20 L20,10 L30,15 L40,5 L50,12 L60,2 L70,8 L80,0 L90,5 L100,0" fill="none" stroke="#3b82f6" strokeWidth="2"/>
-                </svg>
-              </div>
-            </div>
-
-            {/* Shortcuts */}
-            <div>
-              <h3 className="text-xs font-extrabold text-[#0F172A] uppercase tracking-wider mb-4">Shortcuts</h3>
-              <div className="space-y-1">
-                <a href="#" className="flex items-center gap-3 text-xs font-bold text-gray-600 hover:text-[#2563EB] hover:bg-[#2563EB]/5 p-2 rounded-lg transition-colors">
-                  <FolderKanban size={14} className="text-gray-400"/> View All Initiatives
-                </a>
-                <a href="#" className="flex items-center gap-3 text-xs font-bold text-gray-600 hover:text-[#2563EB] hover:bg-[#2563EB]/5 p-2 rounded-lg transition-colors">
-                  <Users size={14} className="text-gray-400"/> Volunteer Directory
-                </a>
-                <a href="#" className="flex items-center gap-3 text-xs font-bold text-gray-600 hover:text-[#2563EB] hover:bg-[#2563EB]/5 p-2 rounded-lg transition-colors">
-                  <CalendarDays size={14} className="text-gray-400"/> Session Calendar
-                </a>
-                <a href="#" className="flex items-center gap-3 text-xs font-bold text-gray-600 hover:text-[#2563EB] hover:bg-[#2563EB]/5 p-2 rounded-lg transition-colors">
-                  <BarChart3 size={14} className="text-gray-400"/> Download Reports
-                </a>
-                <a href="#" className="flex items-center gap-3 text-xs font-bold text-gray-600 hover:text-[#2563EB] hover:bg-[#2563EB]/5 p-2 rounded-lg transition-colors">
-                  <MessageSquare size={14} className="text-gray-400"/> Feedback Analytics
-                </a>
-              </div>
-            </div>
-
-            </div> {/* End fixed width container */}
-          </aside>
 
         </div>
       </div>

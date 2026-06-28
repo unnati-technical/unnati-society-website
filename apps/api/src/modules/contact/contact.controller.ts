@@ -1,6 +1,8 @@
 import { Controller, Post, Body, Get, Patch, Param } from '@nestjs/common';
 import { ContactService } from './contact.service';
 import { Public } from '../auth/decorators/public.decorator';
+import { FirebaseAuthGuard } from '../auth/guards/firebase-auth.guard';
+import { UseGuards } from '@nestjs/common';
 
 @Controller('contact')
 export class ContactController {
@@ -22,12 +24,14 @@ export class ContactController {
   }
 
   @Public()
+  @UseGuards(FirebaseAuthGuard)
   @Get()
   async getAllMessages() {
     return this.contactService.getAllMessages();
   }
 
   @Public()
+  @UseGuards(FirebaseAuthGuard)
   @Patch(':id/status')
   async updateMessageStatus(
     @Param('id') id: string,
@@ -37,6 +41,7 @@ export class ContactController {
   }
 
   @Public()
+  @UseGuards(FirebaseAuthGuard)
   @Post(':id/reply')
   async replyToMessage(
     @Param('id') id: string,

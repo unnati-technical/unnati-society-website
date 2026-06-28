@@ -59,10 +59,9 @@ export class AnalyticsService {
       orderBy: { createdAt: 'desc' },
     });
 
-    // Fetch pending school visit requests
-    const pendingSchools = await this.prisma.schoolVisitRequest.findMany({
+    // Fetch pending campus visit requests
+    const pendingSchools = await this.prisma.campusVisitRequest.findMany({
       where: { status: 'PENDING' },
-      include: { school: true },
       take: 5,
       orderBy: { createdAt: 'desc' },
     });

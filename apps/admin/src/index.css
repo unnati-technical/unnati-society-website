@@ -106,3 +106,29 @@
   -ms-overflow-style: none;
   scrollbar-width: none;
 }
+
+#print-section {
+  display: none;
+}
+
+@media print {
+  body * {
+    visibility: hidden;
+  }
+  #print-section, #print-section * {
+    visibility: visible;
+  }
+  #print-section {
+    display: block !important;
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    margin: 0;
+    padding: 20px;
+    background: white;
+  }
+  @page {
+    margin: 1.5cm;
+  }
+}

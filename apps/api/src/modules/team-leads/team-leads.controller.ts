@@ -18,6 +18,7 @@ import { FirebaseAuthGuard } from '../auth/guards/firebase-auth.guard';
 export class TeamLeadsController {
   constructor(private readonly teamLeadsService: TeamLeadsService) {}
 
+  @Public()
   @UseGuards(FirebaseAuthGuard)
   @Get('me')
   async getMe(@Req() req) {
