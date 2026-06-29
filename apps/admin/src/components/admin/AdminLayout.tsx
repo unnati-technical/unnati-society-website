@@ -3,7 +3,7 @@ import {
   LayoutDashboard, Users, GraduationCap, UserSquare2, School, Handshake,
   FolderKanban, CalendarDays, CheckSquare, BarChart3, Settings, ShieldAlert,
   Bell, MessageSquare, ChevronDown, Menu, Search, FileText, IndianRupee,
-  Activity, Zap, X, PanelRight, LogOut
+  Activity, Zap, X, PanelRight, LogOut, Mail
 } from 'lucide-react';
 import { Link, useLocation, Navigate } from 'react-router-dom';
 import NotificationDropdown from './NotificationDropdown';
@@ -54,6 +54,7 @@ const sidebarGroups = [
       { name: 'Help Center', icon: MessageSquare, path: '/admin/help' },
       { name: 'Support Tickets', icon: Handshake, path: '/admin/support' },
       { name: 'System Settings', icon: Settings, path: '/admin/settings' },
+      { name: 'Email Notifications', icon: Mail, path: '/admin/email-notifications' },
     ]
   }
 ];

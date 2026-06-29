@@ -12,6 +12,7 @@ import AdminVolunteers from './pages/AdminVolunteers';
 import AdminCampusVisits from './pages/AdminCampusVisits';
 import AdminSchoolInvites from './pages/AdminSchoolInvites';
 import AdminPartnerRequests from './pages/AdminPartnerRequests';
+import AdminEmailNotifications from './pages/AdminEmailNotifications';
 
 const App = () => {
   return (
@@ -30,6 +31,7 @@ const App = () => {
         <Route path="/admin/campus-visits" element={<AdminCampusVisits />} />
         <Route path="/admin/school-invites" element={<AdminSchoolInvites />} />
         <Route path="/admin/partner-requests" element={<AdminPartnerRequests />} />
+        <Route path="/admin/email-notifications" element={<AdminEmailNotifications />} />
       </Routes>
     </BrowserRouter>
   );

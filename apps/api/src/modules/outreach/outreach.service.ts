@@ -48,6 +48,9 @@ export class OutreachService {
         console.error('Failed to send school invite received email:', err),
       );
 
+    // Notify admins
+    this.emailService.sendAdminFormNotification('School Invite', 'Invite School', dto);
+
     return inviteRequest;
   }
 
@@ -76,6 +79,9 @@ export class OutreachService {
       .catch((err) =>
         console.error('Failed to send campus visit confirmation email:', err),
       );
+
+    // Notify admins
+    this.emailService.sendAdminFormNotification('Campus Visit Request', 'Campus Visit', dto);
 
     return visitRequest;
   }
@@ -124,6 +130,9 @@ export class OutreachService {
           err,
         ),
       );
+
+    // Notify admins
+    this.emailService.sendAdminFormNotification('Partnership Request', 'Partner Request', dto);
 
     return partnerRequest;
   }

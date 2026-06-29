@@ -225,6 +225,9 @@ export class VolunteersService {
         console.error('Failed to create volunteer notification:', err),
       );
 
+    // Notify admins
+    this.emailService.sendAdminFormNotification('Volunteer Registration', 'Volunteer Form', createDto);
+
     return application;
   }
 

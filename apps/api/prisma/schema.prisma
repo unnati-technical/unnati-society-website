@@ -329,10 +329,15 @@ model ContactMessage {
 }
 
 model NotificationRecipient {
-  id        String   @id @default(uuid())
-  email     String   @unique
-  name      String?
-  createdAt DateTime @default(now())
+  id         String   @id @default(uuid())
+  email      String   @unique
+  name       String
+  department String   @default("General")
+  phone      String?
+  status     String   @default("Active") // Active, Inactive
+  categories String[] @default([])
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
 }
 
 // -------------------------------------

@@ -85,8 +85,10 @@ export class EmailService {
         process.env.ADMIN_EMAIL || 'admin@unnatisociety.org',
       );
 
-      // Fetch dynamic admin recipients
-      const recipients = await this.prisma.notificationRecipient.findMany();
+      // Fetch dynamic admin recipients for Contact form
+      const recipients = await this.prisma.notificationRecipient.findMany({
+        where: { status: 'Active', categories: { has: 'Contact' } }
+      });
       const adminEmails =
         recipients.length > 0
           ? recipients.map((r) => r.email)
@@ -174,7 +176,9 @@ export class EmailService {
         process.env.ADMIN_EMAIL || 'admin@unnatisociety.org',
       );
 
-      const recipients = await this.prisma.notificationRecipient.findMany();
+      const recipients = await this.prisma.notificationRecipient.findMany({
+        where: { status: 'Active', categories: { has: 'Volunteer Form' } }
+      });
       const adminEmails =
         recipients.length > 0
           ? recipients.map((r) => r.email)
@@ -584,6 +588,64 @@ export class EmailService {
       this.logger.error(
         `Failed to send partner status email to ${data.email}: ${error.message}`,
       );
+    }
+  }
+
+  async sendAdminFormNotification(
+    formTitle: string,
+    category: string,
+    data: Record<string, any>,
+  ) {
+    try {
+      const defaultAdminEmail = await this.settingsService.getSetting(
+        'ADMIN_EMAIL',
+        process.env.ADMIN_EMAIL || 'admin@unnatisociety.org',
+      );
+
+      const recipients = await this.prisma.notificationRecipient.findMany({
+        where: {
+          status: 'Active',
+          categories: { has: category }
+        }
+      });
+      
+      const adminEmails =
+        recipients.length > 0
+          ? recipients.map((r) => r.email)
+          : [defaultAdminEmail];
+
+      const transporter = await this.getTransporter();
+      const smtpUser = await this.settingsService.getSetting(
+        'SMTP_USER',
+        process.env.SMTP_USER || '',
+      );
+
+      // Convert data object to HTML list
+      const dataHtml = Object.entries(data)
+        .map(
+          ([key, value]) =>
+            `<p><strong>${key.charAt(0).toUpperCase() + key.slice(1).replace(/([A-Z])/g, ' $1')}:</strong> ${
+              typeof value === 'object' ? JSON.stringify(value) : value
+            }</p>`,
+        )
+        .join('');
+
+      await transporter.sendMail({
+        from: `"Unnati Society" <${smtpUser}>`,
+        to: adminEmails,
+        subject: `New ${formTitle} Submission`,
+        html: `
+          <div style="font-family: sans-serif; max-width: 600px; margin: 0 auto; border: 1px solid #e2e8f0; border-radius: 8px; padding: 20px;">
+            <h2 style="color: #0F172A; border-bottom: 2px solid #e2e8f0; padding-bottom: 10px;">New ${formTitle} Submission</h2>
+            ${dataHtml}
+          </div>
+        `,
+      });
+      this.logger.log(
+        `Admin notification for ${formTitle} sent to ${adminEmails.join(', ')}`,
+      );
+    } catch (error) {
+      this.logger.error(`Failed to send ${formTitle} admin notification: ${error.message}`);
     }
   }
 }

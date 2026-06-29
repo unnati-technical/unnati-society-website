@@ -18,7 +18,7 @@ export class NotificationRecipientsService {
     });
   }
 
-  async create(data: { email: string; name?: string }) {
+  async create(data: { email: string; name: string; department?: string; phone?: string; status?: string; categories?: string[] }) {
     const existing = await this.prisma.notificationRecipient.findUnique({
       where: { email: data.email },
     });
@@ -28,11 +28,53 @@ export class NotificationRecipientsService {
     }
 
     const recipient = await this.prisma.notificationRecipient.create({
-      data,
+      data: {
+        email: data.email,
+        name: data.name,
+        department: data.department || 'General',
+        phone: data.phone,
+        status: data.status || 'Active',
+        categories: data.categories || [],
+      },
     });
 
     this.logger.log(`Added new notification recipient: ${data.email}`);
     return recipient;
+  }
+
+  async update(id: string, data: { name?: string; department?: string; phone?: string; status?: string; categories?: string[] }) {
+    const existing = await this.prisma.notificationRecipient.findUnique({
+      where: { id },
+    });
+
+    if (!existing) {
+      throw new NotFoundException('Recipient not found');
+    }
+
+    const recipient = await this.prisma.notificationRecipient.update({
+      where: { id },
+      data: {
+        ...(data.name !== undefined && { name: data.name }),
+        ...(data.department !== undefined && { department: data.department }),
+        ...(data.phone !== undefined && { phone: data.phone }),
+        ...(data.status !== undefined && { status: data.status }),
+        ...(data.categories !== undefined && { categories: data.categories }),
+      },
+    });
+
+    this.logger.log(`Updated notification recipient: ${existing.email}`);
+    return recipient;
+  }
+
+  async findByCategory(category: string) {
+    return this.prisma.notificationRecipient.findMany({
+      where: {
+        status: 'Active',
+        categories: {
+          has: category,
+        },
+      },
+    });
   }
 
   async remove(id: string) {
