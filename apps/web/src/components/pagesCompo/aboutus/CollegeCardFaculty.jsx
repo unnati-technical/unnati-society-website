@@ -11,15 +11,18 @@ import { faAngleLeft, faAngleRight } from "@fortawesome/free-solid-svg-icons";
 const CollegeCardFaculty = () => {
 
   const [currentIndex, setCurrentIndex] = useState(0);
+  const [isHovered, setIsHovered] = useState(false);
 
   // AUTO SLIDE
   useEffect(() => {
+    if (isHovered) return;
+
     const interval = setInterval(() => {
       setCurrentIndex((prev) => (prev + 1) % cardData.length);
     }, 2500);
 
     return () => clearInterval(interval);
-  }, []);
+  }, [isHovered]);
 
   const handleNext = () => {
 
@@ -43,7 +46,14 @@ const CollegeCardFaculty = () => {
 
     <section className="w-full flex justify-center items-center py-20 text-white">
 
-      <div className="w-4/5 flex items-center justify-center bg-[#212331] border-gray-300 rounded-xl py-4 md:py-8 px-4 md:px-12">
+      <div 
+        className="w-4/5 flex items-center justify-center bg-[#212331] border-gray-300 rounded-xl py-4 md:py-8 px-4 md:px-12 transition-transform duration-300 hover:scale-[1.02] hover:shadow-2xl"
+        onMouseEnter={() => setIsHovered(true)}
+        onMouseLeave={() => {
+          setIsHovered(false);
+          handleNext();
+        }}
+      >
 
         <div className="mr-10 hidden md:block">
 

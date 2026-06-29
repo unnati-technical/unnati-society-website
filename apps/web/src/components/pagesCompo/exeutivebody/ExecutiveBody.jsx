@@ -296,7 +296,7 @@ const ExecutiveBody = () => {
 
         {/* TEAM LEADS */}
         <section>
-          <SectionHeader title="Team Leads" />
+          <SectionHeader title="Team Leads 2025-26" />
           {/* Team Leads Layout */}
           <div className="flex flex-col gap-16">
             {/* Programs */}

@@ -3,8 +3,8 @@ import { useForm, useWatch } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import * as z from 'zod';
 import { MapPin, Mail, Phone, Send, Loader2 } from 'lucide-react';
-import { FaInstagram, FaLinkedinIn, FaYoutube, FaFacebookF } from 'react-icons/fa';
-// eslint-disable-next-line no-unused-vars
+import { FaInstagram, FaLinkedinIn } from 'react-icons/fa';
+import { FaXTwitter } from 'react-icons/fa6';
 import { motion } from 'framer-motion';
 import { toast } from 'sonner';
 
@@ -129,17 +129,14 @@ const ContactFormSection = () => {
                   <p className="text-[11px] text-blue-600/70 font-semibold tracking-wide uppercase mt-0.5">Join our community</p>
                 </div>
                 <div className="flex gap-2.5">
-                  <a href="#" className="w-10 h-10 rounded-full bg-white shadow-sm flex items-center justify-center text-gray-400 hover:text-pink-600 hover:shadow-md hover:shadow-pink-500/20 transition-all hover:-translate-y-1">
+                  <a href="https://www.instagram.com/unnati_society_iiitbh_/" target="_blank" rel="noopener noreferrer" className="w-10 h-10 rounded-full bg-white shadow-sm flex items-center justify-center text-gray-400 hover:text-[#E1306C] hover:shadow-md hover:shadow-pink-500/20 transition-all hover:-translate-y-1">
                     <FaInstagram size={18} />
                   </a>
-                  <a href="#" className="w-10 h-10 rounded-full bg-white shadow-sm flex items-center justify-center text-gray-400 hover:text-[#0A66C2] hover:shadow-md hover:shadow-blue-500/20 transition-all hover:-translate-y-1">
+                  <a href="https://x.com/Unnati_Welfare" target="_blank" rel="noopener noreferrer" className="w-10 h-10 rounded-full bg-white shadow-sm flex items-center justify-center text-gray-400 hover:text-black hover:shadow-md hover:shadow-gray-500/20 transition-all hover:-translate-y-1">
+                    <FaXTwitter size={18} />
+                  </a>
+                  <a href="https://www.linkedin.com/company/unnati-society-iiit-bhagalpur/" target="_blank" rel="noopener noreferrer" className="w-10 h-10 rounded-full bg-white shadow-sm flex items-center justify-center text-gray-400 hover:text-[#0A66C2] hover:shadow-md hover:shadow-blue-500/20 transition-all hover:-translate-y-1">
                     <FaLinkedinIn size={18} />
-                  </a>
-                  <a href="#" className="w-10 h-10 rounded-full bg-white shadow-sm flex items-center justify-center text-gray-400 hover:text-[#FF0000] hover:shadow-md hover:shadow-red-500/20 transition-all hover:-translate-y-1">
-                    <FaYoutube size={18} />
-                  </a>
-                  <a href="#" className="w-10 h-10 rounded-full bg-white shadow-sm flex items-center justify-center text-gray-400 hover:text-[#1877F2] hover:shadow-md hover:shadow-blue-500/20 transition-all hover:-translate-y-1">
-                    <FaFacebookF size={18} />
                   </a>
                 </div>
               </div>
