@@ -5,7 +5,8 @@ import { CheckCircle, XCircle, Award, User, Hash, Users, Calendar, ShieldCheck, 
 import { format } from 'date-fns';
 
 const VerificationPage = () => {
-  const { id } = useParams();
+  const params = useParams();
+  const wildcard = params['*'];
   const [loading, setLoading] = useState(true);
   const [cert, setCert] = useState(null);
   const [error, setError] = useState(false);
@@ -13,7 +14,9 @@ const VerificationPage = () => {
   useEffect(() => {
     const fetchCert = async () => {
       try {
-        const data = await apiClient.get(`/api/certificates/${id}`);
+        if (!wildcard) throw new Error("No certificate reference provided");
+        // We use query parameter to safely pass slashes to the backend
+        const data = await apiClient.get(`/api/certificates/verify?ref=${encodeURIComponent(wildcard)}`);
         setCert(data);
       } catch (err) {
         console.error(err);
@@ -23,7 +26,7 @@ const VerificationPage = () => {
       }
     };
     fetchCert();
-  }, [id]);
+  }, [wildcard]);
 
   if (loading) {
     return (

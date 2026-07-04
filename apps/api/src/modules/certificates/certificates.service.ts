@@ -61,4 +61,16 @@ export class CertificatesService {
 
     return certificate;
   }
+
+  async getCertificateByRef(referenceNo: string) {
+    const certificate = await this.prisma.certificate.findUnique({
+      where: { referenceNo },
+    });
+
+    if (!certificate) {
+      throw new NotFoundException(`Certificate with reference ${referenceNo} not found.`);
+    }
+
+    return certificate;
+  }
 }

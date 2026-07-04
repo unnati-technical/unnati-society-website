@@ -98,10 +98,10 @@ const RecentActivities = () => {
           {activities.length === 0 ? (
             <div className="text-center text-gray-400 text-xs mt-10">No recent activities</div>
           ) : (
-            activities.map((act) => {
+            activities.map((act, index) => {
               const Icon = act.icon;
               return (
-                <div key={act.id} className="flex gap-4 group cursor-pointer">
+                <div key={act.id ? `${act.id}-${index}` : index} className="flex gap-4 group cursor-pointer">
                   <div className={`w-10 h-10 rounded-full flex items-center justify-center shrink-0 border-2 border-white ${act.bg} ${act.color} shadow-sm transition-transform group-hover:scale-110`}>
                     {act.avatar ? (
                       <img src={act.avatar} alt="Avatar" className="w-full h-full rounded-full object-cover" />

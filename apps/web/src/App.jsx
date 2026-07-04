@@ -130,7 +130,7 @@ const App = () => {
            <Route path="/outreach" element={<Outreach/>}/>
            <Route path="/join-us" element={<JoinUs/>}/>
            <Route path="/donate" element={<Donate/>}/>
-           <Route path="/verify/:id" element={<VerificationPage/>}/>
+           <Route path="/verify/*" element={<VerificationPage/>}/>
 
         </Routes>
       </Suspense>

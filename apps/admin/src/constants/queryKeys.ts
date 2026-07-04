@@ -11,4 +11,7 @@ export const queryKeys = {
   notifications: ["notifications"],
   notificationRecipients: ["notification-recipients"],
   messages: ["messages"],
+  analyticsKpis: ["analytics", "kpis"],
+  analyticsRecent: ["analytics", "recent"],
+  analyticsTasks: ["analytics", "tasks"],
 };

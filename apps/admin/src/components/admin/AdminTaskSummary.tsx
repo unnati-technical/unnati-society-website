@@ -17,7 +17,7 @@ const AdminTaskSummary = () => {
       </div>
 
       <div className="flex-1 flex items-center justify-between gap-4">
-        <div className="h-[140px] w-[140px] shrink-0 relative">
+        <div className="h-[140px] w-[140px] shrink-0 relative min-w-0 min-h-0">
           <ResponsiveContainer width="100%" height="100%">
             <PieChart>
               <Pie

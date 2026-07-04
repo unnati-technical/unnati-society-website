@@ -218,7 +218,7 @@ const CertificateCanvas = React.forwardRef<HTMLDivElement, { data: CertData }>((
             Sig2: left≈415, bottom≈118
             Sig3: left≈790, bottom≈118                              */}
       <SigBlock
-        imgSrc="https://res.cloudinary.com/drhkvdtw2/image/upload/v1783182562/certificates/fyqmzwit6gejnpyw0tgo.png"
+        imgSrc="https://res.cloudinary.com/drhkvdtw2/image/upload/e_make_transparent:20/v1783182562/certificates/fyqmzwit6gejnpyw0tgo.png"
         name={data.signer1Name}
         title={data.signer1Title}
         subtitle={data.signer1Subtitle}
@@ -228,7 +228,7 @@ const CertificateCanvas = React.forwardRef<HTMLDivElement, { data: CertData }>((
         imgH={0}
       />
       <SigBlock
-        imgSrc="https://res.cloudinary.com/drhkvdtw2/image/upload/v1783182563/certificates/ivkkvujsef8yhtkawmvl.png"
+        imgSrc="https://res.cloudinary.com/drhkvdtw2/image/upload/e_make_transparent:20/v1783182563/certificates/ivkkvujsef8yhtkawmvl.png"
         name={data.signer2Name}
         title={data.signer2Title}
         subtitle={data.signer2Subtitle}
@@ -238,7 +238,7 @@ const CertificateCanvas = React.forwardRef<HTMLDivElement, { data: CertData }>((
         imgH={0}
       />
       <SigBlock
-        imgSrc="https://res.cloudinary.com/drhkvdtw2/image/upload/v1783182564/certificates/rsnjl2kjyzjj15iahumn.png"
+        imgSrc="https://res.cloudinary.com/drhkvdtw2/image/upload/e_make_transparent:20/v1783182564/certificates/rsnjl2kjyzjj15iahumn.png"
         name={data.signer3Name}
         title={data.signer3Title}
         subtitle={data.signer3Subtitle}
@@ -248,31 +248,7 @@ const CertificateCanvas = React.forwardRef<HTMLDivElement, { data: CertData }>((
         imgH={0}
       />
 
-      {/* ── QR Code for Verification ────────────────────────────── */}
-      {data.id && (
-        <div style={{
-          position: 'absolute',
-          bottom: '100px',
-          left: '960px',
-          zIndex: 3,
-          display: 'flex',
-          flexDirection: 'column',
-          alignItems: 'center',
-          gap: '4px',
-          background: 'white',
-          padding: '6px',
-          borderRadius: '4px',
-        }}>
-          <QRCodeCanvas 
-            value={`https://unnati.ir/verify/${data.id}`} 
-            size={70} 
-            level="H" 
-            bgColor="#ffffff"
-            fgColor="#0b1a34"
-          />
-          <span style={{ fontSize: '7px', fontWeight: 700, color: '#0b1a34', fontFamily: 'Arial, sans-serif' }}>VERIFY</span>
-        </div>
-      )}
+
 
       {/* ── Clickable Text for Verification ─────────────────────── */}
       {data.id && (
@@ -290,7 +266,7 @@ const CertificateCanvas = React.forwardRef<HTMLDivElement, { data: CertData }>((
           zIndex: 3,
           opacity: 0.9,
         }}>
-          Click here or scan the QR code to verify this certificate's authenticity online.
+          Click here to verify this certificate's authenticity online.
         </div>
       )}
     </div>
@@ -433,12 +409,10 @@ const AdminCertificates = () => {
       const h = pdf.internal.pageSize.getHeight();
       pdf.addImage(imgData, 'JPEG', 0, 0, w, h);
       
-      // Make the text at the bottom clickable in the exported PDF
-      if (res.id) {
+        // Make the text at the bottom clickable in the exported PDF
+      if (res.referenceNo) {
         // y is roughly 200mm on A4 landscape (210mm height). We cover the whole width at the bottom.
-        pdf.link(0, 195, 297, 15, { url: `https://unnati.ir/verify/${res.id}` });
-        // Make the QR code clickable too (it's around x=250mm, y=170mm)
-        pdf.link(245, 165, 30, 30, { url: `https://unnati.ir/verify/${res.id}` });
+        pdf.link(0, 195, 297, 15, { url: `https://unnati.ir/verify/${res.referenceNo}` });
       }
 
       pdf.save(`${data.name.replace(/\s+/g, '_')}_Certificate.pdf`);

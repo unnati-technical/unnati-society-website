@@ -1,4 +1,4 @@
-import { Controller, Post, Get, Body, Param, UseGuards } from '@nestjs/common';
+import { Controller, Post, Get, Body, Param, Query, UseGuards } from '@nestjs/common';
 import { CertificatesService } from './certificates.service';
 import { Public } from '../auth/decorators/public.decorator';
 import { FirebaseAuthGuard } from '../auth/guards/firebase-auth.guard';
@@ -24,6 +24,12 @@ export class CertificatesController {
     },
   ) {
     return this.certificatesService.createCertificate(data);
+  }
+
+  @Public()
+  @Get('verify')
+  async verifyCertificate(@Query('ref') ref: string) {
+    return this.certificatesService.getCertificateByRef(ref);
   }
 
   @Public()

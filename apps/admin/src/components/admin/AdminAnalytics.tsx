@@ -32,7 +32,7 @@ const AdminAnalytics = () => {
             This Month <ChevronDown size={12}/>
           </div>
         </div>
-        <div className="h-[200px] w-full">
+        <div className="h-[200px] w-full min-w-0 min-h-0">
           <ResponsiveContainer width="100%" height="100%">
             <LineChart data={lineData} margin={{ top: 5, right: 20, left: -20, bottom: 0 }}>
               <defs>
@@ -74,8 +74,8 @@ const AdminAnalytics = () => {
       {/* Donut Chart */}
       <div className="bg-white rounded-2xl border border-gray-100 shadow-sm p-6">
         <h3 className="text-sm font-extrabold text-[#0F172A] tracking-tight mb-2">Initiatives by Category</h3>
-        <div className="h-[220px] w-full flex items-center justify-between gap-4">
-          <div className="h-[180px] w-[180px] shrink-0">
+        <div className="h-[220px] w-full flex items-center justify-between gap-4 min-w-0 min-h-0">
+          <div className="h-[180px] w-[180px] shrink-0 min-w-0 min-h-0">
             <ResponsiveContainer width="100%" height="100%">
               <PieChart>
                 <Pie
