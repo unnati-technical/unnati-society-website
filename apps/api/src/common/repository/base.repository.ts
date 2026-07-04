@@ -49,15 +49,15 @@ export abstract class BaseRepository<T, CreateDto, UpdateDto> {
     return this.model.findFirst(args);
   }
 
-  async create(args: { data: CreateDto } | any): Promise<T> {
+  async create(args: any): Promise<T> {
     return this.model.create(args);
   }
 
-  async update(args: { where: any; data: UpdateDto } | any): Promise<T> {
+  async update(args: any): Promise<T> {
     return this.model.update(args);
   }
 
-  async delete(args: { where: any } | any): Promise<T> {
+  async delete(args: any): Promise<T> {
     return this.model.delete(args);
   }
 
