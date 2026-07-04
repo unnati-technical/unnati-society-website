@@ -8,6 +8,6 @@ import { LeadershipRepository } from './repositories/leadership.repository';
 @Module({
   imports: [PrismaModule, CloudinaryModule],
   controllers: [LeadershipController],
-  providers: [LeadershipService, LeadershipRepository]
+  providers: [LeadershipService, LeadershipRepository],
 })
 export class LeadershipModule {}

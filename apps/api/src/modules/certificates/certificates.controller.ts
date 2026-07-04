@@ -10,16 +10,19 @@ export class CertificatesController {
   @Public()
   @UseGuards(FirebaseAuthGuard)
   @Post()
-  async createCertificate(@Body() data: {
-    referenceNo: string;
-    recipientName: string;
-    rollNo?: string;
-    team?: string;
-    batch?: string;
-    appreciationType: string;
-    bodyText?: string;
-    pdfUrl?: string;
-  }) {
+  async createCertificate(
+    @Body()
+    data: {
+      referenceNo: string;
+      recipientName: string;
+      rollNo?: string;
+      team?: string;
+      batch?: string;
+      appreciationType: string;
+      bodyText?: string;
+      pdfUrl?: string;
+    },
+  ) {
     return this.certificatesService.createCertificate(data);
   }
 

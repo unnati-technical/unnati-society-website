@@ -1,6 +1,10 @@
 import { Injectable, Logger } from '@nestjs/common';
 import { PrismaService } from '../../prisma/prisma.service';
-import { InviteRepository, CampusVisitRepository, PartnerRepository } from './repositories/outreach.repository';
+import {
+  InviteRepository,
+  CampusVisitRepository,
+  PartnerRepository,
+} from './repositories/outreach.repository';
 import { CreateOutreachDto } from './dto/create-outreach.dto';
 import { CreateCampusVisitDto } from './dto/create-campus-visit.dto';
 import { CreatePartnerDto } from './dto/create-partner.dto';
@@ -53,7 +57,11 @@ export class OutreachService {
       );
 
     // Notify admins
-    this.emailService.sendAdminFormNotification('School Invite', 'Invite School', dto);
+    this.emailService.sendAdminFormNotification(
+      'School Invite',
+      'Invite School',
+      dto,
+    );
 
     return inviteRequest;
   }
@@ -85,7 +93,11 @@ export class OutreachService {
       );
 
     // Notify admins
-    this.emailService.sendAdminFormNotification('Campus Visit Request', 'Campus Visit', dto);
+    this.emailService.sendAdminFormNotification(
+      'Campus Visit Request',
+      'Campus Visit',
+      dto,
+    );
 
     return visitRequest;
   }
@@ -136,7 +148,11 @@ export class OutreachService {
       );
 
     // Notify admins
-    this.emailService.sendAdminFormNotification('Partnership Request', 'Partner Request', dto);
+    this.emailService.sendAdminFormNotification(
+      'Partnership Request',
+      'Partner Request',
+      dto,
+    );
 
     return partnerRequest;
   }

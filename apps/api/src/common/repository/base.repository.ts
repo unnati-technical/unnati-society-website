@@ -18,9 +18,14 @@ export abstract class BaseRepository<T, CreateDto, UpdateDto> {
 
   async paginate(
     paginationDto: PaginationDto,
-    args: any = {}
+    args: any = {},
   ): Promise<PaginatedResponseDto<T>> {
-    const { page = 1, limit = 20, sort = 'desc', sortBy = 'createdAt' } = paginationDto;
+    const {
+      page = 1,
+      limit = 20,
+      sort = 'desc',
+      sortBy = 'createdAt',
+    } = paginationDto;
     const skip = (page - 1) * limit;
 
     const [data, total] = await Promise.all([
@@ -55,7 +60,7 @@ export abstract class BaseRepository<T, CreateDto, UpdateDto> {
   async delete(args: { where: any } | any): Promise<T> {
     return this.model.delete(args);
   }
-  
+
   async count(args?: any): Promise<number> {
     return this.model.count(args);
   }

@@ -1,4 +1,11 @@
-import { IsString, IsEmail, IsOptional, IsArray, IsUrl, IsDateString } from 'class-validator';
+import {
+  IsString,
+  IsEmail,
+  IsOptional,
+  IsArray,
+  IsUrl,
+  IsDateString,
+} from 'class-validator';
 
 export class CreatePartnerDto {
   @IsOptional()

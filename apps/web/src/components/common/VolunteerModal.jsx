@@ -8,8 +8,8 @@ import {
   FiUpload, FiArrowRight, FiArrowLeft, FiHeart
 } from 'react-icons/fi';
 import { useMutation } from '@tanstack/react-query';
-import { volunteersApi } from '../../../api/volunteers.api';
-import { uploadToCloudinary } from '../../../services/cloudinary.service';
+import { volunteersApi } from '../../api/volunteers.api';
+import { uploadToCloudinary } from '../../services/cloudinary.service';
 const UnnatiLogo = 'https://res.cloudinary.com/drhkvdtw2/image/upload/v1782396887/unnati_assets/Unnati.png';
 
 const VolunteerModal = ({ isOpen, onClose }) => {

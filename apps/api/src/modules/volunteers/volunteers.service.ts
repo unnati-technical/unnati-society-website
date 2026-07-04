@@ -18,12 +18,26 @@ export class VolunteersService {
 
   async findAll(query: PaginationDto) {
     const where: any = {};
-    
+
     if (query.search) {
       where.OR = [
-        { volunteer: { user: { firstName: { contains: query.search, mode: 'insensitive' } } } },
-        { volunteer: { user: { lastName: { contains: query.search, mode: 'insensitive' } } } },
-        { volunteer: { user: { email: { contains: query.search, mode: 'insensitive' } } } },
+        {
+          volunteer: {
+            user: {
+              firstName: { contains: query.search, mode: 'insensitive' },
+            },
+          },
+        },
+        {
+          volunteer: {
+            user: { lastName: { contains: query.search, mode: 'insensitive' } },
+          },
+        },
+        {
+          volunteer: {
+            user: { email: { contains: query.search, mode: 'insensitive' } },
+          },
+        },
       ];
     }
 
@@ -240,7 +254,11 @@ export class VolunteersService {
       );
 
     // Notify admins
-    this.emailService.sendAdminFormNotification('Volunteer Registration', 'Volunteer Form', createDto);
+    this.emailService.sendAdminFormNotification(
+      'Volunteer Registration',
+      'Volunteer Form',
+      createDto,
+    );
 
     return application;
   }

@@ -46,7 +46,7 @@ export class EmailProcessor extends WorkerHost {
     try {
       const transporter = await this.getTransporter();
       const mailOptions = job.data;
-      
+
       const info = await transporter.sendMail(mailOptions);
       this.logger.log(`Email sent successfully: ${info.messageId}`);
       return info;

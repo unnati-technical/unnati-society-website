@@ -32,16 +32,18 @@ export class AuditLogInterceptor implements NestInterceptor {
           };
           const action = actionMap[method] || method;
 
-          this.auditLogsService.logAction({
-            userId: user?.id,
-            userEmail: user?.email,
-            action,
-            entity,
-            entityId,
-            previousData: undefined, // Hard to capture generically without Prisma extensions
-            updatedData: JSON.stringify(body),
-            ipAddress: ip,
-          }).catch(err => console.error('Failed to save audit log:', err));
+          this.auditLogsService
+            .logAction({
+              userId: user?.id,
+              userEmail: user?.email,
+              action,
+              entity,
+              entityId,
+              previousData: undefined, // Hard to capture generically without Prisma extensions
+              updatedData: JSON.stringify(body),
+              ipAddress: ip,
+            })
+            .catch((err) => console.error('Failed to save audit log:', err));
         }),
       );
     }

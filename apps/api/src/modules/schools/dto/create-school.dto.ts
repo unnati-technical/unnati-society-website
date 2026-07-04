@@ -1,4 +1,11 @@
-import { IsString, IsEmail, IsOptional, IsArray, IsInt, IsUrl } from 'class-validator';
+import {
+  IsString,
+  IsEmail,
+  IsOptional,
+  IsArray,
+  IsInt,
+  IsUrl,
+} from 'class-validator';
 import { Type } from 'class-transformer';
 
 export class CreateSchoolDto {

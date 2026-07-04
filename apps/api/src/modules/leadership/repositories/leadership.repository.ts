@@ -63,7 +63,10 @@ export class LeadershipRepository {
   async setYearActive(id: string) {
     return this.prisma.$transaction(async (tx) => {
       await tx.leadershipYear.updateMany({ data: { isActive: false } });
-      return tx.leadershipYear.update({ where: { id }, data: { isActive: true } });
+      return tx.leadershipYear.update({
+        where: { id },
+        data: { isActive: true },
+      });
     });
   }
 

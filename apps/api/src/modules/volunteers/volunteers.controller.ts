@@ -61,8 +61,14 @@ export class VolunteersController {
 
   @Public()
   @Patch(':id/status')
-  async updateStatus(@Param('id') id: string, @Body() updateDto: UpdateVolunteerStatusDto) {
-    const result = await this.volunteersService.updateStatus(id, updateDto.status);
+  async updateStatus(
+    @Param('id') id: string,
+    @Body() updateDto: UpdateVolunteerStatusDto,
+  ) {
+    const result = await this.volunteersService.updateStatus(
+      id,
+      updateDto.status,
+    );
     await this.cacheManager.del('volunteers');
     return result;
   }

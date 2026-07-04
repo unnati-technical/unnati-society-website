@@ -1,4 +1,8 @@
-import { Injectable, NotFoundException, ConflictException } from '@nestjs/common';
+import {
+  Injectable,
+  NotFoundException,
+  ConflictException,
+} from '@nestjs/common';
 import { PrismaService } from '../../prisma/prisma.service';
 import { Prisma } from '@prisma/client';
 
@@ -19,13 +23,13 @@ export class CertificatesService {
     // If the reference number already exists, just return the existing certificate.
     // This allows re-downloading the same certificate.
     const existing = await this.prisma.certificate.findUnique({
-      where: { referenceNo: data.referenceNo }
+      where: { referenceNo: data.referenceNo },
     });
     if (existing) {
       // Update it with the latest data in case they fixed a typo
       return this.prisma.certificate.update({
         where: { id: existing.id },
-        data
+        data,
       });
     }
 
@@ -37,7 +41,9 @@ export class CertificatesService {
     } catch (error) {
       if (error instanceof Prisma.PrismaClientKnownRequestError) {
         if (error.code === 'P2002') {
-          throw new ConflictException(`Certificate with reference number ${data.referenceNo} already exists.`);
+          throw new ConflictException(
+            `Certificate with reference number ${data.referenceNo} already exists.`,
+          );
         }
       }
       throw error;

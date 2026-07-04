@@ -1,4 +1,12 @@
-import { Controller, Get, Post, Delete, Body, Param, Patch } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Post,
+  Delete,
+  Body,
+  Param,
+  Patch,
+} from '@nestjs/common';
 import { CacheTTL } from '@nestjs/cache-manager';
 import { NotificationRecipientsService } from './notification-recipients.service';
 import { Public } from '../auth/decorators/public.decorator';
@@ -17,12 +25,32 @@ export class NotificationRecipientsController {
   }
 
   @Post()
-  async create(@Body() body: { email: string; name: string; department?: string; phone?: string; status?: string; categories?: string[] }) {
+  async create(
+    @Body()
+    body: {
+      email: string;
+      name: string;
+      department?: string;
+      phone?: string;
+      status?: string;
+      categories?: string[];
+    },
+  ) {
     return this.recipientsService.create(body);
   }
 
   @Patch(':id')
-  async update(@Param('id') id: string, @Body() body: { name?: string; department?: string; phone?: string; status?: string; categories?: string[] }) {
+  async update(
+    @Param('id') id: string,
+    @Body()
+    body: {
+      name?: string;
+      department?: string;
+      phone?: string;
+      status?: string;
+      categories?: string[];
+    },
+  ) {
     return this.recipientsService.update(id, body);
   }
 

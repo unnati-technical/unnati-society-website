@@ -1,11 +1,11 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { LeadershipRepository } from './repositories/leadership.repository';
-import { 
-  CreateLeadershipYearDto, 
-  DuplicateYearDto, 
-  CreateLeadershipSectionDto, 
-  CreateLeadershipMemberDto, 
-  ReorderItemsDto 
+import {
+  CreateLeadershipYearDto,
+  DuplicateYearDto,
+  CreateLeadershipSectionDto,
+  CreateLeadershipMemberDto,
+  ReorderItemsDto,
 } from './dto/leadership.dto';
 
 @Injectable()
@@ -24,16 +24,22 @@ export class LeadershipService {
 
   async createYear(data: CreateLeadershipYearDto) {
     return this.leadershipRepository.createYear({
-      year: data.year, isActive: true
+      year: data.year,
+      isActive: true,
     });
   }
 
   async duplicateYear(data: DuplicateYearDto) {
-    const sourceYear = await this.leadershipRepository.getYearById(data.sourceYearId);
+    const sourceYear = await this.leadershipRepository.getYearById(
+      data.sourceYearId,
+    );
 
     if (!sourceYear) throw new NotFoundException('Source year not found');
 
-    await this.leadershipRepository.duplicateYearTransaction(data.targetYear, sourceYear.sections);
+    await this.leadershipRepository.duplicateYearTransaction(
+      data.targetYear,
+      sourceYear.sections,
+    );
 
     return this.getLeadershipData();
   }
@@ -93,14 +99,27 @@ export class LeadershipService {
 
   async updateMember(id: string, data: any) {
     const updateData: any = {};
-    const allowed = ['fullName', 'designation', 'department', 'bio', 'profileImage', 'linkedin', 'instagram', 'email', 'displayOrder', 'isPublished', 'sectionId'];
+    const allowed = [
+      'fullName',
+      'designation',
+      'department',
+      'bio',
+      'profileImage',
+      'linkedin',
+      'instagram',
+      'email',
+      'displayOrder',
+      'isPublished',
+      'sectionId',
+    ];
     for (const key of allowed) {
       if (key in data) updateData[key] = data[key];
     }
     try {
       return await this.leadershipRepository.updateMember(id, updateData);
     } catch (e: any) {
-      if (e?.code === 'P2025') return { success: false, error: 'Member not found' };
+      if (e?.code === 'P2025')
+        return { success: false, error: 'Member not found' };
       throw e;
     }
   }
@@ -133,13 +152,16 @@ export class LeadershipService {
     return { success: true };
   }
 
-  async reorderMembers(items: { id: string; sectionId?: string; displayOrder: number }[]) {
+  async reorderMembers(
+    items: { id: string; sectionId?: string; displayOrder: number }[],
+  ) {
     // We use a sequential loop instead of a transaction to prevent Prisma P2028
     // connection pool/lock exhaustion timeouts when users drag-and-drop rapidly.
     for (const item of items) {
       try {
         await this.leadershipRepository.updateMember(item.id, {
-          displayOrder: item.displayOrder, sectionId: item.sectionId,
+          displayOrder: item.displayOrder,
+          sectionId: item.sectionId,
         });
       } catch (e: any) {
         if (e?.code !== 'P2025') throw e;

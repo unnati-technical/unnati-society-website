@@ -1,4 +1,10 @@
-import { IsString, IsNotEmpty, IsBoolean, IsNumber, IsOptional } from 'class-validator';
+import {
+  IsString,
+  IsNotEmpty,
+  IsBoolean,
+  IsNumber,
+  IsOptional,
+} from 'class-validator';
 
 export class CreateLeadershipYearDto {
   @IsString()

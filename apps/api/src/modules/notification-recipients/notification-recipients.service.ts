@@ -18,7 +18,14 @@ export class NotificationRecipientsService {
     });
   }
 
-  async create(data: { email: string; name: string; department?: string; phone?: string; status?: string; categories?: string[] }) {
+  async create(data: {
+    email: string;
+    name: string;
+    department?: string;
+    phone?: string;
+    status?: string;
+    categories?: string[];
+  }) {
     const existing = await this.prisma.notificationRecipient.findUnique({
       where: { email: data.email },
     });
@@ -42,7 +49,16 @@ export class NotificationRecipientsService {
     return recipient;
   }
 
-  async update(id: string, data: { name?: string; department?: string; phone?: string; status?: string; categories?: string[] }) {
+  async update(
+    id: string,
+    data: {
+      name?: string;
+      department?: string;
+      phone?: string;
+      status?: string;
+      categories?: string[];
+    },
+  ) {
     const existing = await this.prisma.notificationRecipient.findUnique({
       where: { id },
     });

@@ -1,6 +1,15 @@
 import {
-  Controller, Get, Post, Body, Patch, Param, Delete,
-  UseGuards, UseInterceptors, UploadedFile, ParseArrayPipe
+  Controller,
+  Get,
+  Post,
+  Body,
+  Patch,
+  Param,
+  Delete,
+  UseGuards,
+  UseInterceptors,
+  UploadedFile,
+  ParseArrayPipe,
 } from '@nestjs/common';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { memoryStorage } from 'multer';
@@ -8,12 +17,12 @@ import { LeadershipService } from './leadership.service';
 import { FirebaseAuthGuard } from '../auth/guards/firebase-auth.guard';
 import { CloudinaryService } from '../cloudinary/cloudinary.service';
 import { Public } from '../auth/decorators/public.decorator';
-import { 
-  CreateLeadershipYearDto, 
-  DuplicateYearDto, 
-  CreateLeadershipSectionDto, 
-  CreateLeadershipMemberDto, 
-  ReorderItemsDto 
+import {
+  CreateLeadershipYearDto,
+  DuplicateYearDto,
+  CreateLeadershipSectionDto,
+  CreateLeadershipMemberDto,
+  ReorderItemsDto,
 } from './dto/leadership.dto';
 
 @Controller('leadership')
@@ -42,7 +51,10 @@ export class LeadershipController {
   @Post('upload-image')
   @UseInterceptors(FileInterceptor('image', { storage: memoryStorage() }))
   async uploadImage(@UploadedFile() file: Express.Multer.File) {
-    const result = await this.cloudinaryService.uploadFile(file, 'leadership_profiles');
+    const result = await this.cloudinaryService.uploadFile(
+      file,
+      'leadership_profiles',
+    );
     return { url: (result as any).secure_url };
   }
 
@@ -79,7 +91,10 @@ export class LeadershipController {
   @Public()
   @UseGuards(FirebaseAuthGuard)
   @Patch('section/:id')
-  updateSection(@Param('id') id: string, @Body() updateSectionDto: Partial<CreateLeadershipSectionDto>) {
+  updateSection(
+    @Param('id') id: string,
+    @Body() updateSectionDto: Partial<CreateLeadershipSectionDto>,
+  ) {
     return this.leadershipService.updateSection(id, updateSectionDto);
   }
 
@@ -100,7 +115,10 @@ export class LeadershipController {
   @Public()
   @UseGuards(FirebaseAuthGuard)
   @Patch('member/:id')
-  updateMember(@Param('id') id: string, @Body() updateMemberDto: Partial<CreateLeadershipMemberDto>) {
+  updateMember(
+    @Param('id') id: string,
+    @Body() updateMemberDto: Partial<CreateLeadershipMemberDto>,
+  ) {
     return this.leadershipService.updateMember(id, updateMemberDto);
   }
 
@@ -114,14 +132,20 @@ export class LeadershipController {
   @Public()
   @UseGuards(FirebaseAuthGuard)
   @Post('reorder/sections')
-  reorderSections(@Body(new ParseArrayPipe({ items: ReorderItemsDto })) items: ReorderItemsDto[]) {
+  reorderSections(
+    @Body(new ParseArrayPipe({ items: ReorderItemsDto }))
+    items: ReorderItemsDto[],
+  ) {
     return this.leadershipService.reorderSections(items);
   }
 
   @Public()
   @UseGuards(FirebaseAuthGuard)
   @Post('reorder/members')
-  reorderMembers(@Body(new ParseArrayPipe({ items: ReorderItemsDto })) items: ReorderItemsDto[]) {
+  reorderMembers(
+    @Body(new ParseArrayPipe({ items: ReorderItemsDto }))
+    items: ReorderItemsDto[],
+  ) {
     return this.leadershipService.reorderMembers(items);
   }
 }

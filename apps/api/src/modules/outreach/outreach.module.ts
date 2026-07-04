@@ -5,12 +5,21 @@ import { PrismaModule } from '../../prisma/prisma.module';
 import { CloudinaryModule } from '../cloudinary/cloudinary.module';
 import { NotificationsModule } from '../notifications/notifications.module';
 import { EmailModule } from '../../queues/email/email.module';
-import { InviteRepository, CampusVisitRepository, PartnerRepository } from './repositories/outreach.repository';
+import {
+  InviteRepository,
+  CampusVisitRepository,
+  PartnerRepository,
+} from './repositories/outreach.repository';
 
 @Module({
   imports: [PrismaModule, CloudinaryModule, NotificationsModule, EmailModule],
   controllers: [OutreachController],
-  providers: [OutreachService, InviteRepository, CampusVisitRepository, PartnerRepository],
+  providers: [
+    OutreachService,
+    InviteRepository,
+    CampusVisitRepository,
+    PartnerRepository,
+  ],
   exports: [OutreachService],
 })
 export class OutreachModule {}

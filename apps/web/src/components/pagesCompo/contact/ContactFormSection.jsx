@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { useForm, useWatch } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import * as z from 'zod';
-import { contactApi } from '../../../../api/contact.api';
+import { contactApi } from '../../../api/contact.api';
 import { MapPin, Mail, Phone, Send, Loader2 } from 'lucide-react';
 import { FaInstagram, FaLinkedinIn } from 'react-icons/fa';
 import { FaXTwitter } from 'react-icons/fa6';

@@ -316,7 +316,9 @@ export class EmailService {
           </div>
         `,
       });
-      this.logger.log(`School invite status update email sent to ${data.email}`);
+      this.logger.log(
+        `School invite status update email sent to ${data.email}`,
+      );
     } catch (error) {
       this.logger.error(
         `Failed to send school invite status update email to ${data.email}: ${error.message}`,
@@ -386,7 +388,11 @@ export class EmailService {
   }
 
   // Generic admin notification for any form submission
-  async sendAdminFormNotification(formTitle: string, category: string, formData: any) {
+  async sendAdminFormNotification(
+    formTitle: string,
+    category: string,
+    formData: any,
+  ) {
     try {
       const defaultAdminEmail = await this.settingsService.getSetting(
         'ADMIN_EMAIL',
@@ -402,7 +408,9 @@ export class EmailService {
           : [defaultAdminEmail];
 
       const dataHtml = Object.entries(formData)
-        .map(([key, value]) => `<p><strong>${key}:</strong> ${value}</p>`)
+        .map(
+          ([key, value]) => `<p><strong>${key}:</strong> ${String(value)}</p>`,
+        )
         .join('');
 
       await this.pushToQueue({

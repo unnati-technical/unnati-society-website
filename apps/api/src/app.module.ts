@@ -51,8 +51,8 @@ const bullRedisConfig = {
       ? { rejectUnauthorized: false }
       : undefined,
   maxRetriesPerRequest: null, // Required for BullMQ
-  lazyConnect: true,           // Don't block app startup if Redis is down
-  enableOfflineQueue: false,   // Drop jobs instead of queuing when offline
+  lazyConnect: true, // Don't block app startup if Redis is down
+  enableOfflineQueue: false, // Drop jobs instead of queuing when offline
   connectTimeout: 5000,
   // Use a sensible retry strategy that doesn't give up immediately.
   // Returning null causes unhandled "Connection is closed" errors when BullMQ tries to use the client.
@@ -66,7 +66,10 @@ const bullRedisConfig = {
     LoggerModule.forRoot({
       pinoHttp: {
         level: process.env.NODE_ENV === 'production' ? 'info' : 'debug',
-        transport: process.env.NODE_ENV !== 'production' ? { target: 'pino-pretty' } : undefined,
+        transport:
+          process.env.NODE_ENV !== 'production'
+            ? { target: 'pino-pretty' }
+            : undefined,
         redact: [
           'req.headers.authorization',
           'req.headers.cookie',

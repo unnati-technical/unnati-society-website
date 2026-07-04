@@ -1,8 +1,8 @@
 import React from 'react'
 import { MdArrowOutward } from "react-icons/md";
 import { useQuery } from '@tanstack/react-query';
-import { eventsApi } from "../../../../api/events.api";
-import { queryKeys } from "../../../../constants/queryKeys";
+import { eventsApi } from "../../../api/events.api";
+import { queryKeys } from "../../../constants/queryKeys";
 import { useNavigate } from "react-router-dom";
 
 const CARD_COLORS = [

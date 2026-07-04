@@ -7,7 +7,7 @@ import { SystemSettingsModule } from '../../modules/system-settings/system-setti
 
 @Module({
   imports: [
-    PrismaModule, 
+    PrismaModule,
     SystemSettingsModule,
     BullModule.registerQueue({
       name: 'email',

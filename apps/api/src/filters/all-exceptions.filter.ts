@@ -57,6 +57,7 @@ export class AllExceptionsFilter implements ExceptionFilter {
 
     this.logger.error(
       `Exception on ${request.method} ${request.url} [ReqID: ${requestId}]: ${message}`,
+
       exception instanceof Error ? exception.stack : JSON.stringify(exception),
     );
 
