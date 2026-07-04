@@ -1,5 +1,6 @@
 import { Injectable, Logger } from '@nestjs/common';
 import { PrismaService } from '../../prisma/prisma.service';
+import { InviteRepository, CampusVisitRepository, PartnerRepository } from './repositories/outreach.repository';
 import { CreateOutreachDto } from './dto/create-outreach.dto';
 import { CreateCampusVisitDto } from './dto/create-campus-visit.dto';
 import { CreatePartnerDto } from './dto/create-partner.dto';
@@ -16,6 +17,9 @@ export class OutreachService {
     private readonly cloudinary: CloudinaryService,
     private readonly notificationsService: NotificationsService,
     private readonly emailService: EmailService,
+    private readonly inviteRepo: InviteRepository,
+    private readonly campusVisitRepo: CampusVisitRepository,
+    private readonly partnerRepo: PartnerRepository,
   ) {}
 
   async invite(dto: CreateOutreachDto) {
@@ -23,7 +27,7 @@ export class OutreachService {
     delete (dataToSave as any).agreement1;
     delete (dataToSave as any).agreement2;
 
-    const inviteRequest = await this.prisma.outreachRequest.create({
+    const inviteRequest = await this.inviteRepo.create({
       data: dataToSave,
     });
 
@@ -55,7 +59,7 @@ export class OutreachService {
   }
 
   async campusVisit(dto: CreateCampusVisitDto) {
-    const visitRequest = await this.prisma.campusVisitRequest.create({
+    const visitRequest = await this.campusVisitRepo.create({
       data: dto,
     });
 
@@ -103,7 +107,7 @@ export class OutreachService {
       dataToSave.meetingDate = new Date(dataToSave.meetingDate);
     }
 
-    const partnerRequest = await this.prisma.partnerRequest.create({
+    const partnerRequest = await this.partnerRepo.create({
       data: dataToSave,
     });
 
@@ -138,25 +142,25 @@ export class OutreachService {
   }
 
   async findAllInvites() {
-    return this.prisma.outreachRequest.findMany({
+    return this.inviteRepo.findMany({
       orderBy: { createdAt: 'desc' },
     });
   }
 
   async findAllCampusVisits() {
-    return this.prisma.campusVisitRequest.findMany({
+    return this.campusVisitRepo.findMany({
       orderBy: { createdAt: 'desc' },
     });
   }
 
   async findAllPartnerRequests() {
-    return this.prisma.partnerRequest.findMany({
+    return this.partnerRepo.findMany({
       orderBy: { createdAt: 'desc' },
     });
   }
 
   async updateInviteStatus(id: string, status: string) {
-    const updatedRequest = await this.prisma.outreachRequest.update({
+    const updatedRequest = await this.inviteRepo.update({
       where: { id },
       data: { status },
     });
@@ -181,7 +185,7 @@ export class OutreachService {
   }
 
   async updateCampusVisitStatus(id: string, status: string) {
-    const updatedRequest = await this.prisma.campusVisitRequest.update({
+    const updatedRequest = await this.campusVisitRepo.update({
       where: { id },
       data: { status },
     });
@@ -206,7 +210,7 @@ export class OutreachService {
   }
 
   async updatePartnerStatus(id: string, status: string) {
-    const updatedRequest = await this.prisma.partnerRequest.update({
+    const updatedRequest = await this.partnerRepo.update({
       where: { id },
       data: { status },
     });
@@ -228,7 +232,7 @@ export class OutreachService {
   }
 
   async updatePartnerNotes(id: string, notes: string) {
-    return this.prisma.partnerRequest.update({
+    return this.partnerRepo.update({
       where: { id },
       data: { adminNotes: notes },
     });

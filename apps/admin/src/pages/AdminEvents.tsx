@@ -1,10 +1,12 @@
 import React, { useState, useEffect } from 'react';
-import AdminLayout from '../components/admin/AdminLayout';
-import {
-  Plus, Pencil, Trash2, Calendar, MapPin, Link2, Sparkles,
-  CheckCircle, Clock, XCircle, ToggleLeft, ToggleRight, AlertTriangle
-} from 'lucide-react';
+import { motion, AnimatePresence } from 'framer-motion';
+import { Plus, X, Image as ImageIcon, MapPin, Calendar, Clock, Edit, Trash2, Eye, EyeOff, Save, ShieldAlert, ArrowRight, Activity, Zap, CheckCircle, ToggleRight, ToggleLeft, Sparkles, XCircle, Pencil } from 'lucide-react';
 import { toast } from 'sonner';
+import AdminLayout from '../components/admin/AdminLayout';
+import { eventsApi } from '../api/events.api';
+import { useEvents, useAutoModeSettings } from '../queries/useEvents';
+import { useCreateEvent, useUpdateEvent, useDeleteEvent, useToggleAutoMode } from '../mutations/useEventMutations';
+import { Skeleton } from '../components/ui/SkeletonLoader';
 
 const CARD_COLORS = [
   { label: 'Blue', value: 'bg-blue-400', textColor: 'text-white' },
@@ -34,20 +36,24 @@ const EmptyModal = ({ onClose, onSave, initial }) => {
     setSaving(true);
     try {
       await onSave(form);
-      onClose();
     } finally {
       setSaving(false);
     }
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 backdrop-blur-sm p-4">
-      <div className="bg-white rounded-3xl shadow-2xl w-full max-w-lg animate-in fade-in slide-in-from-bottom-4">
-        <div className="p-6 border-b border-gray-100">
-          <h2 className="text-lg font-extrabold text-gray-900">{initial ? 'Edit Event' : 'New Event'}</h2>
-          <p className="text-xs text-gray-500 mt-0.5">Fill in the details below</p>
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 backdrop-blur-sm p-4 overflow-y-auto">
+      <div className="bg-white rounded-3xl shadow-2xl w-full max-w-lg animate-in fade-in slide-in-from-bottom-4 my-8">
+        <div className="p-6 border-b border-gray-100 flex justify-between items-center">
+          <div>
+            <h2 className="text-lg font-extrabold text-gray-900">{initial ? 'Edit Event' : 'New Event'}</h2>
+            <p className="text-xs text-gray-500 mt-0.5">Fill in the details below</p>
+          </div>
+          <button onClick={onClose} className="p-2 bg-gray-100 rounded-full text-gray-500 hover:bg-gray-200">
+            <X size={20} />
+          </button>
         </div>
-        <form onSubmit={handleSubmit} className="p-6 space-y-4">
+        <form onSubmit={handleSubmit} className="p-6 space-y-4 max-h-[70vh] overflow-y-auto">
           <div>
             <label className="text-xs font-bold text-gray-600 uppercase tracking-wide block mb-1.5">Event Title *</label>
             <input
@@ -67,7 +73,7 @@ const EmptyModal = ({ onClose, onSave, initial }) => {
               onChange={e => setForm(f => ({ ...f, description: e.target.value }))}
             />
           </div>
-          <div className="grid grid-cols-2 gap-4">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div>
               <label className="text-xs font-bold text-gray-600 uppercase tracking-wide block mb-1.5">Event Type</label>
               <select
@@ -118,14 +124,14 @@ const EmptyModal = ({ onClose, onSave, initial }) => {
                     <button
                       type="button"
                       onClick={() => setForm(f => ({ ...f, photos: f.photos.filter((_, index) => index !== i) }))}
-                      className="absolute top-1 right-1 bg-white rounded-full text-red-500 hover:bg-red-50 p-0.5"
+                      className="absolute top-1 right-1 bg-white rounded-full text-red-500 hover:bg-red-50 p-0.5 shadow-sm"
                     >
                       <XCircle size={14} />
                     </button>
                   </div>
                 ))}
               </div>
-              <div className="relative">
+              <div className="relative mt-2">
                 <input
                   type="file"
                   multiple
@@ -137,26 +143,21 @@ const EmptyModal = ({ onClose, onSave, initial }) => {
                     files.forEach(f => formData.append('photos', f));
                     const toastId = toast.loading('Uploading photos...');
                     try {
-                      const res = await fetch(`/api/events/${initial.id}/photos`, {
-                        method: 'POST',
-                        body: formData
-                      });
-                      if (!res.ok) throw new Error();
-                      const updated = await res.json();
-                      setForm(f => ({ ...f, photos: updated.photos }));
+                      const res = await eventsApi.uploadPhotos(initial.id, formData);
+                      setForm(f => ({ ...f, photos: res?.photos || [] }));
                       toast.success('Photos uploaded', { id: toastId });
                     } catch {
                       toast.error('Upload failed', { id: toastId });
                     }
                   }}
-                  className="w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100"
+                  className="w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100 transition-colors"
                 />
               </div>
             </div>
           )}
 
           <div>
-            <label className="text-xs font-bold text-gray-600 uppercase tracking-wide block mb-1.5">Card Color</label>
+            <label className="text-xs font-bold text-gray-600 uppercase tracking-wide block mb-1.5 mt-2">Card Color</label>
             <div className="flex gap-2 flex-wrap">
               {CARD_COLORS.map(c => (
                 <button
@@ -168,11 +169,11 @@ const EmptyModal = ({ onClose, onSave, initial }) => {
               ))}
             </div>
           </div>
-          <div className="flex gap-3 pt-2">
+          <div className="flex gap-3 pt-4 border-t border-gray-100">
             <button type="button" onClick={onClose} className="flex-1 px-4 py-2.5 rounded-xl border border-gray-200 text-sm font-bold text-gray-600 hover:bg-gray-50 transition-colors">
               Cancel
             </button>
-            <button type="submit" disabled={saving} className="flex-1 px-4 py-2.5 rounded-xl bg-[#2563EB] text-white text-sm font-bold hover:bg-blue-700 transition-colors disabled:opacity-60">
+            <button type="submit" disabled={saving} className="flex-1 px-4 py-2.5 rounded-xl bg-[#2563EB] text-white text-sm font-bold hover:bg-blue-700 transition-colors disabled:opacity-60 shadow-lg shadow-blue-200">
               {saving ? 'Saving...' : (initial ? 'Update Event' : 'Create Event')}
             </button>
           </div>
@@ -183,77 +184,32 @@ const EmptyModal = ({ onClose, onSave, initial }) => {
 };
 
 const AdminEvents = () => {
-  const [events, setEvents] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const [showAll, setShowAll] = useState(true); // Auto mode = false (only upcoming)
-  const [autoMode, setAutoMode] = useState(true);
-  const [modal, setModal] = useState(null); // null | 'new' | event object (for edit)
+  const { data: autoModeData, isLoading: isLoadingSettings } = useAutoModeSettings();
+  const { data: events = [], isLoading: isLoadingEvents } = useEvents();
 
-  const fetchEvents = async () => {
-    setLoading(true);
-    try {
-      // Add timestamp to prevent browser caching
-      const [eventsRes, settingsRes] = await Promise.all([
-        fetch(`/api/events?all=true&_t=${Date.now()}`),
-        fetch(`/api/events/settings/auto-mode?_t=${Date.now()}`)
-      ]);
-      
-      if (eventsRes.ok) setEvents(await eventsRes.json());
-      if (settingsRes.ok) {
-        const { autoMode: serverAutoMode } = await settingsRes.json();
-        setAutoMode(serverAutoMode);
-      }
-    } catch (err) {
-      toast.error('Failed to load events');
-    } finally {
-      setLoading(false);
-    }
+  const loading = isLoadingSettings || isLoadingEvents;
+  const autoMode = autoModeData?.autoMode ?? true;
+
+  const [showAll, setShowAll] = useState(true);
+  const [modal, setModal] = useState(null);
+
+  const toggleAutoModeMutation = useToggleAutoMode();
+  const createEventMutation = useCreateEvent(() => setModal(null));
+  const updateEventMutation = useUpdateEvent(() => setModal(null));
+  const deleteEventMutation = useDeleteEvent();
+
+  const toggleAutoMode = () => {
+    toggleAutoModeMutation.mutate(!autoMode);
   };
 
-  const toggleAutoMode = async () => {
-    const newMode = !autoMode;
-    setAutoMode(newMode); // Optimistic UI update
-    try {
-      const res = await fetch('/api/events/settings/auto-mode', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ autoMode: newMode }),
-      });
-      if (!res.ok) throw new Error('Failed to save');
-      toast.success(`Auto Mode ${newMode ? 'enabled' : 'disabled'}`);
-    } catch (err) {
-      setAutoMode(!newMode); // Revert on failure
-      toast.error('Failed to save auto mode setting');
-    }
-  };
+  useEffect(() => { window.scrollTo(0, 0); }, []);
 
-  useEffect(() => { fetchEvents(); }, []);
-
-  const handleCreate = async (form) => {
-    const res = await fetch('/api/events', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ ...form, date: new Date(form.date).toISOString() }),
-    });
-    if (res.ok) { toast.success('Event created!'); fetchEvents(); }
-    else toast.error('Failed to create event');
-  };
-
-  const handleUpdate = async (form) => {
-    const res = await fetch(`/api/events/${modal.id}`, {
-      method: 'PATCH',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ ...form, date: new Date(form.date).toISOString() }),
-    });
-    if (res.ok) { toast.success('Event updated!'); fetchEvents(); }
-    else toast.error('Failed to update event');
-  };
-
-  const handleDelete = async (id) => {
+  const handleCreate = (form: any) => createEventMutation.mutate(form);
+  const handleUpdate = (form: any) => updateEventMutation.mutate({ id: modal.id, form });
+  
+  const handleDelete = (id: string) => {
     if (!confirm('Delete this event?')) return;
-    const res = await fetch(`/api/events/${id}`, { method: 'DELETE' });
-    if (res.ok) { toast.success('Event deleted'); fetchEvents(); }
-    else toast.error('Failed to delete event');
+    deleteEventMutation.mutate(id);
   };
 
   // Auto mode: filter out expired events automatically (only for AUTO events)
@@ -270,28 +226,28 @@ const AdminEvents = () => {
 
   return (
     <AdminLayout>
-      <div className="p-6 max-w-7xl mx-auto">
+      <div className="p-4 md:p-6 max-w-7xl mx-auto">
         {/* Header */}
-        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-8">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6 md:mb-8">
           <div>
             <h1 className="text-2xl font-extrabold text-[#0F172A] tracking-tight">Events Management</h1>
             <p className="text-sm text-gray-500 mt-1">Manage the "Our Upcoming Events" section on the homepage</p>
           </div>
           <button
             onClick={() => setModal('new')}
-            className="flex items-center gap-2 bg-[#2563EB] text-white px-5 py-2.5 rounded-xl text-sm font-bold hover:bg-blue-700 transition-all shadow-lg shadow-blue-200"
+            className="flex items-center justify-center gap-2 bg-[#2563EB] text-white px-5 py-2.5 rounded-xl text-sm font-bold hover:bg-blue-700 transition-all shadow-lg shadow-blue-200"
           >
             <Plus size={16} /> New Event
           </button>
         </div>
 
         {/* Auto Mode Toggle */}
-        <div className="bg-white rounded-2xl border border-gray-100 shadow-sm p-5 mb-6 flex items-start gap-4">
+        <div className="bg-white rounded-2xl border border-gray-100 shadow-sm p-4 md:p-5 mb-6 flex flex-col md:flex-row items-start gap-4">
           <div className={`w-12 h-12 rounded-2xl flex items-center justify-center shrink-0 ${autoMode ? 'bg-blue-100' : 'bg-gray-100'}`}>
             <Sparkles size={22} className={autoMode ? 'text-blue-600' : 'text-gray-400'} />
           </div>
-          <div className="flex-1">
-            <div className="flex items-center justify-between">
+          <div className="flex-1 w-full">
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
               <div>
                 <h3 className="font-extrabold text-gray-900 text-sm">Auto Calendar Mode</h3>
                 <p className="text-xs text-gray-500 mt-0.5">
@@ -302,7 +258,7 @@ const AdminEvents = () => {
               </div>
               <button
                 onClick={toggleAutoMode}
-                className={`flex items-center gap-2 px-4 py-2 rounded-xl text-xs font-bold transition-all ${autoMode ? 'bg-blue-600 text-white' : 'bg-gray-100 text-gray-600'}`}
+                className={`flex items-center justify-center gap-2 px-4 py-2 rounded-xl text-xs font-bold transition-all w-full sm:w-auto ${autoMode ? 'bg-blue-600 text-white shadow-md shadow-blue-200' : 'bg-gray-100 text-gray-600 hover:bg-gray-200'}`}
               >
                 {autoMode ? <ToggleRight size={16} /> : <ToggleLeft size={16} />}
                 {autoMode ? 'Auto' : 'Manual'}
@@ -317,26 +273,32 @@ const AdminEvents = () => {
         </div>
 
         {/* Events Grid - Preview of how they look on homepage */}
-        <div className="bg-white rounded-2xl border border-gray-100 shadow-sm p-6 mb-6">
+        <div className="bg-white rounded-2xl border border-gray-100 shadow-sm p-4 md:p-6 mb-6">
           <div className="flex items-center justify-between mb-5">
             <h3 className="font-extrabold text-gray-900 text-sm">
               Homepage Preview — OUR UPCOMING EVENTS
             </h3>
-            <span className="text-[10px] font-bold text-gray-400 uppercase tracking-wide">Live Preview</span>
+            <span className="hidden sm:inline-block text-[10px] font-bold text-gray-400 uppercase tracking-wide">Live Preview</span>
           </div>
-          {displayedEvents.length === 0 ? (
+          {loading ? (
+            <div className="flex gap-4 overflow-x-auto pb-2 scrollbar-hide">
+              {[1, 2, 3].map((n) => (
+                <Skeleton key={n} className="min-w-[260px] h-32 rounded-2xl" />
+              ))}
+            </div>
+          ) : displayedEvents.length === 0 ? (
             <div className="py-12 text-center text-gray-400">
               <Calendar size={40} className="mx-auto mb-3 opacity-30" />
               <p className="font-medium text-sm">No upcoming events</p>
               <p className="text-xs mt-1">Add a new event above</p>
             </div>
           ) : (
-            <div className="flex gap-4 overflow-x-auto pb-2 scrollbar-hide">
+            <div className="flex gap-4 overflow-x-auto pb-2 scrollbar-hide -mx-4 px-4 md:mx-0 md:px-0">
               {displayedEvents.map((ev, idx) => {
                 const { day, month } = getEventDate(ev.date);
                 const color = getColor(ev, idx);
                 return (
-                  <div key={ev.id} className={`min-w-[260px] rounded-2xl p-5 border-none flex justify-between items-center ${color} relative`}>
+                  <div key={ev.id} className={`min-w-[260px] rounded-2xl p-5 border-none flex justify-between items-center ${color} relative shadow-sm`}>
                     {ev.isHoliday && (
                       <div className="absolute top-2 right-2 bg-white/40 text-[10px] font-bold px-1.5 py-0.5 rounded text-gray-800">
                         Holiday
@@ -359,9 +321,9 @@ const AdminEvents = () => {
 
         {/* All Events Table */}
         <div className="bg-white rounded-2xl border border-gray-100 shadow-sm overflow-hidden">
-          <div className="px-6 py-4 border-b border-gray-100 flex items-center justify-between">
+          <div className="px-4 md:px-6 py-4 border-b border-gray-100 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
             <h3 className="font-extrabold text-gray-900 text-sm">All Events ({events.length})</h3>
-            <div className="flex items-center gap-4 text-xs">
+            <div className="flex items-center gap-3 md:gap-4 text-xs">
               <span className="flex items-center gap-1 text-gray-600 font-bold"><div className="w-2 h-2 rounded-full bg-slate-300"></div> System</span>
               <span className="flex items-center gap-1 text-green-600 font-bold"><CheckCircle size={12} /> Upcoming</span>
               <span className="flex items-center gap-1 text-gray-400 font-bold"><Clock size={12} /> Expired</span>
@@ -369,7 +331,22 @@ const AdminEvents = () => {
           </div>
 
           {loading ? (
-            <div className="p-12 text-center text-gray-400 text-sm">Loading events...</div>
+            <div className="divide-y divide-gray-50">
+              {[1, 2, 3, 4, 5].map((n) => (
+                <div key={n} className="flex items-center gap-4 px-6 py-4">
+                  <Skeleton className="w-12 h-14 rounded-xl shrink-0" />
+                  <div className="flex-1 space-y-2">
+                    <Skeleton className="h-4 w-1/3" />
+                    <Skeleton className="h-3 w-1/4" />
+                    <Skeleton className="h-3 w-1/2" />
+                  </div>
+                  <div className="flex gap-2">
+                    <Skeleton className="w-8 h-8 rounded-xl" />
+                    <Skeleton className="w-8 h-8 rounded-xl" />
+                  </div>
+                </div>
+              ))}
+            </div>
           ) : events.length === 0 ? (
             <div className="p-12 text-center text-gray-400 text-sm">No events yet. Create your first event!</div>
           ) : (

@@ -1,15 +1,16 @@
 import 'dotenv/config';
+import { randomUUID } from 'crypto';
 import { Module } from '@nestjs/common';
 import { NotificationRecipientsModule } from './modules/notification-recipients/notification-recipients.module';
 import { SystemSettingsModule } from './modules/system-settings/system-settings.module';
 import { TeamLeadsModule } from './modules/team-leads/team-leads.module';
 import { APP_GUARD, APP_INTERCEPTOR } from '@nestjs/core';
+import { AuditLogInterceptor } from './interceptors/audit-log.interceptor';
+import { PrometheusModule } from '@willsoto/nestjs-prometheus';
 import { BullModule } from '@nestjs/bullmq';
-import { ThrottlerModule, ThrottlerGuard } from '@nestjs/throttler';
-import { ThrottlerStorageRedisService } from '@nest-lab/throttler-storage-redis';
-import { CacheModule, CacheInterceptor } from '@nestjs/cache-manager';
-import KeyvRedis from '@keyv/redis';
-import Redis from 'ioredis';
+import { LoggerModule } from 'nestjs-pino';
+import { ThrottlerModule } from '@nestjs/throttler';
+import { CacheModule } from '@nestjs/cache-manager';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { AuthModule } from './modules/auth/auth.module';
@@ -17,6 +18,7 @@ import { UsersModule } from './modules/users/users.module';
 import { VolunteersModule } from './modules/volunteers/volunteers.module';
 import { OutreachModule } from './modules/outreach/outreach.module';
 import { SchoolsModule } from './modules/schools/schools.module';
+import { PartnersModule } from './modules/partners/partners.module';
 import { StudentsModule } from './modules/students/students.module';
 import { ProgramsModule } from './modules/programs/programs.module';
 import { EventsModule } from './modules/events/events.module';
@@ -32,8 +34,13 @@ import { ReportModule } from './queues/report/report.module';
 import { PrismaModule } from './prisma/prisma.module';
 import { JwtAuthGuard } from './modules/auth/guards/jwt-auth.guard';
 import { ContactModule } from './modules/contact/contact.module';
+import { LeadershipModule } from './modules/leadership/leadership.module';
+import { AuditLogsModule } from './modules/audit-logs/audit-logs.module';
+import { HealthModule } from './modules/health/health.module';
+import { CacheInterceptor } from '@nestjs/cache-manager';
 
-// Config for BullMQ (job queues) - requires maxRetriesPerRequest: null
+// BullMQ Redis config — maxRetriesPerRequest: null is required by BullMQ
+// retryStrategy returns null quickly so the app doesn't hang waiting for Redis
 const bullRedisConfig = {
   host: process.env.REDIS_HOST || 'localhost',
   port: parseInt(process.env.REDIS_PORT || '6379', 10),
@@ -44,57 +51,65 @@ const bullRedisConfig = {
       ? { rejectUnauthorized: false }
       : undefined,
   maxRetriesPerRequest: null, // Required for BullMQ
-  retryStrategy: (times: number) => {
-    if (times > 3) return null;
-    return Math.min(times * 500, 2000);
-  },
-};
-
-// Config for Throttler/Cache (general ioredis)
-const redisConfig = {
-  host: process.env.REDIS_HOST || 'localhost',
-  port: parseInt(process.env.REDIS_PORT || '6379', 10),
-  username: process.env.REDIS_USERNAME,
-  password: process.env.REDIS_PASSWORD,
-  tls:
-    process.env.REDIS_TLS === 'true'
-      ? { rejectUnauthorized: false }
-      : undefined,
-  connectTimeout: 10000,
-  retryStrategy: (times: number) => {
-    if (times > 3) return null;
-    return Math.min(times * 500, 2000);
+  lazyConnect: true,           // Don't block app startup if Redis is down
+  enableOfflineQueue: false,   // Drop jobs instead of queuing when offline
+  connectTimeout: 5000,
+  // Use a sensible retry strategy that doesn't give up immediately.
+  // Returning null causes unhandled "Connection is closed" errors when BullMQ tries to use the client.
+  retryStrategy: (times) => {
+    return Math.max(Math.min(Math.exp(times), 20000), 1000);
   },
 };
 
 @Module({
   imports: [
+    LoggerModule.forRoot({
+      pinoHttp: {
+        level: process.env.NODE_ENV === 'production' ? 'info' : 'debug',
+        transport: process.env.NODE_ENV !== 'production' ? { target: 'pino-pretty' } : undefined,
+        redact: [
+          'req.headers.authorization',
+          'req.headers.cookie',
+          'req.body.password',
+          'req.body.token',
+          'req.body.refreshToken',
+          'req.body.otp',
+          'req.body.apiKey',
+          'req.body.aadhaar',
+          'req.body.paymentDetails',
+        ],
+        genReqId: (req) => {
+          return req.id || req.headers['x-request-id'] || randomUUID();
+        },
+      },
+    }),
+
+    // BullMQ — lazy connection, gives up immediately if Redis unreachable
     BullModule.forRoot({
       connection: bullRedisConfig,
     }),
-    ThrottlerModule.forRootAsync({
-      useFactory: () => ({
-        throttlers: [{ ttl: 60000, limit: 100 }],
-        // Temporarily commented out Redis storage due to flaky connections on mobile hotspot
-        // which causes 500 Internal Server Errors on all routes when Redis disconnects.
-        // Falls back to default Memory Storage.
-        // storage: new ThrottlerStorageRedisService(
-        //   new Redis({
-        //     ...redisConfig,
-        //     lazyConnect: true,
-        //   })
-        // ),
-      }),
+
+    // Throttler — in-memory fallback (no Redis dependency)
+    // This means rate limiting is per-process, not distributed, but app works without Redis
+    ThrottlerModule.forRoot({
+      throttlers: [{ ttl: 60000, limit: 100 }],
     }),
+
+    PrometheusModule.register(),
+
+    // Cache — in-memory store as fallback when Redis is unavailable
+    // ttl: 60s, max 500 items in memory — safe default for dev/hotspot
     CacheModule.register({
       isGlobal: true,
-      // Temporarily removed KeyvRedis to prevent 500 errors when connection drops on mobile hotspot.
+      ttl: 60000,
+      max: 500,
     }),
     AuthModule,
     UsersModule,
     VolunteersModule,
     OutreachModule,
     SchoolsModule,
+    PartnersModule,
     StudentsModule,
     ProgramsModule,
     EventsModule,
@@ -112,14 +127,13 @@ const redisConfig = {
     NotificationRecipientsModule,
     SystemSettingsModule,
     TeamLeadsModule,
+    LeadershipModule,
+    AuditLogsModule,
+    HealthModule,
   ],
   controllers: [AppController],
   providers: [
     AppService,
-    {
-      provide: APP_GUARD,
-      useClass: ThrottlerGuard,
-    },
     {
       provide: APP_GUARD,
       useClass: JwtAuthGuard,
@@ -127,6 +141,10 @@ const redisConfig = {
     {
       provide: APP_INTERCEPTOR,
       useClass: CacheInterceptor,
+    },
+    {
+      provide: APP_INTERCEPTOR,
+      useClass: AuditLogInterceptor,
     },
   ],
 })

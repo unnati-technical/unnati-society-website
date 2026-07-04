@@ -3,55 +3,50 @@ import React, { useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Bell, Check, Clock, Trash2, ShieldAlert } from 'lucide-react';
 import { toast } from 'sonner';
-import { auth } from '../../lib/firebase';
+import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
+import { notificationsApi } from '../../api/notifications.api';
+import { queryKeys } from '../../constants/queryKeys';
 
 const NotificationDropdown = () => {
+  const queryClient = useQueryClient();
   const [isOpen, setIsOpen] = useState(false);
-  const [notifications, setNotifications] = useState([]);
-  const [unreadCount, setUnreadCount] = useState(0);
-  const dropdownRef = useRef(null);
+  const dropdownRef = useRef<HTMLDivElement>(null);
 
-  const fetchNotifications = async () => {
-    try {
-      const token = await auth.currentUser?.getIdToken();
-      if (!token) return; // Don't fetch if not logged in
-      const res = await fetch(`/api/notifications?t=${Date.now()}`, { 
-        cache: 'no-store',
-        headers: { 'Authorization': `Bearer ${token}` }
+  const { data: notifications = [] } = useQuery({
+    queryKey: queryKeys.notifications,
+    queryFn: async () => {
+      const res = await notificationsApi.getNotifications();
+      return res || [];
+    },
+    refetchInterval: 30000 // poll every 30s
+  });
+
+  const unreadCount = notifications.filter((n: any) => n.status === 'UNREAD').length;
+
+  const readAllMutation = useMutation({
+    mutationFn: () => notificationsApi.readAll(),
+    onMutate: async () => {
+      await queryClient.cancelQueries({ queryKey: queryKeys.notifications });
+      const previous = queryClient.getQueryData(queryKeys.notifications);
+      queryClient.setQueryData(queryKeys.notifications, (old: any) => {
+        if (!old) return old;
+        return old.map((n: any) => ({ ...n, status: 'READ' }));
       });
-      if (!res.ok) throw new Error('Failed to fetch notifications');
-      const data = await res.json();
-      setNotifications(data);
-      setUnreadCount(data.filter(n => n.status === 'UNREAD').length);
-    } catch (err) {
-      console.error(err);
+      return { previous };
+    },
+    onError: (err, variables, context) => {
+      queryClient.setQueryData(queryKeys.notifications, context?.previous);
+    },
+    onSettled: () => {
+      queryClient.invalidateQueries({ queryKey: queryKeys.notifications });
     }
-  };
-
-  useEffect(() => {
-
-    fetchNotifications();
-    const interval = setInterval(fetchNotifications, 30000);
-    return () => clearInterval(interval);
-  }, []);
+  });
 
   // Auto-mark all as read when dropdown is opened
   useEffect(() => {
     if (isOpen && unreadCount > 0) {
-      // Optimistic update immediately
-      setNotifications(prev => prev.map(n => ({ ...n, status: 'READ' })));
-      setUnreadCount(0);
-      // Persist to backend
-      auth.currentUser?.getIdToken().then(token => {
-        if (token) {
-          fetch('/api/notifications/read-all', { 
-            method: 'PATCH',
-            headers: { 'Authorization': `Bearer ${token}` }
-          }).catch(() => {});
-        }
-      });
+      readAllMutation.mutate();
     }
-
   }, [isOpen]);
 
   useEffect(() => {
@@ -64,38 +59,32 @@ const NotificationDropdown = () => {
     return () => document.removeEventListener('mousedown', handleClickOutside);
   }, []);
 
-  const markAsRead = async (id) => {
-    try {
-      setNotifications(prev => prev.map(n => n.id === id ? { ...n, status: 'READ' } : n));
-      setUnreadCount(prev => Math.max(0, prev - 1));
-      
-      const token = await auth.currentUser?.getIdToken();
-      const res = await fetch(`/api/notifications/${id}/read`, { 
-        method: 'PATCH',
-        headers: { 'Authorization': `Bearer ${token}` }
+  const readOneMutation = useMutation({
+    mutationFn: (id: string) => notificationsApi.readOne(id),
+    onMutate: async (id) => {
+      await queryClient.cancelQueries({ queryKey: queryKeys.notifications });
+      const previous = queryClient.getQueryData(queryKeys.notifications);
+      queryClient.setQueryData(queryKeys.notifications, (old: any) => {
+        if (!old) return old;
+        return old.map((n: any) => n.id === id ? { ...n, status: 'READ' } : n);
       });
-      if (!res.ok) throw new Error('Failed to mark read');
-    } catch (err) {
+      return { previous };
+    },
+    onError: (err, id, context) => {
       toast.error('Failed to update notification');
-      fetchNotifications(); // revert optimistic update
+      queryClient.setQueryData(queryKeys.notifications, context?.previous);
+    },
+    onSettled: () => {
+      queryClient.invalidateQueries({ queryKey: queryKeys.notifications });
     }
+  });
+
+  const markAsRead = (id: string) => {
+    readOneMutation.mutate(id);
   };
 
-  const markAllAsRead = async () => {
-    try {
-      setNotifications(prev => prev.map(n => ({ ...n, status: 'READ' })));
-      setUnreadCount(0);
-      
-      const token = await auth.currentUser?.getIdToken();
-      const res = await fetch('/api/notifications/read-all', { 
-        method: 'PATCH',
-        headers: { 'Authorization': `Bearer ${token}` }
-      });
-      if (!res.ok) throw new Error('Failed to mark all read');
-    } catch (err) {
-      toast.error('Failed to update notifications');
-      fetchNotifications();
-    }
+  const markAllAsRead = () => {
+    readAllMutation.mutate();
   };
 
   const formatTime = (dateString) => {

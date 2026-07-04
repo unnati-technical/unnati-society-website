@@ -1,9 +1,10 @@
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { X, UserPlus, Loader2 } from 'lucide-react';
-import { useQueryClient } from '@tanstack/react-query';
+import { useQueryClient, useMutation } from '@tanstack/react-query';
 import { toast } from 'sonner';
-import { auth } from '../../../lib/firebase';
+import { volunteersApi } from '../../../api/volunteers.api';
+import { queryKeys } from '../../../constants/queryKeys';
 
 interface Props {
   isOpen: boolean;
@@ -18,41 +19,29 @@ export function AdminAddVolunteerModal({ isOpen, onClose }: Props) {
     interests: 'Teaching',
     city: '',
   });
-  const [isSubmitting, setIsSubmitting] = useState(false);
   const queryClient = useQueryClient();
+
+  const addVolunteerMutation = useMutation({
+    mutationFn: (data: any) => volunteersApi.create(data),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: queryKeys.volunteers });
+      toast.success('Volunteer added successfully');
+      setFormData({ fullName: '', email: '', phone: '', interests: 'Teaching', city: '' });
+      onClose();
+    },
+    onError: () => {
+      toast.error('Error adding volunteer');
+    }
+  });
 
   if (!isOpen) return null;
 
-  const handleSubmit = async (e: React.FormEvent) => {
+  const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    setIsSubmitting(true);
-    
-    try {
-      let headers: any = { 'Content-Type': 'application/json' };
-      if (auth.currentUser) {
-        headers['Authorization'] = `Bearer ${await auth.currentUser.getIdToken()}`;
-      }
-      
-      const res = await fetch('/api/volunteers', {
-        method: 'POST',
-        headers,
-        body: JSON.stringify({
-          ...formData,
-          interests: [formData.interests]
-        })
-      });
-
-      if (!res.ok) throw new Error('Failed to add volunteer');
-      
-      toast.success('Volunteer added successfully');
-      queryClient.invalidateQueries({ queryKey: ['volunteers'] });
-      onClose();
-    } catch (err) {
-      console.error(err);
-      toast.error('Error adding volunteer');
-    } finally {
-      setIsSubmitting(false);
-    }
+    addVolunteerMutation.mutate({
+      ...formData,
+      interests: [formData.interests]
+    });
   };
 
   return (
@@ -113,8 +102,8 @@ export function AdminAddVolunteerModal({ isOpen, onClose }: Props) {
               <button type="button" onClick={onClose} className="px-5 py-2.5 text-sm font-semibold text-gray-600 hover:bg-gray-100 rounded-xl transition-colors">
                 Cancel
               </button>
-              <button type="submit" disabled={isSubmitting} className="flex items-center gap-2 px-5 py-2.5 bg-blue-600 text-white text-sm font-semibold rounded-xl hover:bg-blue-700 transition-colors disabled:opacity-70 shadow-sm">
-                {isSubmitting ? <Loader2 size={16} className="animate-spin" /> : <UserPlus size={16} />}
+              <button type="submit" disabled={addVolunteerMutation.isPending} className="flex items-center gap-2 px-5 py-2.5 bg-blue-600 text-white text-sm font-semibold rounded-xl hover:bg-blue-700 transition-colors disabled:opacity-70 shadow-sm">
+                {addVolunteerMutation.isPending ? <Loader2 size={16} className="animate-spin" /> : <UserPlus size={16} />}
                 Add Volunteer
               </button>
             </div>

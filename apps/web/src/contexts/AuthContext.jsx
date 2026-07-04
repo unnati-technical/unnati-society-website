@@ -1,6 +1,7 @@
 import React, { createContext, useContext, useEffect, useState } from 'react';
 import { onAuthStateChanged, signOut as firebaseSignOut, getIdToken } from 'firebase/auth';
 import { auth } from '../lib/firebase';
+import { authApi } from '../api/auth.api';
 
 const AuthContext = createContext();
 
@@ -14,12 +15,8 @@ export const AuthProvider = ({ children }) => {
   const refreshProfile = async (user) => {
     if (!user) return;
     try {
-      const token = await user.getIdToken();
-      const response = await fetch('/api/team-leads/me', {
-        headers: { Authorization: `Bearer ${token}` }
-      });
-      if (response.ok) {
-        const profile = await response.json();
+      const profile = await authApi.getMe();
+      if (profile) {
         setUserProfile(profile);
       } else {
         console.warn("Could not fetch user profile from backend.");

@@ -1,44 +1,47 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import { UserPlus, School, Handshake, BookOpen } from 'lucide-react';
+import { useQuery } from '@tanstack/react-query';
+import { analyticsApi } from '../../api/analytics.api';
+import { queryKeys } from '../../constants/queryKeys';
 
 const PendingApprovals = () => {
-  const [approvals, setApprovals] = useState([]);
-
-  useEffect(() => {
-    const fetchPending = async () => {
-      try {
-        const res = await fetch('/api/analytics/pending-approvals');
-        if (res.ok) {
-          const data = await res.json();
-          const items = [];
-          
-          if (data.volunteers && data.volunteers.length > 0) {
-            items.push({
-              id: 'v1',
-              title: `${data.volunteers.length} New Volunteers`,
-              desc: 'Require approval',
-              icon: UserPlus,
-              color: 'text-orange-500'
-            });
-          }
-          if (data.schools && data.schools.length > 0) {
-            items.push({
-              id: 's1',
-              title: `${data.schools.length} New Schools`,
-              desc: 'Require approval',
-              icon: School,
-              color: 'text-blue-500'
-            });
-          }
-
-          setApprovals(items);
-        }
-      } catch (err) {
-        console.error('Failed to fetch pending approvals', err);
+  const { data: approvals = [] } = useQuery({
+    queryKey: queryKeys.analyticsPending,
+    queryFn: async () => {
+      const res = await analyticsApi.getPendingApprovals();
+      const data = res;
+      const items = [];
+      
+      if (data.volunteers && data.volunteers.length > 0) {
+        items.push({
+          id: 'v1',
+          title: `${data.volunteers.length} New Volunteers`,
+          desc: 'Require approval',
+          icon: UserPlus,
+          color: 'text-orange-500'
+        });
       }
-    };
-    fetchPending();
-  }, []);
+      if (data.schools && data.schools.length > 0) {
+        items.push({
+          id: 's1',
+          title: `${data.schools.length} New Schools`,
+          desc: 'Require approval',
+          icon: School,
+          color: 'text-blue-500'
+        });
+      }
+      if (data.partners && data.partners.length > 0) {
+        items.push({
+          id: 'p1',
+          title: `${data.partners.length} Partner Requests`,
+          desc: 'Require review',
+          icon: Handshake,
+          color: 'text-emerald-500'
+        });
+      }
+      return items;
+    }
+  });
 
   return (
     <div className="bg-white rounded-2xl border border-gray-100 shadow-sm p-6 h-full flex flex-col">

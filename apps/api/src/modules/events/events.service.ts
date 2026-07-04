@@ -1,5 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { PrismaService } from '../../prisma/prisma.service';
+import { EventsRepository } from './repositories/events.repository';
 import { CloudinaryService } from '../cloudinary/cloudinary.service';
 import { CreateEventDto } from './create-event.dto';
 // eslint-disable-next-line @typescript-eslint/no-require-imports
@@ -16,6 +17,7 @@ export class EventsService {
   constructor(
     private readonly prisma: PrismaService,
     private readonly cloudinaryService: CloudinaryService,
+    private readonly eventsRepository: EventsRepository,
   ) {}
 
   private async deleteExpiredAutoEvents() {
@@ -23,7 +25,7 @@ export class EventsService {
     startOfToday.setHours(0, 0, 0, 0);
 
     try {
-      const expiredAutoEvents = await this.prisma.event.findMany({
+      const expiredAutoEvents = await this.eventsRepository.findMany({
         where: { date: { lt: startOfToday }, eventType: 'AUTO' },
       });
 
@@ -36,7 +38,7 @@ export class EventsService {
             }
           }
         }
-        await this.prisma.event.delete({ where: { id: event.id } });
+        await this.eventsRepository.delete({ where: { id: event.id } });
       }
     } catch (e) {
       console.warn('Failed to auto-delete events', e);
@@ -56,7 +58,7 @@ export class EventsService {
 
     const where = includeExpired ? {} : { date: { gte: now } };
 
-    const dbEvents = await this.prisma.event.findMany({
+    const dbEvents = await this.eventsRepository.findMany({
       where,
       orderBy: { date: 'asc' },
     });
@@ -88,11 +90,11 @@ export class EventsService {
   }
 
   async findOne(id: string) {
-    return this.prisma.event.findUnique({ where: { id } });
+    return this.eventsRepository.findUnique({ where: { id } });
   }
 
   async create(dto: CreateEventDto) {
-    return this.prisma.event.create({
+    return this.eventsRepository.create({
       data: {
         title: dto.title,
         description: dto.description || '',
@@ -107,7 +109,7 @@ export class EventsService {
   }
 
   async update(id: string, dto: Partial<CreateEventDto>) {
-    return this.prisma.event.update({
+    return this.eventsRepository.update({
       where: { id },
       data: {
         ...(dto.title !== undefined && { title: dto.title }),
@@ -123,7 +125,7 @@ export class EventsService {
   }
 
   async remove(id: string) {
-    const event = await this.prisma.event.findUnique({ where: { id } });
+    const event = await this.eventsRepository.findUnique({ where: { id } });
     if (event && event.photos && event.photos.length > 0) {
       for (const url of event.photos) {
         const match = url.match(/\/v\d+\/(.+)\.[a-zA-Z]+$/);
@@ -132,7 +134,7 @@ export class EventsService {
         }
       }
     }
-    return this.prisma.event.delete({ where: { id } });
+    return this.eventsRepository.delete({ where: { id } });
   }
 
   // Helper method to get comprehensive holidays
@@ -204,7 +206,7 @@ export class EventsService {
       });
       if (setting) autoMode = setting.value === 'true';
 
-      dbEvents = await this.prisma.event.findMany({
+      dbEvents = await this.eventsRepository.findMany({
         where: { date: { gte: now } },
       });
     } catch (error: any) {

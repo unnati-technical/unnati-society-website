@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useRef } from 'react';
+import React, { useEffect, useState, useRef, lazy, Suspense } from 'react';
 import Navbar from '../components/common/Navbar';
 import NavUnn from '../components/common/NavUnn';
 import Footer from '../components/common/Footer';
@@ -9,9 +9,10 @@ import {
 } from 'react-icons/fi';
 import { BiBuildingHouse, BiChalkboard, BiTargetLock } from 'react-icons/bi';
 import { FaHandshake } from 'react-icons/fa';
-import CampusVisitModal from '../components/common/CampusVisitModal';
-import InviteUsModal from '../components/common/InviteUsModal';
-import PartnerModal from '../components/pagesCompo/outreach/PartnerModal';
+
+const CampusVisitModal = lazy(() => import('../components/common/CampusVisitModal'));
+const InviteUsModal = lazy(() => import('../components/common/InviteUsModal'));
+const PartnerModal = lazy(() => import('../components/pagesCompo/outreach/PartnerModal'));
 
 import AnimatedCounter from '../components/common/AnimatedCounter';
 
@@ -524,22 +525,34 @@ const Outreach = () => {
       <Footer />
 
       {/* Campus Visit Modal */}
-      <CampusVisitModal
-        isOpen={isCampusVisitModalOpen}
-        onClose={() => setIsCampusVisitModalOpen(false)}
-      />
+      {isCampusVisitModalOpen && (
+        <Suspense fallback={null}>
+          <CampusVisitModal
+            isOpen={isCampusVisitModalOpen}
+            onClose={() => setIsCampusVisitModalOpen(false)}
+          />
+        </Suspense>
+      )}
 
       {/* Invite Us Modal */}
-      <InviteUsModal
-        isOpen={isInviteUsModalOpen}
-        onClose={() => setIsInviteUsModalOpen(false)}
-      />
+      {isInviteUsModalOpen && (
+        <Suspense fallback={null}>
+          <InviteUsModal
+            isOpen={isInviteUsModalOpen}
+            onClose={() => setIsInviteUsModalOpen(false)}
+          />
+        </Suspense>
+      )}
 
       {/* Partner Modal */}
-      <PartnerModal
-        isOpen={isPartnerModalOpen}
-        onClose={() => setIsPartnerModalOpen(false)}
-      />
+      {isPartnerModalOpen && (
+        <Suspense fallback={null}>
+          <PartnerModal
+            isOpen={isPartnerModalOpen}
+            onClose={() => setIsPartnerModalOpen(false)}
+          />
+        </Suspense>
+      )}
     </div>
   );
 };

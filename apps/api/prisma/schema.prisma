@@ -1,6 +1,3 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
 generator client {
   provider = "prisma-client-js"
 }
@@ -9,23 +6,18 @@ datasource db {
   provider = "postgresql"
 }
 
-// -------------------------------------
-// Core Auth & Users
-// -------------------------------------
-
 model User {
-  id        String   @id @default(uuid())
-  email     String   @unique
+  id        String     @id @default(uuid())
+  email     String     @unique
   password  String
   firstName String
   lastName  String
   roleId    String
-  role      Role     @relation(fields: [roleId], references: [id])
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-
-  volunteer Volunteer?
+  createdAt DateTime   @default(now())
+  updatedAt DateTime   @updatedAt
   student   Student?
+  role      Role       @relation(fields: [roleId], references: [id])
+  volunteer Volunteer?
 }
 
 model Role {
@@ -35,176 +27,159 @@ model Role {
   users       User[]
 }
 
-// -------------------------------------
-// Volunteers
-// -------------------------------------
-
 model Volunteer {
-  id             String                 @id @default(uuid())
-  userId         String                 @unique
-  user           User                   @relation(fields: [userId], references: [id])
-  skills         String[]
-  status         String                 @default("ACTIVE") // ACTIVE, INACTIVE
-  applications   VolunteerApplication[]
-  createdAt      DateTime               @default(now())
-  updatedAt      DateTime               @updatedAt
+  id           String                 @id @default(uuid())
+  userId       String                 @unique
+  skills       String[]
+  status       String                 @default("ACTIVE")
+  createdAt    DateTime               @default(now())
+  updatedAt    DateTime               @updatedAt
+  user         User                   @relation(fields: [userId], references: [id])
+  applications VolunteerApplication[]
 }
 
 model VolunteerApplication {
   id                String    @id @default(uuid())
   volunteerId       String
-  volunteer         Volunteer @relation(fields: [volunteerId], references: [id])
-  status            String    @default("PENDING") // PENDING, APPROVED, REJECTED, UNDER REVIEW
-  
-  // Application details
-  program           String    @default("General")
-  roleAppliedFor    String    @default("Volunteer")
-  phone             String    @default("")
-  dob               String    @default("")
-  gender            String    @default("")
-  education         String    @default("")
-  college           String    @default("")
-  currentYear       String    @default("")
-  availability      String    @default("")
-  preferredMode     String    @default("Online")
-  preferredLocation String    @default("")
-  address           String    @default("")
-  whyVolunteer      String    @default("")
-  linkedinUrl       String?
-  portfolioUrl      String?
-  resumeUrl         String?
-  howDidYouHear     String    @default("")
-  
-  // New captured fields
-  department        String    @default("")
-  hoursPerWeek      String    @default("")
-  hasNgoExperience  String    @default("no")
-  ngoName           String    @default("")
-  experienceDesc    String    @default("")
-  emergencyName     String    @default("")
-  emergencyPhone    String    @default("")
-  careerGoals       String    @default("")
-  startDate         String    @default("")
-  
+  status            String    @default("PENDING")
   createdAt         DateTime  @default(now())
   updatedAt         DateTime  @updatedAt
+  address           String    @default("")
+  availability      String    @default("")
+  college           String    @default("")
+  currentYear       String    @default("")
+  dob               String    @default("")
+  education         String    @default("")
+  gender            String    @default("")
+  howDidYouHear     String    @default("")
+  linkedinUrl       String?
+  phone             String    @default("")
+  preferredLocation String    @default("")
+  preferredMode     String    @default("Online")
+  program           String    @default("General")
+  roleAppliedFor    String    @default("Volunteer")
+  whyVolunteer      String    @default("")
+  careerGoals       String    @default("")
+  department        String    @default("")
+  emergencyName     String    @default("")
+  emergencyPhone    String    @default("")
+  experienceDesc    String    @default("")
+  hasNgoExperience  String    @default("no")
+  hoursPerWeek      String    @default("")
+  ngoName           String    @default("")
+  portfolioUrl      String?
+  resumeUrl         String?
+  startDate         String    @default("")
+  volunteer         Volunteer @relation(fields: [volunteerId], references: [id])
 }
 
-// -------------------------------------
-// Schools & Outreach
-// -------------------------------------
-
 model School {
-  id             String               @id @default(uuid())
-  logo           String?
-  name           String
-  city           String               @default("")
-  district       String               @default("")
-  address        String
-  contactPerson  String
-  contactEmail   String
-  contactPhone   String
-  programs       String[]             @default([])
-  status         String               @default("Active")
-  studentsCount  Int                  @default(0)
-  
-  // Detailed info
-  schoolType     String               @default("Government")
-  schoolCategory String               @default("Secondary")
-  affiliation    String               @default("BSEB")
-  establishedYear String              @default("")
-  grades         String               @default("")
-  teachersCount  Int                  @default(0)
-  about          String               @default("")
-  focusAreas     String[]             @default([])
-
-  createdAt      DateTime             @default(now())
-  updatedAt      DateTime             @updatedAt
+  id              String   @id @default(uuid())
+  name            String
+  address         String
+  contactPerson   String
+  contactEmail    String
+  contactPhone    String
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+  about           String   @default("")
+  affiliation     String   @default("BSEB")
+  city            String   @default("")
+  district        String   @default("")
+  establishedYear String   @default("")
+  focusAreas      String[] @default([])
+  grades          String   @default("")
+  logo            String?
+  programs        String[] @default([])
+  schoolCategory  String   @default("Secondary")
+  schoolType      String   @default("Government")
+  status          String   @default("Active")
+  studentsCount   Int      @default(0)
+  teachersCount   Int      @default(0)
 }
 
 model Partner {
-  id                  String   @id @default(uuid())
-  logo                String?
-  organization        String
-  type                String   @default("NGO")
-  contactPerson       String
-  email               String
-  phone               String
-  focusArea           String   @default("")
-  status              String   @default("Active")
-  since               DateTime @default(now())
-  website             String?
-  city                String   @default("")
-  address             String   @default("")
-  about               String   @default("")
-  highlights          String[] @default([])
-  
-  createdAt           DateTime @default(now())
-  updatedAt           DateTime @updatedAt
+  id            String   @id @default(uuid())
+  logo          String?
+  organization  String
+  type          String   @default("NGO")
+  contactPerson String
+  email         String
+  phone         String
+  focusArea     String   @default("")
+  status        String   @default("Active")
+  since         DateTime @default(now())
+  website       String?
+  city          String   @default("")
+  address       String   @default("")
+  about         String   @default("")
+  highlights    String[] @default([])
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
 }
 
 model CampusVisitRequest {
-  id               String   @id @default(uuid())
-  institutionName  String
-  institutionType  String?
-  board            String?
-  website          String?
-  state            String?
-  district         String?
-  city             String?
-  address          String?
-  studentsCount    String?
-  teachersCount    String?
-  classes          String[] @default([])
-  purposes         String[] @default([])
-  activities       String[] @default([])
-  prefDate         String?
-  altDate          String?
-  prefTime         String?
-  coordinatorName  String
-  designation      String?
-  email            String
-  phone            String?
-  whatsapp         String?
-  notes            String?
-  status           String   @default("PENDING")
-  createdAt        DateTime @default(now())
-  updatedAt        DateTime @updatedAt
+  id              String   @id @default(uuid())
+  institutionName String
+  institutionType String?
+  board           String?
+  website         String?
+  state           String?
+  district        String?
+  city            String?
+  address         String?
+  studentsCount   String?
+  teachersCount   String?
+  classes         String[] @default([])
+  purposes        String[] @default([])
+  activities      String[] @default([])
+  prefDate        String?
+  altDate         String?
+  prefTime        String?
+  coordinatorName String
+  designation     String?
+  email           String
+  phone           String?
+  whatsapp        String?
+  notes           String?
+  status          String   @default("PENDING")
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
 }
 
 model OutreachRequest {
   id                   String   @id @default(uuid())
-  institutionName      String
-  institutionType      String?
-  board                String?
-  studentsCount        String?
-  website              String?
-  state                String?
-  district             String?
-  city                 String?
-  address              String?
   programs             String[] @default([])
-  targetAudience       String[] @default([])
-  expectedParticipants String?
-  preferredMode        String?
-  prefDate             String?
-  altDate              String?
-  duration             String?
-  coordinatorName      String
-  designation          String?
-  phone                String?
-  whatsapp             String?
-  email                String
-  availability         String?
-  notes                String?
-  specialReqs          String?
   status               String   @default("PENDING")
   createdAt            DateTime @default(now())
   updatedAt            DateTime @updatedAt
+  address              String?
+  altDate              String?
+  availability         String?
+  board                String?
+  city                 String?
+  coordinatorName      String
+  designation          String?
+  district             String?
+  duration             String?
+  email                String
+  expectedParticipants String?
+  institutionName      String
+  institutionType      String?
+  notes                String?
+  phone                String?
+  prefDate             String?
+  preferredMode        String?
+  specialReqs          String?
+  state                String?
+  studentsCount        String?
+  targetAudience       String[] @default([])
+  website              String?
+  whatsapp             String?
 }
 
 model PartnerRequest {
-  id                  String   @id @default(uuid())
+  id                  String    @id @default(uuid())
   name                String
   email               String
   phone               String
@@ -219,38 +194,30 @@ model PartnerRequest {
   meetingMode         String?
   meetingDate         DateTime?
   documentUrl         String?
+  status              String    @default("PENDING")
+  createdAt           DateTime  @default(now())
+  updatedAt           DateTime  @updatedAt
   adminNotes          String?
-  status              String   @default("PENDING") // PENDING, REVIEWED, ACCEPTED, REJECTED, HOLD, NEED_MORE_INFO
-  createdAt           DateTime @default(now())
-  updatedAt           DateTime @updatedAt
 }
 
-// -------------------------------------
-// Students & Courses
-// -------------------------------------
-
 model Student {
-  id             String    @id @default(uuid())
-  userId         String    @unique
-  user           User      @relation(fields: [userId], references: [id])
-  schoolName     String?
-  courses        Course[]  @relation("StudentCourses")
-  createdAt      DateTime  @default(now())
-  updatedAt      DateTime  @updatedAt
+  id         String   @id @default(uuid())
+  userId     String   @unique
+  schoolName String?
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+  user       User     @relation(fields: [userId], references: [id])
+  courses    Course[] @relation("StudentCourses")
 }
 
 model Course {
-  id             String    @id @default(uuid())
-  title          String
-  description    String
-  students       Student[] @relation("StudentCourses")
-  createdAt      DateTime  @default(now())
-  updatedAt      DateTime  @updatedAt
+  id          String    @id @default(uuid())
+  title       String
+  description String
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+  students    Student[] @relation("StudentCourses")
 }
-
-// -------------------------------------
-// Events & Activities
-// -------------------------------------
 
 model Event {
   id          String   @id @default(uuid())
@@ -258,64 +225,52 @@ model Event {
   description String   @default("")
   date        DateTime
   location    String   @default("")
-  link        String?  // Deep-link for the arrow button on the card
-  color       String?  // Tailwind class e.g. 'bg-blue-400'
+  link        String?
+  color       String?
   photos      String[] @default([])
-  eventType   String   @default("AUTO") // MANUAL, AUTO
+  eventType   String   @default("AUTO")
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
 }
 
-// -------------------------------------
-// Certificates
-// -------------------------------------
-
 model Certificate {
-  id             String    @id @default(uuid())
-  recipientEmail String
-  recipientName  String
-  type           String    // VOLUNTEER, COURSE, EVENT
-  pdfUrl         String?
-  issuedAt       DateTime  @default(now())
+  id               String   @id @default(uuid())
+  referenceNo      String   @unique
+  recipientName    String
+  rollNo           String?
+  team             String?
+  batch            String?
+  appreciationType String
+  bodyText         String?
+  pdfUrl           String?
+  issuedAt         DateTime @default(now())
 }
-
-// -------------------------------------
-// Donations
-// -------------------------------------
 
 model Donation {
-  id             String    @id @default(uuid())
-  donorName      String
-  donorEmail     String
-  donorPhone     String?
-  donorPan       String?
-  donorAddress   String?
-  amount         Float
-  currency       String    @default("INR")
-  status         String    @default("PENDING") // PENDING, COMPLETED, FAILED
-  transactionId  String?   @unique
-  createdAt      DateTime  @default(now())
-  updatedAt      DateTime  @updatedAt
+  id            String   @id @default(uuid())
+  donorName     String
+  donorEmail    String
+  donorPhone    String?
+  donorPan      String?
+  donorAddress  String?
+  amount        Float
+  currency      String   @default("INR")
+  status        String   @default("PENDING")
+  transactionId String?  @unique
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
 }
-
-// -------------------------------------
-// Notifications
-// -------------------------------------
 
 model Notification {
-  id             String    @id @default(uuid())
-  userId         String?   // Null if system-wide
-  title          String
-  message        String
-  type           String    // EMAIL, SMS, PUSH, IN_APP
-  status         String    @default("PENDING") // PENDING, SENT, FAILED
-  createdAt      DateTime  @default(now())
-  updatedAt      DateTime  @updatedAt
+  id        String   @id @default(uuid())
+  userId    String?
+  title     String
+  message   String
+  type      String
+  status    String   @default("UNREAD")
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }
-
-// -------------------------------------
-// Contact Messages
-// -------------------------------------
 
 model ContactMessage {
   id        String   @id @default(uuid())
@@ -324,7 +279,7 @@ model ContactMessage {
   subject   String
   role      String
   message   String
-  status    String   @default("PENDING") // PENDING, REVIEWED, REPLIED
+  status    String   @default("PENDING")
   createdAt DateTime @default(now())
 }
 
@@ -332,17 +287,13 @@ model NotificationRecipient {
   id         String   @id @default(uuid())
   email      String   @unique
   name       String
+  createdAt  DateTime @default(now())
+  categories String[] @default([])
   department String   @default("General")
   phone      String?
-  status     String   @default("Active") // Active, Inactive
-  categories String[] @default([])
-  createdAt  DateTime @default(now())
+  status     String   @default("Active")
   updatedAt  DateTime @updatedAt
 }
-
-// -------------------------------------
-// System Settings
-// -------------------------------------
 
 model SystemSetting {
   key       String   @id
@@ -350,24 +301,20 @@ model SystemSetting {
   updatedAt DateTime @updatedAt
 }
 
-// -------------------------------------
-// Team Leads & Activity Logs
-// -------------------------------------
-
 model TeamLead {
-  id             String   @id @default(uuid())
-  name           String
-  email          String   @unique
-  phone          String
-  position       String
-  loginEmail     String?  @unique
-  password       String?
-  credStatus     String   @default("Pending Approval") // Approved, Pending Approval, Rejected
-  msgAccess      String   @default("No Access") // Can View & Reply, Can View Only, No Access, Request Pending
-  status         String   @default("Junior Lead") // Junior Lead, Team Lead, Sr. Team Lead
-  avatar         String?  
-  createdAt      DateTime @default(now())
-  updatedAt      DateTime @updatedAt
+  id         String   @id @default(uuid())
+  name       String
+  email      String   @unique
+  phone      String
+  position   String
+  loginEmail String?  @unique
+  password   String?
+  credStatus String   @default("Pending Approval")
+  msgAccess  String   @default("No Access")
+  status     String   @default("Junior Lead")
+  avatar     String?
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
 }
 
 model ActivityLog {
@@ -380,3 +327,53 @@ model ActivityLog {
   createdAt DateTime @default(now())
 }
 
+model LeadershipYear {
+  id        String              @id @default(uuid())
+  year      String              @unique
+  isActive  Boolean             @default(false)
+  createdAt DateTime            @default(now())
+  sections  LeadershipSection[]
+}
+
+model LeadershipSection {
+  id           String             @id @default(uuid())
+  yearId       String
+  name         String
+  slug         String
+  badgeColor   String             @default("blue")
+  displayOrder Int                @default(0)
+  isVisible    Boolean            @default(true)
+  members      LeadershipMember[]
+  year         LeadershipYear     @relation(fields: [yearId], references: [id], onDelete: Cascade)
+}
+
+model LeadershipMember {
+  id           String            @id @default(uuid())
+  sectionId    String
+  fullName     String
+  designation  String
+  department   String?           @default("")
+  bio          String?
+  profileImage String?
+  linkedin     String?
+  instagram    String?
+  email        String?
+  displayOrder Int               @default(0)
+  isPublished  Boolean           @default(true)
+  createdAt    DateTime          @default(now())
+  updatedAt    DateTime          @updatedAt
+  section      LeadershipSection @relation(fields: [sectionId], references: [id], onDelete: Cascade)
+}
+
+model AuditLog {
+  id           String   @id @default(uuid())
+  userId       String?
+  userEmail    String?
+  action       String
+  entity       String
+  entityId     String?
+  previousData String?
+  updatedData  String?
+  ipAddress    String?
+  createdAt    DateTime @default(now())
+}

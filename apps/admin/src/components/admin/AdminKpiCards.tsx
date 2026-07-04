@@ -2,6 +2,9 @@ import React, { useState, useEffect } from 'react';
 import { Users, GraduationCap, FolderKanban, School, ArrowUp, ArrowDown } from 'lucide-react';
 
 import { motion } from 'framer-motion';
+import { useQuery } from '@tanstack/react-query';
+import { analyticsApi } from '../../api/analytics.api';
+import { queryKeys } from '../../constants/queryKeys';
 
 const defaultKpiData = [
   { title: 'Total Beneficiaries', value: '0', trend: '0%', trendUp: true, icon: Users, color: 'bg-blue-500 text-white' },
@@ -11,27 +14,17 @@ const defaultKpiData = [
 ];
 
 const AdminKpiCards = () => {
-  const [kpiData, setKpiData] = useState(defaultKpiData);
-
-  useEffect(() => {
-    const fetchKpis = async () => {
-      try {
-        const res = await fetch('/api/analytics/kpis');
-        if (res.ok) {
-          const data = await res.json();
-          // merge the icon/color with the fetched data
-          setKpiData(data.map((item, idx) => ({
-            ...item,
-            icon: defaultKpiData[idx].icon,
-            color: defaultKpiData[idx].color
-          })));
-        }
-      } catch (error) {
-        console.error('Failed to fetch KPIs', error);
-      }
-    };
-    fetchKpis();
-  }, []);
+  const { data: kpiData = defaultKpiData } = useQuery({
+    queryKey: queryKeys.analyticsKpis,
+    queryFn: async () => {
+      const res = await analyticsApi.getKpis();
+      return (res || []).map((item: any, idx: number) => ({
+        ...item,
+        icon: defaultKpiData[idx]?.icon || Users,
+        color: defaultKpiData[idx]?.color || 'bg-blue-500 text-white'
+      }));
+    }
+  });
 
   return (
     <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-6 mb-8">

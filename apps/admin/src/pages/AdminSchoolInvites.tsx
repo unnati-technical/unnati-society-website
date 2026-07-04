@@ -7,8 +7,11 @@ import {
   MoreVertical, Eye, DownloadCloud, CheckSquare, ListFilter, UserCheck
 } from 'lucide-react';
 import { toast } from 'sonner';
+import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import AdminLayout from '../components/admin/AdminLayout';
 import { auth } from '../lib/firebase';
+import { outreachApi } from '../api/outreach.api';
+import { queryKeys } from '../constants/queryKeys';
 import { jsPDF } from 'jspdf';
 
 const getInitials = (name: string) => name ? name.charAt(0).toUpperCase() : '?';
@@ -31,8 +34,14 @@ const getStatusDisplay = (status: string) => {
 };
 
 export default function AdminSchoolInvites() {
-  const [requests, setRequests] = useState<any[]>([]);
-  const [isLoading, setIsLoading] = useState(true);
+  const queryClient = useQueryClient();
+  const { data: requests = [], isLoading } = useQuery({
+    queryKey: queryKeys.schoolInvites,
+    queryFn: async () => {
+      const res = await outreachApi.getInvites();
+      return res || [];
+    }
+  });
   const [searchTerm, setSearchTerm] = useState('');
   const [statusFilter, setStatusFilter] = useState('All');
   const [districtFilter, setDistrictFilter] = useState('All');
@@ -48,26 +57,7 @@ export default function AdminSchoolInvites() {
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 10;
 
-  const fetchRequests = async () => {
-    setIsLoading(true);
-    try {
-      const token = await auth.currentUser?.getIdToken();
-      const res = await fetch(`/api/outreach/invites?t=${Date.now()}`, { 
-        cache: 'no-store',
-        headers: { 'Authorization': `Bearer ${token}` }
-      });
-      if (!res.ok) throw new Error('Failed to fetch school invites');
-      const data = await res.json();
-      setRequests(data);
-    } catch (err: any) {
-      toast.error(err.message);
-    } finally {
-      setIsLoading(false);
-    }
-  };
-
   useEffect(() => {
-    fetchRequests();
     window.scrollTo(0, 0);
   }, []);
 
@@ -77,26 +67,32 @@ export default function AdminSchoolInvites() {
     }
   }, [selectedRequest]);
 
-  const updateStatus = async (id: string, newStatus: string) => {
-    try {
-      setRequests(prev => prev.map(m => m.id === id ? { ...m, status: newStatus } : m));
-      if (selectedRequest?.id === id) setSelectedRequest((prev: any) => ({ ...prev, status: newStatus }));
-
-      const token = await auth.currentUser?.getIdToken();
-      const res = await fetch(`/api/outreach/invite/${id}/status`, {
-        method: 'PATCH',
-        headers: { 
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${token}`
-        },
-        body: JSON.stringify({ status: newStatus }),
+  const updateStatusMutation = useMutation({
+    mutationFn: ({ id, status }: { id: string, status: string }) => outreachApi.updateInviteStatus(id, { status }),
+    onMutate: async ({ id, status }) => {
+      await queryClient.cancelQueries({ queryKey: queryKeys.schoolInvites });
+      const previousRequests = queryClient.getQueryData(queryKeys.schoolInvites);
+      queryClient.setQueryData(queryKeys.schoolInvites, (old: any) => {
+        if (!old) return old;
+        return old.map((r: any) => r.id === id ? { ...r, status } : r);
       });
-      if (!res.ok) throw new Error('Failed to update status');
-      toast.success(`Request marked as ${newStatus}`);
-    } catch (err: any) {
-      toast.error(err.message);
-      fetchRequests();
+      if (selectedRequest?.id === id) {
+        setSelectedRequest((prev: any) => ({ ...prev, status }));
+      }
+      return { previousRequests };
+    },
+    onError: (err, variables, context) => {
+      queryClient.setQueryData(queryKeys.schoolInvites, context?.previousRequests);
+      toast.error('Failed to update status');
+    },
+    onSuccess: (data, variables) => {
+      toast.success(`Request marked as ${variables.status}`);
+      queryClient.invalidateQueries({ queryKey: queryKeys.schoolInvites });
     }
+  });
+
+  const updateStatus = (id: string, newStatus: string) => {
+    updateStatusMutation.mutate({ id, status: newStatus });
   };
 
   const handleExport = () => {

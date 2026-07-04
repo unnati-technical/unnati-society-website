@@ -1,16 +1,18 @@
-import React from 'react'
+import React, { lazy } from 'react'
 import Navbar from '../components/common/Navbar'
 import NavUnn from '../components/common/NavUnn'
 import HeroSection from '../components/pagesCompo/homepage/HeroSection'
-import Aboutus from '../components/pagesCompo/homepage/Aboutus'
-import Vision from '../components/pagesCompo/homepage/Vision'
-import Program from '../components/pagesCompo/homepage/Program'
-import Data from '../components/pagesCompo/homepage/Data'
-import Events from '../components/pagesCompo/homepage/Events'
-import Education from '../components/pagesCompo/homepage/Education'
-import Footer from '../components/common/Footer'
-import Testimonial1 from '../components/pagesCompo/homepage/Testimonial1'
-import Testimonial2 from '../components/pagesCompo/homepage/Testimonial2'
+import { LazySection } from '../components/common/LazySection'
+
+const Aboutus = lazy(() => import('../components/pagesCompo/homepage/Aboutus'))
+const Vision = lazy(() => import('../components/pagesCompo/homepage/Vision'))
+const Program = lazy(() => import('../components/pagesCompo/homepage/Program'))
+const Data = lazy(() => import('../components/pagesCompo/homepage/Data'))
+const Events = lazy(() => import('../components/pagesCompo/homepage/Events'))
+const Education = lazy(() => import('../components/pagesCompo/homepage/Education'))
+const Footer = lazy(() => import('../components/common/Footer'))
+const Testimonial1 = lazy(() => import('../components/pagesCompo/homepage/Testimonial1'))
+const Testimonial2 = lazy(() => import('../components/pagesCompo/homepage/Testimonial2'))
 
 const Homepage = () => {
   return (
@@ -18,15 +20,16 @@ const Homepage = () => {
         <Navbar/>
         <NavUnn/>
         <HeroSection/>
-        <Aboutus/>
-        <Testimonial1/>
-        <Education/>
-        <Vision/>
-        <Testimonial2/>
-        <Program/>
-        <Data/>
-        <Events/>
-        <Footer/>
+        
+        <LazySection><Aboutus/></LazySection>
+        <LazySection><Testimonial1/></LazySection>
+        <LazySection><Education/></LazySection>
+        <LazySection><Vision/></LazySection>
+        <LazySection><Testimonial2/></LazySection>
+        <LazySection><Program/></LazySection>
+        <LazySection><Data/></LazySection>
+        <LazySection><Events/></LazySection>
+        <LazySection><Footer/></LazySection>
     </div>
   )
 }

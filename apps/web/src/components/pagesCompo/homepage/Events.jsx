@@ -1,5 +1,8 @@
-import React, { useState, useEffect } from 'react'
-const icon = 'https://res.cloudinary.com/drhkvdtw2/image/upload/v1782396879/unnati_assets/right-arrow.png'
+import React from 'react'
+import { MdArrowOutward } from "react-icons/md";
+import { useQuery } from '@tanstack/react-query';
+import { eventsApi } from "../../../../api/events.api";
+import { queryKeys } from "../../../../constants/queryKeys";
 import { useNavigate } from "react-router-dom";
 
 const CARD_COLORS = [
@@ -21,22 +24,12 @@ const STATIC_EVENTS = [
 
 const Events = () => {
   const navigate = useNavigate();
-  const [events, setEvents] = useState(STATIC_EVENTS);
+  const { data: fetchedEvents } = useQuery({
+    queryKey: queryKeys.events,
+    queryFn: eventsApi.getUpcoming,
+  });
 
-  useEffect(() => {
-    const fetchEvents = async () => {
-      try {
-        const res = await fetch('/api/events/upcoming');
-        if (res.ok) {
-          const data = await res.json();
-          if (data.length > 0) setEvents(data);
-        }
-      } catch {
-        // Silently fall back to static events
-      }
-    };
-    fetchEvents();
-  }, []);
+  const events = fetchedEvents?.length > 0 ? fetchedEvents : STATIC_EVENTS;
 
   return (
     <section className='flex justify-center items-center py-20 w-full overflow-hidden'>
@@ -75,7 +68,7 @@ const Events = () => {
                         </div>
                         {ev.link && (
                           <div className='relative z-10 bg-white border-0 rounded-full p-2 cursor-pointer shadow-lg hover:scale-110 transition-transform'>
-                              <img loading="lazy" src={icon} alt=""
+                              <MdArrowOutward size={24} 
                                    onClick={() => navigate(ev.link)}
                               />
                           </div>

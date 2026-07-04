@@ -7,8 +7,10 @@ import {
   Heart, Calendar, FileText, Share2, Phone
 } from 'lucide-react';
 import AdminLayout from '../components/admin/AdminLayout';
-import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
+import { useQueryClient, useMutation, useQuery } from '@tanstack/react-query';
 import { toast } from 'sonner';
+import { notificationsApi } from '../api/notifications.api';
+import { queryKeys } from '../constants/queryKeys';
 
 const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:3005';
 
@@ -72,30 +74,20 @@ export default function AdminEmailNotifications() {
   });
 
   const { data: recipients = [], isLoading } = useQuery<NotificationRecipient[]>({
-    queryKey: ['notification-recipients'],
+    queryKey: queryKeys.notificationRecipients,
     queryFn: async () => {
-      const res = await fetch(`${API_URL}/notification-recipients`);
-      if (!res.ok) throw new Error('Failed to fetch recipients');
-      return res.json();
+      const res = await notificationsApi.getRecipients();
+      return res || [];
     }
   });
 
   const saveMutation = useMutation({
     mutationFn: async (data: Partial<NotificationRecipient>) => {
-      const url = editingId 
-        ? `${API_URL}/notification-recipients/${editingId}`
-        : `${API_URL}/notification-recipients`;
-      
-      const res = await fetch(url, {
-        method: editingId ? 'PATCH' : 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(data)
-      });
-      if (!res.ok) {
-        const err = await res.json();
-        throw new Error(err.message || 'Failed to save');
+      if (editingId) {
+        return await notificationsApi.updateRecipient(editingId, data);
+      } else {
+        return await notificationsApi.addRecipient(data);
       }
-      return res.json();
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['notification-recipients'] });
@@ -110,9 +102,7 @@ export default function AdminEmailNotifications() {
 
   const deleteMutation = useMutation({
     mutationFn: async (id: string) => {
-      const res = await fetch(`${API_URL}/notification-recipients/${id}`, { method: 'DELETE' });
-      if (!res.ok) throw new Error('Failed to delete');
-      return res.json();
+      return await notificationsApi.removeRecipient(id);
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['notification-recipients'] });
@@ -195,39 +185,7 @@ export default function AdminEmailNotifications() {
             </button>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-            <div className="bg-white rounded-[14px] p-6 border border-[#E5E7EB] shadow-[0_4px_16px_rgba(15,23,42,0.02)]">
-              <div className="w-10 h-10 rounded-lg bg-blue-50 flex items-center justify-center mb-4">
-                <Mail className="text-[#2563EB]" size={20} />
-              </div>
-              <h3 className="font-semibold text-[#0F172A] mb-1">Add Email Recipients</h3>
-              <p className="text-[#64748B] text-sm leading-relaxed">Assign one or multiple email addresses to each form type.</p>
-            </div>
-            
-            <div className="bg-white rounded-[14px] p-6 border border-[#E5E7EB] shadow-[0_4px_16px_rgba(15,23,42,0.02)]">
-              <div className="w-10 h-10 rounded-lg bg-emerald-50 flex items-center justify-center mb-4">
-                <Bell className="text-emerald-600" size={20} />
-              </div>
-              <h3 className="font-semibold text-[#0F172A] mb-1">Automatic Notifications</h3>
-              <p className="text-[#64748B] text-sm leading-relaxed">Recipients instantly receive email whenever someone submits a form.</p>
-            </div>
 
-            <div className="bg-white rounded-[14px] p-6 border border-[#E5E7EB] shadow-[0_4px_16px_rgba(15,23,42,0.02)]">
-              <div className="w-10 h-10 rounded-lg bg-purple-50 flex items-center justify-center mb-4">
-                <Shield className="text-purple-600" size={20} />
-              </div>
-              <h3 className="font-semibold text-[#0F172A] mb-1">Role Based</h3>
-              <p className="text-[#64748B] text-sm leading-relaxed">Assign different teams to different responsibilities securely.</p>
-            </div>
-
-            <div className="bg-white rounded-[14px] p-6 border border-[#E5E7EB] shadow-[0_4px_16px_rgba(15,23,42,0.02)]">
-              <div className="w-10 h-10 rounded-lg bg-orange-50 flex items-center justify-center mb-4">
-                <Settings className="text-orange-600" size={20} />
-              </div>
-              <h3 className="font-semibold text-[#0F172A] mb-1">Manage Anytime</h3>
-              <p className="text-[#64748B] text-sm leading-relaxed">Update recipients whenever your organization changes.</p>
-            </div>
-          </div>
 
           <div className="bg-white rounded-[14px] border border-[#E5E7EB] shadow-[0_4px_16px_rgba(15,23,42,0.02)] overflow-hidden">
             <div className="p-6 border-b border-[#E5E7EB] flex flex-col md:flex-row md:items-center justify-between gap-4">

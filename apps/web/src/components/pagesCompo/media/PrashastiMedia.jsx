@@ -2,6 +2,7 @@ import React from "react";
 import Navbar from "./../../common/Navbar";
 import NavUnn from "./../../common/NavUnn";
 import { cloudinaryImage2 } from "./../../../utils/cloudinary";
+import { ProgressiveImage } from "../../common/ProgressiveImage";
 
 const images = [
   "IMG_9836_nakfk6",
@@ -35,10 +36,10 @@ const PrashastiMedia = () => {
           {/* Pinterest Layout */}
           <div className="columns-1 sm:columns-2 md:columns-3 gap-4">
             {images.map((id, i) => (
-              <img loading="lazy" 
+              <ProgressiveImage
                 key={i}
                 src={cloudinaryImage2(id)}
-                alt="Rangchakra"
+                alt="Prashasti"
                 className="mb-4 w-full rounded-xl break-inside-avoid shadow-md hover:scale-[1.02] transition"
               />
             ))}

@@ -1,6 +1,6 @@
 import React, { Suspense, useEffect } from 'react'
 import { Route, Routes, useNavigate, useLocation } from 'react-router-dom'
-import { UnnatiChatbot } from '@unnati/chatbot'
+import { DelayedChatbot } from './components/common/DelayedChatbot'
 import { Toaster } from 'sonner'
 import { Loader2 } from 'lucide-react'
 
@@ -59,6 +59,7 @@ const Contact = React.lazy(() => import('./pages/Contact'));
 const Outreach = React.lazy(() => import('./pages/Outreach'));
 const JoinUs = React.lazy(() => import('./pages/JoinUs'));
 const Donate = React.lazy(() => import('./pages/Donate'));
+const VerificationPage = React.lazy(() => import('./pages/VerificationPage'));
 
 // Trigger Vercel deployment update
 const App = () => {
@@ -81,7 +82,7 @@ const App = () => {
     <div>
       <ScrollToTop />
       <Toaster position="top-right" richColors />
-      <UnnatiChatbot onNavigate={handleBotNavigate} />
+      <DelayedChatbot onNavigate={handleBotNavigate} />
       <Suspense fallback={<GlobalLoader />}>
         <Routes>
            <Route path="/" element={<Homepage/>}/>
@@ -129,6 +130,7 @@ const App = () => {
            <Route path="/outreach" element={<Outreach/>}/>
            <Route path="/join-us" element={<JoinUs/>}/>
            <Route path="/donate" element={<Donate/>}/>
+           <Route path="/verify/:id" element={<VerificationPage/>}/>
 
         </Routes>
       </Suspense>

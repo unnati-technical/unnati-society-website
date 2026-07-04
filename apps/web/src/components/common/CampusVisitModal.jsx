@@ -10,6 +10,7 @@ import {
 } from 'react-icons/fi';
 import { FaBuilding } from 'react-icons/fa';
 import { jsPDF } from 'jspdf';
+import { outreachApi } from '../../api/outreach.api';
 
 const CampusVisitModal = ({ isOpen, onClose }) => {
   const [step, setStep] = useState(1);
@@ -210,15 +211,7 @@ const CampusVisitModal = ({ isOpen, onClose }) => {
     setIsSubmitting(true);
     
     try {
-      const response = await fetch('/api/outreach/campus-visit', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(formData),
-      });
-
-      if (!response.ok) {
-        throw new Error('Failed to submit');
-      }
+      await outreachApi.campusVisit(formData);
 
       setIsSuccess(true);
       localStorage.removeItem(STORAGE_KEY);

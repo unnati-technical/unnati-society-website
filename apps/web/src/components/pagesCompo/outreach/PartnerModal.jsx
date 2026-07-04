@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { X, Handshake, ShieldCheck, ArrowRight, ChevronDown, Check, UploadCloud, Calendar, Download, Home, FileText, Send, Shield } from 'lucide-react';
 import { toast } from 'sonner';
+import { outreachApi } from '../../../api/outreach.api';
 
 const AREA_OPTIONS = [
   'Digital Literacy', 'Career Guidance', 'STEM', 'Innovation', 'AI', 'Coding', 'Cyber Safety',
@@ -96,12 +97,7 @@ const PartnerModal = ({ isOpen, onClose }) => {
         data.append('file', uploadedFile);
       }
 
-      const response = await fetch('/api/outreach/partner', {
-        method: 'POST',
-        body: data,
-      });
-
-      if (!response.ok) throw new Error('Failed to submit request');
+      await outreachApi.partner(data);
       setReferenceId(`PART-${new Date().getFullYear()}-${Math.floor(1000 + Math.random() * 9000)}`);
       setIsSuccess(true);
     } catch (error) {

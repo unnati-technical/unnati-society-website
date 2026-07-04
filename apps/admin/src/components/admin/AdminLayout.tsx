@@ -14,7 +14,7 @@ const sidebarGroups = [
   {
     title: 'Management',
     items: [
-      { name: 'User Management', icon: Users, path: '/admin/users' },
+      { name: 'Certificates', icon: FileText, path: '/admin/certificates' },
       { name: 'Team Leads', icon: UserSquare2, path: '/admin/teamleads' },
       { name: 'Volunteers', icon: Handshake, path: '/admin/volunteers' },
       { name: 'Students', icon: GraduationCap, path: '/admin/students' },

@@ -6,6 +6,8 @@ import {
   ArrowRight,
   Laptop, Lightbulb, Building2
 } from 'lucide-react';
+import { FiHeart, FiGift, FiCreditCard, FiCheckCircle, FiShield, FiTrendingUp } from 'react-icons/fi';
+import { donationsApi } from '../api/donations.api';
 import Navbar from '../components/common/Navbar';
 import NavUnn from '../components/common/NavUnn';
 import Footer from '../components/common/Footer';
@@ -110,12 +112,7 @@ const Donate = () => {
     const finalAmount = amount === 'Custom' ? Number(customAmount) : amount;
     setIsProcessing(true);
     try {
-      const res = await fetch('/api/donations/create-order', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ amount: finalAmount, donorName, donorEmail, donorPhone, donorPan, donorAddress })
-      });
-      const order = await res.json();
+      const order = await donationsApi.createOrder({ amount: finalAmount, donorName, donorEmail, donorPhone, donorPan, donorAddress });
       if (!order || !order.orderId) throw new Error('Could not create order');
       const options = {
         key: import.meta.env.VITE_RAZORPAY_KEY_ID || 'dummy_key',
@@ -126,17 +123,12 @@ const Donate = () => {
         order_id: order.orderId,
         handler: async (response) => {
           try {
-            const verifyRes = await fetch('/api/donations/verify-payment', {
-              method: 'POST',
-              headers: { 'Content-Type': 'application/json' },
-              body: JSON.stringify({
-                razorpay_order_id: response.razorpay_order_id,
-                razorpay_payment_id: response.razorpay_payment_id,
-                razorpay_signature: response.razorpay_signature,
-                donationId: order.donationId
-              })
+            const v = await donationsApi.verifyPayment({
+              razorpay_order_id: response.razorpay_order_id,
+              razorpay_payment_id: response.razorpay_payment_id,
+              razorpay_signature: response.razorpay_signature,
+              donationId: order.donationId
             });
-            const v = await verifyRes.json();
             if (v.success) { toast.success('Donation Successful! Thank you.'); setAmount(500); setModalOpen(false); }
             else toast.error('Payment verification failed');
           } catch { toast.error('Payment verification error'); }

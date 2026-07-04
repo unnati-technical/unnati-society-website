@@ -5,62 +5,54 @@ import {
   Bell, FileText, Download, Eye, ChevronDown, Check, Briefcase, Mail, Info, FileEdit, Printer, Copy, Trash2
 } from 'lucide-react';
 import { toast } from 'sonner';
+import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import AdminLayout from '../components/admin/AdminLayout';
 import { auth } from '../lib/firebase';
+import { outreachApi } from '../api/outreach.api';
+import { queryKeys } from '../constants/queryKeys';
 
 const AdminCampusVisits = () => {
-  const [requests, setRequests] = useState([]);
-  const [isLoading, setIsLoading] = useState(true);
+  const queryClient = useQueryClient();
+  const { data: requests = [], isLoading } = useQuery({
+    queryKey: queryKeys.campusVisits,
+    queryFn: async () => {
+      const res = await outreachApi.getCampusVisits();
+      return res || [];
+    }
+  });
+
   const [searchTerm, setSearchTerm] = useState('');
   const [filter, setFilter] = useState('ALL');
   const [expandedRequestId, setExpandedRequestId] = useState(null);
   const [actionMenuOpen, setActionMenuOpen] = useState(false);
 
-  const fetchRequests = async () => {
-    setIsLoading(true);
-    try {
-      const token = await auth.currentUser?.getIdToken();
-      const res = await fetch(`/api/outreach/campus-visits?t=${Date.now()}`, { 
-        cache: 'no-store',
-        headers: { 'Authorization': `Bearer ${token}` }
-      });
-      if (!res.ok) {
-        const errText = await res.text();
-        throw new Error(`Failed to fetch campus visits (${res.status}): ${errText}`);
-      }
-      const data = await res.json();
-      setRequests(data);
-    } catch (err) {
-      toast.error(err.message);
-    } finally {
-      setIsLoading(false);
-    }
-  };
-
   useEffect(() => {
-    fetchRequests();
     window.scrollTo(0, 0);
   }, []);
 
-  const updateStatus = async (id, newStatus) => {
-    try {
-      setRequests(prev => prev.map(m => m.id === id ? { ...m, status: newStatus } : m));
-      
-      const token = await auth.currentUser?.getIdToken();
-      const res = await fetch(`/api/outreach/campus-visit/${id}/status`, {
-        method: 'PATCH',
-        headers: { 
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${token}`
-        },
-        body: JSON.stringify({ status: newStatus }),
+  const updateStatusMutation = useMutation({
+    mutationFn: ({ id, status }: { id: string, status: string }) => outreachApi.updateCampusVisitStatus(id, { status }),
+    onMutate: async ({ id, status }) => {
+      await queryClient.cancelQueries({ queryKey: queryKeys.campusVisits });
+      const previousRequests = queryClient.getQueryData(queryKeys.campusVisits);
+      queryClient.setQueryData(queryKeys.campusVisits, (old: any) => {
+        if (!old) return old;
+        return old.map((r: any) => r.id === id ? { ...r, status } : r);
       });
-      if (!res.ok) throw new Error('Failed to update status');
-      toast.success(`Request marked as ${newStatus.toLowerCase()}`);
-    } catch (err) {
-      toast.error(err.message);
-      fetchRequests();
+      return { previousRequests };
+    },
+    onError: (err, variables, context) => {
+      queryClient.setQueryData(queryKeys.campusVisits, context?.previousRequests);
+      toast.error('Failed to update status');
+    },
+    onSuccess: (data, variables) => {
+      toast.success(`Request marked as ${variables.status.toLowerCase()}`);
+      queryClient.invalidateQueries({ queryKey: queryKeys.campusVisits });
     }
+  });
+
+  const updateStatus = (id: any, newStatus: any) => {
+    updateStatusMutation.mutate({ id, status: newStatus });
   };
 
   const handleRowClick = async (req) => {
@@ -74,21 +66,7 @@ const AdminCampusVisits = () => {
     setActionMenuOpen(false);
     
     if (req.status === 'PENDING') {
-      try {
-        const token = await auth.currentUser?.getIdToken();
-        const res = await fetch(`/api/outreach/campus-visit/${req.id}/status`, {
-          method: 'PATCH',
-          headers: { 
-            'Content-Type': 'application/json',
-            'Authorization': `Bearer ${token}`
-          },
-          body: JSON.stringify({ status: 'REVIEWED' }),
-        });
-        if (res.ok) {
-          const updated = { ...req, status: 'REVIEWED' };
-          setRequests(prev => prev.map(m => m.id === req.id ? updated : m));
-        }
-      } catch { /* silent */ }
+      updateStatusMutation.mutate({ id: req.id, status: 'REVIEWED' });
     }
   };
 

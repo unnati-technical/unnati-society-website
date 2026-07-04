@@ -74,8 +74,8 @@ const ImpactAndReach = () => {
           <span className="text-[10px] font-bold text-gray-500 border border-gray-200 px-2 py-1 rounded-md cursor-pointer hover:bg-gray-50">This Year ▼</span>
         </div>
         
-        <div className="flex-1 w-full min-h-[200px]">
-          <ResponsiveContainer width="100%" height="100%">
+        <div className="w-full" style={{ height: 200 }}>
+          <ResponsiveContainer width="100%" height={200}>
             <LineChart data={trendData} margin={{ top: 5, right: 10, left: -25, bottom: 0 }}>
               <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#f1f5f9" />
               <XAxis dataKey="name" axisLine={false} tickLine={false} tick={{ fontSize: 9, fill: '#94A3B8', fontWeight: 700 }} dy={10} />

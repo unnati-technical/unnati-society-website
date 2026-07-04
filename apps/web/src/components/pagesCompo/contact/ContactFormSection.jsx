@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { useForm, useWatch } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import * as z from 'zod';
+import { contactApi } from '../../../../api/contact.api';
 import { MapPin, Mail, Phone, Send, Loader2 } from 'lucide-react';
 import { FaInstagram, FaLinkedinIn } from 'react-icons/fa';
 import { FaXTwitter } from 'react-icons/fa6';
@@ -38,13 +39,7 @@ const ContactFormSection = () => {
   const onSubmit = async (data) => {
     setIsSubmitting(true);
     try {
-      const response = await fetch('/api/contact', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(data),
-      });
-
-      if (!response.ok) throw new Error('Failed to send message');
+      await contactApi.submit(data);
 
       toast.success('Message sent successfully! We will get back to you soon.');
       reset();

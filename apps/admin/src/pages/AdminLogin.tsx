@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
-import { Mail, Lock, LogIn, AlertCircle, ShieldCheck } from 'lucide-react';
-import { signInWithEmailAndPassword, signInWithPopup, createUserWithEmailAndPassword } from 'firebase/auth';
+import { Mail, Lock, LogIn, AlertCircle, ShieldCheck, KeyRound } from 'lucide-react';
+import { signInWithEmailAndPassword, signInWithPopup, createUserWithEmailAndPassword, sendPasswordResetEmail } from 'firebase/auth';
 import { auth, googleProvider } from '../lib/firebase';
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'sonner';
@@ -12,6 +12,7 @@ const AdminLogin = () => {
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
+  const [resetLoading, setResetLoading] = useState(false);
   const navigate = useNavigate();
 
   const handleEmailLogin = async (e) => {
@@ -36,11 +37,15 @@ const AdminLogin = () => {
              await createUserWithEmailAndPassword(auth, email, password);
              toast.success('Admin Account Initialized & Logged In!');
              navigate('/admin/dashboard');
-         } catch (createErr) {
-             setError('Invalid password or account setup failed.');
+         } catch (createErr: any) {
+             if (createErr.code === 'auth/email-already-in-use') {
+               setError('Invalid password. Please try again or use Forgot Password.');
+             } else {
+               setError(`Account setup failed: ${createErr.message || createErr.code}`);
+             }
          }
       } else {
-         setError('Invalid password.');
+         setError(`Login failed: ${err.message || err.code}`);
       }
     } finally {
       setLoading(false);
@@ -61,6 +66,29 @@ const AdminLogin = () => {
     } catch (err) {
       console.error(err);
       setError('Failed to log in with Google.');
+    }
+  };
+
+  const handleResetPassword = async () => {
+    if (!email) {
+      setError('Please enter the admin email address first.');
+      return;
+    }
+    if (email !== ADMIN_EMAIL) {
+      setError('Access Denied: Only the official Unnati Admin email is allowed.');
+      return;
+    }
+    
+    setResetLoading(true);
+    setError('');
+    try {
+      await sendPasswordResetEmail(auth, email);
+      toast.success('Password reset email sent! Please check your inbox.');
+    } catch (err: any) {
+      console.error(err);
+      setError(`Failed to send password reset email: ${err.message || err.code}`);
+    } finally {
+      setResetLoading(false);
     }
   };
 
@@ -119,13 +147,24 @@ const AdminLogin = () => {
               </div>
             </div>
 
-            <button
-              type="submit"
-              disabled={loading}
-              className="w-full flex items-center justify-center gap-2 py-3 px-4 rounded-xl shadow-lg shadow-blue-600/30 text-sm font-extrabold text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-all disabled:opacity-50"
-            >
-              {loading ? 'Authenticating...' : <><LogIn size={18} /> Secure Login</>}
-            </button>
+            <div className="flex flex-col gap-3">
+              <button
+                type="submit"
+                disabled={loading || resetLoading}
+                className="w-full flex items-center justify-center gap-2 py-3 px-4 rounded-xl shadow-lg shadow-blue-600/30 text-sm font-extrabold text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-all disabled:opacity-50"
+              >
+                {loading ? 'Authenticating...' : <><LogIn size={18} /> Secure Login</>}
+              </button>
+              
+              <button
+                type="button"
+                onClick={handleResetPassword}
+                disabled={loading || resetLoading}
+                className="w-full flex items-center justify-center gap-2 py-2.5 px-4 rounded-xl text-sm font-semibold text-blue-600 bg-blue-50 hover:bg-blue-100 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-all disabled:opacity-50"
+              >
+                {resetLoading ? 'Sending...' : <><KeyRound size={16} /> Forgot Password?</>}
+              </button>
+            </div>
           </form>
 
           <div className="mt-8">

@@ -1,30 +1,31 @@
 import React, { useState, useEffect } from 'react';
 import { MessageSquare } from 'lucide-react';
 import { useNavigate, useLocation } from 'react-router-dom';
+import { useQuery } from '@tanstack/react-query';
+import { contactApi } from '../../api/contact.api';
+import { queryKeys } from '../../constants/queryKeys';
 
 const MessageNotification = () => {
   const [pendingCount, setPendingCount] = useState(0);
   const navigate = useNavigate();
   const location = useLocation();
 
-  const fetchPendingMessages = async () => {
-    try {
-      const res = await fetch('/api/contact');
-      if (!res.ok) return;
-      const data = await res.json();
-
-      // Only count messages that arrived AFTER the last time the admin visited /admin/messages
-      const lastViewed = parseInt(localStorage.getItem('messages_last_viewed') || '0', 10);
-      const newPending = data.filter(m => {
-        const msgTime = new Date(m.createdAt).getTime();
-        return m.status === 'PENDING' && msgTime > lastViewed;
-      }).length;
-
-      setPendingCount(newPending);
-    } catch (err) {
-      console.error('Failed to fetch messages for notification', err);
+  const { data: messages = [] } = useQuery({
+    queryKey: queryKeys.messages,
+    queryFn: async () => {
+      const res = await contactApi.getMessages();
+      return res || [];
     }
-  };
+  });
+
+  useEffect(() => {
+    const lastViewed = parseInt(localStorage.getItem('messages_last_viewed') || '0', 10);
+    const newPending = messages.filter((m: any) => {
+      const msgTime = new Date(m.createdAt).getTime();
+      return m.status === 'PENDING' && msgTime > lastViewed;
+    });
+    setPendingCount(newPending.length);
+  }, [messages]);
 
   // Clear the badge when on the messages page
   useEffect(() => {
@@ -33,13 +34,6 @@ const MessageNotification = () => {
       setPendingCount(0);
     }
   }, [location.pathname]);
-
-  useEffect(() => {
-    fetchPendingMessages();
-    const interval = setInterval(fetchPendingMessages, 30000);
-    return () => clearInterval(interval);
-
-  }, []);
 
   const handleClick = () => {
     localStorage.setItem('messages_last_viewed', Date.now().toString());

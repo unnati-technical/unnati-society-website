@@ -1,17 +1,25 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, Suspense, lazy } from 'react';
 import AdminLayout from '../components/admin/AdminLayout';
 import AdminKpiCards from '../components/admin/AdminKpiCards';
-import AdminAnalytics from '../components/admin/AdminAnalytics';
 import OperationsOverview from '../components/admin/OperationsOverview';
 import RecentActivities from '../components/admin/RecentActivities';
 import UpcomingEvents from '../components/admin/UpcomingEvents';
 import UserManagementPreview from '../components/admin/UserManagementPreview';
-import AdminTaskSummary from '../components/admin/AdminTaskSummary';
 import PendingApprovals from '../components/admin/PendingApprovals';
-import ReportsSnapshot from '../components/admin/ReportsSnapshot';
-import ImpactAndReach from '../components/admin/ImpactAndReach';
 import NotificationSettings from '../components/admin/NotificationSettings';
 import SystemSettings from '../components/admin/SystemSettings';
+import { Loader2 } from 'lucide-react';
+
+const AdminAnalytics = lazy(() => import('../components/admin/AdminAnalytics'));
+const AdminTaskSummary = lazy(() => import('../components/admin/AdminTaskSummary'));
+const ReportsSnapshot = lazy(() => import('../components/admin/ReportsSnapshot'));
+const ImpactAndReach = lazy(() => import('../components/admin/ImpactAndReach'));
+
+const ChartSkeleton = () => (
+  <div className="w-full h-[300px] bg-white rounded-2xl border border-gray-100 flex items-center justify-center animate-pulse shadow-sm">
+    <Loader2 className="w-8 h-8 text-gray-300 animate-spin" />
+  </div>
+);
 
 const AdminDashboard = () => {
   useEffect(() => {
@@ -22,7 +30,11 @@ const AdminDashboard = () => {
     <AdminLayout>
       <div className="max-w-[1600px] mx-auto pb-10">
         <AdminKpiCards />
-        <AdminAnalytics />
+        
+        <Suspense fallback={<ChartSkeleton />}>
+          <AdminAnalytics />
+        </Suspense>
+        
         <OperationsOverview />
         
         {/* Three Column Split for Activities, Events, and Tasks/Approvals */}
@@ -35,7 +47,9 @@ const AdminDashboard = () => {
           </div>
           <div className="lg:col-span-1 h-full flex flex-col gap-6">
             <div className="flex-1 min-h-[220px]">
-              <AdminTaskSummary />
+              <Suspense fallback={<ChartSkeleton />}>
+                <AdminTaskSummary />
+              </Suspense>
             </div>
             <div className="flex-1 min-h-[220px]">
               <PendingApprovals />
@@ -54,11 +68,15 @@ const AdminDashboard = () => {
             <NotificationSettings />
           </div>
           <div className="lg:col-span-1 h-full">
-            <ReportsSnapshot />
+            <Suspense fallback={<ChartSkeleton />}>
+              <ReportsSnapshot />
+            </Suspense>
           </div>
         </div>
 
-        <ImpactAndReach />
+        <Suspense fallback={<ChartSkeleton />}>
+          <ImpactAndReach />
+        </Suspense>
 
       </div>
     </AdminLayout>

@@ -3,6 +3,9 @@ import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { Settings, Save, Loader2, KeyRound } from 'lucide-react';
 import { toast } from 'sonner';
+import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
+import { systemSettingsApi } from '../../api/system-settings.api';
+import { queryKeys } from '../../constants/queryKeys';
 
 const SystemSettings = () => {
   const [settings, setSettings] = useState({
@@ -10,55 +13,46 @@ const SystemSettings = () => {
     SMTP_PASS: '',
     ADMIN_EMAIL: ''
   });
-  const [isLoading, setIsLoading] = useState(true);
-  const [isSaving, setIsSaving] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
 
-  const fetchSettings = async () => {
-    setIsLoading(true);
-    try {
-      const res = await fetch('/api/system-settings');
-      if (!res.ok) throw new Error('Failed to fetch settings');
-      const data = await res.json();
-      setSettings(prev => ({ ...prev, ...data }));
-    } catch (err) {
-      toast.error(err.message);
-    } finally {
-      setIsLoading(false);
+  const queryClient = useQueryClient();
+
+  const { data: serverSettings, isLoading } = useQuery({
+    queryKey: queryKeys.systemSettings,
+    queryFn: async () => {
+      const res = await systemSettingsApi.getSettings();
+      return res || [];
     }
-  };
+  });
 
   useEffect(() => {
-
-    fetchSettings();
-  }, []);
-
-  const handleSave = async (e) => {
-    e.preventDefault();
-    setIsSaving(true);
-    try {
-      const payload = {};
-      if (settings.SMTP_USER) payload.SMTP_USER = settings.SMTP_USER;
-      if (settings.SMTP_PASS) payload.SMTP_PASS = settings.SMTP_PASS;
-      if (settings.ADMIN_EMAIL) payload.ADMIN_EMAIL = settings.ADMIN_EMAIL;
-
-      const res = await fetch('/api/system-settings', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(payload),
-      });
-
-      if (!res.ok) throw new Error('Failed to save settings');
-      
-      toast.success('SMTP Configuration saved successfully');
-    } catch (err) {
-      toast.error(err.message);
-    } finally {
-      setIsSaving(false);
+    if (serverSettings) {
+      setSettings(prev => ({ ...prev, ...serverSettings }));
     }
+  }, [serverSettings]);
+
+  const saveMutation = useMutation({
+    mutationFn: (payload: any) => systemSettingsApi.updateSettings(payload),
+    onSuccess: () => {
+      toast.success('SMTP Configuration saved successfully');
+      queryClient.invalidateQueries({ queryKey: queryKeys.systemSettings });
+    },
+    onError: (err: any) => {
+      toast.error(err.message || 'Failed to save settings');
+    }
+  });
+
+  const handleSave = (e: any) => {
+    e.preventDefault();
+    const payload: any = {};
+    if (settings.SMTP_USER) payload.SMTP_USER = settings.SMTP_USER;
+    if (settings.SMTP_PASS) payload.SMTP_PASS = settings.SMTP_PASS;
+    if (settings.ADMIN_EMAIL) payload.ADMIN_EMAIL = settings.ADMIN_EMAIL;
+    
+    saveMutation.mutate(payload);
   };
 
-  const handleChange = (e) => {
+  const handleChange = (e: any) => {
     const { name, value } = e.target;
     setSettings(prev => ({ ...prev, [name]: value }));
   };
@@ -138,11 +132,11 @@ const SystemSettings = () => {
           <div className="mt-6 pt-6 border-t border-gray-100 flex justify-end">
             <button
               type="submit"
-              disabled={isSaving}
-              className="flex items-center gap-2 px-6 py-2.5 bg-purple-600 text-white font-medium rounded-lg hover:bg-purple-700 transition-colors disabled:opacity-50"
+              disabled={saveMutation.isPending}
+              className="flex items-center gap-2 px-6 py-2.5 bg-[#2563EB] text-white rounded-xl font-medium hover:bg-blue-700 transition-colors disabled:opacity-50 ml-auto"
             >
-              {isSaving ? <Loader2 size={18} className="animate-spin" /> : <Save size={18} />}
-              Save Configuration
+              {saveMutation.isPending ? <Loader2 size={18} className="animate-spin" /> : <Save size={18} />}
+              {saveMutation.isPending ? 'Saving...' : 'Save Configuration'}
             </button>
           </div>
         </form>

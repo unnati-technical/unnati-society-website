@@ -6,11 +6,12 @@ import {
   FiX, FiCheckCircle, FiUser, FiMapPin, FiBookOpen, 
   FiBriefcase, FiPhone, FiMail, FiCalendar, FiClock,
   FiFileText, FiShield, FiCheck, FiUsers, FiAward,
-  FiHeart, FiMonitor
+  FiHeart, FiMonitor, FiAlertCircle, FiChevronRight, FiGlobe, FiInfo
 } from 'react-icons/fi';
 import { FaBuilding } from 'react-icons/fa';
 import { BiBuildingHouse, BiChalkboard } from 'react-icons/bi';
 import { jsPDF } from 'jspdf';
+import { outreachApi } from '../../api/outreach.api';
 const UnnatiLogo = 'https://res.cloudinary.com/drhkvdtw2/image/upload/v1782396887/unnati_assets/Unnati.png';
 
 const InviteUsModal = ({ isOpen, onClose }) => {
@@ -201,15 +202,9 @@ const InviteUsModal = ({ isOpen, onClose }) => {
     setIsSubmitting(true);
     
     try {
-      const response = await fetch('/api/outreach/invite', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(formData),
-      });
-
-      if (!response.ok) {
-        throw new Error('Failed to submit');
-      }
+      // Remove UI-only fields that cause 400 Bad Request due to forbidNonWhitelisted
+      const { agreement1, agreement2, ...payload } = formData;
+      await outreachApi.invite(payload);
 
       setIsSuccess(true);
       localStorage.removeItem(STORAGE_KEY);

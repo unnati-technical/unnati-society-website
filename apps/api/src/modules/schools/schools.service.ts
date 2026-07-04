@@ -1,31 +1,32 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
-import { PrismaService } from '../../prisma/prisma.service';
+import { SchoolsRepository } from './repositories/schools.repository';
+import { CreateSchoolDto } from './dto/create-school.dto';
 
 @Injectable()
 export class SchoolsService {
-  constructor(private prisma: PrismaService) {}
+  constructor(private readonly schoolsRepository: SchoolsRepository) {}
 
   async findAll() {
-    return this.prisma.school.findMany({
+    return this.schoolsRepository.findMany({
       orderBy: { createdAt: 'desc' },
     });
   }
 
   async findOne(id: string) {
-    const school = await this.prisma.school.findUnique({ where: { id } });
+    const school = await this.schoolsRepository.findUnique({ where: { id } });
     if (!school) throw new NotFoundException('School not found');
     return school;
   }
 
-  async create(data: any) {
-    return this.prisma.school.create({ data });
+  async create(data: CreateSchoolDto) {
+    return this.schoolsRepository.create({ data });
   }
 
-  async update(id: string, data: any) {
-    return this.prisma.school.update({ where: { id }, data });
+  async update(id: string, data: Partial<CreateSchoolDto>) {
+    return this.schoolsRepository.update({ where: { id }, data });
   }
 
   async remove(id: string) {
-    return this.prisma.school.delete({ where: { id } });
+    return this.schoolsRepository.delete({ where: { id } });
   }
 }

@@ -10,10 +10,12 @@ import {
 } from '@tanstack/react-table';
 import { Eye, MoreVertical } from 'lucide-react';
 import { Volunteer, useVolunteerStore } from '../../../store/useVolunteerStore';
-import { useQueryClient } from '@tanstack/react-query';
+import { useQueryClient, useMutation } from '@tanstack/react-query';
 import { toast } from 'sonner';
 import clsx from 'clsx';
 import { twMerge } from 'tailwind-merge';
+import { volunteersApi } from '../../../api/volunteers.api';
+import { queryKeys } from '../../../constants/queryKeys';
 
 // Helper for tailwind class merging
 function cn(...inputs: (string | undefined | null | false)[]) {
@@ -40,37 +42,30 @@ const ActionCell = ({ volunteer }: { volunteer: Volunteer }) => {
     return () => document.removeEventListener('mousedown', handleClickOutside);
   }, []);
 
-  const handleUpdateStatus = async (status: string, e: React.MouseEvent) => {
-    e.stopPropagation();
-    setShowMenu(false);
-    
-    // Cancel outgoing refetches
-    await queryClient.cancelQueries({ queryKey: ['volunteers'] });
-    // Snapshot the previous value
-    const previousVolunteers = queryClient.getQueryData(['volunteers']);
-
-    // Optimistically update the cache
-    queryClient.setQueryData(['volunteers'], (old: any) => {
-      if (!old) return old;
-      return old.map((v: any) => v.id === volunteer.id ? { ...v, status } : v);
-    });
-
-    try {
-      const res = await fetch(`/api/volunteers/${volunteer.id}/status`, {
-        method: 'PATCH',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ status })
+  const updateStatusMutation = useMutation({
+    mutationFn: ({ id, status }: { id: string, status: string }) => volunteersApi.updateStatus(id, { status }),
+    onMutate: async ({ id, status }) => {
+      setShowMenu(false);
+      await queryClient.cancelQueries({ queryKey: queryKeys.volunteers });
+      const previousVolunteers = queryClient.getQueryData(queryKeys.volunteers);
+      queryClient.setQueryData(queryKeys.volunteers, (old: any) => {
+        if (!old) return old;
+        return old.map((v: any) => v.id === id ? { ...v, status } : v);
       });
-      if (!res.ok) throw new Error('Failed to update status');
-      toast.success(`Volunteer status updated to ${status}`);
-      // Invalidate to ensure sync
-      queryClient.invalidateQueries({ queryKey: ['volunteers'] });
-    } catch (err) {
-      console.error(err);
-      // Rollback on error
-      queryClient.setQueryData(['volunteers'], previousVolunteers);
+      return { previousVolunteers };
+    },
+    onError: (err, variables, context) => {
+      queryClient.setQueryData(queryKeys.volunteers, context?.previousVolunteers);
       toast.error('Failed to update volunteer status');
+    },
+    onSuccess: (data, variables) => {
+      toast.success(`Volunteer status updated to ${variables.status}`);
+      queryClient.invalidateQueries({ queryKey: queryKeys.volunteers });
     }
+  });
+
+  const handleStatusUpdate = (status: string) => {
+    updateStatusMutation.mutate({ id: volunteer.id, status });
   };
 
   return (
@@ -96,9 +91,9 @@ const ActionCell = ({ volunteer }: { volunteer: Volunteer }) => {
         </button>
         {showMenu && (
           <div className="absolute right-0 top-8 w-40 bg-white border border-gray-100 rounded-xl shadow-[0_4px_20px_rgba(0,0,0,0.1)] z-50 py-1 overflow-hidden" onClick={e => e.stopPropagation()}>
-            <button onClick={(e) => handleUpdateStatus('Approved', e)} className="w-full text-left px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50 hover:text-emerald-600 transition-colors">Approve</button>
-            <button onClick={(e) => handleUpdateStatus('Rejected', e)} className="w-full text-left px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50 hover:text-red-600 transition-colors">Reject</button>
-            <button onClick={(e) => handleUpdateStatus('Under Review', e)} className="w-full text-left px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50 hover:text-blue-600 transition-colors">Under Review</button>
+            <button onClick={(e) => { e.stopPropagation(); handleStatusUpdate('Approved'); }} className="w-full text-left px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50 hover:text-emerald-600 transition-colors">Approve</button>
+            <button onClick={(e) => { e.stopPropagation(); handleStatusUpdate('Rejected'); }} className="w-full text-left px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50 hover:text-red-600 transition-colors">Reject</button>
+            <button onClick={(e) => { e.stopPropagation(); handleStatusUpdate('Under Review'); }} className="w-full text-left px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50 hover:text-blue-600 transition-colors">Under Review</button>
           </div>
         )}
       </div>

@@ -10,9 +10,11 @@ import {
   FiUsers, FiBookOpen, FiBriefcase, FiHeart,
   FiCheckCircle, FiArrowRight, FiTarget, FiStar, FiAward, FiMessageSquare
 } from 'react-icons/fi';
-import VolunteerModal from '../components/common/VolunteerModal';
-import ExploreOpportunitiesModal from '../components/common/ExploreOpportunitiesModal';
-import PartnerModal from '../components/pagesCompo/outreach/PartnerModal';
+import { lazy, Suspense } from 'react';
+
+const VolunteerModal = lazy(() => import('../components/common/VolunteerModal'));
+const ExploreOpportunitiesModal = lazy(() => import('../components/common/ExploreOpportunitiesModal'));
+const PartnerModal = lazy(() => import('../components/pagesCompo/outreach/PartnerModal'));
 
 import TestimonialsCarousel from '../components/pagesCompo/joinus/TestimonialsCarousel';
 
@@ -340,20 +342,26 @@ const JoinUs = () => {
       <Footer />
 
       {/* Volunteer Application Modal */}
-      <VolunteerModal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} />
+      <Suspense fallback={null}>
+        <VolunteerModal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} />
+      </Suspense>
 
       {/* Explore Opportunities Modal */}
-      <ExploreOpportunitiesModal
-        isOpen={isExploreModalOpen}
-        onClose={() => setIsExploreModalOpen(false)}
-        onApplyClick={() => setIsModalOpen(true)}
-      />
+      <Suspense fallback={null}>
+        <ExploreOpportunitiesModal
+          isOpen={isExploreModalOpen}
+          onClose={() => setIsExploreModalOpen(false)}
+          onApplyClick={() => setIsModalOpen(true)}
+        />
+      </Suspense>
 
       {/* Partner Modal */}
-      <PartnerModal
-        isOpen={isPartnerModalOpen}
-        onClose={() => setIsPartnerModalOpen(false)}
-      />
+      <Suspense fallback={null}>
+        <PartnerModal
+          isOpen={isPartnerModalOpen}
+          onClose={() => setIsPartnerModalOpen(false)}
+        />
+      </Suspense>
     </div>
   );
 };

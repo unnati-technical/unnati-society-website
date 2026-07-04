@@ -6,41 +6,30 @@ import {
   Loader2, ChevronLeft, CornerDownLeft
 } from 'lucide-react';
 import { toast } from 'sonner';
+import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import AdminLayout from '../components/admin/AdminLayout';
 import { auth } from '../lib/firebase';
+import { contactApi } from '../api/contact.api';
+import { queryKeys } from '../constants/queryKeys';
 
 const AdminMessages = () => {
-  const [messages, setMessages] = useState([]);
-  const [isLoading, setIsLoading] = useState(true);
+  const queryClient = useQueryClient();
+  const { data: messages = [], isLoading } = useQuery({
+    queryKey: queryKeys.messages,
+    queryFn: async () => {
+      const res = await contactApi.getMessages();
+      return res || [];
+    }
+  });
+
   const [searchTerm, setSearchTerm] = useState('');
   const [filter, setFilter] = useState('ALL');
   const [selectedMessage, setSelectedMessage] = useState(null);
   const [replyText, setReplyText] = useState('');
-  const [isSending, setIsSending] = useState(false);
   const [showReplyBox, setShowReplyBox] = useState(false);
   const replyRef = useRef(null);
 
-  const fetchMessages = async () => {
-    setIsLoading(true);
-    try {
-      const token = await auth.currentUser?.getIdToken();
-      const res = await fetch(`/api/contact?t=${Date.now()}`, { 
-        cache: 'no-store',
-        headers: { 'Authorization': `Bearer ${token}` }
-      });
-      if (!res.ok) throw new Error('Failed to fetch messages');
-      const data = await res.json();
-      setMessages(data);
-    } catch (err) {
-      toast.error(err.message);
-    } finally {
-      setIsLoading(false);
-    }
-  };
-
   useEffect(() => {
-
-    fetchMessages();
     window.scrollTo(0, 0);
   }, []);
 
@@ -51,80 +40,67 @@ const AdminMessages = () => {
     }
   }, [showReplyBox]);
 
-  const updateStatus = async (id, newStatus) => {
-    try {
-      setMessages(prev => prev.map(m => m.id === id ? { ...m, status: newStatus } : m));
-      if (selectedMessage?.id === id) setSelectedMessage(prev => ({ ...prev, status: newStatus }));
-
-      const token = await auth.currentUser?.getIdToken();
-      const res = await fetch(`/api/contact/${id}/status`, {
-        method: 'PATCH',
-        headers: { 
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${token}`
-        },
-        body: JSON.stringify({ status: newStatus }),
+  const updateStatusMutation = useMutation({
+    mutationFn: ({ id, status }: { id: string, status: string }) => contactApi.updateStatus(id, { status }),
+    onMutate: async ({ id, status }) => {
+      await queryClient.cancelQueries({ queryKey: queryKeys.messages });
+      const previousMessages = queryClient.getQueryData(queryKeys.messages);
+      queryClient.setQueryData(queryKeys.messages, (old: any) => {
+        if (!old) return old;
+        return old.map((m: any) => m.id === id ? { ...m, status } : m);
       });
-      if (!res.ok) throw new Error('Failed to update status');
-      toast.success(`Message marked as ${newStatus.toLowerCase()}`);
-    } catch (err) {
-      toast.error(err.message);
-      fetchMessages();
+      if (selectedMessage?.id === id) {
+        setSelectedMessage((prev: any) => ({ ...prev, status }));
+      }
+      return { previousMessages };
+    },
+    onError: (err, variables, context) => {
+      queryClient.setQueryData(queryKeys.messages, context?.previousMessages);
+      toast.error('Failed to update status');
+    },
+    onSuccess: (data, variables) => {
+      toast.success(`Message marked as ${variables.status.toLowerCase()}`);
+      queryClient.invalidateQueries({ queryKey: queryKeys.messages });
     }
+  });
+
+  const updateStatus = (id: string, newStatus: string) => {
+    updateStatusMutation.mutate({ id, status: newStatus });
   };
 
-  const sendReply = async () => {
+  const replyMutation = useMutation({
+    mutationFn: ({ id, replyText }: { id: string, replyText: string }) => contactApi.reply(id, { replyText }),
+    onSuccess: () => {
+      toast.success(`Reply sent to ${selectedMessage.email}! ✅`);
+      const updated = { ...selectedMessage, status: 'REPLIED' };
+      setSelectedMessage(updated);
+      queryClient.setQueryData(queryKeys.messages, (old: any) => {
+        if (!old) return old;
+        return old.map((m: any) => m.id === updated.id ? updated : m);
+      });
+      setReplyText('');
+      setShowReplyBox(false);
+    },
+    onError: (err: any) => {
+      toast.error(err.message || 'Failed to send reply');
+    }
+  });
+
+  const sendReply = () => {
     if (!replyText.trim()) {
       toast.error('Please write a reply before sending.');
       return;
     }
-    setIsSending(true);
-    try {
-      const token = await auth.currentUser?.getIdToken();
-      const res = await fetch(`/api/contact/${selectedMessage.id}/reply`, {
-        method: 'POST',
-        headers: { 
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${token}`
-        },
-        body: JSON.stringify({ replyText: replyText.trim() }),
-      });
-      if (!res.ok) throw new Error('Failed to send reply');
-      
-      // Update local state to REPLIED
-      const updated = { ...selectedMessage, status: 'REPLIED' };
-      setSelectedMessage(updated);
-      setMessages(prev => prev.map(m => m.id === updated.id ? updated : m));
-      
-      setReplyText('');
-      setShowReplyBox(false);
-      toast.success(`Reply sent to ${selectedMessage.email}! ✅`);
-    } catch (err) {
-      toast.error(err.message);
-    } finally {
-      setIsSending(false);
-    }
+    replyMutation.mutate({ id: selectedMessage.id, replyText: replyText.trim() });
   };
 
-  const handleSelectMessage = async (msg) => {
+  const handleSelectMessage = (msg: any) => {
     setSelectedMessage(msg);
     setShowReplyBox(false);
     setReplyText('');
 
-    // Auto-mark as REVIEWED when opened (if still PENDING)
     if (msg.status === 'PENDING') {
-      try {
-        const res = await fetch(`/api/contact/${msg.id}/status`, {
-          method: 'PATCH',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ status: 'REVIEWED' }),
-        });
-        if (res.ok) {
-          const updated = { ...msg, status: 'REVIEWED' };
-          setMessages(prev => prev.map(m => m.id === msg.id ? updated : m));
-          setSelectedMessage(updated);
-        }
-      } catch { /* silent — non-critical */ }
+      updateStatusMutation.mutate({ id: msg.id, status: 'REVIEWED' });
     }
   };
 
@@ -352,10 +328,10 @@ const AdminMessages = () => {
                             </button>
                             <button
                               onClick={sendReply}
-                              disabled={isSending || !replyText.trim()}
+                              disabled={replyMutation.isPending || !replyText.trim()}
                               className="flex items-center gap-2 px-5 py-2 bg-[#2563EB] hover:bg-blue-700 disabled:opacity-50 disabled:cursor-not-allowed text-white font-bold text-xs rounded-lg transition-colors shadow-md shadow-blue-500/20"
                             >
-                              {isSending ? (
+                              {replyMutation.isPending ? (
                                 <><Loader2 size={13} className="animate-spin" /> Sending...</>
                               ) : (
                                 <><Send size={13} /> Send Reply</>

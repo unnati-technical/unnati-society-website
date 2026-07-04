@@ -1,28 +1,19 @@
 import React, { useState, useEffect } from 'react';
 import { IndianRupee, RefreshCw, CheckCircle2, Clock, XCircle, Download } from 'lucide-react';
 import { toast } from 'sonner';
+import { useQuery } from '@tanstack/react-query';
 import AdminLayout from '../components/admin/AdminLayout';
+import { donationsApi } from '../api/donations.api';
+import { queryKeys } from '../constants/queryKeys';
 
 const AdminDonations = () => {
-  const [donations, setDonations] = useState([]);
-  const [loading, setLoading] = useState(true);
-
-  const fetchDonations = async () => {
-    setLoading(true);
-    try {
-      const response = await fetch('/api/donations');
-      const data = await response.json();
-      setDonations(data);
-    } catch (error) {
-      toast.error('Failed to fetch donations');
-    } finally {
-      setLoading(false);
+  const { data: donations = [], isLoading: loading, refetch } = useQuery({
+    queryKey: queryKeys.donations,
+    queryFn: async () => {
+      const res = await donationsApi.getAll();
+      return res || [];
     }
-  };
-
-  useEffect(() => {
-    fetchDonations();
-  }, []);
+  });
 
   const getStatusBadge = (status) => {
     switch (status) {
@@ -66,12 +57,10 @@ const AdminDonations = () => {
           </div>
           <div className="flex items-center gap-3">
             <button 
-              onClick={fetchDonations}
-              disabled={loading}
-              className="flex items-center gap-2 px-4 py-2 bg-white border border-gray-200 text-gray-700 rounded-lg hover:bg-gray-50 transition-colors font-medium text-sm disabled:opacity-50"
+              onClick={() => refetch()}
+              className="p-2 border border-gray-200 text-gray-600 rounded-xl hover:bg-gray-50 transition-colors"
             >
-              <RefreshCw size={16} className={loading ? 'animate-spin' : ''} />
-              Refresh
+              <RefreshCw size={20} className={loading ? 'animate-spin text-blue-600' : ''} />
             </button>
             <button className="flex items-center gap-2 px-4 py-2 bg-[#2563EB] text-white rounded-lg hover:bg-blue-700 transition-colors font-medium text-sm shadow-sm">
               <Download size={16} />

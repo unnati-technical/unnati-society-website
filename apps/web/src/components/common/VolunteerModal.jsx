@@ -7,6 +7,9 @@ import {
   FiUsers, FiBookOpen, FiBriefcase, FiCheckCircle,
   FiUpload, FiArrowRight, FiArrowLeft, FiHeart
 } from 'react-icons/fi';
+import { useMutation } from '@tanstack/react-query';
+import { volunteersApi } from '../../../api/volunteers.api';
+import { uploadToCloudinary } from '../../../services/cloudinary.service';
 const UnnatiLogo = 'https://res.cloudinary.com/drhkvdtw2/image/upload/v1782396887/unnati_assets/Unnati.png';
 
 const VolunteerModal = ({ isOpen, onClose }) => {
@@ -102,25 +105,12 @@ const VolunteerModal = ({ isOpen, onClose }) => {
     }
 
     setIsUploading(true);
-    const formDataUpload = new FormData();
-    formDataUpload.append('file', file);
-    formDataUpload.append('upload_preset', 'unnati_preset'); // Requires this unsigned preset to be created in Cloudinary
-
     try {
-      const res = await fetch('https://api.cloudinary.com/v1_1/drhkvdtw2/upload', {
-        method: 'POST',
-        body: formDataUpload
-      });
-      const data = await res.json();
-      if (data.secure_url) {
-        setFormData(prev => ({ ...prev, resume: data.secure_url }));
-        toast.success('Resume uploaded successfully!');
-      } else {
-        throw new Error(data.error?.message || 'Upload failed');
-      }
+      const url = await uploadToCloudinary(file);
+      setFormData(prev => ({ ...prev, resume: url }));
+      toast.success('Resume uploaded successfully!');
     } catch (err) {
-      console.error(err);
-      toast.error('Failed to upload resume. Make sure upload preset "unnati_preset" exists.');
+      toast.error(err.message || 'Failed to upload resume.');
     } finally {
       setIsUploading(false);
     }
@@ -200,30 +190,29 @@ const VolunteerModal = ({ isOpen, onClose }) => {
   };
   const handlePrev = () => setStep(prev => Math.max(prev - 1, 1));
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    if (!validateStep(1) || !validateStep(3)) {
-      return;
-    }
-    setIsSubmitting(true);
-    
-    try {
-      const res = await fetch('/api/volunteers/apply', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(formData)
-      });
-      
-      if (!res.ok) throw new Error('Failed to submit application');
-      
-      setIsSubmitting(false);
+  const applyMutation = useMutation({
+    mutationFn: volunteersApi.apply,
+    onSuccess: () => {
       setIsSuccess(true);
       localStorage.removeItem(STORAGE_KEY);
-    } catch (error) {
-      console.error(error);
-      toast.error('Failed to submit application. Please try again.');
-      setIsSubmitting(false);
+    },
+    onError: (error) => {
+      // Global interceptor handles generic errors, but we can do a fallback
+      // if it wasn't intercepted (e.g. non 500/401 errors)
+      if (error.response?.status < 500 && error.response?.status !== 401) {
+        toast.error(error.response?.data?.message || 'Failed to submit application. Please try again.');
+      }
     }
+  });
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    if (!validateStep(1) || !validateStep(3)) return;
+    
+    // Strip UI-only fields and unwhitelisted fields that cause 400 Bad Request
+    const { consentAccurate, consentConduct, consentContact, state, country, resume, ...payload } = formData;
+    if (resume) payload.resume = resume; // Only send if it's a valid string/url
+    applyMutation.mutate(payload);
   };
 
   const resetAndClose = () => {
@@ -594,15 +583,22 @@ const VolunteerModal = ({ isOpen, onClose }) => {
                       Next Step <FiArrowRight className="group-hover:translate-x-1 transition-transform" />
                     </button>
                   ) : (
-                    <button onClick={handleSubmit} disabled={isSubmitting || !formData.consentConduct || !formData.consentAccurate} className="flex items-center gap-2 px-8 py-3 bg-green-500 text-white font-bold rounded-xl shadow-[0_8px_20px_rgba(34,197,94,0.3)] hover:bg-green-600 hover:shadow-[0_10px_25px_rgba(34,197,94,0.4)] hover:-translate-y-0.5 transition-all group disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none disabled:hover:bg-green-500 disabled:hover:shadow-none ml-auto">
-                      {isSubmitting ? (
-                        <span className="flex items-center gap-2">
-                          <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin"></div> Processing...
-                        </span>
-                      ) : (
-                        <span className="flex items-center gap-2">Submit Application <FiCheckCircle className="group-hover:scale-110 transition-transform"/></span>
-                      )}
-                    </button>
+                    <button
+                        type="submit"
+                        disabled={applyMutation.isPending || !formData.consentConduct || !formData.consentAccurate}
+                        onClick={() => applyMutation.mutate(formData)}
+                        className={`px-8 py-3 font-bold rounded-xl transition-all ${
+                          applyMutation.isPending ? 'bg-orange-400 cursor-not-allowed text-white' : 'bg-green-500 text-white shadow-[0_8px_20px_rgba(34,197,94,0.3)] hover:bg-green-600'
+                        }`}
+                      >
+                        {applyMutation.isPending ? (
+                          <span className="flex items-center gap-2">
+                            <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin"></div> Processing...
+                          </span>
+                        ) : (
+                          <span className="flex items-center gap-2">Submit Application <FiCheckCircle className="group-hover:scale-110 transition-transform"/></span>
+                        )}
+                      </button>
                   )}
                 </div>
 

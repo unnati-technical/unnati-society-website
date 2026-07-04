@@ -11,6 +11,7 @@ import {
 import { PartnersService } from './partners.service';
 import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
 import { Public } from '../auth/decorators/public.decorator';
+import { CreatePartnerDto } from './dto/create-partner.dto';
 
 @Controller('partners')
 @UseGuards(JwtAuthGuard)
@@ -29,12 +30,12 @@ export class PartnersController {
   }
 
   @Post()
-  create(@Body() data: any) {
+  create(@Body() data: CreatePartnerDto) {
     return this.partnersService.create(data);
   }
 
   @Patch(':id')
-  update(@Param('id') id: string, @Body() data: any) {
+  update(@Param('id') id: string, @Body() data: Partial<CreatePartnerDto>) {
     return this.partnersService.update(id, data);
   }
 

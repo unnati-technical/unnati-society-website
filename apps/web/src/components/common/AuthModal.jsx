@@ -3,6 +3,7 @@ import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { FiX, FiEye, FiEyeOff, FiLock, FiShield, FiCheckCircle } from 'react-icons/fi';
 import { FaGraduationCap, FaUserTie, FaHandsHelping, FaUsers } from 'react-icons/fa';
+import { authApi } from '../../api/auth.api';
 const UnnatiLogo = 'https://res.cloudinary.com/drhkvdtw2/image/upload/v1782396887/unnati_assets/Unnati.png';
 import { signInWithEmailAndPassword, createUserWithEmailAndPassword, signInWithPopup } from 'firebase/auth';
 import { auth, googleProvider, githubProvider } from '../../lib/firebase';
@@ -58,19 +59,9 @@ const AuthModal = ({ isOpen, onClose }) => {
 
   const checkTeamLeadApproval = async (user) => {
     try {
-      const token = await user.getIdToken(true);
-      const res = await fetch('/api/team-leads/me', {
-        headers: { Authorization: `Bearer ${token}` }
-      });
-      if (res.ok) {
-        const profile = await res.json();
-        if (profile.credStatus === 'Approved') {
-          return 'approved';
-        } else if (profile.credStatus === 'Rejected') {
-          return 'rejected';
-        } else {
-          return 'pending';
-        }
+      const profile = await authApi.getMe();
+      if (profile && profile.approvalStatus) {
+        return profile.approvalStatus;
       }
       return 'not_found';
     } catch (err) {
@@ -136,14 +127,10 @@ const AuthModal = ({ isOpen, onClose }) => {
         await createUserWithEmailAndPassword(auth, formData.email, formData.password);
         
         if (role === 'team') {
-          await fetch('/api/team-leads/apply', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({
-              name: formData.name,
-              email: formData.email,
-              phone: formData.phone
-            })
+          await authApi.apply({
+            name: formData.name,
+            email: formData.email,
+            phone: formData.phone
           });
         }
         setMode('success');
@@ -170,14 +157,10 @@ const AuthModal = ({ isOpen, onClose }) => {
           toast.error('Your application is still pending admin approval.');
         } else if (status === 'not_found') {
           // Auto-apply if the user doesn't exist in the system yet
-          await fetch('/api/team-leads/apply', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({
-              name: userCred.user.displayName || 'Unknown User',
-              email: userCred.user.email,
-              phone: 'Not Provided'
-            })
+          await authApi.apply({
+            name: userCred.user.displayName || 'Unknown User',
+            email: userCred.user.email,
+            phone: 'Not Provided'
           });
           auth.signOut();
           toast.success('Your Team Lead application has been submitted and is pending admin approval.');
@@ -214,14 +197,10 @@ const AuthModal = ({ isOpen, onClose }) => {
           toast.error('Your application is still pending admin approval.');
         } else if (status === 'not_found') {
           // Auto-apply if the user doesn't exist in the system yet
-          await fetch('/api/team-leads/apply', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({
-              name: userCred.user.displayName || 'Unknown User',
-              email: userCred.user.email,
-              phone: 'Not Provided'
-            })
+          await authApi.apply({
+            name: userCred.user.displayName || 'Unknown User',
+            email: userCred.user.email,
+            phone: 'Not Provided'
           });
           auth.signOut();
           toast.success('Your Team Lead application has been submitted and is pending admin approval.');

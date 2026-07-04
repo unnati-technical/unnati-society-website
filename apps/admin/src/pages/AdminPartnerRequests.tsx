@@ -5,9 +5,12 @@ import {
   FileText, Globe, Check, Briefcase, Download, Filter, MessageSquare, AlertCircle, ChevronRight, ListFilter, UserCheck, Linkedin, Building2
 } from 'lucide-react';
 import { toast } from 'sonner';
+import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { jsPDF } from 'jspdf';
 import AdminLayout from '../components/admin/AdminLayout';
 import { auth } from '../lib/firebase';
+import { outreachApi } from '../api/outreach.api';
+import { queryKeys } from '../constants/queryKeys';
 
 const getInitials = (name) => name ? name.charAt(0).toUpperCase() : "?";
 const getStatusColor = (status) => {
@@ -27,9 +30,16 @@ const getStatusDisplay = (status) => {
   return status ? status.charAt(0).toUpperCase() + status.slice(1).toLowerCase() : 'Pending';
 };
 
-const AdminPartnerRequests = () => {
-  const [requests, setRequests] = useState([]);
-  const [isLoading, setIsLoading] = useState(true);
+export default function AdminPartnerRequests() {
+  const queryClient = useQueryClient();
+  const { data: requests = [], isLoading } = useQuery({
+    queryKey: queryKeys.partnerRequests,
+    queryFn: async () => {
+      const res = await outreachApi.getPartnerRequests();
+      return res || [];
+    }
+  });
+
   const [searchTerm, setSearchTerm] = useState('');
   const [statusFilter, setStatusFilter] = useState('All');
   const [typeFilter, setTypeFilter] = useState('All');
@@ -40,26 +50,7 @@ const AdminPartnerRequests = () => {
   const [adminNotes, setAdminNotes] = useState('');
   const [isUpdatingStatus, setIsUpdatingStatus] = useState(false);
 
-  const fetchRequests = async () => {
-    setIsLoading(true);
-    try {
-      const token = await auth.currentUser?.getIdToken();
-      const res = await fetch(`/api/outreach/partner-requests?t=${Date.now()}`, { 
-        cache: 'no-store',
-        headers: { 'Authorization': `Bearer ${token}` }
-      });
-      if (!res.ok) throw new Error('Failed to fetch partner requests');
-      const data = await res.json();
-      setRequests(data);
-    } catch (err) {
-      toast.error(err.message);
-    } finally {
-      setIsLoading(false);
-    }
-  };
-
   useEffect(() => {
-    fetchRequests();
     window.scrollTo(0, 0);
   }, []);
 
@@ -70,52 +61,63 @@ const AdminPartnerRequests = () => {
     }
   }, [selectedRequest]);
 
-  const updateStatus = async (id, newStatus) => {
-    setIsUpdatingStatus(true);
-    try {
-      const token = await auth.currentUser?.getIdToken();
-      const res = await fetch(`/api/outreach/partner-request/${id}/status`, {
-        method: 'PATCH',
-        headers: { 
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${token}`
-        },
-        body: JSON.stringify({ status: newStatus }),
+  const updateStatusMutation = useMutation({
+    mutationFn: ({ id, status }: { id: string, status: string }) => outreachApi.updatePartnerRequestStatus(id, { status }),
+    onMutate: async ({ id, status }) => {
+      setIsUpdatingStatus(true);
+      await queryClient.cancelQueries({ queryKey: queryKeys.partnerRequests });
+      const previousRequests = queryClient.getQueryData(queryKeys.partnerRequests);
+      queryClient.setQueryData(queryKeys.partnerRequests, (old: any) => {
+        if (!old) return old;
+        return old.map((r: any) => r.id === id ? { ...r, status } : r);
       });
-      if (!res.ok) throw new Error('Failed to update status');
-      
-      setRequests(prev => prev.map(m => m.id === id ? { ...m, status: newStatus } : m));
       if (selectedRequest?.id === id) {
-        setSelectedRequest(prev => ({ ...prev, status: newStatus }));
+        setSelectedRequest((prev: any) => ({ ...prev, status }));
       }
-      toast.success(`Request marked as ${getStatusDisplay(newStatus)}`);
-    } catch (err) {
-      toast.error(err.message);
-    } finally {
-      setIsUpdatingStatus(false);
-    }
+      return { previousRequests };
+    },
+    onError: (err, variables, context) => {
+      queryClient.setQueryData(queryKeys.partnerRequests, context?.previousRequests);
+      toast.error('Failed to update status');
+    },
+    onSuccess: (data, variables) => {
+      toast.success(`Request marked as ${getStatusDisplay(variables.status)}`);
+      queryClient.invalidateQueries({ queryKey: queryKeys.partnerRequests });
+    },
+    onSettled: () => setIsUpdatingStatus(false)
+  });
+
+  const updateStatus = (id: any, newStatus: any) => {
+    updateStatusMutation.mutate({ id, status: newStatus });
   };
 
-  const saveAdminNotes = async () => {
-    if (!selectedRequest) return;
-    try {
-      const token = await auth.currentUser?.getIdToken();
-      const res = await fetch(`/api/outreach/partner-request/${selectedRequest.id}/notes`, {
-        method: 'PATCH',
-        headers: { 
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${token}`
-        },
-        body: JSON.stringify({ notes: adminNotes }),
+  const updateNotesMutation = useMutation({
+    mutationFn: ({ id, notes }: { id: string, notes: string }) => outreachApi.updatePartnerRequestNotes(id, { notes }),
+    onMutate: async ({ id, notes }) => {
+      await queryClient.cancelQueries({ queryKey: queryKeys.partnerRequests });
+      const previousRequests = queryClient.getQueryData(queryKeys.partnerRequests);
+      queryClient.setQueryData(queryKeys.partnerRequests, (old: any) => {
+        if (!old) return old;
+        return old.map((r: any) => r.id === id ? { ...r, adminNotes: notes } : r);
       });
-      if (!res.ok) throw new Error('Failed to save notes');
-      
-      setRequests(prev => prev.map(m => m.id === selectedRequest.id ? { ...m, adminNotes } : m));
-      setSelectedRequest(prev => ({ ...prev, adminNotes }));
+      if (selectedRequest?.id === id) {
+        setSelectedRequest((prev: any) => ({ ...prev, adminNotes: notes }));
+      }
+      return { previousRequests };
+    },
+    onError: (err, variables, context) => {
+      queryClient.setQueryData(queryKeys.partnerRequests, context?.previousRequests);
+      toast.error('Failed to save notes');
+    },
+    onSuccess: () => {
       toast.success('Admin notes saved successfully');
-    } catch (err) {
-      toast.error(err.message);
+      queryClient.invalidateQueries({ queryKey: queryKeys.partnerRequests });
     }
+  });
+
+  const saveAdminNotes = () => {
+    if (!selectedRequest) return;
+    updateNotesMutation.mutate({ id: selectedRequest.id, notes: adminNotes });
   };
 
   const handleDownloadPDF = (req) => {
@@ -871,6 +873,4 @@ const AdminPartnerRequests = () => {
       </div>
     </AdminLayout>
   );
-};
-
-export default AdminPartnerRequests;
+}

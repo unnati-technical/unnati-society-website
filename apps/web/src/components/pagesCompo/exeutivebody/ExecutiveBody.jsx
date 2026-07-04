@@ -1,6 +1,9 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { MdEmail } from "react-icons/md";
 import { FaLinkedin } from "react-icons/fa";
+import { useQuery } from '@tanstack/react-query';
+import { leadershipApi } from "../../../api/leadership.api";
+import { queryKeys } from "../../../constants/queryKeys";
 import { cloudinaryImage } from "../../../utils/cloudinary";
 const directorImg = "https://res.cloudinary.com/drhkvdtw2/image/upload/v1782396812/unnati_assets/directorsir.png";
 const prImg = "https://res.cloudinary.com/drhkvdtw2/image/upload/v1782396871/unnati_assets/prsir.png";
@@ -13,15 +16,20 @@ const SectionHeader = ({ title }) => (
   </div>
 );
 
+import { ProgressiveImage } from "../../common/ProgressiveImage";
+
 const ProfileCard = ({ member, isCloudinary = true, showSocials = true }) => {
   const isCloudinaryFinal = member.img && typeof member.img === 'string' && member.img.startsWith("http") ? false : isCloudinary;
-  const imgSrc = isCloudinaryFinal ? cloudinaryImage(member.img) : member.img;
+  let imgSrc = isCloudinaryFinal && member.img ? cloudinaryImage(member.img) : member.img;
+  if (!imgSrc) {
+    imgSrc = `https://ui-avatars.com/api/?name=${encodeURIComponent(member.name || 'User')}&background=random&color=fff&size=256`;
+  }
   const hasLinkedin = member.linkedin && member.linkedin !== "#";
 
   return (
     <div className="flex flex-col items-center bg-white rounded-xl border border-gray-200 p-8 shadow-sm hover:shadow-lg transition-shadow duration-300 relative group h-full">
       <div className="w-32 h-32 md:w-40 md:h-40 rounded-full overflow-hidden mb-6 border-[6px] border-gray-50 shadow-inner group-hover:border-blue-50 transition-colors duration-300 flex-shrink-0">
-        <img loading="lazy"
+        <ProgressiveImage
           src={imgSrc}
           alt={member.name}
           className="w-full h-full object-cover"
@@ -91,167 +99,40 @@ const ExecutiveBody = () => {
       email: "cbarde.ece@iiitbh.ac.in",
       linkedin: "https://www.linkedin.com/in/dr-chetan-barde-07146449/",
     },
-  ]
-
-  const membersExecutive = [
-    {
-      name: "Dheeraj Yadav",
-      post: "PRESIDENT",
-      img: "dheeraj_cuclko",
-      email: "dheeraj.230101050@iiitbh.ac.in",
-      linkedin: "https://www.linkedin.com/in/dheeraj-yadav-681325218",
-    },
-    {
-      name: "Ayush Thakur",
-      post: "SECRETARY",
-      img: "ayushThakur_p0kzyf",
-      email: "ayush.240102123@iiitbh.ac.in",
-      linkedin: "https://www.linkedin.com/in/ayush-kumar-thakur-544886325/",
-    },
-    {
-      name: "Ayush Yadav",
-      post: "Joint Secretary\nPrograms",
-      img: "ayushyadv_z0khzd",
-      email: "ayush.240102215@iiitbh.ac.in",
-      linkedin: "https://www.linkedin.com/search/results/all/?keywords=ayush%20yadav",
-    },
-    {
-      name: "Jayanshu Bhardwaj",
-      post: "Joint Secretary\nPublic Relation",
-      img: "jayanshuu_iwno29",
-      email: "jayanshu.240101181@iitbh.ac.in",
-      linkedin: "https://www.linkedin.com/in/jayanshu-bhardwaj-05a791322/",
-    },
-    {
-      name: "Twinkle Kumari",
-      post: "Joint Secretary\nTechnical",
-      img: "twinkle_akhjbq",
-      email: "twinkle.240101143@iiitbh.ac.in",
-      linkedin: "https://www.linkedin.com/in/twinkle-kumari-b09306325/",
-    },
   ];
-  const prLeads = [
-    {
-      name: "Sanjana Adhikari",
-      post: "Social Media Lead",
-      img: "pic_-_Sanjana_Adhikari_lxddhm",
-      email: "sanjana.240102169@iiitbh.ac.in",
-      linkedin: "https://www.linkedin.com/in/sanjana-adhikari-541bab2a3",
-    },
 
-    {
-      name: "Shashank Shekhar",
-      post: "Event & Membership Coordinator",
-      img: "shashankk_bbihmd",
-      email: "shashankshekhar2734@gmail.com",
-      linkedin: "https://www.linkedin.com/in/shashank-shekhar-4b6179339/",
-    },
-    {
-      name: "Anushka Sonkar",
-      post: "Event and Membership Coordinator",
-      img: "Screenshot_2026-04-20_190608_s86hsv",
-      email: "anushka.240102057@iiitbh.ac.in",
-      linkedin: "https://www.linkedin.com/in/anushka-sonkar-2b9ba5324",
-    },
-    {
-      name: "Sukrit Aryan",
-      post: "Design and Content Lead",
-      img: "Sukrit_Aryan_xgrmzg",
-      email: "sukritaryan1@gmail.com",
-      linkedin: "https://www.linkedin.com/in/sukrit-aryan",
-    },
-    {
-      name: "Satyak Atul Govindwar",
-      post: "Outreach Lead",
-      img: "SATYAK_GOVINDWAR_nshcyu",
-      email: "satyakatulgovindwar@gmail.com",
-      linkedin: "https://www.linkedin.com/in/satyak-govindwar-6b2246324",
-    },
-  ];
-  const programLeads = [
+  const [selectedYear, setSelectedYear] = useState("");
 
-    {
-      name: "Harsh Kumar Yadav",
-      post: "Research & Development Lead",
-      img: "IMG_20251006_094850_-_HARSH_YADAV_drkoll",
-      email: "harsh.240101010@iiitbh.ac.in",
-      linkedin: "https://www.linkedin.com/in/harsh-kumar-yadav-20844a2b6",
-    },
-    {
-      name: "Krish Sonkar",
-      post: "Research and Development Lead",
-      img: "1759778636960_-_KRISH_SONKAR_uiuvvy",
-      email: "krish.240101127@iiitbh.ac.in",
-      linkedin: "#",
-    },
-    {
-      name: "Anuj Sah",
-      post: "Digixplore Lead",
-      img: "Anuj_Sah_yohlp3",
-      email: "anujah375@gmail.com",
-      linkedin: "#",
-    },
-    {
-      name: "Divya",
-      post: "Digixplore Lead",
-      img: "IMG-20260301-WA0099_-_Divya_Patlan_nndf4y",
-      email: "divya.240101288@iiitbh.ac.in",
-      linkedin: "https://www.linkedin.com/in/divya-patlan-4a2018324",
-    },
-    {
-      name: "Jayanshu Bhardwaj",
-      post: "Netritva Lead",
-      img: "jayanshu_gdrakx",
-      email: "jayanshu18@gmail.com",
-      linkedin: "https://www.linkedin.com/in/jayanshu-bhardwaj-05a791322/",
-    },
-    {
-      name: "Sumendra Singh",
-      post: "Akshar Lead",
-      img: "https://ui-avatars.com/api/?name=Sumendra+Singh&background=random&color=fff&size=256",
-      email: "#",
-      linkedin: "#",
-    },
-    {
-      name: "Sneha Verma",
-      post: "Akshar Lead",
-      img: "https://ui-avatars.com/api/?name=Sneha+Verma&background=random&color=fff&size=256",
-      email: "#",
-      linkedin: "#",
-    },
-    {
-      name: "Navneet Jaiswal",
-      post: "Operations Lead",
-      img: "IMG_20260413_104213_-_Navneet_Jaiswal_1_stokob",
-      email: "navneet.240101028@iiitbh.ac.in",
-      linkedin: "https://www.linkedin.com/in/navneet-jaiswal-8aa05b322",
-    },
-    {
-      name: "Prabhat Rai",
-      post: "Operations Lead",
-      img: "prabhat_-_Prabhat_Rai_jax0i7",
-      email: "prabhat.240103257@iiitbh.ac.in",
-      linkedin: "https://www.linkedin.com/in/prabhat-rai",
-    },
-  ]
-  const technicalLeads = [
-    {
-      name: "Twinkle Kumari",
-      post: "Web Developmnt Lead",
-      img: "twinkle_akhjbq",
-      email: "twinkle.240101143@iiitbh.ac.in",
-      linkedin: "https://www.linkedin.com/in/twinkle-kumari-b09306325/",
-    },
-    {
-      name: "Ishani Karpoor",
-      post: "App Development Lead",
-      img: "ishani_punner",
-      email: "ishani.240103291@iiitbh.ac.in",
-      linkedin: "https://www.linkedin.com/in/ishani-karpoor-8a73b1312",
-    },
-  ]
+  const { data = [], isLoading } = useQuery({
+    queryKey: queryKeys.leadership,
+    queryFn: leadershipApi.getLeadershipData,
+  });
 
+  useEffect(() => {
+    if (data.length > 0 && !selectedYear) {
+      const activeYear = data.find(d => d.isActive);
+      if (activeYear) {
+        setSelectedYear(activeYear.year);
+      } else {
+        setSelectedYear(data[0].year);
+      }
+    }
+  }, [data, selectedYear]);
+  const currentYearData = data.find(d => d.year === selectedYear) || { sections: [] };
 
+  const isExecSection = (s) => s.slug === 'executive-body' || s.slug === 'executive-leads' || s.name.toLowerCase().includes('executive');
+
+  const execBodySection = currentYearData.sections.find(isExecSection);
+  const otherSections = currentYearData.sections.filter(s => !isExecSection(s) && s.isVisible);
+
+  // Map backend member format to frontend ProfileCard format
+  const mapMember = (m) => ({
+    name: m.fullName,
+    post: m.designation,
+    img: m.profileImage,
+    email: m.email,
+    linkedin: m.linkedin,
+  });
 
   return (
     <div className="w-full bg-[#FAFAFA] font-sans pb-24">
@@ -282,66 +163,75 @@ const ExecutiveBody = () => {
           </div>
         </section>
 
-        {/* EXECUTIVE BODY */}
-        <section className="mb-24">
-          <SectionHeader title="Executive Body 2025-26" />
-          <div className="flex flex-wrap justify-center gap-4 w-full">
-            {membersExecutive.map((member, index) => (
-              <div key={index} className="w-full sm:w-[210px] lg:w-[220px] xl:w-[240px]">
-                <ProfileCard member={member} />
-              </div>
-            ))}
-          </div>
-        </section>
-
-        {/* TEAM LEADS */}
-        <section>
-          <SectionHeader title="Team Leads 2025-26" />
-          {/* Team Leads Layout */}
-          <div className="flex flex-col gap-16">
-            {/* Programs */}
-            <div className="flex flex-col gap-8">
-              <div className="bg-blue-600 text-white rounded-2xl py-4 px-6 text-center shadow-lg max-w-sm mx-auto w-full">
-                <h3 className="oswald-font-3 text-2xl tracking-wide">PROGRAMS LEADS</h3>
-              </div>
-              <div className="flex flex-wrap justify-center gap-4">
-                {programLeads.map((member, index) => (
-                  <div key={index} className="w-full sm:w-[210px] lg:w-[220px] xl:w-[240px]">
-                    <ProfileCard member={member} showSocials={true} />
-                  </div>
+        {/* YEAR FILTER */}
+        {data.length > 0 && (
+          <div className="flex justify-center mb-16">
+            <div className="inline-flex items-center gap-3 bg-white p-2 rounded-xl shadow-sm border border-gray-200">
+              <label htmlFor="yearFilter" className="text-sm font-semibold text-gray-600 pl-2">
+                Select Term:
+              </label>
+              <select 
+                id="yearFilter"
+                value={selectedYear} 
+                onChange={(e) => setSelectedYear(e.target.value)}
+                className="px-4 py-2 border border-gray-200 rounded-lg bg-gray-50 text-gray-900 font-semibold focus:outline-none focus:ring-2 focus:ring-blue-500 cursor-pointer"
+              >
+                {data.map(year => (
+                  <option key={year.year} value={year.year}>{year.year}</option>
                 ))}
-              </div>
-            </div>
-
-            {/* PR & Operations */}
-            <div className="flex flex-col gap-8">
-              <div className="bg-[#FFC107] text-black rounded-2xl py-4 px-6 text-center shadow-lg max-w-sm mx-auto w-full">
-                <h3 className="oswald-font-3 text-2xl tracking-wide">PUBLIC RELATIONS LEADS</h3>
-              </div>
-              <div className="flex flex-wrap justify-center gap-4">
-                {prLeads.map((member, index) => (
-                  <div key={index} className="w-full sm:w-[210px] lg:w-[220px] xl:w-[240px]">
-                    <ProfileCard member={member} showSocials={true} />
-                  </div>
-                ))}
-              </div>
-            </div>
-
-            {/* Technical */}
-            <div className="flex flex-col gap-8">
-              <div className="bg-blue-600 text-white rounded-2xl py-4 px-6 text-center shadow-lg max-w-sm mx-auto w-full">
-                <h3 className="oswald-font-3 text-2xl tracking-wide">TECHNICAL LEADS</h3>
-              </div>
-              <div className="flex flex-wrap justify-center gap-4">
-                {technicalLeads.map((member, index) => (
-                  <div key={index} className="w-full sm:w-[210px] lg:w-[220px] xl:w-[240px]">
-                    <ProfileCard member={member} showSocials={true} />
-                  </div>
-                ))}
-              </div>
+              </select>
             </div>
           </div>
-        </section>
+        )}
+
+        {isLoading ? (
+          <div className="flex justify-center items-center py-24">
+            <div className="animate-spin rounded-full h-12 w-12 border-4 border-blue-600 border-t-transparent"></div>
+          </div>
+        ) : (
+          <>
+            {/* EXECUTIVE BODY */}
+            <section className="mb-24">
+              <SectionHeader title={`Executive Body ${selectedYear}`} />
+              {execBodySection?.members?.length > 0 ? (
+                <div className="flex flex-wrap justify-center gap-4 w-full">
+                  {execBodySection.members.filter(m => m.isPublished).map((member, index) => (
+                    <div key={index} className="w-full sm:w-[210px] lg:w-[220px] xl:w-[240px]">
+                      <ProfileCard member={mapMember(member)} />
+                    </div>
+                  ))}
+                </div>
+              ) : (
+                <p className="text-center text-gray-500 font-medium">Data for this term will be updated soon.</p>
+              )}
+            </section>
+
+            {/* TEAM LEADS */}
+            <section>
+              <SectionHeader title={`Team Leads ${selectedYear}`} />
+              <div className="flex flex-col gap-16">
+                {otherSections.map((section) => (
+                  <div key={section.id} className="flex flex-col gap-8">
+                    <div className={`${section.badgeColor === 'yellow' ? 'bg-[#FFC107] text-black' : 'bg-blue-600 text-white'} rounded-2xl py-4 px-6 text-center shadow-lg max-w-sm mx-auto w-full`}>
+                      <h3 className="oswald-font-3 text-2xl tracking-wide uppercase">{section.name}</h3>
+                    </div>
+                    {section.members.filter(m => m.isPublished).length > 0 ? (
+                      <div className="flex flex-wrap justify-center gap-4">
+                        {section.members.filter(m => m.isPublished).map((member, index) => (
+                          <div key={index} className="w-full sm:w-[210px] lg:w-[220px] xl:w-[240px]">
+                            <ProfileCard member={mapMember(member)} showSocials={true} />
+                          </div>
+                        ))}
+                      </div>
+                    ) : (
+                      <p className="text-center text-gray-500 font-medium">Data for this term will be updated soon.</p>
+                    )}
+                  </div>
+                ))}
+              </div>
+            </section>
+          </>
+        )}
 
       </div>
     </div>

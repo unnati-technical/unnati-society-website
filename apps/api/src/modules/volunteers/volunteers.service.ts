@@ -3,17 +3,32 @@ import * as bcrypt from 'bcrypt';
 import { PrismaService } from '../../prisma/prisma.service';
 import { EmailService } from '../../queues/email/email.service';
 import { NotificationsService } from '../notifications/notifications.service';
+import { VolunteersRepository } from './repositories/volunteers.repository';
+import { ApplyVolunteerDto } from './dto/apply-volunteer.dto';
+import { PaginationDto } from '../../common/dto/pagination.dto';
 
 @Injectable()
 export class VolunteersService {
   constructor(
-    private prisma: PrismaService,
+    private prisma: PrismaService, // Kept for User/Role/Volunteer for now, ideally moved to their own repos later
     private emailService: EmailService,
     private notificationsService: NotificationsService,
+    private volunteersRepository: VolunteersRepository,
   ) {}
 
-  async findAll() {
-    const applications = await this.prisma.volunteerApplication.findMany({
+  async findAll(query: PaginationDto) {
+    const where: any = {};
+    
+    if (query.search) {
+      where.OR = [
+        { volunteer: { user: { firstName: { contains: query.search, mode: 'insensitive' } } } },
+        { volunteer: { user: { lastName: { contains: query.search, mode: 'insensitive' } } } },
+        { volunteer: { user: { email: { contains: query.search, mode: 'insensitive' } } } },
+      ];
+    }
+
+    const paginated = await this.volunteersRepository.paginate(query, {
+      where,
       include: {
         volunteer: {
           include: {
@@ -27,13 +42,10 @@ export class VolunteersService {
           },
         },
       },
-      orderBy: {
-        createdAt: 'desc',
-      },
     });
 
     // Transform to match the frontend Volunteer interface
-    return applications.map((app) => ({
+    paginated.data = paginated.data.map((app: any) => ({
       id: app.id,
       volunteerId: `VOL-${app.createdAt.getFullYear()}-${app.id.substring(0, 4).toUpperCase()}`,
       name: `${app.volunteer.user.firstName} ${app.volunteer.user.lastName}`,
@@ -79,11 +91,13 @@ export class VolunteersService {
       emergencyPhone: app.emergencyPhone,
       careerGoals: app.careerGoals,
       startDate: app.startDate,
-    }));
+    })) as any;
+
+    return paginated;
   }
 
   async findOne(id: string) {
-    const app = await this.prisma.volunteerApplication.findUnique({
+    const app = await this.volunteersRepository.findUnique({
       where: { id },
       include: {
         volunteer: {
@@ -107,7 +121,7 @@ export class VolunteersService {
     return app;
   }
 
-  async apply(createDto: any) {
+  async apply(createDto: ApplyVolunteerDto) {
     const {
       email,
       fullName,
@@ -183,11 +197,11 @@ export class VolunteersService {
     }
 
     // 4. Create Volunteer Application
-    const application = await this.prisma.volunteerApplication.create({
+    const application = await this.volunteersRepository.create({
       data: {
         volunteerId: volunteer.id,
         status: 'PENDING',
-        program: interests?.length > 0 ? interests[0] : 'General',
+        program: interests && interests.length > 0 ? interests[0] : 'General',
         roleAppliedFor: mode || 'Volunteer',
         phone: phone || '',
         dob: age ? (new Date().getFullYear() - parseInt(age)).toString() : '',
@@ -235,7 +249,7 @@ export class VolunteersService {
     // Map to DB enums/values if necessary
     const mappedStatus = status.toUpperCase().replace(' ', '_');
 
-    const updated = await this.prisma.volunteerApplication.update({
+    const updated = await this.volunteersRepository.update({
       where: { id },
       data: { status: mappedStatus },
       include: {

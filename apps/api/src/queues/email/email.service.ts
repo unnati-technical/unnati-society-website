@@ -1,56 +1,32 @@
+import { InjectQueue } from '@nestjs/bullmq';
+import { Queue } from 'bullmq';
 import { Injectable, Logger } from '@nestjs/common';
-import * as nodemailer from 'nodemailer';
 import { PrismaService } from '../../prisma/prisma.service';
 import { SystemSettingsService } from '../../modules/system-settings/system-settings.service';
 
 @Injectable()
 export class EmailService {
   private readonly logger = new Logger(EmailService.name);
-
-  constructor(
-    private readonly prisma: PrismaService,
-    private readonly settingsService: SystemSettingsService,
-  ) {}
-
-  private async getTransporter() {
-    const smtpHost = await this.settingsService.getSetting(
-      'SMTP_HOST',
-      process.env.SMTP_HOST || 'smtp.gmail.com',
-    );
-    const smtpPort = await this.settingsService.getSetting(
-      'SMTP_PORT',
-      process.env.SMTP_PORT || '587',
-    );
+  private async pushToQueue(mailOptions: any) {
     const smtpUser = await this.settingsService.getSetting(
       'SMTP_USER',
       process.env.SMTP_USER || '',
     );
-    const smtpPass = await this.settingsService.getSetting(
-      'SMTP_PASS',
-      process.env.SMTP_PASS || '',
-    );
-
-    return nodemailer.createTransport({
-      host: smtpHost,
-      port: parseInt(smtpPort, 10),
-      secure: parseInt(smtpPort, 10) === 465,
-      auth: {
-        user: smtpUser,
-        pass: smtpPass,
-      },
-    });
+    if (!mailOptions.from) {
+      mailOptions.from = `"Unnati Society" <${smtpUser}>`;
+    }
+    await this.emailQueue.add('send-email', mailOptions);
   }
+
+  constructor(
+    private readonly prisma: PrismaService,
+    private readonly settingsService: SystemSettingsService,
+    @InjectQueue('email') private emailQueue: Queue,
+  ) {}
 
   async sendContactAutoReply(name: string, email: string) {
     try {
-      const transporter = await this.getTransporter();
-      const smtpUser = await this.settingsService.getSetting(
-        'SMTP_USER',
-        process.env.SMTP_USER || '',
-      );
-
-      await transporter.sendMail({
-        from: `"Unnati Society" <${smtpUser}>`,
+      await this.pushToQueue({
         to: email,
         subject: 'Thank you for contacting Unnati Society',
         html: `
@@ -87,21 +63,14 @@ export class EmailService {
 
       // Fetch dynamic admin recipients for Contact form
       const recipients = await this.prisma.notificationRecipient.findMany({
-        where: { status: 'Active', categories: { has: 'Contact' } }
+        where: { status: 'Active', categories: { has: 'Contact' } },
       });
       const adminEmails =
         recipients.length > 0
           ? recipients.map((r) => r.email)
           : [defaultAdminEmail];
 
-      const transporter = await this.getTransporter();
-      const smtpUser = await this.settingsService.getSetting(
-        'SMTP_USER',
-        process.env.SMTP_USER || '',
-      );
-
-      await transporter.sendMail({
-        from: `"Unnati Society" <${smtpUser}>`,
+      await this.pushToQueue({
         to: adminEmails,
         subject: `New Contact Form Submission: ${data.subject}`,
         html: `
@@ -132,14 +101,7 @@ export class EmailService {
     originalSubject: string;
     replyText: string;
   }) {
-    const transporter = await this.getTransporter();
-    const smtpUser = await this.settingsService.getSetting(
-      'SMTP_USER',
-      process.env.SMTP_USER || '',
-    );
-
-    await transporter.sendMail({
-      from: `"Unnati Society" <${smtpUser}>`,
+    await this.pushToQueue({
       to: params.to,
       subject: `Re: ${params.originalSubject}`,
       html: `
@@ -177,21 +139,14 @@ export class EmailService {
       );
 
       const recipients = await this.prisma.notificationRecipient.findMany({
-        where: { status: 'Active', categories: { has: 'Volunteer Form' } }
+        where: { status: 'Active', categories: { has: 'Volunteer Form' } },
       });
       const adminEmails =
         recipients.length > 0
           ? recipients.map((r) => r.email)
           : [defaultAdminEmail];
 
-      const transporter = await this.getTransporter();
-      const smtpUser = await this.settingsService.getSetting(
-        'SMTP_USER',
-        process.env.SMTP_USER || '',
-      );
-
-      await transporter.sendMail({
-        from: `"Unnati Society" <${smtpUser}>`,
+      await this.pushToQueue({
         to: adminEmails,
         subject: `New Team Lead Application: ${data.name}`,
         html: `
@@ -215,61 +170,21 @@ export class EmailService {
     }
   }
 
+  // Called for volunteer status update (name is misleading but kept for compatibility)
   async sendVolunteerStatusUpdateEmail(data: {
     name: string;
     email: string;
     status: string;
   }) {
     try {
-      const transporter = await this.getTransporter();
-      const smtpUser = await this.settingsService.getSetting(
-        'SMTP_USER',
-        process.env.SMTP_USER || '',
-      );
-
-      let subject = 'Update on your Volunteer Application';
-      let messageContent = '';
-
-      if (data.status === 'Approved') {
-        subject = 'Congratulations! Your Volunteer Application is Approved';
-        messageContent = `
-          <h2 style="color: #2563EB;">Congratulations ${data.name}!</h2>
-          <p>We are thrilled to inform you that your volunteer application for Unnati Society has been <strong>approved</strong>.</p>
-          <p>It's wonderful to see your enthusiasm to contribute to our NGO. Our team will reach out to you shortly with the next steps regarding your onboarding and training.</p>
-          <p>Welcome to the team!</p>
-        `;
-      } else if (data.status === 'Rejected') {
-        subject = 'Update on your Volunteer Application';
-        messageContent = `
-          <h2 style="color: #475569;">Hello ${data.name},</h2>
-          <p>Thank you for taking the time to apply to volunteer with Unnati Society.</p>
-          <p>After careful consideration, we regret to inform you that we are unable to move forward with your application at this time.</p>
-          <p>We deeply appreciate your interest in our cause and encourage you to apply again in the future.</p>
-        `;
-      } else if (data.status === 'Under Review') {
-        subject = 'Update on your Volunteer Application';
-        messageContent = `
-          <h2 style="color: #475569;">Hello ${data.name},</h2>
-          <p>Your volunteer application is currently <strong>Under Review</strong> by our team.</p>
-          <p>We might reach out to you soon to schedule a brief interview or request some additional information.</p>
-          <p>Thank you for your patience!</p>
-        `;
-      } else {
-        subject = 'Update on your Volunteer Application';
-        messageContent = `
-          <h2 style="color: #475569;">Hello ${data.name},</h2>
-          <p>The status of your volunteer application has been updated to: <strong>${data.status}</strong>.</p>
-          <p>If you have any questions, feel free to reply to this email.</p>
-        `;
-      }
-
-      await transporter.sendMail({
-        from: `"Unnati Society" <${smtpUser}>`,
+      await this.pushToQueue({
         to: data.email,
-        subject: subject,
+        subject: `Your Volunteer Application — Status Update`,
         html: `
           <div style="font-family: sans-serif; max-width: 600px; margin: 0 auto; border: 1px solid #e2e8f0; border-radius: 8px; padding: 20px;">
-            ${messageContent}
+            <h2 style="color: #2563EB;">Hello ${data.name}!</h2>
+            <p>Your volunteer application status has been updated to: <strong>${data.status}</strong>.</p>
+            <p>Thank you for your interest in Unnati Society.</p>
             <br/>
             <hr style="border: none; border-top: 1px solid #e2e8f0; margin: 20px 0;" />
             <p style="color: #64748b; font-size: 14px; margin: 0;">Best regards,</p>
@@ -280,25 +195,19 @@ export class EmailService {
       this.logger.log(`Volunteer status update email sent to ${data.email}`);
     } catch (error) {
       this.logger.error(
-        `Failed to send volunteer status email to ${data.email}: ${error.message}`,
+        `Failed to send volunteer status update email to ${data.email}: ${error.message}`,
       );
     }
   }
 
+  // Confirmation email sent to the school coordinator when they submit a campus visit request
   async sendCampusVisitReceivedEmail(data: {
     coordinatorName: string;
     email: string;
     institutionName: string;
   }) {
     try {
-      const transporter = await this.getTransporter();
-      const smtpUser = await this.settingsService.getSetting(
-        'SMTP_USER',
-        process.env.SMTP_USER || '',
-      );
-
-      await transporter.sendMail({
-        from: `"Unnati Society" <${smtpUser}>`,
+      await this.pushToQueue({
         to: data.email,
         subject: 'Campus Visit Request Received',
         html: `
@@ -322,6 +231,7 @@ export class EmailService {
     }
   }
 
+  // Status update email for campus visit requests
   async sendCampusVisitStatusUpdateEmail(data: {
     coordinatorName: string;
     email: string;
@@ -329,43 +239,14 @@ export class EmailService {
     status: string;
   }) {
     try {
-      const transporter = await this.getTransporter();
-      const smtpUser = await this.settingsService.getSetting(
-        'SMTP_USER',
-        process.env.SMTP_USER || '',
-      );
-
-      let subject = 'Update on your Campus Visit Request';
-      let messageContent = '';
-
-      if (data.status === 'ACCEPTED') {
-        subject = 'Campus Visit Request Approved!';
-        messageContent = `
-          <h2 style="color: #16A34A;">Great news, ${data.coordinatorName}!</h2>
-          <p>Your campus visit request for <strong>${data.institutionName}</strong> has been <strong>approved</strong> by the Unnati Society.</p>
-          <p>We are excited to host your students and teachers. Our team will reach out with a detailed schedule shortly.</p>
-        `;
-      } else if (data.status === 'REJECTED') {
-        messageContent = `
-          <h2 style="color: #475569;">Hello ${data.coordinatorName},</h2>
-          <p>Thank you for submitting a campus visit request for <strong>${data.institutionName}</strong>.</p>
-          <p>Unfortunately, we are unable to accommodate your visit request at this time.</p>
-          <p>We appreciate your interest and hope to collaborate with you in the future.</p>
-        `;
-      } else {
-        messageContent = `
-          <h2 style="color: #475569;">Hello ${data.coordinatorName},</h2>
-          <p>The status of your campus visit request for <strong>${data.institutionName}</strong> is now: <strong>${data.status}</strong>.</p>
-        `;
-      }
-
-      await transporter.sendMail({
-        from: `"Unnati Society" <${smtpUser}>`,
+      await this.pushToQueue({
         to: data.email,
-        subject: subject,
+        subject: `Campus Visit Request — Status Update`,
         html: `
           <div style="font-family: sans-serif; max-width: 600px; margin: 0 auto; border: 1px solid #e2e8f0; border-radius: 8px; padding: 20px;">
-            ${messageContent}
+            <h2 style="color: #2563EB;">Hello ${data.coordinatorName}!</h2>
+            <p>Your campus visit request for <strong>${data.institutionName}</strong> has been updated to: <strong>${data.status}</strong>.</p>
+            <p>Thank you for your interest in Unnati Society.</p>
             <br/>
             <hr style="border: none; border-top: 1px solid #e2e8f0; margin: 20px 0;" />
             <p style="color: #64748b; font-size: 14px; margin: 0;">Best regards,</p>
@@ -373,28 +254,22 @@ export class EmailService {
           </div>
         `,
       });
-      this.logger.log(`Campus visit status email sent to ${data.email}`);
+      this.logger.log(`Campus visit status update email sent to ${data.email}`);
     } catch (error) {
       this.logger.error(
-        `Failed to send campus visit status email to ${data.email}: ${error.message}`,
+        `Failed to send campus visit status update email to ${data.email}: ${error.message}`,
       );
     }
   }
 
+  // Confirmation email sent to a school when they submit a school invite
   async sendSchoolInviteReceivedEmail(data: {
     coordinatorName: string;
     email: string;
     institutionName: string;
   }) {
     try {
-      const transporter = await this.getTransporter();
-      const smtpUser = await this.settingsService.getSetting(
-        'SMTP_USER',
-        process.env.SMTP_USER || '',
-      );
-
-      await transporter.sendMail({
-        from: `"Unnati Society" <${smtpUser}>`,
+      await this.pushToQueue({
         to: data.email,
         subject: 'School Invitation Received',
         html: `
@@ -418,6 +293,7 @@ export class EmailService {
     }
   }
 
+  // Status update email for school invites
   async sendSchoolInviteStatusUpdateEmail(data: {
     coordinatorName: string;
     email: string;
@@ -425,52 +301,14 @@ export class EmailService {
     status: string;
   }) {
     try {
-      const transporter = await this.getTransporter();
-      const smtpUser = await this.settingsService.getSetting(
-        'SMTP_USER',
-        process.env.SMTP_USER || '',
-      );
-
-      let subject = 'Update on your School Invitation';
-      let messageContent = '';
-
-      if (data.status === 'ACCEPTED' || data.status === 'Approved') {
-        subject = 'School Invitation Approved!';
-        messageContent = `
-          <h2 style="color: #16A34A;">Great news, ${data.coordinatorName}!</h2>
-          <p>Your collaboration invitation for <strong>${data.institutionName}</strong> has been <strong>approved</strong> by the Unnati Society.</p>
-          <p>We are excited to work together. Our team will reach out to you shortly to finalize the details.</p>
-        `;
-      } else if (data.status === 'REJECTED' || data.status === 'Rejected') {
-        messageContent = `
-          <h2 style="color: #475569;">Hello ${data.coordinatorName},</h2>
-          <p>Thank you for submitting an invitation for <strong>${data.institutionName}</strong>.</p>
-          <p>Unfortunately, we are unable to accept your invitation at this time.</p>
-          <p>We appreciate your interest and hope to collaborate with you in the future.</p>
-        `;
-      } else if (
-        data.status === 'INFO_REQUESTED' ||
-        data.status === 'Need More Information'
-      ) {
-        messageContent = `
-          <h2 style="color: #F59E0B;">Hello ${data.coordinatorName},</h2>
-          <p>We have reviewed your invitation for <strong>${data.institutionName}</strong>, but we need some additional information to proceed.</p>
-          <p>Our team will contact you shortly with specific questions, or you can reply directly to this email.</p>
-        `;
-      } else {
-        messageContent = `
-          <h2 style="color: #475569;">Hello ${data.coordinatorName},</h2>
-          <p>The status of your invitation for <strong>${data.institutionName}</strong> is now: <strong>${data.status}</strong>.</p>
-        `;
-      }
-
-      await transporter.sendMail({
-        from: `"Unnati Society" <${smtpUser}>`,
+      await this.pushToQueue({
         to: data.email,
-        subject: subject,
+        subject: `School Invitation — Status Update`,
         html: `
           <div style="font-family: sans-serif; max-width: 600px; margin: 0 auto; border: 1px solid #e2e8f0; border-radius: 8px; padding: 20px;">
-            ${messageContent}
+            <h2 style="color: #2563EB;">Hello ${data.coordinatorName}!</h2>
+            <p>Your school invitation for <strong>${data.institutionName}</strong> has been updated to: <strong>${data.status}</strong>.</p>
+            <p>Thank you for your interest in Unnati Society.</p>
             <br/>
             <hr style="border: none; border-top: 1px solid #e2e8f0; margin: 20px 0;" />
             <p style="color: #64748b; font-size: 14px; margin: 0;">Best regards,</p>
@@ -478,28 +316,22 @@ export class EmailService {
           </div>
         `,
       });
-      this.logger.log(`School invite status email sent to ${data.email}`);
+      this.logger.log(`School invite status update email sent to ${data.email}`);
     } catch (error) {
       this.logger.error(
-        `Failed to send school invite status email to ${data.email}: ${error.message}`,
+        `Failed to send school invite status update email to ${data.email}: ${error.message}`,
       );
     }
   }
 
+  // Confirmation email sent to a partner when they submit a request
   async sendPartnerRequestReceivedEmail(data: {
     name: string;
     email: string;
     organization: string;
   }) {
     try {
-      const transporter = await this.getTransporter();
-      const smtpUser = await this.settingsService.getSetting(
-        'SMTP_USER',
-        process.env.SMTP_USER || '',
-      );
-
-      await transporter.sendMail({
-        from: `"Unnati Society" <${smtpUser}>`,
+      await this.pushToQueue({
         to: data.email,
         subject: 'Partnership Request Received',
         html: `
@@ -522,6 +354,7 @@ export class EmailService {
     }
   }
 
+  // Status update email for partner requests
   async sendPartnerStatusUpdateEmail(data: {
     name: string;
     email: string;
@@ -529,53 +362,14 @@ export class EmailService {
     status: string;
   }) {
     try {
-      const transporter = await this.getTransporter();
-      const smtpUser = await this.settingsService.getSetting(
-        'SMTP_USER',
-        process.env.SMTP_USER || '',
-      );
-
-      let subject = 'Update on your Partnership Request';
-      let messageContent = '';
-
-      if (data.status === 'ACCEPTED' || data.status === 'Approved') {
-        subject = 'Partnership Request Approved!';
-        messageContent = `
-          <h2 style="color: #16A34A;">Great news, ${data.name}!</h2>
-          <p>Your partnership request for <strong>${data.organization || 'your organization'}</strong> has been <strong>approved</strong> by the Unnati Society.</p>
-          <p>We are excited to work together. Our team will reach out to you shortly to finalize the details and next steps.</p>
-        `;
-      } else if (data.status === 'REJECTED' || data.status === 'Rejected') {
-        messageContent = `
-          <h2 style="color: #475569;">Hello ${data.name},</h2>
-          <p>Thank you for submitting a partnership request for <strong>${data.organization || 'your organization'}</strong>.</p>
-          <p>Unfortunately, we are unable to accept your request at this time.</p>
-          <p>We appreciate your interest and hope to collaborate with you in the future.</p>
-        `;
-      } else if (
-        data.status === 'INFO_REQUESTED' ||
-        data.status === 'NEED_MORE_INFO' ||
-        data.status === 'Need More Info'
-      ) {
-        messageContent = `
-          <h2 style="color: #F59E0B;">Hello ${data.name},</h2>
-          <p>We have reviewed your partnership request for <strong>${data.organization || 'your organization'}</strong>, but we need some additional information to proceed.</p>
-          <p>Our team will contact you shortly with specific questions, or you can reply directly to this email.</p>
-        `;
-      } else {
-        messageContent = `
-          <h2 style="color: #475569;">Hello ${data.name},</h2>
-          <p>The status of your partnership request for <strong>${data.organization || 'your organization'}</strong> is now: <strong>${data.status}</strong>.</p>
-        `;
-      }
-
-      await transporter.sendMail({
-        from: `"Unnati Society" <${smtpUser}>`,
+      await this.pushToQueue({
         to: data.email,
-        subject: subject,
+        subject: `Partnership Request — Status Update`,
         html: `
           <div style="font-family: sans-serif; max-width: 600px; margin: 0 auto; border: 1px solid #e2e8f0; border-radius: 8px; padding: 20px;">
-            ${messageContent}
+            <h2 style="color: #2563EB;">Hello ${data.name}!</h2>
+            <p>Your partnership request for <strong>${data.organization || 'your organization'}</strong> has been updated to: <strong>${data.status}</strong>.</p>
+            <p>Our team will be in touch with you shortly.</p>
             <br/>
             <hr style="border: none; border-top: 1px solid #e2e8f0; margin: 20px 0;" />
             <p style="color: #64748b; font-size: 14px; margin: 0;">Best regards,</p>
@@ -583,19 +377,16 @@ export class EmailService {
           </div>
         `,
       });
-      this.logger.log(`Partner status email sent to ${data.email}`);
+      this.logger.log(`Partner status update email sent to ${data.email}`);
     } catch (error) {
       this.logger.error(
-        `Failed to send partner status email to ${data.email}: ${error.message}`,
+        `Failed to send partner status update email to ${data.email}: ${error.message}`,
       );
     }
   }
 
-  async sendAdminFormNotification(
-    formTitle: string,
-    category: string,
-    data: Record<string, any>,
-  ) {
+  // Generic admin notification for any form submission
+  async sendAdminFormNotification(formTitle: string, category: string, formData: any) {
     try {
       const defaultAdminEmail = await this.settingsService.getSetting(
         'ADMIN_EMAIL',
@@ -603,35 +394,18 @@ export class EmailService {
       );
 
       const recipients = await this.prisma.notificationRecipient.findMany({
-        where: {
-          status: 'Active',
-          categories: { has: category }
-        }
+        where: { status: 'Active', categories: { has: category } },
       });
-      
       const adminEmails =
         recipients.length > 0
           ? recipients.map((r) => r.email)
           : [defaultAdminEmail];
 
-      const transporter = await this.getTransporter();
-      const smtpUser = await this.settingsService.getSetting(
-        'SMTP_USER',
-        process.env.SMTP_USER || '',
-      );
-
-      // Convert data object to HTML list
-      const dataHtml = Object.entries(data)
-        .map(
-          ([key, value]) =>
-            `<p><strong>${key.charAt(0).toUpperCase() + key.slice(1).replace(/([A-Z])/g, ' $1')}:</strong> ${
-              typeof value === 'object' ? JSON.stringify(value) : value
-            }</p>`,
-        )
+      const dataHtml = Object.entries(formData)
+        .map(([key, value]) => `<p><strong>${key}:</strong> ${value}</p>`)
         .join('');
 
-      await transporter.sendMail({
-        from: `"Unnati Society" <${smtpUser}>`,
+      await this.pushToQueue({
         to: adminEmails,
         subject: `New ${formTitle} Submission`,
         html: `
@@ -645,7 +419,9 @@ export class EmailService {
         `Admin notification for ${formTitle} sent to ${adminEmails.join(', ')}`,
       );
     } catch (error) {
-      this.logger.error(`Failed to send ${formTitle} admin notification: ${error.message}`);
+      this.logger.error(
+        `Failed to send ${formTitle} admin notification: ${error.message}`,
+      );
     }
   }
 }

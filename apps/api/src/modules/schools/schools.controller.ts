@@ -11,6 +11,7 @@ import {
 import { SchoolsService } from './schools.service';
 import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
 import { Public } from '../auth/decorators/public.decorator';
+import { CreateSchoolDto } from './dto/create-school.dto';
 
 @Controller('schools')
 @UseGuards(JwtAuthGuard)
@@ -29,12 +30,12 @@ export class SchoolsController {
   }
 
   @Post()
-  create(@Body() data: any) {
+  create(@Body() data: CreateSchoolDto) {
     return this.schoolsService.create(data);
   }
 
   @Patch(':id')
-  update(@Param('id') id: string, @Body() data: any) {
+  update(@Param('id') id: string, @Body() data: Partial<CreateSchoolDto>) {
     return this.schoolsService.update(id, data);
   }
 

@@ -3,76 +3,56 @@ import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { Mail, Plus, Trash2, Loader2 } from 'lucide-react';
 import { toast } from 'sonner';
+import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
+import { notificationsApi } from '../../api/notifications.api';
+import { queryKeys } from '../../constants/queryKeys';
 
 const NotificationSettings = () => {
-  const [recipients, setRecipients] = useState([]);
-  const [isLoading, setIsLoading] = useState(true);
-  const [isAdding, setIsAdding] = useState(false);
+  const queryClient = useQueryClient();
+  const { data: recipients = [], isLoading } = useQuery({
+    queryKey: queryKeys.notificationRecipients,
+    queryFn: async () => {
+      const res = await notificationsApi.getRecipients();
+      return res || [];
+    }
+  });
+
   const [newEmail, setNewEmail] = useState('');
   const [newName, setNewName] = useState('');
 
-  const fetchRecipients = async () => {
-    setIsLoading(true);
-    try {
-      const res = await fetch('/api/notification-recipients');
-      if (!res.ok) throw new Error('Failed to fetch recipients');
-      const data = await res.json();
-      setRecipients(data);
-    } catch (err) {
-      toast.error(err.message);
-    } finally {
-      setIsLoading(false);
-    }
-  };
-
-  useEffect(() => {
-
-    fetchRecipients();
-  }, []);
-
-  const handleAdd = async (e) => {
-    e.preventDefault();
-    if (!newEmail) return;
-
-    setIsAdding(true);
-    try {
-      const res = await fetch('/api/notification-recipients', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ email: newEmail, name: newName }),
-      });
-
-      if (!res.ok) {
-        const errorData = await res.json();
-        throw new Error(errorData.message || 'Failed to add recipient');
-      }
-
+  const addMutation = useMutation({
+    mutationFn: (data: any) => notificationsApi.addRecipient(data),
+    onSuccess: () => {
       toast.success('Recipient added successfully');
       setNewEmail('');
       setNewName('');
-      fetchRecipients();
-    } catch (err) {
-      toast.error(err.message);
-    } finally {
-      setIsAdding(false);
+      queryClient.invalidateQueries({ queryKey: queryKeys.notificationRecipients });
+    },
+    onError: (err: any) => {
+      toast.error(err.message || 'Failed to add recipient');
     }
+  });
+
+  const handleAdd = (e: any) => {
+    e.preventDefault();
+    if (!newEmail) return;
+    addMutation.mutate({ email: newEmail, name: newName });
   };
 
-  const handleRemove = async (id) => {
-    if (!window.confirm('Are you sure you want to remove this recipient?')) return;
-
-    try {
-      const res = await fetch(`/api/notification-recipients/${id}`, {
-        method: 'DELETE',
-      });
-
-      if (!res.ok) throw new Error('Failed to remove recipient');
-
+  const removeMutation = useMutation({
+    mutationFn: (id: string) => notificationsApi.removeRecipient(id),
+    onSuccess: () => {
       toast.success('Recipient removed');
-      fetchRecipients();
-    } catch (err) {
-      toast.error(err.message);
+      queryClient.invalidateQueries({ queryKey: queryKeys.notificationRecipients });
+    },
+    onError: (err: any) => {
+      toast.error(err.message || 'Failed to remove recipient');
     }
+  });
+
+  const handleRemove = (id: string) => {
+    if (!window.confirm('Are you sure you want to remove this recipient?')) return;
+    removeMutation.mutate(id);
   };
 
   return (
@@ -107,14 +87,14 @@ const NotificationSettings = () => {
           required
           className="flex-1 px-4 py-2 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
         />
-        <button
-          type="submit"
-          disabled={isAdding || !newEmail}
-          className="flex items-center justify-center gap-2 px-6 py-2 bg-blue-600 text-white font-medium rounded-lg hover:bg-blue-700 transition-colors disabled:opacity-50"
-        >
-          {isAdding ? <Loader2 size={18} className="animate-spin" /> : <Plus size={18} />}
-          Add
-        </button>
+          <button
+            type="submit"
+            disabled={addMutation.isPending || !newEmail}
+            className="px-6 py-2 bg-blue-600 text-white font-medium rounded-lg hover:bg-blue-700 transition-colors disabled:opacity-50 flex items-center justify-center gap-2"
+          >
+            {addMutation.isPending ? <Loader2 size={18} className="animate-spin" /> : <Plus size={18} />}
+            Add
+          </button>
       </form>
 
       {isLoading ? (

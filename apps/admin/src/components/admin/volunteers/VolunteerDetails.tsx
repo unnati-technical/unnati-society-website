@@ -1,8 +1,11 @@
 import React, { useState } from 'react';
 import { ArrowLeft, Download, ChevronDown, Mail, Phone, MapPin, Link, CheckCircle, XCircle, Heart, ExternalLink, FileText, Globe, Briefcase, Award } from 'lucide-react';
 import { Volunteer } from '../../../store/useVolunteerStore';
-import { useQueryClient } from '@tanstack/react-query';
+import { motion, AnimatePresence } from 'framer-motion';
+import { useQueryClient, useMutation } from '@tanstack/react-query';
 import { toast } from 'sonner';
+import { volunteersApi } from '../../../api/volunteers.api';
+import { queryKeys } from '../../../constants/queryKeys';
 import clsx from 'clsx';
 import { twMerge } from 'tailwind-merge';
 
@@ -22,37 +25,30 @@ export const VolunteerDetails: React.FC<VolunteerDetailsProps> = ({ volunteer, o
   const [showDropdown, setShowDropdown] = useState(false);
   const queryClient = useQueryClient();
 
-  const handleUpdateStatus = async (status: string) => {
-    setShowDropdown(false);
-    
-    // Cancel outgoing refetches
-    await queryClient.cancelQueries({ queryKey: ['volunteers'] });
-    // Snapshot the previous value
-    const previousVolunteers = queryClient.getQueryData(['volunteers']);
-
-    // Optimistically update the cache
-    queryClient.setQueryData(['volunteers'], (old: any) => {
-      if (!old) return old;
-      return old.map((v: any) => v.id === volunteer.id ? { ...v, status } : v);
-    });
-
-    try {
-      const res = await fetch(`/api/volunteers/${volunteer.id}/status`, {
-        method: 'PATCH',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ status })
+  const updateStatusMutation = useMutation({
+    mutationFn: ({ id, status }: { id: string, status: string }) => volunteersApi.updateStatus(id, { status }),
+    onMutate: async ({ id, status }) => {
+      setShowDropdown(false);
+      await queryClient.cancelQueries({ queryKey: queryKeys.volunteers });
+      const previousVolunteers = queryClient.getQueryData(queryKeys.volunteers);
+      queryClient.setQueryData(queryKeys.volunteers, (old: any) => {
+        if (!old) return old;
+        return old.map((v: any) => v.id === id ? { ...v, status } : v);
       });
-      
-      if (!res.ok) throw new Error('Failed to update status');
-      
-      toast.success(`Volunteer status updated to ${status}`);
-      queryClient.invalidateQueries({ queryKey: ['volunteers'] });
-    } catch (err) {
-      console.error(err);
-      // Rollback on error
-      queryClient.setQueryData(['volunteers'], previousVolunteers);
+      return { previousVolunteers };
+    },
+    onError: (err, variables, context) => {
+      queryClient.setQueryData(queryKeys.volunteers, context?.previousVolunteers);
       toast.error('Failed to update volunteer status');
+    },
+    onSuccess: (data, variables) => {
+      toast.success(`Volunteer status updated to ${variables.status}`);
+      queryClient.invalidateQueries({ queryKey: queryKeys.volunteers });
     }
+  });
+
+  const handleUpdateStatus = (status: string) => {
+    updateStatusMutation.mutate({ id: volunteer.id, status });
   };
 
   return (

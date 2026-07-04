@@ -1,5 +1,8 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import { UserPlus, School, BookOpen, CheckCircle, FileText, ArrowRight, Handshake, Calendar } from 'lucide-react';
+import { useQuery } from '@tanstack/react-query';
+import { analyticsApi } from '../../api/analytics.api';
+import { queryKeys } from '../../constants/queryKeys';
 
 const formatTime = (dateString) => {
   const date = new Date(dateString);
@@ -15,52 +18,70 @@ const formatTime = (dateString) => {
 };
 
 const RecentActivities = () => {
-  const [activities, setActivities] = useState([]);
+  const { data: activities = [] } = useQuery({
+    queryKey: queryKeys.analyticsRecent,
+    queryFn: async () => {
+      const res = await analyticsApi.getRecentActivities();
+      const data = res;
+      let items: any[] = [];
 
-  useEffect(() => {
-    const fetchRecent = async () => {
-      try {
-        const res = await fetch('/api/analytics/recent-activities');
-        if (res.ok) {
-          const data = await res.json();
-          let items = [];
-
-          if (data.events) {
-            items = items.concat(data.events.map(e => ({
-              id: `evt-${e.id}`,
-              title: 'New Event Created',
-              desc: e.title,
-              time: formatTime(e.createdAt),
-              createdAt: e.createdAt,
-              icon: Calendar,
-              color: 'text-indigo-500',
-              bg: 'bg-indigo-50'
-            })));
-          }
-
-          if (data.outreach) {
-            items = items.concat(data.outreach.map(o => ({
-              id: `out-${o.id}`,
-              title: 'New Outreach Request',
-              desc: o.institution,
-              time: formatTime(o.createdAt),
-              createdAt: o.createdAt,
-              icon: Handshake,
-              color: 'text-emerald-500',
-              bg: 'bg-emerald-50'
-            })));
-          }
-
-          // Sort by newest first
-          items.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
-          setActivities(items.slice(0, 6)); // Top 6
-        }
-      } catch (err) {
-        console.error('Failed to fetch recent activities', err);
+      if (data.events) {
+        items = items.concat(data.events.map((e: any) => ({
+          id: `evt-${e.id}`,
+          title: 'New Event Created',
+          description: e.title,
+          desc: e.title,
+          time: formatTime(e.createdAt),
+          icon: Calendar,
+          bg: 'bg-indigo-50',
+          color: 'text-indigo-500',
+          date: new Date(e.createdAt)
+        })));
       }
-    };
-    fetchRecent();
-  }, []);
+
+      if (data.volunteers) {
+        items = items.concat(data.volunteers.map((v: any) => ({
+          id: `vol-${v.id}`,
+          title: 'New Volunteer',
+          desc: v.fullName,
+          time: formatTime(v.createdAt),
+          icon: UserPlus,
+          bg: 'bg-emerald-50',
+          color: 'text-emerald-500',
+          date: new Date(v.createdAt)
+        })));
+      }
+
+      if (data.schoolInvites) {
+        items = items.concat(data.schoolInvites.map((s: any) => ({
+          id: `sch-${s.id}`,
+          title: 'School Invite',
+          desc: s.schoolName,
+          time: formatTime(s.createdAt),
+          icon: School,
+          bg: 'bg-blue-50',
+          color: 'text-blue-500',
+          date: new Date(s.createdAt)
+        })));
+      }
+
+      if (data.partnerRequests) {
+        items = items.concat(data.partnerRequests.map((p: any) => ({
+          id: `ptr-${p.id}`,
+          title: 'Partner Request',
+          desc: p.organizationName,
+          time: formatTime(p.createdAt),
+          icon: Handshake,
+          bg: 'bg-orange-50',
+          color: 'text-orange-500',
+          date: new Date(p.createdAt)
+        })));
+      }
+
+      // Sort by newest
+      return items.sort((a: any, b: any) => b.date - a.date).slice(0, 5);
+    }
+  });
 
   return (
     <div className="bg-white rounded-2xl border border-gray-100 shadow-sm p-6 flex flex-col h-full">

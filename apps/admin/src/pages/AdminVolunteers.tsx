@@ -10,15 +10,13 @@ import { VolunteerDetails } from '../components/admin/volunteers/VolunteerDetail
 import { useVolunteerStore } from '../store/useVolunteerStore';
 
 import { useQuery } from '@tanstack/react-query';
+import { volunteersApi } from '../api/volunteers.api';
+import { queryKeys } from '../constants/queryKeys';
 import { auth } from '../lib/firebase';
-import { AdminAddVolunteerModal } from '../components/admin/volunteers/AdminAddVolunteerModal';
+import { lazy, Suspense } from 'react';
 
-// Real API call
-const fetchVolunteers = async () => {
-  const res = await fetch(`/api/volunteers?t=${Date.now()}`, { cache: 'no-store' });
-  if (!res.ok) throw new Error('Failed to fetch volunteers');
-  return res.json();
-};
+const AdminAddVolunteerModal = lazy(() => import('../components/admin/volunteers/AdminAddVolunteerModal').then(module => ({ default: module.AdminAddVolunteerModal })));
+
 
 export default function AdminVolunteers() {
   const { 
@@ -33,13 +31,17 @@ export default function AdminVolunteers() {
 
   const [isAddModalOpen, setIsAddModalOpen] = React.useState(false);
 
-  const { data: volunteers = [], isLoading } = useQuery({
-    queryKey: ['volunteers'],
-    queryFn: fetchVolunteers,
+  const { data: rawVolunteersData, isLoading } = useQuery({
+    queryKey: queryKeys.volunteers,
+    queryFn: volunteersApi.getAll,
   });
 
+  const volunteers = useMemo(() => {
+    return Array.isArray(rawVolunteersData) ? rawVolunteersData : (rawVolunteersData?.data || []);
+  }, [rawVolunteersData]);
+
   const selectedVolunteer = useMemo(() => {
-    return volunteers.find(v => v.id === selectedVolunteerId);
+    return volunteers.find((v: any) => v.id === selectedVolunteerId);
   }, [volunteers, selectedVolunteerId]);
 
   const filteredVolunteers = useMemo(() => {
@@ -207,10 +209,12 @@ export default function AdminVolunteers() {
           )}
         </AnimatePresence>
 
+      <Suspense fallback={null}>
         <AdminAddVolunteerModal 
           isOpen={isAddModalOpen} 
           onClose={() => setIsAddModalOpen(false)} 
         />
+      </Suspense>
 
       </div>
     </AdminLayout>

@@ -1,38 +1,49 @@
-import React from 'react';
+import React, { Suspense, lazy } from 'react';
 import { BrowserRouter, Route, Routes, Navigate } from 'react-router-dom';
 import { Toaster } from 'sonner';
+import { Loader2 } from 'lucide-react';
 
-import AdminLogin from './pages/AdminLogin';
-import AdminDashboard from './pages/AdminDashboard';
-import AdminMessages from './pages/AdminMessages';
-import AdminEvents from './pages/AdminEvents';
-import AdminDonations from './pages/AdminDonations';
-import AdminTeamLeads from './pages/AdminTeamLeads';
-import AdminVolunteers from './pages/AdminVolunteers';
-import AdminCampusVisits from './pages/AdminCampusVisits';
-import AdminSchoolInvites from './pages/AdminSchoolInvites';
-import AdminPartnerRequests from './pages/AdminPartnerRequests';
-import AdminEmailNotifications from './pages/AdminEmailNotifications';
+const AdminLogin = lazy(() => import('./pages/AdminLogin'));
+const AdminDashboard = lazy(() => import('./pages/AdminDashboard'));
+const AdminMessages = lazy(() => import('./pages/AdminMessages'));
+const AdminEvents = lazy(() => import('./pages/AdminEvents'));
+const AdminDonations = lazy(() => import('./pages/AdminDonations'));
+const AdminTeamLeads = lazy(() => import('./pages/AdminTeamLeads'));
+const AdminVolunteers = lazy(() => import('./pages/AdminVolunteers'));
+const AdminCampusVisits = lazy(() => import('./pages/AdminCampusVisits'));
+const AdminSchoolInvites = lazy(() => import('./pages/AdminSchoolInvites'));
+const AdminPartnerRequests = lazy(() => import('./pages/AdminPartnerRequests'));
+const AdminEmailNotifications = lazy(() => import('./pages/AdminEmailNotifications'));
+const AdminCertificates = lazy(() => import('./pages/AdminCertificates'));
+
+const GlobalLoader = () => (
+  <div className="flex items-center justify-center min-h-screen bg-gray-50">
+    <Loader2 className="w-8 h-8 text-blue-600 animate-spin" />
+  </div>
+);
 
 const App = () => {
   return (
     <BrowserRouter>
       <Toaster position="top-right" richColors />
-      <Routes>
-        <Route path="/" element={<Navigate to="/admin/login" replace />} />
-        <Route path="/admin" element={<AdminDashboard />} />
-        <Route path="/admin/login" element={<AdminLogin />} />
-        <Route path="/admin/dashboard" element={<AdminDashboard />} />
-        <Route path="/admin/events" element={<AdminEvents />} />
-        <Route path="/admin/messages" element={<AdminMessages />} />
-        <Route path="/admin/funds" element={<AdminDonations />} />
-        <Route path="/admin/teamleads" element={<AdminTeamLeads />} />
-        <Route path="/admin/volunteers" element={<AdminVolunteers />} />
-        <Route path="/admin/campus-visits" element={<AdminCampusVisits />} />
-        <Route path="/admin/school-invites" element={<AdminSchoolInvites />} />
-        <Route path="/admin/partner-requests" element={<AdminPartnerRequests />} />
-        <Route path="/admin/email-notifications" element={<AdminEmailNotifications />} />
-      </Routes>
+      <Suspense fallback={<GlobalLoader />}>
+        <Routes>
+          <Route path="/" element={<Navigate to="/admin/login" replace />} />
+          <Route path="/admin" element={<AdminDashboard />} />
+          <Route path="/admin/login" element={<AdminLogin />} />
+          <Route path="/admin/dashboard" element={<AdminDashboard />} />
+          <Route path="/admin/events" element={<AdminEvents />} />
+          <Route path="/admin/messages" element={<AdminMessages />} />
+          <Route path="/admin/funds" element={<AdminDonations />} />
+          <Route path="/admin/teamleads" element={<AdminTeamLeads />} />
+          <Route path="/admin/volunteers" element={<AdminVolunteers />} />
+          <Route path="/admin/campus-visits" element={<AdminCampusVisits />} />
+          <Route path="/admin/school-invites" element={<AdminSchoolInvites />} />
+          <Route path="/admin/partner-requests" element={<AdminPartnerRequests />} />
+          <Route path="/admin/email-notifications" element={<AdminEmailNotifications />} />
+          <Route path="/admin/certificates" element={<AdminCertificates />} />
+        </Routes>
+      </Suspense>
     </BrowserRouter>
   );
 };
