@@ -69,6 +69,7 @@ async function bootstrap() {
 
   const app = await NestFactory.create(AppModule, { bufferLogs: true });
   app.enableShutdownHooks();
+  app.setGlobalPrefix('api', { exclude: ['health'] });
   app.useLogger(app.get(Logger));
 
   Sentry.setupConnectErrorHandler(app);
