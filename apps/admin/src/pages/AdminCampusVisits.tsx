@@ -72,9 +72,9 @@ const AdminCampusVisits = () => {
 
   const filteredRequests = requests.filter(req => {
     const matchesSearch = 
-      req.institutionName.toLowerCase().includes(searchTerm.toLowerCase()) || 
-      req.coordinatorName.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      req.email.toLowerCase().includes(searchTerm.toLowerCase());
+      (req.institutionName ?? '').toLowerCase().includes(searchTerm.toLowerCase()) || 
+      (req.coordinatorName ?? '').toLowerCase().includes(searchTerm.toLowerCase()) ||
+      (req.email ?? '').toLowerCase().includes(searchTerm.toLowerCase());
     
     let matchesFilter = true;
     if (filter === 'PENDING') matchesFilter = req.status === 'PENDING' || req.status === 'REVIEWED';

@@ -206,10 +206,10 @@ export default function AdminSchoolInvites() {
   const filteredRequests = useMemo(() => {
     return requests.filter(req => {
       const matchesSearch = 
-        req.institutionName.toLowerCase().includes(searchTerm.toLowerCase()) || 
-        req.coordinatorName.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        req.email.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        (req.city && req.city.toLowerCase().includes(searchTerm.toLowerCase()));
+        (req.institutionName ?? '').toLowerCase().includes(searchTerm.toLowerCase()) || 
+        (req.coordinatorName ?? '').toLowerCase().includes(searchTerm.toLowerCase()) ||
+        (req.email ?? '').toLowerCase().includes(searchTerm.toLowerCase()) ||
+        (req.city ?? '').toLowerCase().includes(searchTerm.toLowerCase());
       
       const statusMap: any = {
         'Pending': 'PENDING',
