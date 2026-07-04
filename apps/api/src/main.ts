@@ -68,6 +68,7 @@ async function bootstrap() {
   }
 
   const app = await NestFactory.create(AppModule, { bufferLogs: true });
+  app.enableShutdownHooks();
   app.useLogger(app.get(Logger));
 
   Sentry.setupConnectErrorHandler(app);
@@ -76,7 +77,7 @@ async function bootstrap() {
   app.use(helmet());
   app.use(compression());
   app.enableCors({
-    origin: process.env.FRONTEND_URL || 'http://localhost:5173',
+    origin: true, // Dynamically allow the request origin
     credentials: true,
   });
 
