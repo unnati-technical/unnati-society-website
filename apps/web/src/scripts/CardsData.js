@@ -1,7 +1,8 @@
 const directorImg = 'https://res.cloudinary.com/drhkvdtw2/image/upload/v1782396812/unnati_assets/directorsir.png';
 const prImg = 'https://res.cloudinary.com/drhkvdtw2/image/upload/v1782396871/unnati_assets/prsir.png';
 const chetanImg = 'https://res.cloudinary.com/drhkvdtw2/image/upload/v1782396807/unnati_assets/chetansir.jpg';
-import { cloudinaryImage } from '../utils/cloudinary';
+const dheerajImg = 'https://res.cloudinary.com/drhkvdtw2/image/upload/v1783592779/leadership_profiles/wwoxj95jq7wzrgdx5x8r.png'
+//import { cloudinaryImage } from '../utils/cloudinary';
 
 
 const cardData = [
@@ -31,7 +32,7 @@ const cardData = [
         name: "Dheeraj Yadav",
         position: "B.Tech CSE, IIIT Bhagalpur (2023–27)",
         content: "Unnati Society has always been more than just a group of students — it is a movement driven by the collective will of students who believe that education must create ripples of change in society. As President, my vision is to deepen our roots in the communities we serve, expand our programs in digital literacy and leadership, and build a more inclusive, impactful organisation. I am grateful to every volunteer, mentor, and partner who makes this mission possible. Together, we are not just building futures — we are transforming lives.",
-        image: cloudinaryImage("dheeraj_cuclko")
+        image: dheerajImg
     }
 ]
 

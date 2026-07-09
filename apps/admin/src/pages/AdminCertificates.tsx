@@ -621,7 +621,7 @@ const AdminCertificates = () => {
         <CertificateCanvas ref={captureRef} data={data} />
       </div>
 
-      <div className="flex flex-col h-full gap-4 max-w-[1700px] mx-auto">
+      <div className="flex flex-col gap-4 max-w-[1700px] mx-auto pb-10">
 
         {/* Header */}
         <div className="flex flex-col sm:flex-row sm:items-center justify-between bg-white rounded-2xl shadow-sm border border-gray-100 px-6 py-4 gap-4">
@@ -695,10 +695,10 @@ const AdminCertificates = () => {
 
         {/* Body */}
         {activeTab === 'generator' ? (
-        <div className="flex flex-col xl:flex-row gap-4 flex-1 min-h-0">
+        <div className="flex flex-col xl:flex-row gap-4">
 
           {/* Left: Controls */}
-          <div className="w-full xl:w-[360px] flex-shrink-0 flex flex-col gap-4 overflow-y-auto pr-2 pb-6 xl:max-h-[calc(100vh-180px)] xl:pb-2">
+          <div className="w-full xl:w-[360px] flex-shrink-0 flex flex-col gap-4">
 
             <Section title="Recipient Details" icon={User}>
               <Field label="Full Name *" name="name" value={data.name} onChange={handle} placeholder="e.g. Aditya Kumar Jha" />
@@ -730,7 +730,7 @@ const AdminCertificates = () => {
           </div>
 
           {/* Right: Live Preview */}
-          <div className="flex-1 min-h-[500px] xl:min-h-0 bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden flex flex-col min-w-0">
+          <div className="flex-1 min-h-[500px] xl:min-h-0 bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden flex flex-col min-w-0 xl:sticky xl:top-6 h-fit">
             <div className="flex items-center gap-2 px-4 py-3 border-b border-gray-100 text-sm font-semibold text-gray-700 flex-shrink-0">
               <Eye className="w-4 h-4 text-blue-500" />
               Live Preview
