@@ -88,6 +88,10 @@ export class LeadershipRepository {
     return this.prisma.leadershipMember.create({ data });
   }
 
+  async getMemberById(id: string) {
+    return this.prisma.leadershipMember.findUnique({ where: { id } });
+  }
+
   async updateMember(id: string, data: any) {
     return this.prisma.leadershipMember.update({ where: { id }, data });
   }

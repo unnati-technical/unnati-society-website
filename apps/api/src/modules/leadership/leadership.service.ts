@@ -1,5 +1,6 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { LeadershipRepository } from './repositories/leadership.repository';
+import { CloudinaryService } from '../cloudinary/cloudinary.service';
 import {
   CreateLeadershipYearDto,
   DuplicateYearDto,
@@ -10,7 +11,16 @@ import {
 
 @Injectable()
 export class LeadershipService {
-  constructor(private readonly leadershipRepository: LeadershipRepository) {}
+  constructor(
+    private readonly leadershipRepository: LeadershipRepository,
+    private readonly cloudinaryService: CloudinaryService,
+  ) {}
+
+  private extractPublicId(url: string): string | null {
+    if (!url) return null;
+    const matches = url.match(/\/upload\/(?:v\d+\/)?([^.]+)/);
+    return matches ? matches[1] : null;
+  }
 
   async getLeadershipData() {
     return this.leadershipRepository.getFullLeadershipData();
@@ -116,6 +126,24 @@ export class LeadershipService {
       if (key in data) updateData[key] = data[key];
     }
     try {
+      if (updateData.profileImage !== undefined) {
+        // Fetch existing to see if we need to delete old image
+        const existing = await this.leadershipRepository.getMemberById(id);
+        if (
+          existing?.profileImage &&
+          existing.profileImage !== updateData.profileImage
+        ) {
+          const publicId = this.extractPublicId(existing.profileImage);
+          if (publicId) {
+            this.cloudinaryService.deleteFile(publicId).catch((err) => {
+              console.error(
+                `Failed to delete old image ${publicId} from Cloudinary:`,
+                err,
+              );
+            });
+          }
+        }
+      }
       return await this.leadershipRepository.updateMember(id, updateData);
     } catch (e: any) {
       if (e?.code === 'P2025')
@@ -126,6 +154,18 @@ export class LeadershipService {
 
   async deleteMember(id: string) {
     try {
+      const existing = await this.leadershipRepository.getMemberById(id);
+      if (existing?.profileImage) {
+        const publicId = this.extractPublicId(existing.profileImage);
+        if (publicId) {
+          this.cloudinaryService.deleteFile(publicId).catch((err) => {
+            console.error(
+              `Failed to delete image ${publicId} from Cloudinary:`,
+              err,
+            );
+          });
+        }
+      }
       return await this.leadershipRepository.deleteMember(id);
     } catch (e: any) {
       if (e?.code === 'P2025') {
