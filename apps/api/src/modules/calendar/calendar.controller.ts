@@ -1,4 +1,10 @@
-import { Controller, Get, Query, UseGuards, BadRequestException } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Query,
+  UseGuards,
+  BadRequestException,
+} from '@nestjs/common';
 import { CalendarService } from './calendar.service';
 import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
 
@@ -22,6 +28,10 @@ export class CalendarController {
 
     // If a specific calendar ID is requested, fetch it. Otherwise default to 'primary' (the service account's own calendar)
     // Note: For personal calendars, the user must share their Google Calendar with the service account email.
-    return this.calendarService.getEvents(startDate, endDate, calendarId || 'primary');
+    return this.calendarService.getEvents(
+      startDate,
+      endDate,
+      calendarId || 'primary',
+    );
   }
 }

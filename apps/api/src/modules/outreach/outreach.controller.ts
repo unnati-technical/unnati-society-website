@@ -7,6 +7,7 @@ import {
   Param,
   UseInterceptors,
   UploadedFile,
+  Delete,
 } from '@nestjs/common';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { OutreachService } from './outreach.service';
@@ -100,5 +101,49 @@ export class OutreachController {
   @Patch('partner-request/:id/notes')
   updatePartnerNotes(@Param('id') id: string, @Body('notes') notes: string) {
     return this.outreachService.updatePartnerNotes(id, notes);
+  }
+
+  // --- DELETE ROUTES ---
+
+  @Public()
+  @UseGuards(FirebaseAuthGuard)
+  @Delete('invite/:id')
+  deleteInvite(@Param('id') id: string) {
+    return this.outreachService.deleteInvite(id);
+  }
+
+  @Public()
+  @UseGuards(FirebaseAuthGuard)
+  @Post('invite/bulk-delete')
+  bulkDeleteInvites(@Body('ids') ids: string[]) {
+    return this.outreachService.bulkDeleteInvites(ids);
+  }
+
+  @Public()
+  @UseGuards(FirebaseAuthGuard)
+  @Delete('campus-visit/:id')
+  deleteCampusVisit(@Param('id') id: string) {
+    return this.outreachService.deleteCampusVisit(id);
+  }
+
+  @Public()
+  @UseGuards(FirebaseAuthGuard)
+  @Post('campus-visit/bulk-delete')
+  bulkDeleteCampusVisits(@Body('ids') ids: string[]) {
+    return this.outreachService.bulkDeleteCampusVisits(ids);
+  }
+
+  @Public()
+  @UseGuards(FirebaseAuthGuard)
+  @Delete('partner-request/:id')
+  deletePartnerRequest(@Param('id') id: string) {
+    return this.outreachService.deletePartnerRequest(id);
+  }
+
+  @Public()
+  @UseGuards(FirebaseAuthGuard)
+  @Post('partner-request/bulk-delete')
+  bulkDeletePartnerRequests(@Body('ids') ids: string[]) {
+    return this.outreachService.bulkDeletePartnerRequests(ids);
   }
 }

@@ -55,4 +55,20 @@ pnpm dev --filter=@unnati/admin
 - Node.js >= 18
 - pnpm >= 9
 
+## Upcoming Features (Hidden for now)
 
+The following pages and features are currently hidden from the admin dashboard and will be built/integrated later:
+- Dashboard (Overview)
+- Students
+- Initiatives
+- Sessions
+- Task and assignment
+- Attendance
+- Resources
+- Feedback
+- Report and analytics
+- Impact dashboard
+- Data visualization
+- Export center
+- Help center / Export ticket
+- System settings

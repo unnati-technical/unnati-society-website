@@ -39,6 +39,7 @@ import { AuditLogsModule } from './modules/audit-logs/audit-logs.module';
 import { HealthModule } from './modules/health/health.module';
 import { CacheInterceptor } from '@nestjs/cache-manager';
 import { CalendarModule } from './modules/calendar/calendar.module';
+import { AdminsModule } from './modules/admins/admins.module';
 
 // BullMQ Redis config — maxRetriesPerRequest: null is required by BullMQ
 // retryStrategy returns null quickly so the app doesn't hang waiting for Redis
@@ -132,8 +133,9 @@ const bullRedisConfig = {
     SystemSettingsModule,
     LeadershipModule,
     AuditLogsModule,
-    CalendarModule,
     HealthModule,
+    CalendarModule,
+    AdminsModule,
   ],
   controllers: [AppController],
   providers: [

@@ -2,6 +2,7 @@ import {
   Injectable,
   NotFoundException,
   ConflictException,
+  BadRequestException,
 } from '@nestjs/common';
 import { PrismaService } from '../../prisma/prisma.service';
 import { Prisma } from '@prisma/client';
@@ -24,7 +25,9 @@ export class CertificatesService {
       where: { referenceNo: data.referenceNo },
     });
     if (existing) {
-      throw new ConflictException(`Certificate with reference number ${data.referenceNo} already exists.`);
+      throw new ConflictException(
+        `Certificate with reference number ${data.referenceNo} already exists.`,
+      );
     }
 
     try {
@@ -44,20 +47,22 @@ export class CertificatesService {
     }
   }
 
-  async createCertificatesBulk(data: {
-    referenceNo: string;
-    recipientName: string;
-    rollNo?: string;
-    team?: string;
-    batch?: string;
-    appreciationType: string;
-    bodyText?: string;
-    pdfUrl?: string;
-  }[]) {
+  async createCertificatesBulk(
+    data: {
+      referenceNo: string;
+      recipientName: string;
+      rollNo?: string;
+      team?: string;
+      batch?: string;
+      appreciationType: string;
+      bodyText?: string;
+      pdfUrl?: string;
+    }[],
+  ) {
     const results: any[] = [];
     const errors: string[] = [];
     if (!Array.isArray(data)) return results;
-    
+
     for (const item of data) {
       const safeItem = {
         referenceNo: item.referenceNo ? String(item.referenceNo) : '',
@@ -65,7 +70,9 @@ export class CertificatesService {
         rollNo: item.rollNo ? String(item.rollNo) : undefined,
         team: item.team ? String(item.team) : undefined,
         batch: item.batch ? String(item.batch) : undefined,
-        appreciationType: item.appreciationType ? String(item.appreciationType) : 'OF APPRECIATION',
+        appreciationType: item.appreciationType
+          ? String(item.appreciationType)
+          : 'OF APPRECIATION',
         bodyText: item.bodyText ? String(item.bodyText) : undefined,
         pdfUrl: item.pdfUrl ? String(item.pdfUrl) : undefined,
       };
@@ -82,8 +89,9 @@ export class CertificatesService {
     }
 
     if (errors.length > 0) {
-      const { BadRequestException } = require('@nestjs/common');
-      throw new BadRequestException(`The following reference numbers already exist: ${errors.join(', ')}`);
+      throw new BadRequestException(
+        `The following reference numbers already exist: ${errors.join(', ')}`,
+      );
     }
 
     return results;
@@ -91,7 +99,7 @@ export class CertificatesService {
 
   async getAllCertificates() {
     return this.prisma.certificate.findMany({
-      orderBy: { issuedAt: 'desc' }
+      orderBy: { issuedAt: 'desc' },
     });
   }
 
@@ -136,7 +144,9 @@ export class CertificatesService {
     });
 
     if (!certificate) {
-      throw new NotFoundException(`Certificate with reference ${referenceNo} not found.`);
+      throw new NotFoundException(
+        `Certificate with reference ${referenceNo} not found.`,
+      );
     }
 
     return certificate;

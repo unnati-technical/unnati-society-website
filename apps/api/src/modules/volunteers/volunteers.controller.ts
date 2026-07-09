@@ -9,6 +9,7 @@ import {
   Query,
   UseInterceptors,
   Inject,
+  Delete,
 } from '@nestjs/common';
 import { CacheInterceptor, CACHE_MANAGER } from '@nestjs/cache-manager';
 import type { Cache } from 'cache-manager';
@@ -69,6 +70,21 @@ export class VolunteersController {
       id,
       updateDto.status,
     );
+    return result;
+  }
+
+  @Public()
+  @Delete(':id')
+  async delete(@Param('id') id: string) {
+    const result = await this.volunteersService.delete(id);
+    await this.cacheManager.del('volunteers');
+    return result;
+  }
+
+  @Public()
+  @Post('bulk-delete')
+  async bulkDelete(@Body('ids') ids: string[]) {
+    const result = await this.volunteersService.bulkDelete(ids);
     await this.cacheManager.del('volunteers');
     return result;
   }

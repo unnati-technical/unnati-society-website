@@ -2,7 +2,7 @@ import React, { useState, useEffect, useMemo } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { 
   Search, Clock, CheckCircle2, MapPin, X, Loader2, ChevronLeft, Phone, Calendar, Users, 
-  FileText, Globe, Check, Briefcase, Download, Filter, MessageSquare, AlertCircle, ChevronRight, ListFilter, UserCheck, Linkedin, Building2
+  FileText, Globe, Check, Briefcase, Download, Filter, MessageSquare, AlertCircle, ChevronRight, ListFilter, UserCheck, Linkedin, Building2, Trash2
 } from 'lucide-react';
 import { toast } from 'sonner';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
@@ -43,6 +43,7 @@ export default function AdminPartnerRequests() {
   const [searchTerm, setSearchTerm] = useState('');
   const [statusFilter, setStatusFilter] = useState('All');
   const [typeFilter, setTypeFilter] = useState('All');
+  const [selectedIds, setSelectedIds] = useState([]);
   const [selectedRequest, setSelectedRequest] = useState(null);
   
   // Detail Panel State
@@ -113,6 +114,26 @@ export default function AdminPartnerRequests() {
       toast.success('Admin notes saved successfully');
       queryClient.invalidateQueries({ queryKey: queryKeys.partnerRequests });
     }
+  });
+
+  const deleteMutation = useMutation({
+    mutationFn: (id: string) => outreachApi.deletePartnerRequest(id),
+    onSuccess: () => {
+      toast.success('Partner request deleted');
+      queryClient.invalidateQueries({ queryKey: queryKeys.partnerRequests });
+      setSelectedRequest(null);
+    },
+    onError: (err: any) => toast.error(err.message || 'Failed to delete request')
+  });
+
+  const bulkDeleteMutation = useMutation({
+    mutationFn: (ids: string[]) => outreachApi.bulkDeletePartnerRequests(ids),
+    onSuccess: () => {
+      toast.success('Selected requests deleted');
+      queryClient.invalidateQueries({ queryKey: queryKeys.partnerRequests });
+      setSelectedIds([]);
+    },
+    onError: (err: any) => toast.error(err.message || 'Failed to delete requests')
   });
 
   const saveAdminNotes = () => {
@@ -412,13 +433,40 @@ export default function AdminPartnerRequests() {
                 </div>
               </div>
 
+              {selectedIds.length > 0 && (
+                <div className="p-4 bg-blue-50 border-b border-blue-100 flex items-center justify-between">
+                  <span className="text-sm font-medium text-blue-700">{selectedIds.length} requests selected</span>
+                  <button
+                    onClick={() => {
+                      if (window.confirm(`Delete ${selectedIds.length} selected requests?`)) {
+                        bulkDeleteMutation.mutate(selectedIds);
+                      }
+                    }}
+                    className="px-4 py-2 bg-red-600 text-white text-sm font-medium rounded-lg hover:bg-red-700 transition-colors"
+                  >
+                    Delete Selected
+                  </button>
+                </div>
+              )}
+
               {/* TABLE */}
               <div className="overflow-x-auto">
                 <table className="w-full text-left border-collapse">
                   <thead>
                     <tr className="bg-white border-b border-slate-100">
                       <th className="px-6 py-4 text-xs font-bold text-slate-400 uppercase tracking-wider w-10">
-                        <input type="checkbox" className="rounded text-blue-600 focus:ring-blue-500 border-slate-300" />
+                        <input 
+                          type="checkbox" 
+                          className="rounded text-blue-600 focus:ring-blue-500 border-slate-300"
+                          checked={filteredRequests.length > 0 && selectedIds.length === filteredRequests.length}
+                          onChange={(e) => {
+                            if (e.target.checked) {
+                              setSelectedIds(filteredRequests.map(r => r.id));
+                            } else {
+                              setSelectedIds([]);
+                            }
+                          }}
+                        />
                       </th>
                       <th className="px-6 py-4 text-xs font-bold text-slate-400 uppercase tracking-wider">Partner / Organization</th>
                       <th className="px-6 py-4 text-xs font-bold text-slate-400 uppercase tracking-wider">Partnership Type</th>
@@ -455,7 +503,18 @@ export default function AdminPartnerRequests() {
                           onClick={() => setSelectedRequest(req)}
                         >
                           <td className="px-6 py-4" onClick={e => e.stopPropagation()}>
-                            <input type="checkbox" className="rounded text-blue-600 focus:ring-blue-500 border-slate-300" />
+                            <input 
+                              type="checkbox" 
+                              className="rounded text-blue-600 focus:ring-blue-500 border-slate-300"
+                              checked={selectedIds.includes(req.id)}
+                              onChange={(e) => {
+                                if (e.target.checked) {
+                                  setSelectedIds([...selectedIds, req.id]);
+                                } else {
+                                  setSelectedIds(selectedIds.filter(id => id !== req.id));
+                                }
+                              }}
+                            />
                           </td>
                           <td className="px-6 py-4">
                             <div className="flex items-center gap-3">
@@ -488,6 +547,16 @@ export default function AdminPartnerRequests() {
                           </td>
                           <td className="px-6 py-4 text-right" onClick={e => e.stopPropagation()}>
                             <div className="flex items-center justify-end gap-2">
+                              <button 
+                                onClick={(e) => {
+                                  e.stopPropagation();
+                                  if (window.confirm('Delete this request?')) deleteMutation.mutate(req.id);
+                                }}
+                                className="w-8 h-8 rounded-lg flex items-center justify-center text-red-400 hover:bg-red-50 hover:text-red-600 hover:shadow-sm border border-transparent hover:border-red-100 transition-all"
+                                title="Delete"
+                              >
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M3 6h18"></path><path d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6"></path><path d="M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2"></path><line x1="10" y1="11" x2="10" y2="17"></line><line x1="14" y1="11" x2="14" y2="17"></line></svg>
+                              </button>
                               <button 
                                 onClick={() => setSelectedRequest(req)}
                                 className="w-8 h-8 rounded-lg flex items-center justify-center text-slate-400 hover:bg-white hover:text-blue-600 hover:shadow-sm border border-transparent hover:border-slate-200 transition-all"

@@ -1,4 +1,12 @@
-import { Controller, Post, Get, Body, Param, Query, UseGuards } from '@nestjs/common';
+import {
+  Controller,
+  Post,
+  Get,
+  Body,
+  Param,
+  Query,
+  UseGuards,
+} from '@nestjs/common';
 import { CertificatesService } from './certificates.service';
 import { Public } from '../auth/decorators/public.decorator';
 import { FirebaseAuthGuard } from '../auth/guards/firebase-auth.guard';
@@ -29,9 +37,7 @@ export class CertificatesController {
   @Public()
   @UseGuards(FirebaseAuthGuard)
   @Post('bulk')
-  async createCertificatesBulk(
-    @Body() data: any[]
-  ) {
+  async createCertificatesBulk(@Body() data: any[]) {
     return this.certificatesService.createCertificatesBulk(data);
   }
 
@@ -64,10 +70,7 @@ export class CertificatesController {
   @Public()
   @UseGuards(FirebaseAuthGuard)
   @Post(':id')
-  async updateCertificate(
-    @Param('id') id: string,
-    @Body() data: any,
-  ) {
+  async updateCertificate(@Param('id') id: string, @Body() data: any) {
     return this.certificatesService.updateCertificate(id, data);
   }
 

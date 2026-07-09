@@ -64,6 +64,17 @@ const ActionCell = ({ volunteer }: { volunteer: Volunteer }) => {
     }
   });
 
+  const deleteMutation = useMutation({
+    mutationFn: (id: string) => volunteersApi.delete(id),
+    onSuccess: () => {
+      toast.success('Volunteer deleted successfully');
+      queryClient.invalidateQueries({ queryKey: queryKeys.volunteers });
+    },
+    onError: (err: any) => {
+      toast.error(err.message || 'Failed to delete volunteer');
+    }
+  });
+
   const handleStatusUpdate = (status: string) => {
     updateStatusMutation.mutate({ id: volunteer.id, status });
   };
@@ -94,6 +105,8 @@ const ActionCell = ({ volunteer }: { volunteer: Volunteer }) => {
             <button onClick={(e) => { e.stopPropagation(); handleStatusUpdate('Approved'); }} className="w-full text-left px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50 hover:text-emerald-600 transition-colors">Approve</button>
             <button onClick={(e) => { e.stopPropagation(); handleStatusUpdate('Rejected'); }} className="w-full text-left px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50 hover:text-red-600 transition-colors">Reject</button>
             <button onClick={(e) => { e.stopPropagation(); handleStatusUpdate('Under Review'); }} className="w-full text-left px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50 hover:text-blue-600 transition-colors">Under Review</button>
+            <div className="border-t border-gray-100 my-1"></div>
+            <button onClick={(e) => { e.stopPropagation(); if (window.confirm('Delete this volunteer?')) deleteMutation.mutate(volunteer.id); }} className="w-full text-left px-4 py-2 text-sm font-medium text-red-600 hover:bg-red-50 transition-colors">Delete</button>
           </div>
         )}
       </div>
@@ -103,6 +116,18 @@ const ActionCell = ({ volunteer }: { volunteer: Volunteer }) => {
 
 export const VolunteerTable: React.FC<VolunteerTableProps> = ({ data }) => {
   const { selectedVolunteerId, setSelectedVolunteerId } = useVolunteerStore();
+  const queryClient = useQueryClient();
+
+  const bulkDeleteMutation = useMutation({
+    mutationFn: (ids: string[]) => volunteersApi.bulkDelete(ids),
+    onSuccess: () => {
+      toast.success('Selected volunteers deleted');
+      queryClient.invalidateQueries({ queryKey: queryKeys.volunteers });
+    },
+    onError: (err: any) => {
+      toast.error(err.message || 'Failed to delete volunteers');
+    }
+  });
 
   const columns = useMemo<ColumnDef<Volunteer>[]>(
     () => [
@@ -232,8 +257,26 @@ export const VolunteerTable: React.FC<VolunteerTableProps> = ({ data }) => {
     },
   });
 
+  const selectedRows = table.getSelectedRowModel().rows;
+
   return (
     <div className="bg-white rounded-2xl border border-gray-200 shadow-sm flex flex-col">
+      {selectedRows.length > 0 && (
+        <div className="p-4 bg-blue-50 border-b border-blue-100 flex items-center justify-between rounded-t-2xl">
+          <span className="text-sm font-medium text-blue-700">{selectedRows.length} volunteers selected</span>
+          <button
+            onClick={() => {
+              if (window.confirm(`Delete ${selectedRows.length} selected volunteers?`)) {
+                bulkDeleteMutation.mutate(selectedRows.map(r => r.original.id));
+                table.resetRowSelection();
+              }
+            }}
+            className="px-4 py-2 bg-red-600 text-white text-sm font-medium rounded-lg hover:bg-red-700 transition-colors"
+          >
+            Delete Selected
+          </button>
+        </div>
+      )}
       <div className="overflow-x-auto flex-1 pb-16">
         <table className="w-full text-left">
           <thead>
@@ -286,27 +329,44 @@ export const VolunteerTable: React.FC<VolunteerTableProps> = ({ data }) => {
           >
             &lt;
           </button>
-          {table.getPageOptions().map((pageIndex) => (
-            <button
-              key={pageIndex}
-              onClick={() => table.setPageIndex(pageIndex)}
-              className={cn(
-                "w-8 h-8 flex items-center justify-center rounded-md text-sm font-medium",
-                table.getState().pagination.pageIndex === pageIndex
-                  ? "bg-blue-600 text-white"
-                  : "text-gray-600 hover:bg-gray-50"
-              )}
-            >
-              {pageIndex + 1}
-            </button>
-          ))}
-          {/* Mock extra pages for visual matching */}
-          <button className="w-8 h-8 flex items-center justify-center rounded-md text-gray-500 text-sm font-medium cursor-default">
-            ...
-          </button>
-          <button className="w-10 h-8 flex items-center justify-center rounded-md text-gray-600 hover:bg-gray-50 text-sm font-medium">
-            125
-          </button>
+          {(() => {
+            const pageCount = table.getPageCount();
+            const pageIndex = table.getState().pagination.pageIndex;
+            const visiblePages = [];
+            
+            for (let i = 0; i < pageCount; i++) {
+              if (
+                i === 0 || 
+                i === pageCount - 1 || 
+                Math.abs(pageIndex - i) <= 1
+              ) {
+                visiblePages.push(i);
+              } else if (visiblePages[visiblePages.length - 1] !== '...') {
+                visiblePages.push('...');
+              }
+            }
+            
+            return visiblePages.map((page, idx) => (
+              page === '...' ? (
+                <button key={`dots-${idx}`} className="w-8 h-8 flex items-center justify-center rounded-md text-gray-500 text-sm font-medium cursor-default">
+                  ...
+                </button>
+              ) : (
+                <button
+                  key={page}
+                  onClick={() => table.setPageIndex(page as number)}
+                  className={cn(
+                    "min-w-[2rem] px-1 h-8 flex items-center justify-center rounded-md text-sm font-medium",
+                    table.getState().pagination.pageIndex === page
+                      ? "bg-blue-600 text-white"
+                      : "text-gray-600 hover:bg-gray-50"
+                  )}
+                >
+                  {(page as number) + 1}
+                </button>
+              )
+            ));
+          })()}
           <button
             onClick={() => table.nextPage()}
             disabled={!table.getCanNextPage()}

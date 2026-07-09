@@ -8,8 +8,11 @@ export class CalendarService {
   private calendar: calendar_v3.Calendar;
 
   constructor() {
-    const keyFilePath = path.join(__dirname, '../../config/google-service-account.json');
-    
+    const keyFilePath = path.join(
+      __dirname,
+      '../../config/google-service-account.json',
+    );
+
     // Initialize the Service Account auth
     const auth = new google.auth.GoogleAuth({
       keyFile: keyFilePath,
@@ -19,7 +22,11 @@ export class CalendarService {
     this.calendar = google.calendar({ version: 'v3', auth });
   }
 
-  async getEvents(timeMin: Date, timeMax: Date, calendarId: string = 'primary') {
+  async getEvents(
+    timeMin: Date,
+    timeMax: Date,
+    calendarId: string = 'primary',
+  ) {
     try {
       const response = await this.calendar.events.list({
         calendarId,

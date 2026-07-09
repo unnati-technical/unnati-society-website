@@ -4,6 +4,7 @@ import { signInWithEmailAndPassword, signInWithPopup, createUserWithEmailAndPass
 import { auth, googleProvider } from '../lib/firebase';
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'sonner';
+import { adminUsersApi } from '../api/admin-users.api';
 
 const ADMIN_EMAIL = 'unnati.ir@iiitbh.ac.in';
 
@@ -19,8 +20,17 @@ const AdminLogin = () => {
     e.preventDefault();
     setError('');
     
-    if (email !== ADMIN_EMAIL) {
-      setError('Access Denied: Only the official Unnati Admin email is allowed.');
+    setLoading(true);
+    try {
+      const res: any = await adminUsersApi.verify(email);
+      if (!res?.isAuthorized) {
+        setError('Access Denied: You are not authorized to access the admin dashboard.');
+        setLoading(false);
+        return;
+      }
+    } catch (err) {
+      setError('Could not verify admin status. Please try again.');
+      setLoading(false);
       return;
     }
 
@@ -28,7 +38,7 @@ const AdminLogin = () => {
     try {
       await signInWithEmailAndPassword(auth, email, password);
       toast.success('Admin Login successful!');
-      navigate('/admin/dashboard');
+      navigate('/admin/welcome');
     } catch (err) {
       console.error(err);
       // If the user doesn't exist yet, auto-create it (since we locked it to the single email)
@@ -36,7 +46,7 @@ const AdminLogin = () => {
          try {
              await createUserWithEmailAndPassword(auth, email, password);
              toast.success('Admin Account Initialized & Logged In!');
-             navigate('/admin/dashboard');
+             navigate('/admin/welcome');
          } catch (createErr: any) {
              if (createErr.code === 'auth/email-already-in-use') {
                setError('Invalid password. Please try again or use Forgot Password.');
@@ -56,13 +66,14 @@ const AdminLogin = () => {
     setError('');
     try {
       const result = await signInWithPopup(auth, googleProvider);
-      if (result.user.email !== ADMIN_EMAIL) {
+      const res: any = await adminUsersApi.verify(result.user.email);
+      if (!res?.isAuthorized) {
         await auth.signOut();
-        setError('Access Denied: Only the official Unnati Admin email is allowed.');
+        setError('Access Denied: You are not authorized to access the admin dashboard.');
         return;
       }
       toast.success('Admin Google login successful!');
-      navigate('/admin/dashboard');
+      navigate('/admin/welcome');
     } catch (err) {
       console.error(err);
       setError('Failed to log in with Google.');
@@ -74,11 +85,17 @@ const AdminLogin = () => {
       setError('Please enter the admin email address first.');
       return;
     }
-    if (email !== ADMIN_EMAIL) {
-      setError('Access Denied: Only the official Unnati Admin email is allowed.');
+    try {
+      const res: any = await adminUsersApi.verify(email);
+      if (!res?.isAuthorized) {
+        setError('Access Denied: You are not authorized to access the admin dashboard.');
+        return;
+      }
+    } catch (err) {
+      setError('Could not verify admin status. Please try again.');
       return;
     }
-    
+
     setResetLoading(true);
     setError('');
     try {

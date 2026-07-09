@@ -15,6 +15,8 @@ const AdminSchoolInvites = lazy(() => import('./pages/AdminSchoolInvites'));
 const AdminPartnerRequests = lazy(() => import('./pages/AdminPartnerRequests'));
 const AdminEmailNotifications = lazy(() => import('./pages/AdminEmailNotifications'));
 const AdminCertificates = lazy(() => import('./pages/AdminCertificates'));
+const AdminRoles = lazy(() => import('./pages/AdminRoles'));
+const AdminWelcome = lazy(() => import('./pages/AdminWelcome'));
 
 const GlobalLoader = () => (
   <div className="flex items-center justify-center min-h-screen bg-gray-50">
@@ -29,9 +31,10 @@ const App = () => {
       <Suspense fallback={<GlobalLoader />}>
         <Routes>
           <Route path="/" element={<Navigate to="/admin/login" replace />} />
-          <Route path="/admin" element={<AdminDashboard />} />
+          <Route path="/admin" element={<Navigate to="/admin/welcome" replace />} />
           <Route path="/admin/login" element={<AdminLogin />} />
-          <Route path="/admin/dashboard" element={<AdminDashboard />} />
+          <Route path="/admin/dashboard" element={<Navigate to="/admin/welcome" replace />} />
+          <Route path="/admin/welcome" element={<AdminWelcome />} />
           <Route path="/admin/events" element={<AdminEvents />} />
           <Route path="/admin/messages" element={<AdminMessages />} />
           <Route path="/admin/funds" element={<AdminDonations />} />
@@ -42,6 +45,7 @@ const App = () => {
           <Route path="/admin/partner-requests" element={<AdminPartnerRequests />} />
           <Route path="/admin/email-notifications" element={<AdminEmailNotifications />} />
           <Route path="/admin/certificates" element={<AdminCertificates />} />
+          <Route path="/admin/roles" element={<AdminRoles />} />
         </Routes>
       </Suspense>
     </BrowserRouter>

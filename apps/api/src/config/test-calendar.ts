@@ -10,7 +10,7 @@ async function test() {
     });
 
     const calendar = google.calendar({ version: 'v3', auth });
-    
+
     console.log('Fetching events...');
     const response = await calendar.events.list({
       calendarId: 'primary',
@@ -19,7 +19,7 @@ async function test() {
       singleEvents: true,
       orderBy: 'startTime',
     });
-    
+
     console.log('SUCCESS! Events found:', response.data.items?.length);
   } catch (error) {
     console.error('ERROR:', error);

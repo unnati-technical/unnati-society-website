@@ -246,6 +246,14 @@ model Certificate {
   issuedAt         DateTime @default(now())
 }
 
+model AdminUser {
+  id        String   @id @default(uuid())
+  email     String   @unique
+  name      String   @default("Admin")
+  role      String   @default("Admin")
+  createdAt DateTime @default(now())
+}
+
 model Donation {
   id            String   @id @default(uuid())
   donorName     String

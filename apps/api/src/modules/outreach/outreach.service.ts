@@ -253,4 +253,42 @@ export class OutreachService {
       data: { adminNotes: notes },
     });
   }
+
+  // --- DELETE METHODS ---
+
+  async deleteInvite(id: string) {
+    return this.inviteRepo.delete({
+      where: { id },
+    });
+  }
+
+  async bulkDeleteInvites(ids: string[]) {
+    return this.inviteRepo.deleteMany({
+      where: { id: { in: ids } },
+    });
+  }
+
+  async deleteCampusVisit(id: string) {
+    return this.campusVisitRepo.delete({
+      where: { id },
+    });
+  }
+
+  async bulkDeleteCampusVisits(ids: string[]) {
+    return this.campusVisitRepo.deleteMany({
+      where: { id: { in: ids } },
+    });
+  }
+
+  async deletePartnerRequest(id: string) {
+    return this.partnerRepo.delete({
+      where: { id },
+    });
+  }
+
+  async bulkDeletePartnerRequests(ids: string[]) {
+    return this.partnerRepo.deleteMany({
+      where: { id: { in: ids } },
+    });
+  }
 }

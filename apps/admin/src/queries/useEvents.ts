@@ -11,13 +11,3 @@ export const useEvents = () => {
     }
   });
 };
-
-export const useAutoModeSettings = () => {
-  return useQuery({
-    queryKey: ['events-auto-mode'],
-    queryFn: async () => {
-      const res = await eventsApi.getAutoModeSettings();
-      return res || [];
-    }
-  });
-};

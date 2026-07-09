@@ -35,16 +35,6 @@ export class EventsController {
     return this.eventsService.findUpcoming();
   }
 
-  @Get('settings/auto-mode')
-  getAutoMode() {
-    return this.eventsService.getAutoMode();
-  }
-
-  @Post('settings/auto-mode')
-  setAutoMode(@Body() dto: { autoMode: boolean }) {
-    return this.eventsService.setAutoMode(dto.autoMode);
-  }
-
   // Admin endpoint: returns all events (pass ?all=true to include past ones)
   @Get()
   findAll(@Query('all') all?: string) {

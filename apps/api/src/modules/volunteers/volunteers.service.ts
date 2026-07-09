@@ -300,4 +300,18 @@ export class VolunteersService {
 
     return updated;
   }
+
+  async delete(id: string) {
+    return this.volunteersRepository.delete({
+      where: { id },
+    });
+  }
+
+  async bulkDelete(ids: string[]) {
+    return this.volunteersRepository.deleteMany({
+      where: {
+        id: { in: ids },
+      },
+    });
+  }
 }

@@ -61,6 +61,10 @@ export abstract class BaseRepository<T, CreateDto, UpdateDto> {
     return this.model.delete(args);
   }
 
+  async deleteMany(args: any): Promise<any> {
+    return this.model.deleteMany(args);
+  }
+
   async count(args?: any): Promise<number> {
     return this.model.count(args);
   }

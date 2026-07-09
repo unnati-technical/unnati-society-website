@@ -4,8 +4,8 @@ import { Plus, X, Image as ImageIcon, MapPin, Calendar, Clock, Edit, Trash2, Eye
 import { toast } from 'sonner';
 import AdminLayout from '../components/admin/AdminLayout';
 import { eventsApi } from '../api/events.api';
-import { useEvents, useAutoModeSettings } from '../queries/useEvents';
-import { useCreateEvent, useUpdateEvent, useDeleteEvent, useToggleAutoMode } from '../mutations/useEventMutations';
+import { useEvents } from '../queries/useEvents';
+import { useCreateEvent, useUpdateEvent, useDeleteEvent } from '../mutations/useEventMutations';
 import { Skeleton } from '../components/ui/SkeletonLoader';
 
 const CARD_COLORS = [
@@ -184,23 +184,16 @@ const EmptyModal = ({ onClose, onSave, initial }) => {
 };
 
 const AdminEvents = () => {
-  const { data: autoModeData, isLoading: isLoadingSettings } = useAutoModeSettings();
   const { data: events = [], isLoading: isLoadingEvents } = useEvents();
 
-  const loading = isLoadingSettings || isLoadingEvents;
-  const autoMode = autoModeData?.autoMode ?? true;
+  const loading = isLoadingEvents;
 
   const [showAll, setShowAll] = useState(true);
   const [modal, setModal] = useState(null);
 
-  const toggleAutoModeMutation = useToggleAutoMode();
   const createEventMutation = useCreateEvent(() => setModal(null));
   const updateEventMutation = useUpdateEvent(() => setModal(null));
   const deleteEventMutation = useDeleteEvent();
-
-  const toggleAutoMode = () => {
-    toggleAutoModeMutation.mutate(!autoMode);
-  };
 
   useEffect(() => { window.scrollTo(0, 0); }, []);
 
@@ -212,10 +205,7 @@ const AdminEvents = () => {
     deleteEventMutation.mutate(id);
   };
 
-  // Auto mode: filter out expired events automatically (only for AUTO events)
-  const displayedEvents = autoMode
-    ? events.filter(e => e.eventType !== 'AUTO' || !isExpired(e.date))
-    : events;
+  const displayedEvents = events;
 
   const getEventDate = (dateStr) => {
     const d = new Date(dateStr);
@@ -239,37 +229,6 @@ const AdminEvents = () => {
           >
             <Plus size={16} /> New Event
           </button>
-        </div>
-
-        {/* Auto Mode Toggle */}
-        <div className="bg-white rounded-2xl border border-gray-100 shadow-sm p-4 md:p-5 mb-6 flex flex-col md:flex-row items-start gap-4">
-          <div className={`w-12 h-12 rounded-2xl flex items-center justify-center shrink-0 ${autoMode ? 'bg-blue-100' : 'bg-gray-100'}`}>
-            <Sparkles size={22} className={autoMode ? 'text-blue-600' : 'text-gray-400'} />
-          </div>
-          <div className="flex-1 w-full">
-            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
-              <div>
-                <h3 className="font-extrabold text-gray-900 text-sm">Auto Calendar Mode</h3>
-                <p className="text-xs text-gray-500 mt-0.5">
-                  {autoMode
-                    ? 'Events past their date are automatically hidden from the public homepage.'
-                    : 'Manual mode — all events show on the homepage regardless of date.'}
-                </p>
-              </div>
-              <button
-                onClick={toggleAutoMode}
-                className={`flex items-center justify-center gap-2 px-4 py-2 rounded-xl text-xs font-bold transition-all w-full sm:w-auto ${autoMode ? 'bg-blue-600 text-white shadow-md shadow-blue-200' : 'bg-gray-100 text-gray-600 hover:bg-gray-200'}`}
-              >
-                {autoMode ? <ToggleRight size={16} /> : <ToggleLeft size={16} />}
-                {autoMode ? 'Auto' : 'Manual'}
-              </button>
-            </div>
-            {autoMode && (
-              <div className="mt-3 flex items-center gap-1.5 text-[11px] font-semibold text-blue-600 bg-blue-50 rounded-lg px-3 py-2 w-fit">
-                <CheckCircle size={12} /> Showing {displayedEvents.length} upcoming of {events.length} total events
-              </div>
-            )}
-          </div>
         </div>
 
         {/* Events Grid - Preview of how they look on homepage */}

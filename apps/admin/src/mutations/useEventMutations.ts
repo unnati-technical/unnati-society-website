@@ -83,23 +83,3 @@ export const useDeleteEvent = () => {
     }
   });
 };
-
-export const useToggleAutoMode = () => {
-  const queryClient = useQueryClient();
-  return useMutation({
-    mutationFn: (newMode: boolean) => eventsApi.updateAutoModeSettings({ autoMode: newMode }),
-    onMutate: async (newMode) => {
-      await queryClient.cancelQueries({ queryKey: ['events-auto-mode'] });
-      const previousSettings = queryClient.getQueryData(['events-auto-mode']);
-      queryClient.setQueryData(['events-auto-mode'], { autoMode: newMode });
-      return { previousSettings };
-    },
-    onError: (err, newMode, context) => {
-      queryClient.setQueryData(['events-auto-mode'], context?.previousSettings);
-      toast.error('Failed to save auto mode setting');
-    },
-    onSuccess: (data, newMode) => {
-      toast.success(`Auto Mode ${newMode ? 'enabled' : 'disabled'}`);
-    }
-  });
-};

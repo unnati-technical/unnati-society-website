@@ -18,7 +18,6 @@ const sidebarGroups = [
       { name: 'Certificates', icon: FileText, path: '/admin/certificates' },
       { name: 'Team Leads', icon: UserSquare2, path: '/admin/teamleads' },
       { name: 'Volunteers', icon: Handshake, path: '/admin/volunteers' },
-      { name: 'Students', icon: GraduationCap, path: '/admin/students' },
       { name: 'Campus Visits', icon: School, path: '/admin/campus-visits' },
       { name: 'School Invites', icon: School, path: '/admin/school-invites' },
       { name: 'Partner Requests', icon: Handshake, path: '/admin/partner-requests' },
@@ -28,23 +27,8 @@ const sidebarGroups = [
   {
     title: 'Operations',
     items: [
-      { name: 'Initiatives', icon: FolderKanban, path: '/admin/initiatives' },
       { name: 'Events Management', icon: CalendarDays, path: '/admin/events' },
-      { name: 'Sessions', icon: CalendarDays, path: '/admin/sessions' },
-      { name: 'Tasks & Assignments', icon: CheckSquare, path: '/admin/tasks' },
-      { name: 'Attendance', icon: UserSquare2, path: '/admin/attendance' },
-      { name: 'Resources', icon: FileText, path: '/admin/resources' },
-      { name: 'Feedback', icon: MessageSquare, path: '/admin/feedback' },
       { name: 'Messages', icon: Bell, path: '/admin/messages' },
-    ]
-  },
-  {
-    title: 'Analytics',
-    items: [
-      { name: 'Reports & Analytics', icon: BarChart3, path: '/admin/reports' },
-      { name: 'Impact Dashboard', icon: Activity, path: '/admin/impact' },
-      { name: 'Data Visualization', icon: BarChart3, path: '/admin/data' },
-      { name: 'Export Center', icon: FileText, path: '/admin/export' },
     ]
   },
   {
@@ -52,9 +36,6 @@ const sidebarGroups = [
     items: [
       { name: 'Donations & Funds', icon: IndianRupee, path: '/admin/funds' },
       { name: 'Expense Management', icon: IndianRupee, path: '/admin/expenses' },
-      { name: 'Help Center', icon: MessageSquare, path: '/admin/help' },
-      { name: 'Support Tickets', icon: Handshake, path: '/admin/support' },
-      { name: 'System Settings', icon: Settings, path: '/admin/settings' },
       { name: 'Email Notifications', icon: Mail, path: '/admin/email-notifications' },
     ]
   }
@@ -71,7 +52,7 @@ const AdminLayout = ({ children }) => {
   const { currentUser, logout } = useAuth();
 
   // Protect Admin Dashboard
-  if (!currentUser || currentUser.email !== 'unnati.ir@iiitbh.ac.in') {
+  if (!currentUser) {
     return <Navigate to="/admin/login" replace />;
   }
 
@@ -103,17 +84,6 @@ const AdminLayout = ({ children }) => {
           </button>
         </div>
 
-        {/* Dashboard Link */}
-        <div className="px-4 mb-4">
-          <Link 
-            to="/admin/dashboard"
-            className={`flex items-center gap-3 py-3 rounded-xl font-bold text-sm transition-all ${isLeftCollapsed ? 'justify-center px-0' : 'px-4'} ${currentPath === '/admin/dashboard' ? 'bg-[#2563EB] text-white shadow-lg shadow-blue-500/20' : 'text-blue-100 hover:bg-white/5 hover:text-white'}`}
-            title={isLeftCollapsed ? 'Dashboard' : ''}
-          >
-            <LayoutDashboard size={18} />
-            {!isLeftCollapsed && <span>Dashboard</span>}
-          </Link>
-        </div>
 
         {/* Scrollable Nav */}
         <div className="flex-1 overflow-y-auto px-4 space-y-6 scrollbar-hide pb-6">
@@ -142,20 +112,6 @@ const AdminLayout = ({ children }) => {
           ))}
         </div>
 
-        {/* Bottom Card */}
-        {!isLeftCollapsed && (
-          <div className="p-4 mt-auto">
-            <div className="bg-gradient-to-br from-[#2563EB] to-blue-700 rounded-2xl p-5 text-white relative overflow-hidden shadow-lg border border-blue-500/30">
-              <div className="absolute top-0 right-0 w-24 h-24 bg-white/10 rounded-full -translate-y-1/2 translate-x-1/3 blur-md"></div>
-              <h4 className="font-extrabold text-sm mb-1 leading-tight">Powering Change.</h4>
-              <h4 className="font-extrabold text-[#FBBF24] text-sm mb-3 leading-tight">Creating Impact.</h4>
-              <p className="text-[10px] text-blue-100 mb-4 font-medium leading-relaxed">Unnati Society is building a brighter tomorrow through education, outreach and community empowerment.</p>
-              <button className="w-full bg-[#FBBF24] hover:bg-yellow-400 text-[#0B1F5E] font-extrabold text-[11px] py-2 rounded-lg flex items-center justify-center gap-2 transition-all shadow-md">
-                View Impact Report <Zap size={12}/>
-              </button>
-            </div>
-          </div>
-        )}
       </aside>
 
       {/* OVERLAY FOR MOBILE */}
@@ -211,10 +167,10 @@ const AdminLayout = ({ children }) => {
             <div className="flex items-center gap-3 pl-4 border-l border-gray-200 cursor-pointer group">
               <div className="text-right hidden sm:block">
                 <p className="text-sm font-extrabold text-[#0F172A] leading-tight">Admin</p>
-                <p className="text-xs text-blue-600 font-bold uppercase tracking-wide">unnati.ir@iiitbh.ac.in</p>
+                <p className="text-xs text-blue-600 font-bold uppercase tracking-wide">{currentUser?.email || 'unnati.ir@iiitbh.ac.in'}</p>
               </div>
               <div className="w-10 h-10 rounded-full border border-gray-200 shadow-sm group-hover:border-blue-500 transition-all bg-blue-100 flex items-center justify-center text-blue-700 font-bold">
-                A
+                {currentUser?.email ? currentUser.email.charAt(0).toUpperCase() : 'A'}
               </div>
               <button onClick={handleLogout} className="p-2 text-gray-400 hover:text-red-500 transition-colors ml-2" title="Logout">
                 <LogOut size={18} />

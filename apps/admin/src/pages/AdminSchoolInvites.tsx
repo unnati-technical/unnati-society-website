@@ -46,6 +46,7 @@ export default function AdminSchoolInvites() {
   const [statusFilter, setStatusFilter] = useState('All');
   const [districtFilter, setDistrictFilter] = useState('All');
   const [schoolTypeFilter, setSchoolTypeFilter] = useState('All');
+  const [selectedIds, setSelectedIds] = useState<string[]>([]);
   const [selectedRequest, setSelectedRequest] = useState<any>(null);
   
   // Detail view state
@@ -94,6 +95,26 @@ export default function AdminSchoolInvites() {
   const updateStatus = (id: string, newStatus: string) => {
     updateStatusMutation.mutate({ id, status: newStatus });
   };
+
+  const deleteMutation = useMutation({
+    mutationFn: (id: string) => outreachApi.deleteInvite(id),
+    onSuccess: () => {
+      toast.success('School invite deleted');
+      queryClient.invalidateQueries({ queryKey: queryKeys.schoolInvites });
+      setSelectedRequest(null);
+    },
+    onError: (err: any) => toast.error(err.message || 'Failed to delete invite')
+  });
+
+  const bulkDeleteMutation = useMutation({
+    mutationFn: (ids: string[]) => outreachApi.bulkDeleteInvites(ids),
+    onSuccess: () => {
+      toast.success('Selected invites deleted');
+      queryClient.invalidateQueries({ queryKey: queryKeys.schoolInvites });
+      setSelectedIds([]);
+    },
+    onError: (err: any) => toast.error(err.message || 'Failed to delete invites')
+  });
 
   const handleExport = () => {
     try {
@@ -404,12 +425,41 @@ export default function AdminSchoolInvites() {
                     Showing {Math.min((currentPage - 1) * itemsPerPage + 1, filteredRequests.length)}–{Math.min(currentPage * itemsPerPage, filteredRequests.length)} of {filteredRequests.length} results
                   </span>
                 </div>
+
+                {selectedIds.length > 0 && (
+                  <div className="p-4 bg-blue-50 border-b border-blue-100 flex items-center justify-between">
+                    <span className="text-sm font-medium text-blue-700">{selectedIds.length} invitations selected</span>
+                    <button
+                      onClick={() => {
+                        if (window.confirm(`Delete ${selectedIds.length} selected invitations?`)) {
+                          bulkDeleteMutation.mutate(selectedIds);
+                        }
+                      }}
+                      className="px-4 py-2 bg-red-600 text-white text-sm font-medium rounded-lg hover:bg-red-700 transition-colors"
+                    >
+                      Delete Selected
+                    </button>
+                  </div>
+                )}
                 
                 <div className="overflow-x-auto">
                   <table className="w-full text-left border-collapse min-w-[900px]">
                     <thead>
                       <tr className="bg-slate-50 border-b border-slate-100 text-xs font-semibold text-slate-500 uppercase tracking-wider">
-                        <th className="py-3 px-5 w-10"><input type="checkbox" className="rounded border-slate-300" /></th>
+                        <th className="py-3 px-5 w-10">
+                          <input 
+                            type="checkbox" 
+                            className="rounded border-slate-300 text-blue-600 focus:ring-blue-500" 
+                            checked={currentItems.length > 0 && selectedIds.length === currentItems.length}
+                            onChange={(e) => {
+                              if (e.target.checked) {
+                                setSelectedIds(currentItems.map(r => r.id));
+                              } else {
+                                setSelectedIds([]);
+                              }
+                            }}
+                          />
+                        </th>
                         <th className="py-3 px-5">School / Institution</th>
                         <th className="py-3 px-5">Location</th>
                         <th className="py-3 px-5">Invited On</th>
@@ -425,7 +475,21 @@ export default function AdminSchoolInvites() {
                         <tr><td colSpan={7} className="py-12 text-center text-slate-500 font-medium">No invitations found.</td></tr>
                       ) : currentItems.map(req => (
                         <tr key={req.id} onClick={() => handleSelectRequest(req)} className="hover:bg-blue-50/30 transition-colors cursor-pointer group">
-                          <td className="py-4 px-5"><input type="checkbox" onClick={e => e.stopPropagation()} className="rounded border-slate-300" /></td>
+                          <td className="py-4 px-5">
+                            <input 
+                              type="checkbox" 
+                              onClick={e => e.stopPropagation()} 
+                              className="rounded border-slate-300 text-blue-600 focus:ring-blue-500" 
+                              checked={selectedIds.includes(req.id)}
+                              onChange={(e) => {
+                                if (e.target.checked) {
+                                  setSelectedIds([...selectedIds, req.id]);
+                                } else {
+                                  setSelectedIds(selectedIds.filter(id => id !== req.id));
+                                }
+                              }}
+                            />
+                          </td>
                           <td className="py-4 px-5">
                             <div className="flex items-center gap-3">
                               <div className="w-9 h-9 rounded-full bg-indigo-50 border border-indigo-100 flex items-center justify-center text-indigo-600 font-bold shrink-0">
@@ -456,11 +520,18 @@ export default function AdminSchoolInvites() {
                           </td>
                           <td className="py-4 px-5">
                             <div className="flex items-center justify-center gap-2">
+                              <button 
+                                onClick={(e) => {
+                                  e.stopPropagation();
+                                  if (window.confirm('Delete this invite?')) deleteMutation.mutate(req.id);
+                                }}
+                                className="w-8 h-8 rounded-full flex items-center justify-center text-red-400 hover:bg-red-50 hover:text-red-600 hover:border hover:border-red-100 transition-all"
+                                title="Delete"
+                              >
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M3 6h18"></path><path d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6"></path><path d="M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2"></path><line x1="10" y1="11" x2="10" y2="17"></line><line x1="14" y1="11" x2="14" y2="17"></line></svg>
+                              </button>
                               <button onClick={(e) => { e.stopPropagation(); handleSelectRequest(req); }} className="w-8 h-8 rounded-full flex items-center justify-center text-slate-400 hover:bg-slate-100 hover:text-blue-600 transition-colors">
                                 <Eye size={16} />
-                              </button>
-                              <button onClick={(e) => e.stopPropagation()} className="w-8 h-8 rounded-full flex items-center justify-center text-slate-400 hover:bg-slate-100 hover:text-slate-800 transition-colors">
-                                <MoreVertical size={16} />
                               </button>
                             </div>
                           </td>

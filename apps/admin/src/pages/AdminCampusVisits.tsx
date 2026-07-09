@@ -25,6 +25,7 @@ const AdminCampusVisits = () => {
   const [filter, setFilter] = useState('ALL');
   const [expandedRequestId, setExpandedRequestId] = useState(null);
   const [actionMenuOpen, setActionMenuOpen] = useState(false);
+  const [selectedIds, setSelectedIds] = useState<string[]>([]);
 
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -54,6 +55,25 @@ const AdminCampusVisits = () => {
   const updateStatus = (id: any, newStatus: any) => {
     updateStatusMutation.mutate({ id, status: newStatus });
   };
+
+  const deleteMutation = useMutation({
+    mutationFn: (id: string) => outreachApi.deleteCampusVisit(id),
+    onSuccess: () => {
+      toast.success('Campus visit deleted');
+      queryClient.invalidateQueries({ queryKey: queryKeys.campusVisits });
+    },
+    onError: (err: any) => toast.error(err.message || 'Failed to delete visit')
+  });
+
+  const bulkDeleteMutation = useMutation({
+    mutationFn: (ids: string[]) => outreachApi.bulkDeleteCampusVisits(ids),
+    onSuccess: () => {
+      toast.success('Selected visits deleted');
+      queryClient.invalidateQueries({ queryKey: queryKeys.campusVisits });
+      setSelectedIds([]);
+    },
+    onError: (err: any) => toast.error(err.message || 'Failed to delete visits')
+  });
 
   const handleRowClick = async (req) => {
     if (expandedRequestId === req.id) {
@@ -253,12 +273,42 @@ const AdminCampusVisits = () => {
           </div>
         </div>
 
+        {selectedIds.length > 0 && (
+          <div className="p-4 bg-blue-50 border-x border-slate-100 flex items-center justify-between">
+            <span className="text-sm font-medium text-blue-700">{selectedIds.length} requests selected</span>
+            <button
+              onClick={() => {
+                if (window.confirm(`Delete ${selectedIds.length} selected requests?`)) {
+                  bulkDeleteMutation.mutate(selectedIds);
+                }
+              }}
+              className="px-4 py-2 bg-red-600 text-white text-sm font-medium rounded-lg hover:bg-red-700 transition-colors"
+            >
+              Delete Selected
+            </button>
+          </div>
+        )}
+
         {/* Data Table */}
         <div className="bg-white rounded-b-[18px] shadow-[0_10px_30px_rgba(15,23,42,0.06)] border border-slate-100 overflow-hidden">
           
           {/* Table Header */}
-          <div className="grid grid-cols-[2fr_1fr_1fr_1.5fr_1.5fr_1fr_1fr_80px] gap-4 p-4 border-b border-slate-100 bg-slate-50/50 text-[11px] font-bold text-slate-500 uppercase tracking-wider">
-            <div className="pl-4">School / Institution</div>
+          <div className="grid grid-cols-[40px_2fr_1fr_1fr_1.5fr_1.5fr_1fr_1fr_80px] gap-4 p-4 border-b border-slate-100 bg-slate-50/50 text-[11px] font-bold text-slate-500 uppercase tracking-wider items-center">
+            <div className="pl-4">
+              <input 
+                type="checkbox" 
+                className="rounded text-blue-600 focus:ring-blue-500 border-slate-300"
+                checked={filteredRequests.length > 0 && selectedIds.length === filteredRequests.length}
+                onChange={(e) => {
+                  if (e.target.checked) {
+                    setSelectedIds(filteredRequests.map(r => r.id));
+                  } else {
+                    setSelectedIds([]);
+                  }
+                }}
+              />
+            </div>
+            <div>School / Institution</div>
             <div>Location</div>
             <div>Visit Date</div>
             <div>Purpose</div>
@@ -289,9 +339,23 @@ const AdminCampusVisits = () => {
                     {/* Row */}
                     <div 
                       onClick={() => handleRowClick(req)}
-                      className={`grid grid-cols-[2fr_1fr_1fr_1.5fr_1.5fr_1fr_1fr_80px] gap-4 p-4 items-center cursor-pointer transition-all duration-200 hover:bg-slate-50 ${isExpanded ? 'bg-[#16A34A]/5 border-l-2 border-l-[#16A34A]' : 'border-l-2 border-l-transparent'}`}
+                      className={`grid grid-cols-[40px_2fr_1fr_1fr_1.5fr_1.5fr_1fr_1fr_80px] gap-4 p-4 items-center cursor-pointer transition-all duration-200 hover:bg-slate-50 ${isExpanded ? 'bg-[#16A34A]/5 border-l-2 border-l-[#16A34A]' : 'border-l-2 border-l-transparent'}`}
                     >
-                      <div className="flex items-start gap-3 pl-4 min-w-0">
+                      <div className="pl-4" onClick={(e) => e.stopPropagation()}>
+                        <input 
+                          type="checkbox" 
+                          className="rounded text-blue-600 focus:ring-blue-500 border-slate-300"
+                          checked={selectedIds.includes(req.id)}
+                          onChange={(e) => {
+                            if (e.target.checked) {
+                              setSelectedIds([...selectedIds, req.id]);
+                            } else {
+                              setSelectedIds(selectedIds.filter(id => id !== req.id));
+                            }
+                          }}
+                        />
+                      </div>
+                      <div className="flex items-start gap-3 min-w-0">
                         <div className="w-8 h-8 rounded bg-blue-50 flex items-center justify-center shrink-0 mt-0.5">
                           <Building size={16} className="text-blue-500" />
                         </div>
@@ -715,7 +779,7 @@ const AdminCampusVisits = () => {
                                         <button 
                                           onClick={(e) => { 
                                             e.stopPropagation(); 
-                                            toast.error('Delete functionality is not enabled yet.');
+                                            if (window.confirm('Delete this request?')) deleteMutation.mutate(req.id);
                                             setActionMenuOpen(false); 
                                           }}
                                           className="w-full flex items-center gap-2.5 px-3 py-2 text-sm text-red-600 hover:bg-red-50 rounded-lg transition-colors text-left mt-1 border-t border-slate-100 pt-2"
