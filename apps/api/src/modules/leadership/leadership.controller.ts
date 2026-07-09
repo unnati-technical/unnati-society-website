@@ -80,6 +80,13 @@ export class LeadershipController {
     return this.leadershipService.archiveYear(id);
   }
 
+  @Public()
+  @UseGuards(FirebaseAuthGuard)
+  @Patch('year/:id/active')
+  setYearActive(@Param('id') id: string) {
+    return this.leadershipService.setYearActive(id);
+  }
+
   // ---------- Section CRUD ----------
   @Public()
   @UseGuards(FirebaseAuthGuard)

@@ -20,17 +20,11 @@ export class CertificatesService {
     bodyText?: string;
     pdfUrl?: string;
   }) {
-    // If the reference number already exists, just return the existing certificate.
-    // This allows re-downloading the same certificate.
     const existing = await this.prisma.certificate.findUnique({
       where: { referenceNo: data.referenceNo },
     });
     if (existing) {
-      // Update it with the latest data in case they fixed a typo
-      return this.prisma.certificate.update({
-        where: { id: existing.id },
-        data,
-      });
+      throw new ConflictException(`Certificate with reference number ${data.referenceNo} already exists.`);
     }
 
     try {
@@ -50,6 +44,57 @@ export class CertificatesService {
     }
   }
 
+  async createCertificatesBulk(data: {
+    referenceNo: string;
+    recipientName: string;
+    rollNo?: string;
+    team?: string;
+    batch?: string;
+    appreciationType: string;
+    bodyText?: string;
+    pdfUrl?: string;
+  }[]) {
+    const results: any[] = [];
+    const errors: string[] = [];
+    if (!Array.isArray(data)) return results;
+    
+    for (const item of data) {
+      const safeItem = {
+        referenceNo: item.referenceNo ? String(item.referenceNo) : '',
+        recipientName: item.recipientName ? String(item.recipientName) : '',
+        rollNo: item.rollNo ? String(item.rollNo) : undefined,
+        team: item.team ? String(item.team) : undefined,
+        batch: item.batch ? String(item.batch) : undefined,
+        appreciationType: item.appreciationType ? String(item.appreciationType) : 'OF APPRECIATION',
+        bodyText: item.bodyText ? String(item.bodyText) : undefined,
+        pdfUrl: item.pdfUrl ? String(item.pdfUrl) : undefined,
+      };
+
+      try {
+        const cert = await this.createCertificate(safeItem);
+        results.push(cert);
+      } catch (err: any) {
+        if (err instanceof ConflictException) {
+          errors.push(safeItem.referenceNo);
+        }
+        console.error(`Failed to create cert for ${item.referenceNo}:`, err);
+      }
+    }
+
+    if (errors.length > 0) {
+      const { BadRequestException } = require('@nestjs/common');
+      throw new BadRequestException(`The following reference numbers already exist: ${errors.join(', ')}`);
+    }
+
+    return results;
+  }
+
+  async getAllCertificates() {
+    return this.prisma.certificate.findMany({
+      orderBy: { issuedAt: 'desc' }
+    });
+  }
+
   async getCertificate(id: string) {
     const certificate = await this.prisma.certificate.findUnique({
       where: { id },
@@ -60,6 +105,29 @@ export class CertificatesService {
     }
 
     return certificate;
+  }
+
+  async updateCertificate(id: string, data: any) {
+    // Make sure it exists
+    await this.getCertificate(id);
+    return this.prisma.certificate.update({
+      where: { id },
+      data,
+    });
+  }
+
+  async deleteCertificate(id: string) {
+    await this.getCertificate(id);
+    return this.prisma.certificate.delete({
+      where: { id },
+    });
+  }
+
+  async bulkDeleteCertificates(ids: string[]) {
+    if (!ids || ids.length === 0) return { count: 0 };
+    return this.prisma.certificate.deleteMany({
+      where: { id: { in: ids } },
+    });
   }
 
   async getCertificateByRef(referenceNo: string) {

@@ -5,10 +5,11 @@ import {
   Bell, MessageSquare, ChevronDown, Menu, Search, FileText, IndianRupee,
   Activity, Zap, X, PanelRight, LogOut, Mail
 } from 'lucide-react';
-import { Link, useLocation, Navigate } from 'react-router-dom';
+import { Link, useLocation, Navigate, useNavigate } from 'react-router-dom';
 import NotificationDropdown from './NotificationDropdown';
 import MessageNotification from './MessageNotification';
 import { useAuth } from '../../contexts/AuthContext';
+import { CalendarRemindersModal } from './CalendarRemindersModal';
 
 const sidebarGroups = [
   {
@@ -64,6 +65,9 @@ const AdminLayout = ({ children }) => {
   const currentPath = location.pathname;
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [isLeftCollapsed, setIsLeftCollapsed] = useState(false);
+  const [showCalendar, setShowCalendar] = useState(false);
+  const [calendarStart] = useState(new Date());
+  const [calendarEnd] = useState(new Date(Date.now() + 7 * 24 * 60 * 60 * 1000));
   const { currentUser, logout } = useAuth();
 
   // Protect Admin Dashboard
@@ -189,8 +193,11 @@ const AdminLayout = ({ children }) => {
           
           <div className="flex items-center gap-3 lg:gap-5">
             {/* Date Range */}
-            <div className="hidden lg:flex items-center gap-2 bg-white border border-gray-200 shadow-sm rounded-lg px-3 py-1.5 text-xs font-semibold text-gray-700 cursor-pointer hover:bg-gray-50 transition-colors">
-              <span>May 12 – May 18, 2026</span>
+            <div 
+              onClick={() => setShowCalendar(true)}
+              className="hidden lg:flex items-center gap-2 bg-white border border-gray-200 shadow-sm rounded-lg px-3 py-1.5 text-xs font-semibold text-gray-700 cursor-pointer hover:bg-gray-50 transition-colors"
+            >
+              <span>{calendarStart.toLocaleDateString('en-US', { month: 'short', day: 'numeric' })} – {calendarEnd.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}</span>
               <CalendarDays size={14} className="text-gray-400 ml-1"/>
             </div>
 
@@ -255,6 +262,13 @@ const AdminLayout = ({ children }) => {
 
         </div>
       </div>
+      
+      <CalendarRemindersModal 
+        isOpen={showCalendar} 
+        onClose={() => setShowCalendar(false)} 
+        startDate={calendarStart}
+        endDate={calendarEnd}
+      />
     </div>
   );
 };

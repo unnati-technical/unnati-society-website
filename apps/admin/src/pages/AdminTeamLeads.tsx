@@ -333,17 +333,28 @@ const AdminTeamLeads = () => {
     },
   });
 
+  const activateYearMutation = useMutation({
+    mutationFn: (id: string) => leadershipApi.setYearActive(id),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: queryKeys.leadership });
+      toast.success('Year is now active on the public website!');
+    },
+    onError: (err: any) => toast.error(err?.message || 'Failed to set active year'),
+  });
+
   // Derived saving state from any active mutation
   const saving = updateMemberMutation.isPending || createMemberMutation.isPending ||
     deleteMemberMutation.isPending || updateSectionMutation.isPending ||
     createSectionMutation.isPending || deleteSectionMutation.isPending ||
-    createYearMutation.isPending;
+    createYearMutation.isPending || activateYearMutation.isPending;
 
   useEffect(() => {
     if (allData.length > 0 && !selectedYearId) {
-      const first = allData[0];
-      setSelectedYearId(first.id);
-      setSelectedYear(first.year);
+      const savedYearId = localStorage.getItem('admin_team_leads_selected_year');
+      const found = allData.find(y => y.id === savedYearId);
+      const active = found || allData[0];
+      setSelectedYearId(active.id);
+      setSelectedYear(active.year);
     }
     
     if (selectedYearId) {
@@ -360,6 +371,7 @@ const AdminTeamLeads = () => {
       setSelectedYear(found.year);
       setSections(found.sections || []);
       setActiveTab('All Sections');
+      localStorage.setItem('admin_team_leads_selected_year', yearId);
     }
   };
 
@@ -521,15 +533,35 @@ const AdminTeamLeads = () => {
           </div>
           <div className="flex gap-3 items-center">
             {/* YEAR DROPDOWN */}
-            <div className="relative">
-              <select
-                value={selectedYearId}
-                onChange={e => switchYear(e.target.value)}
-                className="appearance-none bg-white border border-gray-300 text-gray-700 text-sm py-2.5 pl-4 pr-10 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 font-medium cursor-pointer"
-              >
-                {years.map(y => <option key={y.id} value={y.id}>{y.year}</option>)}
-              </select>
-              <ChevronDown size={14} className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-500 pointer-events-none" />
+            <div className="flex gap-2">
+              <div className="relative">
+                <select
+                  value={selectedYearId}
+                  onChange={e => switchYear(e.target.value)}
+                  className="appearance-none bg-white border border-gray-300 text-gray-700 text-sm py-2.5 pl-4 pr-10 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 font-medium cursor-pointer h-full"
+                >
+                  {years.map(y => <option key={y.id} value={y.id}>{y.year}</option>)}
+                </select>
+                <ChevronDown size={14} className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-500 pointer-events-none" />
+              </div>
+              
+              {/* SET AS LIVE BUTTON */}
+              {(() => {
+                const isYearActive = years.find(y => y.id === selectedYearId)?.isActive;
+                return (
+                  <button
+                    onClick={(e) => { e.stopPropagation(); activateYearMutation.mutate(selectedYearId); }}
+                    disabled={isYearActive || activateYearMutation.isPending}
+                    className={`text-sm px-3 py-2.5 rounded-lg transition-colors font-medium flex items-center gap-1.5 shadow-sm ${
+                      isYearActive 
+                        ? 'bg-green-100 text-green-700 border border-green-200 cursor-default' 
+                        : 'bg-white border border-gray-300 text-gray-700 hover:bg-gray-50'
+                    }`}
+                  >
+                    <Globe size={15} /> {isYearActive ? 'Live on Website' : 'Set as Live'}
+                  </button>
+                );
+              })()}
             </div>
             {/* CREATE NEW YEAR */}
             <button

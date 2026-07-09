@@ -29,6 +29,9 @@ export const leadershipApi = {
   
   updateMember: (id: string, data: any) => 
     apiClient.patch(`/api/leadership/member/${id}`, data),
+
+  setYearActive: (id: string) => 
+    apiClient.patch(`/api/leadership/year/${id}/active`),
   
   // DELETE
   deleteSection: (id: string) => 

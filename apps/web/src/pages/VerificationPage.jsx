@@ -3,6 +3,151 @@ import { useParams, Link } from 'react-router-dom';
 import { apiClient } from '../api/client';
 import { CheckCircle, XCircle, Award, User, Hash, Users, Calendar, ShieldCheck, Loader2, ArrowLeft } from 'lucide-react';
 import { format } from 'date-fns';
+import html2canvas from 'html2canvas';
+import { jsPDF } from 'jspdf';
+import { Download, Printer, Eye } from 'lucide-react';
+
+/* ────────────────────────────────────────────────────────────────
+   SIGNATURE BLOCK
+──────────────────────────────────────────────────────────────── */
+const SigBlock = ({ imgSrc, name, title, subtitle, left, bottom, imgW }) => (
+  <div
+    style={{
+      position: 'absolute',
+      bottom: `${bottom}px`,
+      left: `${left}px`,
+      width: '235px',
+      display: 'flex',
+      flexDirection: 'column',
+      alignItems: 'flex-start',
+      background: 'transparent',
+      zIndex: 3,
+      mixBlendMode: 'multiply',
+    }}
+  >
+    <img
+      src={imgSrc}
+      alt="signature"
+      crossOrigin="anonymous"
+      style={{
+        width: `${imgW}px`,
+        height: 'auto',
+        filter: 'contrast(1.2)',
+        display: 'block',
+        marginBottom: '4px',
+      }}
+    />
+    <div style={{ borderTop: '1.5px solid #0b1a34', width: '100%', marginBottom: '6px' }} />
+    <div style={{ fontSize: '11px', fontFamily: 'Arial,sans-serif', fontWeight: 700, color: '#0b1a34', letterSpacing: '0.03em', lineHeight: '16px' }}>
+      {name}
+    </div>
+    <div style={{ fontSize: '10.5px', fontFamily: 'Arial,sans-serif', fontWeight: 700, color: '#0b1a34', lineHeight: '15px' }}>
+      {title}
+    </div>
+    {subtitle && (
+      <div style={{ fontSize: '10.5px', fontFamily: 'Arial,sans-serif', fontWeight: 700, color: '#0b1a34', lineHeight: '15px' }}>
+        {subtitle}
+      </div>
+    )}
+  </div>
+);
+
+/* ────────────────────────────────────────────────────────────────
+   CERTIFICATE CANVAS
+──────────────────────────────────────────────────────────────── */
+const CertificateCanvas = React.forwardRef(({ data }, ref) => {
+  // Use a fallback for body if it's missing {gender} etc
+  const bodyText = data.bodyText || 'in recognition of {gender} sincere dedication and valuable contribution to spreading digital literacy and foundational education through Unnati Society under the Institutional Outreach Activity.';
+  const gender = data.gender || 'his';
+  const body = bodyText.replace('{gender}', gender);
+
+  return (
+    <div
+      ref={ref}
+      style={{
+        width: '1122px',
+        height: '794px',
+        position: 'relative',
+        overflow: 'hidden',
+        flexShrink: 0,
+      }}
+    >
+      {/* Background template */}
+      <img 
+        src="https://res.cloudinary.com/drhkvdtw2/image/upload/v1783182561/certificates/wsiz3egpixlklxo3fni0.png" 
+        alt="Certificate Template" 
+        style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', objectFit: 'cover', display: 'block' }}
+        crossOrigin="anonymous"
+      />
+
+      <div style={{ position: 'absolute', top: '80px', right: '75px', fontSize: '12.5px', fontFamily: 'Arial, sans-serif', fontWeight: 700, color: '#0b1a34', letterSpacing: '0.04em', zIndex: 3 }}>
+        {data.referenceNo}
+      </div>
+
+      <div style={{ position: 'absolute', top: '340px', left: 0, right: 0, textAlign: 'center', fontSize: '21px', fontFamily: 'Arial, "Helvetica Neue", sans-serif', fontWeight: 700, letterSpacing: '5px', color: '#0b1a34', zIndex: 3 }}>
+        {data.appreciationType || 'OF APPRECIATION'}
+      </div>
+
+      <div style={{ position: 'absolute', top: '378px', left: '62px', right: '62px', textAlign: 'center', fontSize: '17.5px', lineHeight: '30px', fontFamily: 'Georgia, "Times New Roman", serif', color: '#0b1a34', zIndex: 3 }}>
+        {'This certificate is awarded to '}
+        <span style={{ fontWeight: 700, textDecoration: 'underline', textUnderlineOffset: '3px' }}>
+          {data.recipientName || 'Recipient Name'}
+        </span>
+        {'(Roll No. '}
+        <span style={{ fontWeight: 600 }}>{data.rollNo || 'XXXXXXXXX'}</span>
+        {') of the '}
+        <span style={{ fontWeight: 700, textDecoration: 'underline', textUnderlineOffset: '3px' }}>
+          {data.team}
+        </span>
+        {' Team, Batch of '}
+        <span style={{ fontWeight: 700, textDecoration: 'underline', textUnderlineOffset: '3px' }}>
+          {data.batch}
+        </span>
+        {', '}
+        {body}
+      </div>
+
+      <SigBlock
+        imgSrc="https://res.cloudinary.com/drhkvdtw2/image/upload/e_make_transparent:20/v1783182562/certificates/fyqmzwit6gejnpyw0tgo.png"
+        name="DR. CHETAN BARDE"
+        title="FACULTY MENTOR"
+        subtitle="UNNATI SOCIETY"
+        left={60} bottom={118} imgW={145}
+      />
+      <SigBlock
+        imgSrc="https://res.cloudinary.com/drhkvdtw2/image/upload/e_make_transparent:20/v1783182563/certificates/ivkkvujsef8yhtkawmvl.png"
+        name="DR. DHEERAJ KUMAR SINHA"
+        title="ASSOCIATE DEAN"
+        subtitle="STUDENT WELFARE"
+        left={430} bottom={118} imgW={135}
+      />
+      <SigBlock
+        imgSrc="https://res.cloudinary.com/drhkvdtw2/image/upload/e_make_transparent:20/v1783182564/certificates/rsnjl2kjyzjj15iahumn.png"
+        name="DR. PRAKASH RANJAN"
+        title="ASSOCIATE DEAN"
+        subtitle="ALUMI AND INSTITUTIONAL RELATIONS"
+        left={810} bottom={118} imgW={115}
+      />
+
+      <div style={{
+        position: 'absolute',
+        bottom: '25px',
+        left: 0,
+        right: 0,
+        textAlign: 'center',
+        fontSize: '11.5px',
+        fontWeight: 700,
+        color: '#3b82f6',
+        textDecoration: 'underline',
+        fontFamily: 'Arial, sans-serif',
+        zIndex: 3,
+      }}>
+        Verify this certificate's authenticity at unnati.ir/verify/{data.referenceNo || ''}
+      </div>
+    </div>
+  );
+});
+CertificateCanvas.displayName = 'CertificateCanvas';
 
 const VerificationPage = () => {
   const params = useParams();
@@ -10,6 +155,8 @@ const VerificationPage = () => {
   const [loading, setLoading] = useState(true);
   const [cert, setCert] = useState(null);
   const [error, setError] = useState(false);
+  const [isDownloading, setIsDownloading] = useState(false);
+  const captureRef = React.useRef(null);
 
   useEffect(() => {
     const fetchCert = async () => {
@@ -59,8 +206,51 @@ const VerificationPage = () => {
     );
   }
 
+  const handleDownload = async () => {
+    if (!captureRef.current || !cert) return;
+    setIsDownloading(true);
+    try {
+      // Need a tiny delay for React to render the hidden component 
+      // if it wasn't rendered yet (though it should be).
+      await new Promise(res => setTimeout(res, 100));
+
+      const canvas = await html2canvas(captureRef.current, {
+        scale: 2,
+        useCORS: true,
+        allowTaint: false,
+        logging: false,
+        backgroundColor: null,
+        width: 1122,
+        height: 794,
+      });
+
+      const imgData = canvas.toDataURL('image/jpeg', 0.98);
+      const pdf = new jsPDF({ orientation: 'landscape', unit: 'mm', format: 'a4' });
+      const w = pdf.internal.pageSize.getWidth();
+      const h = pdf.internal.pageSize.getHeight();
+      pdf.addImage(imgData, 'JPEG', 0, 0, w, h);
+      
+      if (cert.referenceNo) {
+        pdf.link(0, 195, 297, 15, { url: `https://unnati.ir/verify/${cert.referenceNo}` });
+      }
+
+      const pdfBlobUrl = pdf.output('bloburl');
+      window.open(pdfBlobUrl, '_blank');
+    } catch (err) {
+      console.error('Download failed', err);
+      alert('Failed to generate PDF. Please try again.');
+    } finally {
+      setIsDownloading(false);
+    }
+  };
+
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-blue-50 py-12 px-4 sm:px-6 flex items-center justify-center relative overflow-hidden">
+      {/* Hidden full-res capture canvas */}
+      <div style={{ position: 'fixed', top: '-9999px', left: '-9999px', zIndex: -1, pointerEvents: 'none' }}>
+        <CertificateCanvas ref={captureRef} data={cert} />
+      </div>
+
       {/* Decorative Blobs */}
       <div className="absolute top-[-10%] left-[-10%] w-96 h-96 bg-blue-400/10 rounded-full blur-[80px]" />
       <div className="absolute bottom-[-10%] right-[-10%] w-96 h-96 bg-green-400/10 rounded-full blur-[80px]" />
@@ -163,6 +353,21 @@ const VerificationPage = () => {
               Learn More &rarr;
             </Link>
           </div>
+          
+          <div className="bg-white px-8 py-5 border-t border-gray-100 flex justify-center">
+            <button
+              onClick={handleDownload}
+              disabled={isDownloading}
+              className="flex items-center gap-2 px-8 py-3 text-sm font-semibold text-white bg-blue-600 hover:bg-blue-700 rounded-full shadow-lg shadow-blue-500/30 transition-all disabled:opacity-60 disabled:cursor-not-allowed transform hover:-translate-y-0.5 active:translate-y-0"
+            >
+              {isDownloading ? (
+                <><Loader2 className="w-5 h-5 animate-spin" /> Preparing PDF...</>
+              ) : (
+                <><Eye className="w-5 h-5" /> View Certificate</>
+              )}
+            </button>
+          </div>
+
         </div>
       </div>
     </div>
