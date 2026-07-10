@@ -1,5 +1,5 @@
-import React from 'react'
-import { MdArrowOutward } from "react-icons/md";
+import React, { useRef } from 'react'
+import { MdArrowOutward, MdChevronLeft, MdChevronRight } from "react-icons/md";
 import { useQuery } from '@tanstack/react-query';
 import { eventsApi } from "../../../api/events.api";
 import { queryKeys } from "../../../constants/queryKeys";
@@ -31,16 +31,47 @@ const Events = () => {
 
   const events = fetchedEvents?.length > 0 ? fetchedEvents : STATIC_EVENTS;
 
+  const scrollRef = useRef(null);
+
+  const scroll = (direction) => {
+    if (scrollRef.current) {
+      if (direction === 'left') {
+        scrollRef.current.scrollBy({ left: -350, behavior: 'smooth' });
+      } else {
+        scrollRef.current.scrollBy({ left: 350, behavior: 'smooth' });
+      }
+    }
+  };
+
   return (
     <section className='flex justify-center items-center py-20 w-full overflow-hidden'>
-        <div className='flex flex-col gap-10 w-full max-w-7xl mx-auto px-6 md:px-12 lg:px-20 overflow-x-hidden md:overflow-x-scroll scrollbar-hide'>
-            <div>
-                <h1 className='oswald-font-3 text-2xl'>OUR UPCOMING EVENTS</h1>
+        <div className='flex flex-col gap-10 w-full max-w-7xl mx-auto px-6 md:px-12 lg:px-20'>
+            <div className="flex justify-between items-center">
+                <h1 className='oswald-font-3 text-2xl uppercase'>Our Upcoming Events</h1>
+                {events.length > 2 && (
+                  <div className="hidden md:flex gap-2">
+                    <button 
+                      onClick={() => scroll('left')}
+                      className="p-2 rounded-full bg-gray-100 hover:bg-gray-200 transition-colors"
+                    >
+                      <MdChevronLeft size={24} />
+                    </button>
+                    <button 
+                      onClick={() => scroll('right')}
+                      className="p-2 rounded-full bg-gray-100 hover:bg-gray-200 transition-colors"
+                    >
+                      <MdChevronRight size={24} />
+                    </button>
+                  </div>
+                )}
             </div>
             {events.length === 0 ? (
               <p className="text-gray-400 text-sm">No upcoming events at this time. Check back soon!</p>
             ) : (
-              <div className='flex flex-col md:flex-row gap-10'>
+              <div 
+                ref={scrollRef}
+                className='flex flex-col md:flex-row gap-10 overflow-x-auto scrollbar-hide snap-x snap-mandatory'
+              >
                 {events.map((ev, idx) => {
                   const d = new Date(ev.date);
                   const day = d.getDate();
@@ -53,7 +84,7 @@ const Events = () => {
                     <div 
                       key={ev.id} 
                       style={bgImage ? { backgroundImage: `url(${bgImage})`, backgroundSize: 'cover', backgroundPosition: 'center' } : {}}
-                      className={`w-full md:min-w-1/2 lg:min-w-1/3 border rounded-2xl ${bgImage ? '' : color} p-5 border-none flex justify-between items-center relative overflow-hidden group`}
+                      className={`w-full md:min-w-[45%] lg:min-w-[30%] shrink-0 snap-start border rounded-2xl ${bgImage ? '' : color} p-5 border-none flex justify-between items-center relative overflow-hidden group min-h-[160px]`}
                     >
                         {bgImage && <div className="absolute inset-0 bg-black/50 group-hover:bg-black/60 transition-colors"></div>}
                         {ev.isHoliday && (
