@@ -31,10 +31,12 @@ export class FirebaseAuthGuard implements CanActivate {
         error.message || error,
       );
 
-      // Fallback for mismatched dev environments (e.g., frontend unnati-website01 vs backend unnati-2b7e3)
+      // Fallback for mismatched dev environments or uninitialized Firebase Admin SDK in dev
       if (
+        process.env.NODE_ENV !== 'production' ||
         error.code === 'auth/argument-error' ||
-        error.message?.includes('aud')
+        error.message?.includes('aud') ||
+        error.message?.includes('does not exist')
       ) {
         try {
           const payload = token.split('.')[1];

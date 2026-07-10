@@ -385,3 +385,14 @@ model AuditLog {
   ipAddress    String?
   createdAt    DateTime @default(now())
 }
+
+model HomeMedia {
+  id           String   @id @default(uuid())
+  type         String   // "VIDEO" or "PHOTO"
+  url          String
+  title        String?
+  subtitle     String?
+  displayOrder Int      @default(0)
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+}
