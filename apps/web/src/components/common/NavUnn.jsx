@@ -101,6 +101,23 @@ const NavUnn = () => {
                 </div>
               </div>
             );
+          } else if (link.name === "PROGRAMS") {
+            return (
+              <div key={link.name} className="relative group">
+                <h3 
+                  className={getDesktopClass(link.path)} 
+                  onClick={() => navigate(link.path)}
+                >
+                  {link.name}
+                </h3>
+                <div className="absolute left-0 mt-2 w-48 bg-white border border-gray-200 rounded-md shadow-xl opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 z-50 py-2">
+                  <p className="px-4 py-2 text-[12px] text-gray-700 font-semibold hover:text-blue-600 hover:bg-blue-50 cursor-pointer" onClick={() => navigate('/programs')}>Impact</p>
+                  <p className="px-4 py-2 text-[12px] text-gray-700 font-semibold hover:text-blue-600 hover:bg-blue-50 cursor-pointer" onClick={() => navigate('/programs/digiXplore')}>DigiXplore</p>
+                  <p className="px-4 py-2 text-[12px] text-gray-700 font-semibold hover:text-blue-600 hover:bg-blue-50 cursor-pointer" onClick={() => navigate('/programs/netritva')}>Netritva</p>
+                  <p className="px-4 py-2 text-[12px] text-gray-700 font-semibold hover:text-blue-600 hover:bg-blue-50 cursor-pointer" onClick={() => navigate('/programs/akshar')}>Akshar</p>
+                </div>
+              </div>
+            );
           }
           return (
             <h3 
@@ -142,6 +159,23 @@ const NavUnn = () => {
                     <p className="text-[10px] text-gray-500 font-medium cursor-pointer hover:text-blue-500" onClick={() => { navigate('/outreach#campus-visit'); setShow(false); }}>Campus Visit</p>
                     <p className="text-[10px] text-gray-500 font-medium cursor-pointer hover:text-blue-500" onClick={() => { navigate('/outreach#invite'); setShow(false); }}>Invite</p>
                     <p className="text-[10px] text-gray-500 font-medium cursor-pointer hover:text-blue-500" onClick={() => { navigate('/outreach#collaborate'); setShow(false); }}>Collaborate/Partner</p>
+                  </div>
+                </div>
+              );
+            } else if (link.name === "PROGRAMS") {
+              return (
+                <div key={link.name} className="flex flex-col gap-2">
+                  <h3 
+                    className={getMobileClass(link.path)} 
+                    onClick={() => { navigate(link.path); setShow(false); }}
+                  >
+                    {link.name}
+                  </h3>
+                  <div className="flex flex-col pl-3 gap-2 border-l-2 border-gray-100 ml-1">
+                    <p className="text-[10px] text-gray-500 font-medium cursor-pointer hover:text-blue-500" onClick={() => { navigate('/programs'); setShow(false); }}>Impact</p>
+                    <p className="text-[10px] text-gray-500 font-medium cursor-pointer hover:text-blue-500" onClick={() => { navigate('/programs/digiXplore'); setShow(false); }}>DigiXplore</p>
+                    <p className="text-[10px] text-gray-500 font-medium cursor-pointer hover:text-blue-500" onClick={() => { navigate('/programs/netritva'); setShow(false); }}>Netritva</p>
+                    <p className="text-[10px] text-gray-500 font-medium cursor-pointer hover:text-blue-500" onClick={() => { navigate('/programs/akshar'); setShow(false); }}>Akshar</p>
                   </div>
                 </div>
               );
