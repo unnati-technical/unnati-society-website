@@ -38,7 +38,13 @@ const AdminCampusVisits = () => {
       const previousRequests = queryClient.getQueryData(queryKeys.campusVisits);
       queryClient.setQueryData(queryKeys.campusVisits, (old: any) => {
         if (!old) return old;
-        return old.map((r: any) => r.id === id ? { ...r, status } : r);
+        if (old.data && Array.isArray(old.data)) {
+          return { ...old, data: old.data.map((r: any) => r.id === id ? { ...r, status } : r) };
+        }
+        if (Array.isArray(old)) {
+          return old.map((r: any) => r.id === id ? { ...r, status } : r);
+        }
+        return old;
       });
       return { previousRequests };
     },

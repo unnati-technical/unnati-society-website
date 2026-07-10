@@ -28,6 +28,7 @@ import { MediaModule } from './modules/media/media.module';
 import { AnalyticsModule } from './modules/analytics/analytics.module';
 import { NotificationsModule } from './modules/notifications/notifications.module';
 import { EmailModule } from './queues/email/email.module';
+import { SubscribersModule } from './modules/subscribers/subscribers.module';
 import { CertificateModule } from './queues/certificate/certificate.module';
 import { NotificationModule } from './queues/notification/notification.module';
 import { ReportModule } from './queues/report/report.module';
@@ -42,6 +43,8 @@ import { CalendarModule } from './modules/calendar/calendar.module';
 import { AdminsModule } from './modules/admins/admins.module';
 import { HomeMediaModule } from './modules/home-media/home-media.module';
 import { VolunteerLeaderboardModule } from './modules/volunteer-leaderboard/volunteer-leaderboard.module';
+import { ScheduleModule } from '@nestjs/schedule';
+import { CronModule } from './modules/cron/cron.module';
 
 // BullMQ Redis config — maxRetriesPerRequest: null is required by BullMQ
 // retryStrategy returns null quickly so the app doesn't hang waiting for Redis
@@ -101,6 +104,7 @@ const bullRedisConfig = {
     ThrottlerModule.forRoot({
       throttlers: [{ ttl: 60000, limit: 100 }],
     }),
+    ScheduleModule.forRoot(),
 
     PrometheusModule.register(),
 
@@ -140,6 +144,9 @@ const bullRedisConfig = {
     AdminsModule,
     HomeMediaModule,
     VolunteerLeaderboardModule,
+    SubscribersModule,
+    TeamLeadsModule,
+    CronModule,
   ],
   controllers: [AppController],
   providers: [

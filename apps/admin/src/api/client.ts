@@ -40,7 +40,11 @@ apiClient.interceptors.response.use(
   (error) => {
     if (error.response) {
       if (error.response.status === 401) {
-        toast.error('Session expired. Please log in again.');
+        // Only show session expired for user-triggered mutations, not background GETs
+        const method = error.config?.method?.toUpperCase();
+        if (method && method !== 'GET') {
+          toast.error('Session expired. Please log in again.');
+        }
       } else if (error.response.status >= 500) {
         // Only toast 500s for user-triggered mutations (POST/PUT/PATCH/DELETE)
         // Suppress noisy 500s from background polling (GET) like notifications, contacts

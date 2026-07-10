@@ -125,11 +125,20 @@ const Events = () => {
                   {/* Event Image */}
                   <div className="relative h-40 w-full bg-slate-100 overflow-hidden shrink-0">
                     {photo ? (
-                      <img
-                        src={photo}
-                        alt={ev.title}
-                        className="w-full h-full object-cover"
-                      />
+                      <>
+                        <img
+                          src={photo}
+                          alt={ev.title}
+                          className="w-full h-full object-cover"
+                          onError={(e) => {
+                            e.target.style.display = 'none';
+                            e.target.nextElementSibling.style.display = 'flex';
+                          }}
+                        />
+                        <div className="w-full h-full bg-gradient-to-br from-blue-50 to-indigo-100 items-center justify-center hidden">
+                          <Calendar className="w-10 h-10 text-blue-400" />
+                        </div>
+                      </>
                     ) : (
                       <div className="w-full h-full bg-gradient-to-br from-blue-50 to-indigo-100 flex items-center justify-center">
                         <Calendar className="w-10 h-10 text-blue-400" />

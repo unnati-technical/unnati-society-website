@@ -39,6 +39,7 @@ const sidebarGroups = [
       { name: 'Donations & Funds', icon: IndianRupee, path: '/admin/funds' },
       { name: 'Expense Management', icon: IndianRupee, path: '/admin/expenses' },
       { name: 'Email Notifications', icon: Mail, path: '/admin/email-notifications' },
+      { name: 'Subscribers', icon: Users, path: '/admin/subscribers' },
     ]
   }
 ];

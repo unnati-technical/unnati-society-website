@@ -253,6 +253,18 @@ export class VolunteersService {
         console.error('Failed to create volunteer notification:', err),
       );
 
+    // Send confirmation email to the applicant
+    this.emailService
+      .sendVolunteerApplicationReceivedEmail({
+        name: `${firstName} ${lastName}`.trim(),
+        email,
+        program: application.program,
+        role: application.roleAppliedFor,
+      })
+      .catch((err) =>
+        console.error('Failed to send volunteer confirmation email:', err),
+      );
+
     // Notify admins
     this.emailService.sendAdminFormNotification(
       'Volunteer Registration',

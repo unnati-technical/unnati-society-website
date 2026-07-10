@@ -15,8 +15,8 @@ export const AuthProvider = ({ children }) => {
   const refreshProfile = async (user) => {
     if (!user) return;
     try {
-      const response = await authApi.getMe();
-      setUserProfile(response.data);
+      const data = await authApi.getMe(user.email);
+      setUserProfile(data);
     } catch (error) {
       console.warn("Could not fetch user profile from backend.", error);
     }

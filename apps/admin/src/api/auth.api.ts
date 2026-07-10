@@ -1,5 +1,5 @@
 import { apiClient } from './client';
 
 export const authApi = {
-  getMe: () => apiClient.get('/api/team-leads/me'),
+  getMe: (email: string) => apiClient.get('/api/admins/verify?email=' + encodeURIComponent(email)),
 };

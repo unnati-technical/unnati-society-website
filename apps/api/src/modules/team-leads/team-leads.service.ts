@@ -218,6 +218,12 @@ export class TeamLeadsService {
         isApproved ? 'green' : 'red',
         isApproved ? 'CheckCircle' : 'XCircle',
       );
+
+      this.emailService.sendTeamLeadStatusUpdateEmail({
+        name: lead.name,
+        email: lead.email,
+        status: data.credStatus
+      });
     }
 
     if (data.status && data.status !== lead.status) {

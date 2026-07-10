@@ -4,12 +4,35 @@ const IIITBh = "https://res.cloudinary.com/drhkvdtw2/image/upload/v1782396815/un
 import { useNavigate, useLocation } from "react-router-dom";
 import { FaInstagram, FaLinkedin, FaXTwitter } from "react-icons/fa6";
 import AuthModal from "./AuthModal";
+import { apiClient } from "../../api/client";
+import { toast } from "sonner";
 
 const Footer = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const isPeoplePage = location.pathname === '/executive-body';
   const [isAuthOpen, setIsAuthOpen] = useState(false);
+  const [email, setEmail] = useState("");
+  const [isSubscribing, setIsSubscribing] = useState(false);
+
+  const handleSubscribe = async () => {
+    if (!email || !email.includes("@")) {
+      toast.error("Please enter a valid email address");
+      return;
+    }
+    
+    setIsSubscribing(true);
+    try {
+      await apiClient.post("/api/subscribers", { email });
+      toast.success("Successfully subscribed to newsletter!");
+      setEmail("");
+    } catch (error) {
+      toast.error("Failed to subscribe. Please try again later.");
+    } finally {
+      setIsSubscribing(false);
+    }
+  };
+
   return (
     <footer className="bg-black text-white px-8 md:px-16 py-8">
       <div className="max-w-7xl mx-auto grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8">
@@ -143,11 +166,19 @@ const Footer = () => {
           <div className="flex">
             <input
               type="email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              onKeyDown={(e) => e.key === "Enter" && handleSubscribe()}
               placeholder="Email"
-              className="px-3 py-2 text-sm bg-white text-black outline-none"
+              className="px-3 py-2 text-sm bg-white text-black outline-none disabled:opacity-75"
+              disabled={isSubscribing}
             />
-            <button className="px-4 py-2 text-sm bg-white text-black font-semibold">
-              OK
+            <button 
+              onClick={handleSubscribe}
+              disabled={isSubscribing}
+              className="px-4 py-2 text-sm bg-white text-black font-semibold disabled:opacity-75"
+            >
+              {isSubscribing ? "..." : "OK"}
             </button>
           </div>
 

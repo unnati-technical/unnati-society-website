@@ -187,11 +187,7 @@ const NotificationDropdown = () => {
               )}
             </div>
 
-            <div className="p-3 border-t border-gray-100 bg-gray-50/50 text-center">
-              <button className="text-xs font-bold text-gray-500 hover:text-gray-800 transition-colors">
-                View notification settings
-              </button>
-            </div>
+
           </motion.div>
         )}
       </AnimatePresence>

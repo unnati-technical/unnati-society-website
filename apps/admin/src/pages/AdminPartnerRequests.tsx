@@ -70,7 +70,13 @@ export default function AdminPartnerRequests() {
       const previousRequests = queryClient.getQueryData(queryKeys.partnerRequests);
       queryClient.setQueryData(queryKeys.partnerRequests, (old: any) => {
         if (!old) return old;
-        return old.map((r: any) => r.id === id ? { ...r, status } : r);
+        if (old.data && Array.isArray(old.data)) {
+          return { ...old, data: old.data.map((r: any) => r.id === id ? { ...r, status } : r) };
+        }
+        if (Array.isArray(old)) {
+          return old.map((r: any) => r.id === id ? { ...r, status } : r);
+        }
+        return old;
       });
       if (selectedRequest?.id === id) {
         setSelectedRequest((prev: any) => ({ ...prev, status }));
@@ -99,7 +105,13 @@ export default function AdminPartnerRequests() {
       const previousRequests = queryClient.getQueryData(queryKeys.partnerRequests);
       queryClient.setQueryData(queryKeys.partnerRequests, (old: any) => {
         if (!old) return old;
-        return old.map((r: any) => r.id === id ? { ...r, adminNotes: notes } : r);
+        if (old.data && Array.isArray(old.data)) {
+          return { ...old, data: old.data.map((r: any) => r.id === id ? { ...r, adminNotes: notes } : r) };
+        }
+        if (Array.isArray(old)) {
+          return old.map((r: any) => r.id === id ? { ...r, adminNotes: notes } : r);
+        }
+        return old;
       });
       if (selectedRequest?.id === id) {
         setSelectedRequest((prev: any) => ({ ...prev, adminNotes: notes }));

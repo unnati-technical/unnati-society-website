@@ -13,7 +13,9 @@ const VideoSlide = ({ url, isActive, onEnded }) => {
       if (isActive) {
         videoRef.current.currentTime = 0;
         videoRef.current.play().catch(error => {
-          console.error("Video auto-play failed:", error);
+          if (error.name !== "NotAllowedError" && error.name !== "AbortError") {
+            console.error("Video auto-play failed:", error);
+          }
         });
       } else {
         videoRef.current.pause();

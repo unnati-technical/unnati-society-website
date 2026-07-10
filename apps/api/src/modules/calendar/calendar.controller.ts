@@ -6,10 +6,12 @@ import {
   BadRequestException,
 } from '@nestjs/common';
 import { CalendarService } from './calendar.service';
-import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
+import { FirebaseAuthGuard } from '../auth/guards/firebase-auth.guard';
+import { Public } from '../auth/decorators/public.decorator';
 
+@Public()
 @Controller('calendar')
-@UseGuards(JwtAuthGuard)
+@UseGuards(FirebaseAuthGuard)
 export class CalendarController {
   constructor(private readonly calendarService: CalendarService) {}
 

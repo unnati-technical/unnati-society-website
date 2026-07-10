@@ -75,7 +75,13 @@ export default function AdminSchoolInvites() {
       const previousRequests = queryClient.getQueryData(queryKeys.schoolInvites);
       queryClient.setQueryData(queryKeys.schoolInvites, (old: any) => {
         if (!old) return old;
-        return old.map((r: any) => r.id === id ? { ...r, status } : r);
+        if (old.data && Array.isArray(old.data)) {
+          return { ...old, data: old.data.map((r: any) => r.id === id ? { ...r, status } : r) };
+        }
+        if (Array.isArray(old)) {
+          return old.map((r: any) => r.id === id ? { ...r, status } : r);
+        }
+        return old;
       });
       if (selectedRequest?.id === id) {
         setSelectedRequest((prev: any) => ({ ...prev, status }));

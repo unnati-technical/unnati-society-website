@@ -50,7 +50,15 @@ const ActionCell = ({ volunteer }: { volunteer: Volunteer }) => {
       const previousVolunteers = queryClient.getQueryData(queryKeys.volunteers);
       queryClient.setQueryData(queryKeys.volunteers, (old: any) => {
         if (!old) return old;
-        return old.map((v: any) => v.id === id ? { ...v, status } : v);
+        // Handle nested shape: { data: [...], meta: {} }
+        if (old.data && Array.isArray(old.data)) {
+          return { ...old, data: old.data.map((v: any) => v.id === id ? { ...v, status } : v) };
+        }
+        // Handle plain array
+        if (Array.isArray(old)) {
+          return old.map((v: any) => v.id === id ? { ...v, status } : v);
+        }
+        return old;
       });
       return { previousVolunteers };
     },

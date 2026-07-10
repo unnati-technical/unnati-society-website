@@ -22,9 +22,7 @@ const storage = memoryStorage();
 
 @Controller('volunteer-leaderboard')
 export class VolunteerLeaderboardController {
-  constructor(
-    private readonly service: VolunteerLeaderboardService,
-  ) {}
+  constructor(private readonly service: VolunteerLeaderboardService) {}
 
   @Public()
   @Get()

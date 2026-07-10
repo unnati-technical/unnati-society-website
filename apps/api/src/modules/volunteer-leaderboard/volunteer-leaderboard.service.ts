@@ -24,10 +24,7 @@ export class VolunteerLeaderboardService {
       });
     }
     return this.prisma.volunteerLeaderboard.findMany({
-      orderBy: [
-        { month: 'desc' },
-        { rank: 'asc' },
-      ],
+      orderBy: [{ month: 'desc' }, { rank: 'asc' }],
     });
   }
 
@@ -37,9 +34,7 @@ export class VolunteerLeaderboardService {
       distinct: ['month'],
     });
 
-    const months = results
-      .map((r) => r.month)
-      .filter((m) => m !== 'ALL_TIME');
+    const months = results.map((r) => r.month).filter((m) => m !== 'ALL_TIME');
 
     // Sort months descending (e.g., "2026-08", "2026-07")
     months.sort((a, b) => b.localeCompare(a));
@@ -70,11 +65,17 @@ export class VolunteerLeaderboardService {
           try {
             await this.cloudinaryService.deleteFile(publicId);
           } catch (err) {
-            console.error(`Failed to delete old avatar ${publicId} from Cloudinary`, err);
+            console.error(
+              `Failed to delete old avatar ${publicId} from Cloudinary`,
+              err,
+            );
           }
         }
       }
-      const uploadResult = await this.cloudinaryService.uploadFile(file, 'leaderboard');
+      const uploadResult = await this.cloudinaryService.uploadFile(
+        file,
+        'leaderboard',
+      );
       avatarUrl = uploadResult.secure_url;
     }
 
@@ -121,7 +122,10 @@ export class VolunteerLeaderboardService {
       try {
         await this.cloudinaryService.deleteFile(publicId);
       } catch (err) {
-        console.error(`Failed to delete avatar ${publicId} from Cloudinary`, err);
+        console.error(
+          `Failed to delete avatar ${publicId} from Cloudinary`,
+          err,
+        );
       }
     }
 
@@ -142,7 +146,10 @@ export class VolunteerLeaderboardService {
           try {
             await this.cloudinaryService.deleteFile(publicId);
           } catch (err) {
-            console.error(`Failed to delete avatar ${publicId} from Cloudinary`, err);
+            console.error(
+              `Failed to delete avatar ${publicId} from Cloudinary`,
+              err,
+            );
           }
         }
       }
