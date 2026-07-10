@@ -19,6 +19,8 @@ import { CloudinaryService } from '../cloudinary/cloudinary.service';
 import { CreateEventDto } from './create-event.dto';
 import { Public } from '../auth/decorators/public.decorator';
 
+const storage = memoryStorage();
+
 // TODO: Protect with JwtAuthGuard once the admin login flow is built
 @Public()
 @CacheTTL(1) // Disable cache – events must be real-time for the admin panel
@@ -63,7 +65,7 @@ export class EventsController {
   }
 
   @Post(':id/photos')
-  @UseInterceptors(FilesInterceptor('photos', undefined, { storage: memoryStorage() }))
+  @UseInterceptors(FilesInterceptor('photos', undefined, { storage }))
   async uploadPhotos(
     @Param('id') id: string,
     @UploadedFiles() files: Express.Multer.File[],

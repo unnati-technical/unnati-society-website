@@ -21,17 +21,23 @@ export class HomeMediaService {
     });
   }
 
-  async create(data: {
-    type: string;
-    title?: string;
-    subtitle?: string;
-    displayOrder?: number;
-    url?: string;
-  }, file?: Express.Multer.File) {
+  async create(
+    data: {
+      type: string;
+      title?: string;
+      subtitle?: string;
+      displayOrder?: number;
+      url?: string;
+    },
+    file?: Express.Multer.File,
+  ) {
     let mediaUrl = data.url || '';
 
     if (file) {
-      const uploadResult = await this.cloudinaryService.uploadFile(file, 'home_media');
+      const uploadResult = await this.cloudinaryService.uploadFile(
+        file,
+        'home_media',
+      );
       mediaUrl = uploadResult.secure_url;
     }
 
@@ -48,13 +54,16 @@ export class HomeMediaService {
     });
   }
 
-  async update(id: string, data: {
-    type?: string;
-    title?: string;
-    subtitle?: string;
-    displayOrder?: number;
-    url?: string;
-  }) {
+  async update(
+    id: string,
+    data: {
+      type?: string;
+      title?: string;
+      subtitle?: string;
+      displayOrder?: number;
+      url?: string;
+    },
+  ) {
     const existing = await this.prisma.homeMedia.findUnique({
       where: { id },
     });
@@ -93,7 +102,10 @@ export class HomeMediaService {
       try {
         await this.cloudinaryService.deleteFile(publicId);
       } catch (err) {
-        console.error(`Failed to delete asset ${publicId} from Cloudinary:`, err);
+        console.error(
+          `Failed to delete asset ${publicId} from Cloudinary:`,
+          err,
+        );
       }
     }
 

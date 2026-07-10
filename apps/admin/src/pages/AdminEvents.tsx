@@ -238,7 +238,6 @@ const AdminEvents = () => {
     }
   };
 
-  const [showAll, setShowAll] = useState(true);
   const [modal, setModal] = useState(null);
 
   const createEventMutation = useCreateEvent();

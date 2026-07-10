@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import { ChevronLeft, ChevronRight, MapPin, Calendar } from 'lucide-react';
 import { eventsApi } from "../../../api/events.api";
