@@ -14,7 +14,7 @@ const Conttibute = () => {
         </div>
         <div className="flex gap-6">
           <div className="oswald-font-3 px-5 p-2 bg-amber-400 text-black cursor-pointer">JOIN AS VOLUNTEER</div>
-          <div className="oswald-font-3 px-5 py-2 bg-white text-black cursor-pointer">DONATE</div>
+          {/* <div className="oswald-font-3 px-5 py-2 bg-white text-black cursor-pointer">DONATE</div> */}
         </div>
       </div>
     </section>

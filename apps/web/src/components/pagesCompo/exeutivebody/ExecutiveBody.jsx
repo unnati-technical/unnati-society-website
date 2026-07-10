@@ -5,6 +5,7 @@ import { useQuery } from '@tanstack/react-query';
 import { leadershipApi } from "../../../api/leadership.api";
 import { queryKeys } from "../../../constants/queryKeys";
 import { cloudinaryImage } from "../../../utils/cloudinary";
+import { useLocation } from "react-router-dom";
 const directorImg = "https://res.cloudinary.com/drhkvdtw2/image/upload/v1782396812/unnati_assets/directorsir.png";
 const prImg = "https://res.cloudinary.com/drhkvdtw2/image/upload/v1782396871/unnati_assets/prsir.png";
 const chetanImg = "https://res.cloudinary.com/drhkvdtw2/image/upload/v1782396807/unnati_assets/chetansir.jpg";
@@ -108,6 +109,20 @@ const ExecutiveBody = () => {
     queryFn: leadershipApi.getLeadershipData,
   });
 
+  const location = useLocation();
+
+  useEffect(() => {
+    if (location.hash && !isLoading) {
+      setTimeout(() => {
+        const id = location.hash.replace('#', '');
+        const element = document.getElementById(id);
+        if (element) {
+          element.scrollIntoView({ behavior: 'smooth' });
+        }
+      }, 300);
+    }
+  }, [location.hash, isLoading]);
+
   useEffect(() => {
     if (data.length > 0 && !selectedYear) {
       const activeYear = data.find(d => d.isActive);
@@ -152,7 +167,7 @@ const ExecutiveBody = () => {
       <div className="max-w-[1400px] w-full mx-auto px-4 md:px-6 pt-8">
 
         {/* GOVERNING BODY */}
-        <section className="mb-24">
+        <section id="governing-body" className="mb-24 scroll-mt-24">
           <SectionHeader title="Governing Body" />
           <div className="flex flex-wrap justify-center gap-6 max-w-5xl mx-auto">
             {facultyExecutive.map((member, index) => (
@@ -191,7 +206,7 @@ const ExecutiveBody = () => {
         ) : (
           <>
             {/* EXECUTIVE BODY */}
-            <section className="mb-24">
+            <section id="executive-body" className="mb-24 scroll-mt-24">
               <SectionHeader title={`Executive Body ${selectedYear}`} />
               {execBodySection?.members?.length > 0 ? (
                 <div className="flex flex-wrap justify-center gap-4 w-full">
@@ -211,7 +226,7 @@ const ExecutiveBody = () => {
               <SectionHeader title={`Team Leads ${selectedYear}`} />
               <div className="flex flex-col gap-16">
                 {otherSections.map((section) => (
-                  <div key={section.id} className="flex flex-col gap-8">
+                  <div id={section.slug || section.name.toLowerCase().replace(/\s+/g, '-')} key={section.id} className="flex flex-col gap-8 scroll-mt-24">
                     <div className={`${section.badgeColor === 'yellow' ? 'bg-[#FFC107] text-black' : 'bg-blue-600 text-white'} rounded-2xl py-4 px-6 text-center shadow-lg max-w-sm mx-auto w-full`}>
                       <h3 className="oswald-font-3 text-2xl tracking-wide uppercase">{section.name}</h3>
                     </div>

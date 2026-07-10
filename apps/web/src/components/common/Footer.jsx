@@ -121,6 +121,12 @@ const Footer = () => {
               >
                 Akshar
               </li>
+              <li
+                className="hover:text-white cursor-pointer"
+                onClick={() => navigate("/outreach")}
+              >
+                Outreach
+              </li>
             </ul>
           </div>
         </div>

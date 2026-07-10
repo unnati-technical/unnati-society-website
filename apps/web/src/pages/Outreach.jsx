@@ -1,4 +1,5 @@
 import React, { useEffect, useState, useRef, lazy, Suspense } from 'react';
+import { useLocation } from 'react-router-dom';
 import Navbar from '../components/common/Navbar';
 import NavUnn from '../components/common/NavUnn';
 import Footer from '../components/common/Footer';
@@ -24,9 +25,19 @@ const Outreach = () => {
   const lineRef = useRef(null);
   const [lineVisible, setLineVisible] = useState(false);
 
+  const location = useLocation();
+
   useEffect(() => {
-    window.scrollTo(0, 0);
-  }, []);
+    if (location.hash) {
+      const id = location.hash.replace('#', '');
+      const element = document.getElementById(id);
+      if (element) {
+        element.scrollIntoView({ behavior: 'smooth' });
+      }
+    } else {
+      window.scrollTo(0, 0);
+    }
+  }, [location.hash]);
 
   useEffect(() => {
     if (!lineRef.current) return;
@@ -200,7 +211,7 @@ const Outreach = () => {
 
 
       {/* SECTION 3: CAMPUS VISIT DETAILS */}
-      <section className="w-full bg-[#F8FAFC] py-20 px-6 lg:px-16">
+      <section id="campus-visit" className="w-full bg-[#F8FAFC] py-20 px-6 lg:px-16">
         <div className="max-w-[1400px] mx-auto flex flex-col lg:flex-row items-center gap-12">
           <div className="w-full lg:w-1/2">
             <div className="bg-blue-600 text-white font-bold w-12 h-12 flex items-center justify-center rounded-xl mb-6 shadow-lg shadow-blue-600/30">01</div>
@@ -252,7 +263,7 @@ const Outreach = () => {
       </section>
 
       {/* SECTION 4: INVITE UNNATI */}
-      <section className="w-full bg-white py-20 px-6 lg:px-16">
+      <section id="invite" className="w-full bg-white py-20 px-6 lg:px-16">
         <div className="max-w-[1400px] mx-auto flex flex-col lg:flex-row-reverse items-center gap-12">
           <div className="w-full lg:w-1/2">
             <div className="bg-[#FBBF24] text-[#0F172A] font-bold w-12 h-12 flex items-center justify-center rounded-xl mb-6 shadow-lg shadow-yellow-400/30">02</div>
@@ -310,7 +321,7 @@ const Outreach = () => {
       </section>
 
       {/* SECTION 5: COLLABORATE */}
-      <section className="w-full bg-[#F8FAFC] py-20 px-6 lg:px-16">
+      <section id="collaborate" className="w-full bg-[#F8FAFC] py-20 px-6 lg:px-16">
         <div className="max-w-[1400px] mx-auto flex flex-col lg:flex-row items-center gap-12">
           <div className="w-full lg:w-1/2">
             <div className="bg-blue-600 text-white font-bold w-12 h-12 flex items-center justify-center rounded-xl mb-6 shadow-lg shadow-blue-600/30">03</div>

@@ -58,6 +58,7 @@ pnpm dev --filter=@unnati/admin
 ## Upcoming Features (Hidden for now)
 
 The following pages and features are currently hidden from the admin dashboard and will be built/integrated later:
+- **Donate Page (`/donate`)**: The Donate button has been hidden across the website as requested, but the `/donate` page itself must not be deleted.
 - Dashboard (Overview)
 - Students
 - Initiatives
