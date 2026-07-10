@@ -131,9 +131,9 @@ const NavUnn = () => {
                   <p className="px-4 py-2 text-[12px] text-gray-700 font-semibold hover:text-blue-600 hover:bg-blue-50 cursor-pointer" onClick={() => navigate('/executive-body#governing-body')}>Governing Body</p>
                   <p className="px-4 py-2 text-[12px] text-gray-700 font-semibold hover:text-blue-600 hover:bg-blue-50 cursor-pointer" onClick={() => navigate('/executive-body#executive-body')}>Executive Body</p>
                   <div className="px-4 py-2 text-[12px] text-gray-700 font-bold border-t border-gray-100 mt-1 pt-2">Team Leads</div>
-                  <p className="px-6 py-2 text-[11px] text-gray-600 font-semibold hover:text-blue-600 hover:bg-blue-50 cursor-pointer" onClick={() => navigate('/executive-body#program-lead')}>Program Lead</p>
-                  <p className="px-6 py-2 text-[11px] text-gray-600 font-semibold hover:text-blue-600 hover:bg-blue-50 cursor-pointer" onClick={() => navigate('/executive-body#public-relation-lead')}>Public Relation Lead</p>
-                  <p className="px-6 py-2 text-[11px] text-gray-600 font-semibold hover:text-blue-600 hover:bg-blue-50 cursor-pointer" onClick={() => navigate('/executive-body#technical-lead')}>Technical Lead</p>
+                  <p className="px-6 py-2 text-[11px] text-gray-600 font-semibold hover:text-blue-600 hover:bg-blue-50 cursor-pointer" onClick={() => navigate('/executive-body#program-leads')}>Program Lead</p>
+                  <p className="px-6 py-2 text-[11px] text-gray-600 font-semibold hover:text-blue-600 hover:bg-blue-50 cursor-pointer" onClick={() => navigate('/executive-body#public-relations-leads')}>Public Relation Lead</p>
+                  <p className="px-6 py-2 text-[11px] text-gray-600 font-semibold hover:text-blue-600 hover:bg-blue-50 cursor-pointer" onClick={() => navigate('/executive-body#technical-leads')}>Technical Lead</p>
                 </div>
               </div>
             );
@@ -212,9 +212,9 @@ const NavUnn = () => {
                     <p className="text-[10px] text-gray-500 font-medium cursor-pointer hover:text-blue-500" onClick={() => { navigate('/executive-body#executive-body'); setShow(false); }}>Executive Body</p>
                     <p className="text-[10px] text-gray-700 font-bold mt-1 border-t border-gray-100 pt-1">Team Leads</p>
                     <div className="flex flex-col pl-2 gap-2 border-l-2 border-gray-100 ml-1">
-                      <p className="text-[10px] text-gray-500 font-medium cursor-pointer hover:text-blue-500" onClick={() => { navigate('/executive-body#program-lead'); setShow(false); }}>Program Lead</p>
-                      <p className="text-[10px] text-gray-500 font-medium cursor-pointer hover:text-blue-500" onClick={() => { navigate('/executive-body#public-relation-lead'); setShow(false); }}>Public Relation Lead</p>
-                      <p className="text-[10px] text-gray-500 font-medium cursor-pointer hover:text-blue-500" onClick={() => { navigate('/executive-body#technical-lead'); setShow(false); }}>Technical Lead</p>
+                      <p className="text-[10px] text-gray-500 font-medium cursor-pointer hover:text-blue-500" onClick={() => { navigate('/executive-body#program-leads'); setShow(false); }}>Program Lead</p>
+                      <p className="text-[10px] text-gray-500 font-medium cursor-pointer hover:text-blue-500" onClick={() => { navigate('/executive-body#public-relations-leads'); setShow(false); }}>Public Relation Lead</p>
+                      <p className="text-[10px] text-gray-500 font-medium cursor-pointer hover:text-blue-500" onClick={() => { navigate('/executive-body#technical-leads'); setShow(false); }}>Technical Lead</p>
                     </div>
                   </div>
                 </div>
