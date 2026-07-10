@@ -81,6 +81,21 @@ export class HomeMediaService {
       updateData.displayOrder = Number(data.displayOrder);
     }
 
+    if (data.url !== undefined && data.url !== existing.url) {
+      const publicId = this.extractPublicId(existing.url);
+      if (publicId) {
+        try {
+          const resourceType = existing.type === 'VIDEO' ? 'video' : 'image';
+          await this.cloudinaryService.deleteFile(publicId, resourceType);
+        } catch (err) {
+          console.error(
+            `Failed to delete old asset ${publicId} from Cloudinary:`,
+            err,
+          );
+        }
+      }
+    }
+
     return this.prisma.homeMedia.update({
       where: { id },
       data: updateData,

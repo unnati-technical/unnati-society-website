@@ -6,19 +6,21 @@ export function useIntersectionObserver(options = {}) {
   const elementRef = useRef(null);
 
   useEffect(() => {
+    if (hasIntersected) return;
     const element = elementRef.current;
     if (!element) return;
 
     const observer = new IntersectionObserver(
       ([entry]) => {
         setIsIntersecting(entry.isIntersecting);
-        if (entry.isIntersecting && !hasIntersected) {
+        if (entry.isIntersecting) {
           setHasIntersected(true);
         }
       },
       {
-        rootMargin: '200px',
-        ...options,
+        rootMargin: options.rootMargin || '200px',
+        threshold: options.threshold || 0,
+        root: options.root || null,
       }
     );
 
@@ -29,7 +31,7 @@ export function useIntersectionObserver(options = {}) {
         observer.unobserve(element);
       }
     };
-  }, [hasIntersected, options]);
+  }, [hasIntersected, options.rootMargin, options.threshold, options.root]);
 
   return { elementRef, isIntersecting, hasIntersected };
 }

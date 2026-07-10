@@ -98,7 +98,7 @@ async function bootstrap() {
   const httpAdapter = app.get(HttpAdapterHost);
   app.useGlobalFilters(new AllExceptionsFilter(httpAdapter));
 
-  await app.listen(process.env.PORT ?? 3005);
+  await app.listen(process.env.PORT ?? 3005, '0.0.0.0');
 }
 bootstrap();
 // trigger reload
