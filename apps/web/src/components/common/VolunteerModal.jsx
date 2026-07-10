@@ -206,12 +206,16 @@ const VolunteerModal = ({ isOpen, onClose }) => {
   });
 
   const handleSubmit = (e) => {
-    e.preventDefault();
+    if (e && e.preventDefault) e.preventDefault();
     if (!validateStep(1) || !validateStep(3)) return;
     
     // Strip UI-only fields and unwhitelisted fields that cause 400 Bad Request
-    const { consentAccurate, consentConduct, consentContact, state, country, resume, ...payload } = formData;
+    const { consentAccurate, consentConduct, consentContact, state, country, resume, skills: skillsStr, ...payload } = formData;
     if (resume) payload.resume = resume; // Only send if it's a valid string/url
+    // Backend expects skills as string[], convert comma-separated string to array
+    if (skillsStr) {
+      payload.skills = skillsStr.split(',').map(s => s.trim()).filter(Boolean);
+    }
     applyMutation.mutate(payload);
   };
 
@@ -584,9 +588,9 @@ const VolunteerModal = ({ isOpen, onClose }) => {
                     </button>
                   ) : (
                     <button
-                        type="submit"
+                        type="button"
                         disabled={applyMutation.isPending || !formData.consentConduct || !formData.consentAccurate}
-                        onClick={() => applyMutation.mutate(formData)}
+                        onClick={handleSubmit}
                         className={`px-8 py-3 font-bold rounded-xl transition-all ${
                           applyMutation.isPending ? 'bg-orange-400 cursor-not-allowed text-white' : 'bg-green-500 text-white shadow-[0_8px_20px_rgba(34,197,94,0.3)] hover:bg-green-600'
                         }`}

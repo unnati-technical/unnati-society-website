@@ -33,7 +33,13 @@ export const VolunteerDetails: React.FC<VolunteerDetailsProps> = ({ volunteer, o
       const previousVolunteers = queryClient.getQueryData(queryKeys.volunteers);
       queryClient.setQueryData(queryKeys.volunteers, (old: any) => {
         if (!old) return old;
-        return old.map((v: any) => v.id === id ? { ...v, status } : v);
+        if (Array.isArray(old)) {
+          return old.map((v: any) => v.id === id ? { ...v, status } : v);
+        }
+        if (old.data) {
+          return { ...old, data: old.data.map((v: any) => v.id === id ? { ...v, status } : v) };
+        }
+        return old;
       });
       return { previousVolunteers };
     },
