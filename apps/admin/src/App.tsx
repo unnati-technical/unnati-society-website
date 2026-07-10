@@ -18,6 +18,7 @@ const AdminCertificates = lazy(() => import('./pages/AdminCertificates'));
 const AdminRoles = lazy(() => import('./pages/AdminRoles'));
 const AdminWelcome = lazy(() => import('./pages/AdminWelcome'));
 const AdminHomeMedia = lazy(() => import('./pages/AdminHomeMedia'));
+const AdminLeaderboard = lazy(() => import('./pages/AdminLeaderboard'));
 
 const GlobalLoader = () => (
   <div className="flex items-center justify-center min-h-screen bg-gray-50">
@@ -48,6 +49,7 @@ const App = () => {
           <Route path="/admin/certificates" element={<AdminCertificates />} />
           <Route path="/admin/roles" element={<AdminRoles />} />
           <Route path="/admin/home-media" element={<AdminHomeMedia />} />
+          <Route path="/admin/leaderboard" element={<AdminLeaderboard />} />
         </Routes>
       </Suspense>
     </BrowserRouter>

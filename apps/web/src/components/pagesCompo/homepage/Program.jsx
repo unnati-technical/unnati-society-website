@@ -2,6 +2,7 @@ import React from "react";
 import { cloudinaryImage } from "../../../utils/cloudinary";
 import { useNavigate } from "react-router-dom";
 import AnimatedCounter from "../../../components/common/AnimatedCounter";
+import Leaderboard from "./Leaderboard";
 import {
   FiMonitor,
   FiTarget,
@@ -47,70 +48,78 @@ const Program = () => {
     <section className="bg-[#FAFAFA] py-8 lg:py-12 px-6 lg:px-20 w-full font-sans overflow-hidden flex justify-center">
       <div className="max-w-[1200px] w-full flex flex-col gap-6 lg:gap-8">
 
-        {/* Header Area */}
-        <div className="flex flex-col lg:flex-row justify-between items-start lg:items-center gap-6 lg:gap-12">
-          <div className="flex flex-col gap-2 max-w-xl">
-            <div className="flex items-center gap-2">
-              <div className="w-6 h-[2px] bg-[#3B82F6]"></div>
-              <span className="text-[#3B82F6] font-bold text-xs tracking-wide uppercase">
-                OUR PROGRAMS
-              </span>
+        {/* Top Layout Section: Two columns on desktop */}
+        <div className="flex flex-col lg:flex-row gap-8 items-start justify-between">
+          
+          {/* Left Column: Heading and Stats */}
+          <div className="flex flex-col gap-6 w-full lg:max-w-[38%]">
+            
+            {/* Header Area */}
+            <div className="flex flex-col gap-2">
+              <div className="flex items-center gap-2">
+                <div className="w-6 h-[2px] bg-[#3B82F6]"></div>
+                <span className="text-[#3B82F6] font-bold text-xs tracking-wide uppercase">
+                  OUR PROGRAMS
+                </span>
+              </div>
+              <h2 className="oswald-font-3 text-3xl md:text-5xl font-bold leading-[1.1] text-[#0F172A] tracking-tight">
+                Creating Pathways<br />for Every Child
+              </h2>
             </div>
-            <h2 className="oswald-font-3 text-3xl md:text-5xl font-bold leading-[1.1] text-[#0F172A] tracking-tight">
-              Creating Pathways<br />for Every Child
-            </h2>
+
+            {/* Impact Statistics Card (Vertical Stack) */}
+            <div className="flex flex-col gap-5 bg-white p-6 rounded-[24px] shadow-[0_8px_30px_rgb(0,0,0,0.06)] border border-gray-100 w-full max-w-[280px]">
+
+              {/* Stat 1 */}
+              <div className="flex items-center gap-4">
+                <div className="w-12 h-12 rounded-xl bg-blue-50 flex items-center justify-center text-blue-600 shadow-sm border border-blue-100 shrink-0">
+                  <FaUserGraduate size={22} />
+                </div>
+                <div className="flex flex-col">
+                  <h3 className="text-2xl font-black text-[#0F172A] leading-none tracking-tight oswald-font-3">
+                    <AnimatedCounter value={4000} suffix="+" />
+                  </h3>
+                  <p className="text-gray-400 text-[10px] uppercase tracking-widest font-bold mt-1">Students</p>
+                </div>
+              </div>
+
+              <div className="w-full h-px bg-gray-100"></div>
+
+              {/* Stat 2 */}
+              <div className="flex items-center gap-4">
+                <div className="w-12 h-12 rounded-xl bg-yellow-50 flex items-center justify-center text-[#FFB300] shadow-sm border border-yellow-100 shrink-0">
+                  <FaChalkboardTeacher size={22} />
+                </div>
+                <div className="flex flex-col">
+                  <h3 className="text-2xl font-black text-[#0F172A] leading-none tracking-tight oswald-font-3">
+                    <AnimatedCounter value={360} suffix="+" />
+                  </h3>
+                  <p className="text-gray-400 text-[10px] uppercase tracking-widest font-bold mt-1">Sessions</p>
+                </div>
+              </div>
+
+              <div className="w-full h-px bg-gray-100"></div>
+
+              {/* Stat 3 */}
+              <div className="flex items-center gap-4">
+                <div className="w-12 h-12 rounded-xl bg-green-50 flex items-center justify-center text-green-600 shadow-sm border border-green-100 shrink-0">
+                  <FaSchool size={22} />
+                </div>
+                <div className="flex flex-col">
+                  <h3 className="text-2xl font-black text-[#0F172A] leading-none tracking-tight oswald-font-3">
+                    <AnimatedCounter value={20} suffix="+" />
+                  </h3>
+                  <p className="text-gray-400 text-[10px] uppercase tracking-widest font-bold mt-1">Schools</p>
+                </div>
+              </div>
+
+            </div>
           </div>
 
-          <div className="lg:border-l border-gray-300 lg:pl-8 max-w-md">
-            <p className="text-[#334155] text-sm leading-[1.6] font-medium">
-              Through digital education,<br className="hidden md:block" />
-              career guidance, and literacy programs,<br className="hidden md:block" />
-              we empower students to learn, grow,<br className="hidden md:block" />
-              and achieve their dreams.
-            </p>
+          {/* Right Column: Leaderboard Card */}
+          <div className="flex-1 w-full lg:max-w-[59%] overflow-visible">
+            <Leaderboard />
           </div>
-        </div>
-
-        {/* Impact Statistics Row */}
-        <div className="flex flex-wrap items-center gap-x-8 gap-y-6 bg-white py-4 px-8 rounded-[24px] shadow-[0_8px_30px_rgb(0,0,0,0.06)] border border-gray-100 w-fit">
-
-          {/* Stat 1 */}
-          <div className="flex items-center gap-4">
-            <div className="w-12 h-12 rounded-xl bg-blue-50 flex items-center justify-center text-blue-600 shadow-sm border border-blue-100">
-              <FaUserGraduate size={22} />
-            </div>
-            <div className="flex flex-col">
-              <h3 className="text-2xl font-black text-[#0F172A] leading-none tracking-tight oswald-font-3"><AnimatedCounter value={4000} suffix="+" /><span className="text-blue-600"></span></h3>
-              <p className="text-gray-500 text-[11px] uppercase tracking-widest font-bold mt-1.5">Students</p>
-            </div>
-          </div>
-
-          <div className="hidden sm:block w-px h-10 bg-gray-200"></div>
-
-          {/* Stat 2 */}
-          <div className="flex items-center gap-4">
-            <div className="w-12 h-12 rounded-xl bg-yellow-50 flex items-center justify-center text-[#FFB300] shadow-sm border border-yellow-100">
-              <FaChalkboardTeacher size={22} />
-            </div>
-            <div className="flex flex-col">
-              <h3 className="text-2xl font-black text-[#0F172A] leading-none tracking-tight oswald-font-3"><AnimatedCounter value={360} suffix="+" /></h3>
-              <p className="text-gray-500 text-[11px] uppercase tracking-widest font-bold mt-1.5">Sessions</p>
-            </div>
-          </div>
-
-          <div className="hidden sm:block w-px h-10 bg-gray-200"></div>
-
-          {/* Stat 3 */}
-          <div className="flex items-center gap-4">
-            <div className="w-12 h-12 rounded-xl bg-green-50 flex items-center justify-center text-green-600 shadow-sm border border-green-100">
-              <FaSchool size={22} />
-            </div>
-            <div className="flex flex-col">
-              <h3 className="text-2xl font-black text-[#0F172A] leading-none tracking-tight oswald-font-3"><AnimatedCounter value={20} suffix="+" /></h3>
-              <p className="text-gray-500 text-[11px] uppercase tracking-widest font-bold mt-1.5">Schools</p>
-            </div>
-          </div>
-
         </div>
 
         {/* Cards Layout */}

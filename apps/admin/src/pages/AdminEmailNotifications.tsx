@@ -12,7 +12,7 @@ import { toast } from 'sonner';
 import { notificationsApi } from '../api/notifications.api';
 import { queryKeys } from '../constants/queryKeys';
 
-const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:3005';
+const API_URL = import.meta.env.VITE_API_URL || 'http://127.0.0.1:3005';
 
 const FORM_CATEGORIES = [
   { id: 'Volunteer Form', icon: User, iconColor: 'text-blue-600', iconBg: 'bg-blue-50', title: 'Volunteer Registration Form', description: 'Sent whenever a volunteer submits an application.' },
