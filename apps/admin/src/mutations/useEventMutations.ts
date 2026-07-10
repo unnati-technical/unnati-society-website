@@ -6,7 +6,19 @@ import { toast } from 'sonner';
 export const useCreateEvent = (onSuccessCallback?: () => void) => {
   const queryClient = useQueryClient();
   return useMutation({
-    mutationFn: (form: any) => eventsApi.create({ ...form, date: new Date(form.date).toISOString() }),
+    mutationFn: (form: any) => {
+      const cleanForm = {
+        title: form.title,
+        description: form.description || '',
+        date: new Date(form.date).toISOString(),
+        location: form.location || '',
+        link: form.link || null,
+        color: form.color || null,
+        photos: form.photos || [],
+        eventType: form.eventType || 'AUTO',
+      };
+      return eventsApi.create(cleanForm);
+    },
     onMutate: async (newForm: any) => {
       await queryClient.cancelQueries({ queryKey: queryKeys.events });
       const previousEvents = queryClient.getQueryData(queryKeys.events);
@@ -34,7 +46,19 @@ export const useCreateEvent = (onSuccessCallback?: () => void) => {
 export const useUpdateEvent = (onSuccessCallback?: () => void) => {
   const queryClient = useQueryClient();
   return useMutation({
-    mutationFn: ({ id, form }: { id: string, form: any }) => eventsApi.update(id, { ...form, date: new Date(form.date).toISOString() }),
+    mutationFn: ({ id, form }: { id: string, form: any }) => {
+      const cleanForm = {
+        title: form.title,
+        description: form.description || '',
+        date: new Date(form.date).toISOString(),
+        location: form.location || '',
+        link: form.link || null,
+        color: form.color || null,
+        photos: form.photos || [],
+        eventType: form.eventType || 'AUTO',
+      };
+      return eventsApi.update(id, cleanForm);
+    },
     onMutate: async ({ id, form }) => {
       await queryClient.cancelQueries({ queryKey: queryKeys.events });
       const previousEvents = queryClient.getQueryData(queryKeys.events);

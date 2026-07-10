@@ -12,6 +12,7 @@ import {
   NotFoundException,
 } from '@nestjs/common';
 import { FilesInterceptor } from '@nestjs/platform-express';
+import { memoryStorage } from 'multer';
 import { CacheTTL } from '@nestjs/cache-manager';
 import { EventsService } from './events.service';
 import { CloudinaryService } from '../cloudinary/cloudinary.service';
@@ -20,7 +21,7 @@ import { Public } from '../auth/decorators/public.decorator';
 
 // TODO: Protect with JwtAuthGuard once the admin login flow is built
 @Public()
-@CacheTTL(0) // Disable cache – events must be real-time for the admin panel
+@CacheTTL(1) // Disable cache – events must be real-time for the admin panel
 @Controller('events')
 export class EventsController {
   constructor(
@@ -62,7 +63,7 @@ export class EventsController {
   }
 
   @Post(':id/photos')
-  @UseInterceptors(FilesInterceptor('photos'))
+  @UseInterceptors(FilesInterceptor('photos', undefined, { storage: memoryStorage() }))
   async uploadPhotos(
     @Param('id') id: string,
     @UploadedFiles() files: Express.Multer.File[],

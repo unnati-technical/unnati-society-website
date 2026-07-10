@@ -1,12 +1,14 @@
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Plus, X, Image as ImageIcon, MapPin, Calendar, Clock, Edit, Trash2, Eye, EyeOff, Save, ShieldAlert, ArrowRight, Activity, Zap, CheckCircle, ToggleRight, ToggleLeft, Sparkles, XCircle, Pencil } from 'lucide-react';
+import { Plus, X, Image as ImageIcon, MapPin, Calendar, Clock, Edit, Trash2, Eye, EyeOff, Save, ShieldAlert, ArrowRight, Activity, Zap, CheckCircle, ToggleRight, ToggleLeft, Sparkles, XCircle, Pencil, ChevronLeft, ChevronRight } from 'lucide-react';
 import { toast } from 'sonner';
 import AdminLayout from '../components/admin/AdminLayout';
 import { eventsApi } from '../api/events.api';
 import { useEvents } from '../queries/useEvents';
 import { useCreateEvent, useUpdateEvent, useDeleteEvent } from '../mutations/useEventMutations';
 import { Skeleton } from '../components/ui/SkeletonLoader';
+import { useQueryClient } from '@tanstack/react-query';
+import { queryKeys } from '../constants/queryKeys';
 
 const CARD_COLORS = [
   { label: 'Blue', value: 'bg-blue-400', textColor: 'text-white' },
@@ -22,10 +24,12 @@ const MONTHS = ['JAN','FEB','MAR','APR','MAY','JUN','JUL','AUG','SEP','OCT','NOV
 const isExpired = (dateStr) => new Date(dateStr) < new Date();
 
 const EmptyModal = ({ onClose, onSave, initial }) => {
+  const queryClient = useQueryClient();
   const [form, setForm] = useState(initial || {
     title: '', description: '', date: '', location: '', link: '', color: 'bg-blue-400', eventType: 'AUTO', photos: []
   });
   const [saving, setSaving] = useState(false);
+  const [selectedFiles, setSelectedFiles] = useState<File[]>([]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -35,7 +39,22 @@ const EmptyModal = ({ onClose, onSave, initial }) => {
     }
     setSaving(true);
     try {
-      await onSave(form);
+      const res = await onSave(form);
+      if (!initial && selectedFiles.length > 0 && res?.id) {
+        const formData = new FormData();
+        selectedFiles.forEach(f => formData.append('photos', f));
+        const toastId = toast.loading('Uploading event photos...');
+        try {
+          await eventsApi.uploadPhotos(res.id, formData);
+          toast.success('Photos uploaded successfully!', { id: toastId });
+          queryClient.invalidateQueries({ queryKey: queryKeys.events });
+        } catch {
+          toast.error('Event created, but photos failed to upload', { id: toastId });
+        }
+      }
+      onClose();
+    } catch (err) {
+      console.error(err);
     } finally {
       setSaving(false);
     }
@@ -105,14 +124,35 @@ const EmptyModal = ({ onClose, onSave, initial }) => {
             />
           </div>
           <div>
-            <label className="text-xs font-bold text-gray-600 uppercase tracking-wide block mb-1.5">Link (optional)</label>
+            <label className="text-xs font-bold text-gray-600 uppercase tracking-wide block mb-1.5">Cloudinary Link (optional)</label>
             <input
               className="w-full border border-gray-200 rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
-              placeholder="e.g. /media/PrashastiMedia"
+              placeholder="e.g. https://res.cloudinary.com/drhkvdtw2/image/upload/..."
               value={form.link}
               onChange={e => setForm(f => ({ ...f, link: e.target.value }))}
             />
           </div>
+
+          {!initial && (
+            <div>
+              <label className="text-xs font-bold text-gray-600 uppercase tracking-wide block mb-1.5">Event Photos</label>
+              <input
+                type="file"
+                multiple
+                accept="image/*"
+                onChange={(e) => {
+                  const files = Array.from(e.target.files || []);
+                  setSelectedFiles(files);
+                }}
+                className="w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100 transition-colors"
+              />
+              {selectedFiles.length > 0 && (
+                <p className="text-xs text-gray-500 mt-1.5 font-medium">
+                  {selectedFiles.length} file(s) selected
+                </p>
+              )}
+            </div>
+          )}
           
           {initial && (
             <div>
@@ -146,6 +186,7 @@ const EmptyModal = ({ onClose, onSave, initial }) => {
                       const res = await eventsApi.uploadPhotos(initial.id, formData);
                       setForm(f => ({ ...f, photos: res?.photos || [] }));
                       toast.success('Photos uploaded', { id: toastId });
+                      queryClient.invalidateQueries({ queryKey: queryKeys.events });
                     } catch {
                       toast.error('Upload failed', { id: toastId });
                     }
@@ -184,28 +225,44 @@ const EmptyModal = ({ onClose, onSave, initial }) => {
 };
 
 const AdminEvents = () => {
+  const scrollRef = React.useRef<HTMLDivElement>(null);
   const { data: events = [], isLoading: isLoadingEvents } = useEvents();
 
   const loading = isLoadingEvents;
 
+  const scroll = (direction: 'left' | 'right') => {
+    if (scrollRef.current) {
+      const { scrollLeft } = scrollRef.current;
+      const scrollTo = direction === 'left' ? scrollLeft - 320 : scrollLeft + 320;
+      scrollRef.current.scrollTo({ left: scrollTo, behavior: 'smooth' });
+    }
+  };
+
   const [showAll, setShowAll] = useState(true);
   const [modal, setModal] = useState(null);
 
-  const createEventMutation = useCreateEvent(() => setModal(null));
-  const updateEventMutation = useUpdateEvent(() => setModal(null));
+  const createEventMutation = useCreateEvent();
+  const updateEventMutation = useUpdateEvent();
   const deleteEventMutation = useDeleteEvent();
 
   useEffect(() => { window.scrollTo(0, 0); }, []);
 
-  const handleCreate = (form: any) => createEventMutation.mutate(form);
-  const handleUpdate = (form: any) => updateEventMutation.mutate({ id: modal.id, form });
+  const handleCreate = async (form: any) => {
+    return createEventMutation.mutateAsync(form);
+  };
+  
+  const handleUpdate = async (form: any) => {
+    return updateEventMutation.mutateAsync({ id: modal.id, form });
+  };
   
   const handleDelete = (id: string) => {
     if (!confirm('Delete this event?')) return;
     deleteEventMutation.mutate(id);
   };
 
-  const displayedEvents = events;
+  const displayedEvents = events
+    .filter(ev => !isExpired(ev.date))
+    .sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime());
 
   const getEventDate = (dateStr) => {
     const d = new Date(dateStr);
@@ -237,7 +294,25 @@ const AdminEvents = () => {
             <h3 className="font-extrabold text-gray-900 text-sm">
               Homepage Preview — OUR UPCOMING EVENTS
             </h3>
-            <span className="hidden sm:inline-block text-[10px] font-bold text-gray-400 uppercase tracking-wide">Live Preview</span>
+            <div className="flex items-center gap-3">
+              {displayedEvents.length > 3 && (
+                <div className="flex gap-1.5 mr-2">
+                  <button
+                    onClick={() => scroll('left')}
+                    className="p-1.5 bg-gray-50 hover:bg-gray-100 border border-gray-200 text-gray-600 rounded-full transition cursor-pointer"
+                  >
+                    <ChevronLeft size={14} />
+                  </button>
+                  <button
+                    onClick={() => scroll('right')}
+                    className="p-1.5 bg-gray-50 hover:bg-gray-100 border border-gray-200 text-gray-600 rounded-full transition cursor-pointer"
+                  >
+                    <ChevronRight size={14} />
+                  </button>
+                </div>
+              )}
+              <span className="hidden sm:inline-block text-[10px] font-bold text-gray-400 uppercase tracking-wide">Live Preview</span>
+            </div>
           </div>
           {loading ? (
             <div className="flex gap-4 overflow-x-auto pb-2 scrollbar-hide">
@@ -252,24 +327,49 @@ const AdminEvents = () => {
               <p className="text-xs mt-1">Add a new event above</p>
             </div>
           ) : (
-            <div className="flex gap-4 overflow-x-auto pb-2 scrollbar-hide -mx-4 px-4 md:mx-0 md:px-0">
+            <div ref={scrollRef} className="flex gap-6 overflow-x-auto pb-4 scrollbar-hide -mx-4 px-4 md:mx-0 md:px-0">
               {displayedEvents.map((ev, idx) => {
                 const { day, month } = getEventDate(ev.date);
-                const color = getColor(ev, idx);
+                const year = new Date(ev.date).getFullYear();
+                const photo = ev.photos && ev.photos.length > 0 ? ev.photos[0] : null;
                 return (
-                  <div key={ev.id} className={`min-w-[260px] rounded-2xl p-5 border-none flex justify-between items-center ${color} relative shadow-sm`}>
-                    {ev.isHoliday && (
-                      <div className="absolute top-2 right-2 bg-white/40 text-[10px] font-bold px-1.5 py-0.5 rounded text-gray-800">
-                        Holiday
-                      </div>
-                    )}
-                    <div>
-                      <h1 className={`text-4xl font-black ${ev.isHoliday ? 'text-gray-800' : 'text-white'} leading-none`}>{day}</h1>
-                      <p className={`${ev.isHoliday ? 'text-gray-600' : 'text-white/80'} text-sm font-bold mb-3`}>{month}</p>
-                      <h2 className="font-extrabold text-white text-sm uppercase leading-tight max-w-[160px]">{ev.title}</h2>
+                  <div
+                    key={ev.id || idx}
+                    className="min-w-[300px] w-[300px] flex flex-col bg-white border border-gray-100 rounded-3xl overflow-hidden shadow-sm h-[370px] shrink-0 relative"
+                  >
+                    {/* Event Image */}
+                    <div className="relative h-40 w-full bg-slate-100 overflow-hidden shrink-0">
+                      {photo ? (
+                        <img
+                          src={photo}
+                          alt={ev.title}
+                          className="w-full h-full object-cover"
+                        />
+                      ) : (
+                        <div className="w-full h-full bg-gradient-to-br from-blue-50 to-indigo-100 flex items-center justify-center">
+                          <Calendar className="w-10 h-10 text-blue-400" />
+                        </div>
+                      )}
                     </div>
-                    <div className="bg-white/30 rounded-full p-2.5">
-                      <span className="text-white text-lg">→</span>
+
+                    {/* Event Details */}
+                    <div className="p-5 flex-1 flex flex-col justify-between overflow-hidden">
+                      <div className="space-y-1.5">
+                        <span className="text-[#3B82F6] text-[10px] font-black tracking-widest uppercase block">
+                          Tentative: {day} {month} {year}
+                        </span>
+                        <h3 className="font-extrabold text-sm text-gray-900 leading-snug line-clamp-2 uppercase">
+                          {ev.title}
+                        </h3>
+                        <p className="text-[11px] text-gray-500 leading-relaxed line-clamp-3">
+                          {ev.description || "No description provided."}
+                        </p>
+                      </div>
+
+                      <div className="flex items-center gap-1.5 text-[11px] text-gray-600 font-bold pt-3 border-t border-gray-50 shrink-0">
+                        <MapPin className="w-3.5 h-3.5 text-gray-400" />
+                        <span className="truncate">{ev.location || "TBA"}</span>
+                      </div>
                     </div>
                   </div>
                 );

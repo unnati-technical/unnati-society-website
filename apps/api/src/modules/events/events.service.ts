@@ -81,15 +81,10 @@ export class EventsService {
 
   // Returns events for the public homepage
   async findUpcoming() {
-    const now = new Date();
+    const dbEvents = await this.eventsRepository.findMany({});
 
-    const dbEvents = await this.eventsRepository.findMany({
-      where: { date: { gte: now } },
-    });
-
-    // Manual mode: show only DB events
     return dbEvents
       .sort((a, b) => a.date.getTime() - b.date.getTime())
-      .slice(0, 6);
+      .slice(0, 10);
   }
 }
