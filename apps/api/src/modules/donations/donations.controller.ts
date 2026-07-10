@@ -1,10 +1,13 @@
-import { Controller, Post, Body, Get } from '@nestjs/common';
+import { Controller, Post, Body, Get, UseGuards } from '@nestjs/common';
 import { DonationsService } from './donations.service';
+import { Public } from '../auth/decorators/public.decorator';
+import { FirebaseAuthGuard } from '../auth/guards/firebase-auth.guard';
 
 @Controller('donations')
 export class DonationsController {
   constructor(private readonly donationsService: DonationsService) {}
 
+  @Public()
   @Post('create-order')
   async createOrder(
     @Body('amount') amount: number,
@@ -24,6 +27,7 @@ export class DonationsController {
     );
   }
 
+  @Public()
   @Post('verify-payment')
   async verifyPayment(
     @Body('razorpay_order_id') orderId: string,
@@ -39,6 +43,8 @@ export class DonationsController {
     );
   }
 
+  @Public()
+  @UseGuards(FirebaseAuthGuard)
   @Get()
   async findAll() {
     return this.donationsService.findAll();
