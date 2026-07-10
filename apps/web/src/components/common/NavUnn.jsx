@@ -94,10 +94,10 @@ const NavUnn = () => {
                 >
                   {link.name}
                 </h3>
-                <div className="absolute left-0 mt-2 w-48 bg-black/90 border border-white/20 rounded-md shadow-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 z-50 py-2">
-                  <p className="px-4 py-2 text-[11px] text-gray-200 hover:text-blue-400 hover:bg-white/10 cursor-pointer" onClick={() => navigate('/outreach#campus-visit')}>Campus Visit</p>
-                  <p className="px-4 py-2 text-[11px] text-gray-200 hover:text-blue-400 hover:bg-white/10 cursor-pointer" onClick={() => navigate('/outreach#invite')}>Invite</p>
-                  <p className="px-4 py-2 text-[11px] text-gray-200 hover:text-blue-400 hover:bg-white/10 cursor-pointer" onClick={() => navigate('/outreach#collaborate')}>Collaborate/Partner</p>
+                <div className="absolute left-0 mt-2 w-48 bg-white border border-gray-200 rounded-md shadow-xl opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 z-50 py-2">
+                  <p className="px-4 py-2 text-[12px] text-gray-700 font-semibold hover:text-blue-600 hover:bg-blue-50 cursor-pointer" onClick={() => navigate('/outreach#campus-visit')}>Campus Visit</p>
+                  <p className="px-4 py-2 text-[12px] text-gray-700 font-semibold hover:text-blue-600 hover:bg-blue-50 cursor-pointer" onClick={() => navigate('/outreach#invite')}>Invite</p>
+                  <p className="px-4 py-2 text-[12px] text-gray-700 font-semibold hover:text-blue-600 hover:bg-blue-50 cursor-pointer" onClick={() => navigate('/outreach#collaborate')}>Collaborate/Partner</p>
                 </div>
               </div>
             );
