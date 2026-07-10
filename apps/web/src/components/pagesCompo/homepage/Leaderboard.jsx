@@ -56,26 +56,32 @@ const formatMonthName = (key) => {
 };
 
 const Leaderboard = () => {
-  const [selectedMonth, setSelectedMonth] = useState("2026-08");
+  const [selectedMonth, setSelectedMonth] = useState("");
   const [months, setMonths] = useState([]);
   const [entries, setEntries] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [isWakingUp, setIsWakingUp] = useState(false);
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const dropdownRef = useRef(null);
 
   useEffect(() => {
-    const fetchMonthsAndActive = async () => {
+    const initLeaderboard = async () => {
       try {
-        const [monthsRes, activeRes] = await Promise.all([
+        const [monthsRes, activeRes] = await Promise.allSettled([
           leaderboardApi.getMonths(),
           leaderboardApi.getActiveMonth()
         ]);
-        const activeMonths = (monthsRes || []).filter(m => m !== "ALL_TIME");
+
+        const monthsList = monthsRes.status === "fulfilled" ? monthsRes.value : [];
+        const activeMonthVal = activeRes.status === "fulfilled" ? activeRes.value : null;
+
+        const activeMonths = (monthsList || []).filter(m => m !== "ALL_TIME");
         activeMonths.sort((a, b) => b.localeCompare(a));
+
         if (activeMonths.length > 0) {
           setMonths(activeMonths);
-          if (activeRes && activeMonths.includes(activeRes)) {
-            setSelectedMonth(activeRes);
+          if (activeMonthVal && activeMonths.includes(activeMonthVal)) {
+            setSelectedMonth(activeMonthVal);
           } else {
             setSelectedMonth(activeMonths[0]);
           }
@@ -84,32 +90,48 @@ const Leaderboard = () => {
           setSelectedMonth("2026-08");
         }
       } catch (err) {
-        console.error("Failed to load dynamic months list", err);
+        console.error("Failed to initialize leaderboard", err);
         setMonths(["2026-08"]);
         setSelectedMonth("2026-08");
       }
     };
-    fetchMonthsAndActive();
+    initLeaderboard();
   }, []);
 
   useEffect(() => {
+    if (!selectedMonth) return;
+
+    let timer;
     const fetchEntries = async () => {
       setLoading(true);
+      setIsWakingUp(false);
+      
+      // If server does not respond in 3.5 seconds, show waking up state
+      timer = setTimeout(() => {
+        setIsWakingUp(true);
+      }, 3500);
+
       try {
         const res = await leaderboardApi.getByMonth(selectedMonth);
+        console.log("Leaderboard loaded entries for month:", selectedMonth, res);
+        clearTimeout(timer);
+        setIsWakingUp(false);
         if (res && res.length > 0) {
           setEntries(res);
         } else {
-          setEntries(fallbackData[selectedMonth] || []);
+          setEntries(fallbackData[selectedMonth] || fallbackData["2026-08"] || []);
         }
       } catch (err) {
+        clearTimeout(timer);
+        setIsWakingUp(false);
         console.error(err);
-        setEntries(fallbackData[selectedMonth] || []);
+        setEntries(fallbackData[selectedMonth] || fallbackData["2026-08"] || []);
       } finally {
         setLoading(false);
       }
     };
     fetchEntries();
+    return () => clearTimeout(timer);
   }, [selectedMonth]);
 
   // Click outside to close dropdown
@@ -191,8 +213,7 @@ const Leaderboard = () => {
     <motion.div
       variants={containerVariants}
       initial="hidden"
-      whileInView="visible"
-      viewport={{ once: true, amount: 0.2 }}
+      animate="visible"
       className="bg-white rounded-[24px] border border-gray-100 shadow-[0_12px_40px_rgba(0,0,0,0.04)] p-6 md:p-8 flex flex-col gap-4 relative w-full overflow-visible"
     >
       {/* Header Row */}
@@ -252,8 +273,17 @@ const Leaderboard = () => {
 
       {/* Main Grid: Sequential Entrance Animations & Stack Order */}
       {loading ? (
-        <div className="flex items-center justify-center h-[280px]">
+        <div className="flex flex-col items-center justify-center h-[280px] gap-3">
           <div className="w-8 h-8 border-4 border-blue-500 border-t-transparent rounded-full animate-spin"></div>
+          {isWakingUp && (
+            <motion.p
+              initial={{ opacity: 0, y: 5 }}
+              animate={{ opacity: 1, y: 0 }}
+              className="text-gray-400 text-xs font-semibold text-center select-none max-w-[280px] animate-pulse"
+            >
+              Waking up database server... This may take up to a minute on first load.
+            </motion.p>
+          )}
         </div>
       ) : (
         <div className="flex flex-col lg:flex-row items-center justify-center gap-4 lg:gap-4 mt-4 mb-1 overflow-visible">

@@ -34,17 +34,24 @@ export class CloudinaryService {
     });
   }
 
-  deleteFile(publicId: string): Promise<any> {
+  deleteFile(
+    publicId: string,
+    resourceType: string = 'image',
+  ): Promise<any> {
     return new Promise((resolve, reject) => {
-      cloudinary.uploader.destroy(publicId, (error, result) => {
-        if (error)
-          return reject(
-            error instanceof Error
-              ? error
-              : new Error(error?.message || 'Delete failed'),
-          );
-        resolve(result);
-      });
+      cloudinary.uploader.destroy(
+        publicId,
+        { resource_type: resourceType },
+        (error, result) => {
+          if (error)
+            return reject(
+              error instanceof Error
+                ? error
+                : new Error(error?.message || 'Delete failed'),
+            );
+          resolve(result);
+        },
+      );
     });
   }
 }

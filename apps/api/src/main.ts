@@ -85,6 +85,14 @@ async function bootstrap() {
     credentials: true,
   });
 
+  // Disable caching for all API responses to prevent stale browser state
+  app.use((req, res, next) => {
+    res.setHeader('Cache-Control', 'no-store, no-cache, must-revalidate, proxy-revalidate');
+    res.setHeader('Pragma', 'no-cache');
+    res.setHeader('Expires', '0');
+    next();
+  });
+
   // Apply Global Pipes, Interceptors, and Filters
   app.useGlobalPipes(
     new ValidationPipe({
@@ -98,7 +106,7 @@ async function bootstrap() {
   const httpAdapter = app.get(HttpAdapterHost);
   app.useGlobalFilters(new AllExceptionsFilter(httpAdapter));
 
-  await app.listen(process.env.PORT ?? 3005);
+  await app.listen(process.env.PORT ?? 3005, '0.0.0.0');
 }
 bootstrap();
 // trigger reload

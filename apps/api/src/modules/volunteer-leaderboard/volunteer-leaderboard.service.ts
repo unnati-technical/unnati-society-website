@@ -47,16 +47,6 @@ export class VolunteerLeaderboardService {
     return months;
   }
 
-  async findOne(id: string) {
-    const entry = await this.prisma.volunteerLeaderboard.findUnique({
-      where: { id },
-    });
-    if (!entry) {
-      throw new NotFoundException('Leaderboard entry not found');
-    }
-    return entry;
-  }
-
   async upsert(dto: UpsertLeaderboardEntryDto, file?: Express.Multer.File) {
     const rankNum = Number(dto.rank);
     const workshopsNum = Number(dto.workshops || 0);
