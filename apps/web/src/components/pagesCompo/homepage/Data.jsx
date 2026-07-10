@@ -194,9 +194,9 @@ const Data = () => {
               <button onClick={() => navigate('/join-us')} className="flex items-center gap-2 bg-[#3B82F6] hover:bg-blue-600 text-white font-semibold text-sm px-6 py-3 transition-colors shadow-lg shadow-blue-500/30">
                 JOIN US <FiArrowRight />
               </button>
-              <button onClick={() => navigate('/donate')} className="flex items-center gap-2 border border-white/50 hover:bg-white/10 text-white font-semibold text-sm px-6 py-3 transition-colors">
+              {/* <button onClick={() => navigate('/donate')} className="flex items-center gap-2 border border-white/50 hover:bg-white/10 text-white font-semibold text-sm px-6 py-3 transition-colors">
                 DONATE NOW <FiArrowRight />
-              </button>
+              </button> */}
             </div>
           </div>
 
