@@ -51,6 +51,25 @@ export class EventsService {
   }
 
   async update(id: string, dto: Partial<CreateEventDto>) {
+    if (dto.photos !== undefined && dto.photos !== null) {
+      const event = await this.eventsRepository.findUnique({ where: { id } });
+      if (event && event.photos) {
+        const newPhotos = dto.photos;
+        const removedPhotos = event.photos.filter((p) => !newPhotos.includes(p));
+        for (const url of removedPhotos) {
+          const match = url.match(/\/v\d+\/(.+)\.[a-zA-Z]+$/);
+          if (match && match[1]) {
+            this.cloudinaryService.deleteFile(match[1]).catch((err) => {
+              console.error(
+                `Failed to delete removed event image ${match[1]} from Cloudinary`,
+                err,
+              );
+            });
+          }
+        }
+      }
+    }
+
     return this.eventsRepository.update({
       where: { id },
       data: {

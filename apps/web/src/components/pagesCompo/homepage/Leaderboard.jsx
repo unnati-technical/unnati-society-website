@@ -56,7 +56,7 @@ const formatMonthName = (key) => {
 };
 
 const Leaderboard = () => {
-  const [selectedMonth, setSelectedMonth] = useState("2026-08");
+  const [selectedMonth, setSelectedMonth] = useState("");
   const [months, setMonths] = useState([]);
   const [entries, setEntries] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -64,18 +64,23 @@ const Leaderboard = () => {
   const dropdownRef = useRef(null);
 
   useEffect(() => {
-    const fetchMonthsAndActive = async () => {
+    const initLeaderboard = async () => {
       try {
-        const [monthsRes, activeRes] = await Promise.all([
+        const [monthsRes, activeRes] = await Promise.allSettled([
           leaderboardApi.getMonths(),
           leaderboardApi.getActiveMonth()
         ]);
-        const activeMonths = (monthsRes || []).filter(m => m !== "ALL_TIME");
+
+        const monthsList = monthsRes.status === "fulfilled" ? monthsRes.value : [];
+        const activeMonthVal = activeRes.status === "fulfilled" ? activeRes.value : null;
+
+        const activeMonths = (monthsList || []).filter(m => m !== "ALL_TIME");
         activeMonths.sort((a, b) => b.localeCompare(a));
+
         if (activeMonths.length > 0) {
           setMonths(activeMonths);
-          if (activeRes && activeMonths.includes(activeRes)) {
-            setSelectedMonth(activeRes);
+          if (activeMonthVal && activeMonths.includes(activeMonthVal)) {
+            setSelectedMonth(activeMonthVal);
           } else {
             setSelectedMonth(activeMonths[0]);
           }
@@ -84,15 +89,17 @@ const Leaderboard = () => {
           setSelectedMonth("2026-08");
         }
       } catch (err) {
-        console.error("Failed to load dynamic months list", err);
+        console.error("Failed to initialize leaderboard", err);
         setMonths(["2026-08"]);
         setSelectedMonth("2026-08");
       }
     };
-    fetchMonthsAndActive();
+    initLeaderboard();
   }, []);
 
   useEffect(() => {
+    if (!selectedMonth) return;
+
     const fetchEntries = async () => {
       setLoading(true);
       try {
