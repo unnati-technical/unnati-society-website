@@ -28,7 +28,7 @@ import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { leadershipApi } from '../api/leadership.api';
 import { queryKeys } from '../constants/queryKeys';
 
-const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:3005';
+const API_URL = import.meta.env.VITE_API_URL || 'http://127.0.0.1:3005';
 
 const BADGE_COLORS = [
   { label: 'Blue', value: 'blue', bg: 'bg-blue-100', text: 'text-blue-800' },

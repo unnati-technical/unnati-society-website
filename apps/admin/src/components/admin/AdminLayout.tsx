@@ -3,7 +3,7 @@ import {
   LayoutDashboard, Users, GraduationCap, UserSquare2, School, Handshake,
   FolderKanban, CalendarDays, CheckSquare, BarChart3, Settings, ShieldAlert,
   Bell, MessageSquare, ChevronDown, Menu, Search, FileText, IndianRupee,
-  Activity, Zap, X, PanelRight, LogOut, Mail, Image
+  Activity, Zap, X, PanelRight, LogOut, Mail, Image, Trophy
 } from 'lucide-react';
 import { Link, useLocation, Navigate, useNavigate } from 'react-router-dom';
 import NotificationDropdown from './NotificationDropdown';
@@ -30,6 +30,7 @@ const sidebarGroups = [
       { name: 'Events Management', icon: CalendarDays, path: '/admin/events' },
       { name: 'Messages', icon: Bell, path: '/admin/messages' },
       { name: 'Home Media', icon: Image, path: '/admin/home-media' },
+      { name: 'Leaderboard', icon: Trophy, path: '/admin/leaderboard' },
     ]
   },
   {
