@@ -84,15 +84,34 @@ const NavUnn = () => {
 
       {/* Desktop Menu */}
       <div className="hidden text-gray-100 sm:flex gap-2 sm:gap-3 md:gap-5 font-semibold">
-        {navLinks.map((link) => (
-          <h3 
-            key={link.name}
-            className={getDesktopClass(link.path)} 
-            onClick={() => navigate(link.path)}
-          >
-            {link.name}
-          </h3>
-        ))}
+        {navLinks.map((link) => {
+          if (link.name === "OUTREACH") {
+            return (
+              <div key={link.name} className="relative group">
+                <h3 
+                  className={getDesktopClass(link.path)} 
+                  onClick={() => navigate(link.path)}
+                >
+                  {link.name}
+                </h3>
+                <div className="absolute left-0 mt-2 w-48 bg-black/90 border border-white/20 rounded-md shadow-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 z-50 py-2">
+                  <p className="px-4 py-2 text-[11px] text-gray-200 hover:text-blue-400 hover:bg-white/10 cursor-pointer" onClick={() => navigate('/outreach#campus-visit')}>Campus Visit</p>
+                  <p className="px-4 py-2 text-[11px] text-gray-200 hover:text-blue-400 hover:bg-white/10 cursor-pointer" onClick={() => navigate('/outreach#invite')}>Invite</p>
+                  <p className="px-4 py-2 text-[11px] text-gray-200 hover:text-blue-400 hover:bg-white/10 cursor-pointer" onClick={() => navigate('/outreach#collaborate')}>Collaborate/Partner</p>
+                </div>
+              </div>
+            );
+          }
+          return (
+            <h3 
+              key={link.name}
+              className={getDesktopClass(link.path)} 
+              onClick={() => navigate(link.path)}
+            >
+              {link.name}
+            </h3>
+          );
+        })}
         <h3 className="bg-[#2563EB] hover:bg-blue-600 text-white px-3 py-1 cursor-pointer text-[10px] sm:text-[11px] md:text-[12px] rounded-md transition-colors font-bold tracking-wide shadow-md hover:shadow-lg" onClick={() => navigate('/donate')}>DONATE</h3>
       </div>
 
@@ -108,16 +127,35 @@ const NavUnn = () => {
 
       {/* Mobile Dropdown */}
       {show && (
-        <div className="flex flex-col text-black gap-3 font-bold absolute right-2 top-14 w-40 bg-white p-3 shadow-lg rounded-lg sm:hidden z-50">
-          {navLinks.map((link) => (
-            <h3 
-              key={link.name}
-              className={getMobileClass(link.path)} 
-              onClick={() => { navigate(link.path); setShow(false); }}
-            >
-              {link.name}
-            </h3>
-          ))}
+        <div className="flex flex-col text-black gap-3 font-bold absolute right-2 top-14 w-48 bg-white p-3 shadow-lg rounded-lg sm:hidden z-50">
+          {navLinks.map((link) => {
+            if (link.name === "OUTREACH") {
+              return (
+                <div key={link.name} className="flex flex-col gap-2">
+                  <h3 
+                    className={getMobileClass(link.path)} 
+                    onClick={() => { navigate(link.path); setShow(false); }}
+                  >
+                    {link.name}
+                  </h3>
+                  <div className="flex flex-col pl-3 gap-2 border-l-2 border-gray-100 ml-1">
+                    <p className="text-[10px] text-gray-500 font-medium cursor-pointer hover:text-blue-500" onClick={() => { navigate('/outreach#campus-visit'); setShow(false); }}>Campus Visit</p>
+                    <p className="text-[10px] text-gray-500 font-medium cursor-pointer hover:text-blue-500" onClick={() => { navigate('/outreach#invite'); setShow(false); }}>Invite</p>
+                    <p className="text-[10px] text-gray-500 font-medium cursor-pointer hover:text-blue-500" onClick={() => { navigate('/outreach#collaborate'); setShow(false); }}>Collaborate/Partner</p>
+                  </div>
+                </div>
+              );
+            }
+            return (
+              <h3 
+                key={link.name}
+                className={getMobileClass(link.path)} 
+                onClick={() => { navigate(link.path); setShow(false); }}
+              >
+                {link.name}
+              </h3>
+            );
+          })}
           <h3 className="bg-[#2563EB] px-2 py-1.5 cursor-pointer text-[11px] text-white text-center rounded font-bold tracking-wide" onClick={() => { navigate("/donate"); setShow(false); }}>DONATE</h3>
         </div>
       )}
