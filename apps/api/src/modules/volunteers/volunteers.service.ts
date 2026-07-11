@@ -91,7 +91,8 @@ export class VolunteersService {
       preferredLocation: app.preferredLocation,
       address: app.address,
       whyVolunteer: app.whyVolunteer,
-      skills: app.volunteer.skills || [],
+      skills: app.skills || [],
+      interests: app.interests || [],
       linkedinUrl: app.linkedinUrl,
       portfolioUrl: app.portfolioUrl,
       resumeUrl: app.resumeUrl,
@@ -240,6 +241,8 @@ export class VolunteersService {
         emergencyPhone: emergencyPhone || '',
         careerGoals: careerGoals || '',
         startDate: startDate || '',
+        interests: interests || [],
+        skills: skills || [],
       },
     });
 

@@ -26,6 +26,7 @@ export interface Volunteer {
   address: string;
   whyVolunteer: string;
   skills: string[];
+  interests?: string[];
   linkedinUrl?: string;
   howDidYouHear: string;
   resumeUrl?: string;
