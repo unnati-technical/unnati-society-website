@@ -222,7 +222,7 @@ export class TeamLeadsService {
       this.emailService.sendTeamLeadStatusUpdateEmail({
         name: lead.name,
         email: lead.email,
-        status: data.credStatus
+        status: data.credStatus,
       });
     }
 

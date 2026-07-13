@@ -6,12 +6,16 @@ import {
 import { PrismaService } from '../../prisma/prisma.service';
 import Razorpay from 'razorpay';
 import * as crypto from 'crypto';
+import { EmailService } from '../../queues/email/email.service';
 
 @Injectable()
 export class DonationsService {
   private razorpay: any;
 
-  constructor(private readonly prisma: PrismaService) {
+  constructor(
+    private readonly prisma: PrismaService,
+    private readonly emailService: EmailService,
+  ) {
     this.razorpay = new Razorpay({
       key_id: process.env.RAZORPAY_KEY_ID || 'dummy_key',
       key_secret: process.env.RAZORPAY_KEY_SECRET || 'dummy_secret',
@@ -57,8 +61,10 @@ export class DonationsService {
         currency: order.currency,
       };
     } catch (error) {
+      console.error('Razorpay Error details:', JSON.stringify(error, null, 2));
       throw new InternalServerErrorException(
-        'Error creating Razorpay order: ' + error.message,
+        'Error creating Razorpay order: ' +
+          (error.message || error.error?.description || 'Unknown error'),
       );
     }
   }
@@ -84,6 +90,14 @@ export class DonationsService {
             transactionId: paymentId,
           },
         });
+
+        // Send a heartfelt thank you email!
+        await this.emailService.sendDonationThankYouEmail(
+          updatedDonation.donorName,
+          updatedDonation.donorEmail,
+          updatedDonation.amount,
+        );
+
         return {
           success: true,
           message: 'Payment verified successfully',

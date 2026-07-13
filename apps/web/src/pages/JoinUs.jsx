@@ -198,9 +198,9 @@ const JoinUs = () => {
               </div>
               <h3 className="text-2xl font-bold text-[#0F172A] mb-4">Donate</h3>
               <p className="text-gray-600 mb-8 flex-grow">Your contribution helps us reach more students and communities.</p>
-              {/* <button onClick={() => navigate('/donate')} className="text-green-600 font-bold flex items-center gap-2 group-hover:gap-3 transition-all">
+              <button onClick={() => navigate('/donate')} className="text-green-600 font-bold flex items-center gap-2 group-hover:gap-3 transition-all">
                 Donate Now <FiArrowRight />
-              </button> */}
+              </button>
             </motion.div>
           </motion.div>
         </div>

@@ -59,7 +59,7 @@ export class NotificationsService {
     });
 
     if (allNotifications.length > 6) {
-      const idsToDelete = allNotifications.slice(6).map(n => n.id);
+      const idsToDelete = allNotifications.slice(6).map((n) => n.id);
       await this.prisma.notification.deleteMany({
         where: { id: { in: idsToDelete } },
       });

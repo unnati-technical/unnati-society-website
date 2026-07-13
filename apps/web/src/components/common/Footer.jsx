@@ -34,8 +34,8 @@ const Footer = () => {
   };
 
   return (
-    <footer className="bg-black text-white px-8 md:px-16 py-8">
-      <div className="max-w-7xl mx-auto grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8">
+    <footer className="bg-black text-white px-8 md:px-16 py-12 md:py-16">
+      <div className="max-w-7xl mx-auto grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-8">
         <div className="flex flex-col gap-6">
           <div className="flex items-center gap-4">
             <img loading="lazy"
@@ -103,11 +103,6 @@ const Footer = () => {
               Impact
             </li>
             <li className="hover:text-white cursor-pointer"
-              onClick={() => navigate("/contact")}
-            >
-              Contact
-            </li>
-            <li className="hover:text-white cursor-pointer"
               onClick={() => navigate("/join-us")}
             >
               Join Us
@@ -149,6 +144,33 @@ const Footer = () => {
                 onClick={() => navigate("/outreach")}
               >
                 Outreach
+              </li>
+            </ul>
+          </div>
+        </div>
+        <div className="flex flex-col gap-6">
+          <div>
+            <h1 className="text-sm font-semibold tracking-widest text-white/70 mb-3">
+              SUPPORT & LEGAL
+            </h1>
+            <ul className="flex flex-col gap-2 text-sm text-white/60">
+              <li
+                className="hover:text-white cursor-pointer"
+                onClick={() => navigate("/contact")}
+              >
+                Contact
+              </li>
+              <li
+                className="hover:text-white cursor-pointer"
+                onClick={() => navigate("/privacy-policy")}
+              >
+                Privacy Policy
+              </li>
+              <li
+                className="hover:text-white cursor-pointer"
+                onClick={() => navigate("/terms-and-conditions")}
+              >
+                Terms & Conditions
               </li>
             </ul>
           </div>

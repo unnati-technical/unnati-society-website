@@ -66,7 +66,7 @@ export class EmailService {
         where: { status: 'Active', categories: { has: 'Contact' } },
       });
       const adminEmails = Array.from(
-        new Set([defaultAdminEmail, ...recipients.map((r) => r.email)])
+        new Set([defaultAdminEmail, ...recipients.map((r) => r.email)]),
       );
 
       await this.pushToQueue({
@@ -126,13 +126,54 @@ export class EmailService {
     this.logger.log(`Admin reply sent to ${params.to}`);
   }
 
+  async sendDonationThankYouEmail(
+    donorName: string,
+    donorEmail: string,
+    amount: number,
+  ) {
+    try {
+      await this.pushToQueue({
+        to: donorEmail,
+        subject: 'Thank You for Your Generous Donation! 💙',
+        html: `
+          <div style="font-family: sans-serif; max-width: 600px; margin: 0 auto; border: 1px solid #e2e8f0; border-radius: 12px; overflow: hidden;">
+            <div style="background: linear-gradient(135deg, #0B1F5E, #2563EB); padding: 30px; text-align: center;">
+              <h2 style="color: white; margin: 0; font-size: 24px;">Thank You, ${donorName}!</h2>
+            </div>
+            <div style="padding: 30px; color: #374151; font-size: 15px; line-height: 1.6;">
+              <p>Dear ${donorName},</p>
+              <p>We have successfully received your heartfelt donation of <strong>₹${amount}</strong>.</p>
+              <p>Your generosity fuels our mission at Unnati Society. With your support, we can continue to bring education, mentorship, and opportunities to children who need them the most.</p>
+              <p>Every contribution creates a ripple of change, and you are now a vital part of that impact.</p>
+              <br/>
+              <p>With deepest gratitude,</p>
+              <p><strong style="color: #0B1F5E;">The Unnati Society Team</strong></p>
+            </div>
+            <div style="background: #f1f5f9; padding: 15px; text-align: center;">
+              <p style="color: #94a3b8; font-size: 12px; margin: 0;">Unnati Society, IIIT Bhagalpur</p>
+            </div>
+          </div>
+        `,
+      });
+      this.logger.log(`Donation thank you email sent to ${donorEmail}`);
+    } catch (error) {
+      this.logger.error(
+        `Failed to send donation thank you email to ${donorEmail}: ${error.message}`,
+      );
+    }
+  }
+
   async sendEventNotification(email: string, event: any) {
     try {
       const eventDate = new Date(event.date).toLocaleDateString('en-US', {
-        weekday: 'long', year: 'numeric', month: 'long', day: 'numeric',
+        weekday: 'long',
+        year: 'numeric',
+        month: 'long',
+        day: 'numeric',
       });
       const eventTime = new Date(event.date).toLocaleTimeString('en-US', {
-        hour: '2-digit', minute: '2-digit',
+        hour: '2-digit',
+        minute: '2-digit',
       });
       await this.pushToQueue({
         to: email,
@@ -154,7 +195,9 @@ export class EmailService {
           </div>
         `,
       });
-      this.logger.log(`Event notification sent to ${email} for event ${event.id}`);
+      this.logger.log(
+        `Event notification sent to ${email} for event ${event.id}`,
+      );
     } catch (error) {
       this.logger.error(`Failed to send event notification: ${error.message}`);
     }
@@ -175,7 +218,7 @@ export class EmailService {
         where: { status: 'Active', categories: { has: 'Volunteer Form' } },
       });
       const adminEmails = Array.from(
-        new Set([defaultAdminEmail, ...recipients.map((r) => r.email)])
+        new Set([defaultAdminEmail, ...recipients.map((r) => r.email)]),
       );
 
       await this.pushToQueue({
@@ -211,13 +254,21 @@ export class EmailService {
     try {
       const isApproved = data.status.toLowerCase() === 'approved';
       const isRejected = data.status.toLowerCase() === 'rejected';
-      const statusColor = isApproved ? '#16a34a' : isRejected ? '#dc2626' : '#2563EB';
-      const statusBg = isApproved ? '#f0fdf4' : isRejected ? '#fef2f2' : '#eff6ff';
+      const statusColor = isApproved
+        ? '#16a34a'
+        : isRejected
+          ? '#dc2626'
+          : '#2563EB';
+      const statusBg = isApproved
+        ? '#f0fdf4'
+        : isRejected
+          ? '#fef2f2'
+          : '#eff6ff';
       const statusMsg = isApproved
         ? 'Congratulations! Your application to become a Team Lead has been approved. You can now log into your account using your credentials.'
         : isRejected
-        ? 'Thank you for your interest. Unfortunately, we are unable to move forward with your Team Lead application at this time.'
-        : `Your application status has been updated to <strong>${data.status}</strong>.`;
+          ? 'Thank you for your interest. Unfortunately, we are unable to move forward with your Team Lead application at this time.'
+          : `Your application status has been updated to <strong>${data.status}</strong>.`;
 
       await this.pushToQueue({
         to: data.email,
@@ -270,13 +321,21 @@ export class EmailService {
     try {
       const isApproved = data.status.toLowerCase() === 'approved';
       const isRejected = data.status.toLowerCase() === 'rejected';
-      const statusColor = isApproved ? '#16a34a' : isRejected ? '#dc2626' : '#2563EB';
-      const statusBg = isApproved ? '#f0fdf4' : isRejected ? '#fef2f2' : '#eff6ff';
+      const statusColor = isApproved
+        ? '#16a34a'
+        : isRejected
+          ? '#dc2626'
+          : '#2563EB';
+      const statusBg = isApproved
+        ? '#f0fdf4'
+        : isRejected
+          ? '#fef2f2'
+          : '#eff6ff';
       const statusMsg = isApproved
         ? 'Congratulations! Your application has been approved. Our team will reach out to you shortly with next steps.'
         : isRejected
-        ? 'Thank you for your interest. Unfortunately, we are unable to move forward with your application at this time. We encourage you to apply again in the future.'
-        : `Your application status has been updated to <strong>${data.status}</strong>. We will be in touch soon.`;
+          ? 'Thank you for your interest. Unfortunately, we are unable to move forward with your application at this time. We encourage you to apply again in the future.'
+          : `Your application status has been updated to <strong>${data.status}</strong>. We will be in touch soon.`;
 
       await this.pushToQueue({
         to: data.email,
@@ -389,7 +448,9 @@ export class EmailService {
           </div>
         `,
       });
-      this.logger.log(`Volunteer application confirmation sent to ${data.email}`);
+      this.logger.log(
+        `Volunteer application confirmation sent to ${data.email}`,
+      );
     } catch (error) {
       this.logger.error(
         `Failed to send volunteer application confirmation to ${data.email}: ${error.message}`,
@@ -436,15 +497,25 @@ export class EmailService {
     status: string;
   }) {
     try {
-      const isApproved = data.status.toLowerCase() === 'accepted' || data.status.toLowerCase() === 'approved';
+      const isApproved =
+        data.status.toLowerCase() === 'accepted' ||
+        data.status.toLowerCase() === 'approved';
       const isRejected = data.status.toLowerCase() === 'rejected';
-      const statusColor = isApproved ? '#16a34a' : isRejected ? '#dc2626' : '#2563EB';
-      const statusBg = isApproved ? '#f0fdf4' : isRejected ? '#fef2f2' : '#eff6ff';
+      const statusColor = isApproved
+        ? '#16a34a'
+        : isRejected
+          ? '#dc2626'
+          : '#2563EB';
+      const statusBg = isApproved
+        ? '#f0fdf4'
+        : isRejected
+          ? '#fef2f2'
+          : '#eff6ff';
       const statusMsg = isApproved
         ? 'Great news! Your campus visit request has been approved. Our team will reach out to you shortly to coordinate the visit details.'
         : isRejected
-        ? 'Thank you for your interest. Unfortunately, we are unable to accommodate your campus visit request at this time.'
-        : `Your campus visit request status has been updated to <strong>${data.status}</strong>.`;
+          ? 'Thank you for your interest. Unfortunately, we are unable to accommodate your campus visit request at this time.'
+          : `Your campus visit request status has been updated to <strong>${data.status}</strong>.`;
 
       await this.pushToQueue({
         to: data.email,
@@ -526,15 +597,25 @@ export class EmailService {
     status: string;
   }) {
     try {
-      const isApproved = data.status.toLowerCase() === 'accepted' || data.status.toLowerCase() === 'approved';
+      const isApproved =
+        data.status.toLowerCase() === 'accepted' ||
+        data.status.toLowerCase() === 'approved';
       const isRejected = data.status.toLowerCase() === 'rejected';
-      const statusColor = isApproved ? '#16a34a' : isRejected ? '#dc2626' : '#2563EB';
-      const statusBg = isApproved ? '#f0fdf4' : isRejected ? '#fef2f2' : '#eff6ff';
+      const statusColor = isApproved
+        ? '#16a34a'
+        : isRejected
+          ? '#dc2626'
+          : '#2563EB';
+      const statusBg = isApproved
+        ? '#f0fdf4'
+        : isRejected
+          ? '#fef2f2'
+          : '#eff6ff';
       const statusMsg = isApproved
         ? 'Great news! Your school invitation has been accepted. Our team will reach out to you shortly to coordinate the details.'
         : isRejected
-        ? 'Thank you for your invitation. Unfortunately, we are unable to accept it at this time.'
-        : `Your school invitation status has been updated to <strong>${data.status}</strong>.`;
+          ? 'Thank you for your invitation. Unfortunately, we are unable to accept it at this time.'
+          : `Your school invitation status has been updated to <strong>${data.status}</strong>.`;
 
       await this.pushToQueue({
         to: data.email,
@@ -662,13 +743,21 @@ export class EmailService {
     try {
       const isApproved = data.status.toLowerCase() === 'accepted';
       const isRejected = data.status.toLowerCase() === 'rejected';
-      const statusColor = isApproved ? '#16a34a' : isRejected ? '#dc2626' : '#2563EB';
-      const statusBg = isApproved ? '#f0fdf4' : isRejected ? '#fef2f2' : '#eff6ff';
+      const statusColor = isApproved
+        ? '#16a34a'
+        : isRejected
+          ? '#dc2626'
+          : '#2563EB';
+      const statusBg = isApproved
+        ? '#f0fdf4'
+        : isRejected
+          ? '#fef2f2'
+          : '#eff6ff';
       const statusMsg = isApproved
         ? 'Great news! We are excited to move forward with your partnership request. Our team will reach out to you shortly to discuss the next steps.'
         : isRejected
-        ? 'Thank you for your interest. Unfortunately, we are unable to pursue a partnership at this time. We wish you and your organization the best.'
-        : `Your partnership request status has been updated to <strong>${data.status}</strong>. Our team will be in touch with you shortly.`;
+          ? 'Thank you for your interest. Unfortunately, we are unable to pursue a partnership at this time. We wish you and your organization the best.'
+          : `Your partnership request status has been updated to <strong>${data.status}</strong>. Our team will be in touch with you shortly.`;
 
       await this.pushToQueue({
         to: data.email,
@@ -728,7 +817,7 @@ export class EmailService {
         where: { status: 'Active', categories: { has: category } },
       });
       const adminEmails = Array.from(
-        new Set([defaultAdminEmail, ...recipients.map((r) => r.email)])
+        new Set([defaultAdminEmail, ...recipients.map((r) => r.email)]),
       );
 
       const dataHtml = Object.entries(formData)

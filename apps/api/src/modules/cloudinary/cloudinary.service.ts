@@ -34,10 +34,7 @@ export class CloudinaryService {
     });
   }
 
-  deleteFile(
-    publicId: string,
-    resourceType: string = 'image',
-  ): Promise<any> {
+  deleteFile(publicId: string, resourceType: string = 'image'): Promise<any> {
     return new Promise((resolve, reject) => {
       cloudinary.uploader.destroy(
         publicId,

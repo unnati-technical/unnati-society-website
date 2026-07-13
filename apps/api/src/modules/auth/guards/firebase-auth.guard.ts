@@ -25,8 +25,11 @@ export class FirebaseAuthGuard implements CanActivate {
       const parts = token.split('.');
       if (parts.length === 3) {
         const b64 = parts[1].replace(/-/g, '+').replace(/_/g, '/');
-        const padding = b64.length % 4 === 0 ? '' : '='.repeat(4 - (b64.length % 4));
-        const decoded = JSON.parse(Buffer.from(b64 + padding, 'base64').toString('utf8'));
+        const padding =
+          b64.length % 4 === 0 ? '' : '='.repeat(4 - (b64.length % 4));
+        const decoded = JSON.parse(
+          Buffer.from(b64 + padding, 'base64').toString('utf8'),
+        );
         request.user = decoded;
       }
     } catch (_) {
@@ -40,7 +43,11 @@ export class FirebaseAuthGuard implements CanActivate {
       return true;
     } catch (error: any) {
       // In non-production, if we already decoded a valid-looking JWT payload, allow it
-      if (process.env.NODE_ENV !== 'production' && request.user && request.user.sub) {
+      if (
+        process.env.NODE_ENV !== 'production' &&
+        request.user &&
+        request.user.sub
+      ) {
         return true;
       }
 

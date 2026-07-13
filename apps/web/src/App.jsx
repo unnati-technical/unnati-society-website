@@ -60,6 +60,8 @@ const Outreach = React.lazy(() => import('./pages/Outreach'));
 const JoinUs = React.lazy(() => import('./pages/JoinUs'));
 const Donate = React.lazy(() => import('./pages/Donate'));
 const VerificationPage = React.lazy(() => import('./pages/VerificationPage'));
+const PrivacyPolicy = React.lazy(() => import('./pages/PrivacyPolicy'));
+const TermsAndConditions = React.lazy(() => import('./pages/TermsAndConditions'));
 
 // Trigger Vercel deployment update
 const App = () => {
@@ -131,6 +133,8 @@ const App = () => {
            <Route path="/join-us" element={<JoinUs/>}/>
            <Route path="/donate" element={<Donate/>}/>
            <Route path="/verify/*" element={<VerificationPage/>}/>
+           <Route path="/privacy-policy" element={<PrivacyPolicy/>}/>
+           <Route path="/terms-and-conditions" element={<TermsAndConditions/>}/>
 
         </Routes>
       </Suspense>

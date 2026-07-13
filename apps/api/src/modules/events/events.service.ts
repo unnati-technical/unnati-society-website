@@ -55,7 +55,9 @@ export class EventsService {
       const event = await this.eventsRepository.findUnique({ where: { id } });
       if (event && event.photos) {
         const newPhotos = dto.photos;
-        const removedPhotos = event.photos.filter((p) => !newPhotos.includes(p));
+        const removedPhotos = event.photos.filter(
+          (p) => !newPhotos.includes(p),
+        );
         for (const url of removedPhotos) {
           const match = url.match(/\/v\d+\/(.+)\.[a-zA-Z]+$/);
           if (match && match[1]) {
