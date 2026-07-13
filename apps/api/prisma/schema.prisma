@@ -70,6 +70,8 @@ model VolunteerApplication {
   portfolioUrl      String?
   resumeUrl         String?
   startDate         String    @default("")
+  interests         String[]  @default([])
+  skills            String[]  @default([])
   volunteer         Volunteer @relation(fields: [volunteerId], references: [id])
 }
 

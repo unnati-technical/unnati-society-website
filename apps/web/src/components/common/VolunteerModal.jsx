@@ -3,8 +3,8 @@ import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { toast } from 'sonner';
 import { 
-  FiX, FiClock, FiAward, FiGlobe, FiCalendar, 
-  FiUsers, FiBookOpen, FiBriefcase, FiCheckCircle,
+  FiUsers, FiX, FiClock, FiAward, FiGlobe, FiCalendar, 
+  FiBookOpen, FiBriefcase, FiCheckCircle,
   FiUpload, FiArrowRight, FiArrowLeft, FiHeart
 } from 'react-icons/fi';
 import { useMutation } from '@tanstack/react-query';
@@ -255,14 +255,13 @@ const VolunteerModal = ({ isOpen, onClose }) => {
           variants={modalVariants}
           className="bg-white w-full max-w-[1400px] h-[95vh] md:h-[90vh] rounded-[24px] shadow-2xl flex flex-col overflow-hidden relative"
         >
-          {/* TOP INFO BAR */}
           <div className="bg-gray-50 border-b border-gray-100 px-6 py-3 flex items-center justify-between shrink-0">
-            <div className="hidden md:flex flex-wrap items-center gap-6 text-sm text-gray-600 font-medium">
-              <span className="flex items-center gap-2 text-blue-600 font-bold"><span role="img" aria-label="wave">👋</span> Join 500+ Changemakers</span>
-              <span className="flex items-center gap-1.5"><FiClock className="text-gray-400"/> Avg Response: 24–48 Hrs</span>
-              <span className="flex items-center gap-1.5"><FiAward className="text-green-500"/> Certificate Available</span>
-              <span className="flex items-center gap-1.5"><FiGlobe className="text-blue-500"/> Remote Opportunities</span>
-              <span className="flex items-center gap-1.5"><FiCalendar className="text-orange-500"/> Flexible Timing</span>
+            <div className="hidden md:flex flex-wrap items-center gap-6 text-sm text-blue-600 font-bold">
+              <span className="flex items-center gap-2"><FiUsers /> Join 200+ Changemakers</span>
+              <span className="flex items-center gap-1.5"><FiClock /> Avg Response: 24–48 Hrs</span>
+              <span className="flex items-center gap-1.5"><FiAward /> Certificate Available</span>
+              <span className="flex items-center gap-1.5"><FiGlobe /> Remote Opportunities</span>
+              <span className="flex items-center gap-1.5"><FiCalendar /> Flexible Timing</span>
             </div>
             <div className="md:hidden text-blue-600 font-bold text-sm">Volunteer Application</div>
             <button onClick={resetAndClose} className="p-2 bg-gray-100 hover:bg-red-50 hover:text-red-500 rounded-full transition-colors ml-auto">
@@ -300,8 +299,8 @@ const VolunteerModal = ({ isOpen, onClose }) => {
               <div className="hidden lg:flex w-[40%] bg-gradient-to-br from-[#F8FAFC] to-blue-50 border-r border-blue-100 flex-col overflow-y-auto custom-scrollbar">
                 <div className="p-10 flex-1">
                   <div className="flex items-center gap-3 mb-12">
-                    <div className="w-12 h-12 flex items-center justify-center bg-white rounded-full shadow-sm overflow-hidden shrink-0 border border-gray-100">
-                      <img loading="lazy" src={UnnatiLogo} alt="Unnati Society Logo" className="w-full h-full object-cover scale-125" />
+                    <div className="w-12 h-12 flex items-center justify-center bg-white rounded-full shadow-sm overflow-hidden shrink-0 border border-gray-100 p-1">
+                      <img loading="lazy" src={UnnatiLogo} alt="Unnati Society Logo" className="w-full h-full object-contain" />
                     </div>
                     <div>
                       <h3 className="font-extrabold text-[#0F172A] leading-tight tracking-wide">UNNATI SOCIETY</h3>
@@ -340,12 +339,12 @@ const VolunteerModal = ({ isOpen, onClose }) => {
                   <div className="grid grid-cols-2 gap-4 mb-8">
                     <div className="bg-white p-5 rounded-2xl shadow-sm border border-gray-100 text-center">
                       <div className="text-blue-600 flex justify-center mb-2"><FiUsers size={24}/></div>
-                      <div className="text-2xl font-bold text-[#0F172A]">500+</div>
+                      <div className="text-2xl font-bold text-[#0F172A]">200+</div>
                       <div className="text-xs text-gray-500 font-bold uppercase mt-1">Volunteers</div>
                     </div>
                     <div className="bg-white p-5 rounded-2xl shadow-sm border border-gray-100 text-center">
                       <div className="text-blue-600 flex justify-center mb-2"><FiBookOpen size={24}/></div>
-                      <div className="text-2xl font-bold text-[#0F172A]">25,000+</div>
+                      <div className="text-2xl font-bold text-[#0F172A]">4,000+</div>
                       <div className="text-xs text-gray-500 font-bold uppercase mt-1">Impacted</div>
                     </div>
                   </div>
@@ -556,13 +555,17 @@ const VolunteerModal = ({ isOpen, onClose }) => {
                                 <div className="mt-1 flex-shrink-0">
                                   <input required type="checkbox" name="consentConduct" checked={formData.consentConduct} onChange={handleInputChange} className="w-5 h-5 rounded border-gray-300 text-blue-600 focus:ring-blue-500" />
                                 </div>
-                                <span className="text-sm text-gray-700 group-hover:text-black transition-colors">I agree to follow Unnati Society’s volunteer code of conduct and maintain professional behavior during all activities.</span>
+                                <span className="text-sm text-gray-700 group-hover:text-black transition-colors">
+                                  I agree to follow Unnati Society’s volunteer code of conduct and maintain professional behavior during all activities. <span className="text-red-500 font-bold">*</span>
+                                </span>
                               </label>
                               <label className="flex items-start gap-3 cursor-pointer group">
                                 <div className="mt-1 flex-shrink-0">
                                   <input required type="checkbox" name="consentAccurate" checked={formData.consentAccurate} onChange={handleInputChange} className="w-5 h-5 rounded border-gray-300 text-blue-600 focus:ring-blue-500" />
                                 </div>
-                                <span className="text-sm text-gray-700 group-hover:text-black transition-colors">I confirm that all information provided in this application is accurate and true to the best of my knowledge.</span>
+                                <span className="text-sm text-gray-700 group-hover:text-black transition-colors">
+                                  I confirm that all information provided in this application is accurate and true to the best of my knowledge. <span className="text-red-500 font-bold">*</span>
+                                </span>
                               </label>
                             </div>
                           </motion.div>
@@ -589,7 +592,7 @@ const VolunteerModal = ({ isOpen, onClose }) => {
                   ) : (
                     <button
                         type="button"
-                        disabled={applyMutation.isPending || !formData.consentConduct || !formData.consentAccurate}
+                        disabled={applyMutation.isPending}
                         onClick={handleSubmit}
                         className={`px-8 py-3 font-bold rounded-xl transition-all ${
                           applyMutation.isPending ? 'bg-orange-400 cursor-not-allowed text-white' : 'bg-green-500 text-white shadow-[0_8px_20px_rgba(34,197,94,0.3)] hover:bg-green-600'
