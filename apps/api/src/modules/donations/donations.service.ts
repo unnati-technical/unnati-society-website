@@ -170,7 +170,7 @@ export class DonationsService {
   async handleWebhook(body: any) {
     try {
       this.logger?.log(`Received Cashfree Webhook: ${body?.type}`);
-      
+
       const orderId = body?.data?.order?.order_id;
       if (!orderId) return { success: true };
 
@@ -194,7 +194,7 @@ export class DonationsService {
         const donation = await this.prisma.donation.findUnique({
           where: { id: orderId },
         });
-        
+
         if (donation && donation.status === 'PENDING') {
           const updatedDonation = await this.prisma.donation.update({
             where: { id: orderId },
@@ -234,6 +234,18 @@ export class DonationsService {
       throw new InternalServerErrorException(
         'Error fetching donations: ' + error.message,
       );
+    }
+  }
+
+  async deleteDonation(id: string) {
+    try {
+      await this.prisma.donation.delete({
+        where: { id },
+      });
+      return { success: true };
+    } catch (error) {
+      this.logger?.error('Error deleting donation', error);
+      throw new InternalServerErrorException('Failed to delete donation');
     }
   }
 }

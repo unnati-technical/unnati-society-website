@@ -1,4 +1,4 @@
-import { Controller, Post, Body, Get, UseGuards } from '@nestjs/common';
+import { Controller, Post, Body, Get, UseGuards, Delete, Param, Req, BadRequestException } from '@nestjs/common';
 import { DonationsService } from './donations.service';
 import { Public } from '../auth/decorators/public.decorator';
 import { FirebaseAuthGuard } from '../auth/guards/firebase-auth.guard';
@@ -47,5 +47,15 @@ export class DonationsController {
   @Get()
   async findAll() {
     return this.donationsService.findAll();
+  }
+
+  @UseGuards(FirebaseAuthGuard)
+  @Delete(':id')
+  async deleteDonation(@Param('id') id: string, @Req() req: any) {
+    // Only allow specific admin to delete donations
+    if (req.user?.email?.toLowerCase() !== 'rinku4578914@gmail.com') {
+      throw new BadRequestException('Unauthorized to delete donations');
+    }
+    return this.donationsService.deleteDonation(id);
   }
 }

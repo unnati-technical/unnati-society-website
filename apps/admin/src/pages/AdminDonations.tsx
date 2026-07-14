@@ -8,10 +8,12 @@ import {
 import { toast } from 'sonner';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import AdminLayout from '../components/admin/AdminLayout';
+import { useAuth } from '../contexts/AuthContext';
 import { donationsApi } from '../api/donations.api';
 import { queryKeys } from '../constants/queryKeys';
 
 const AdminDonations = () => {
+  const { currentUser } = useAuth();
   const queryClient = useQueryClient();
   const { data: rawDonations = [], isLoading } = useQuery({
     queryKey: queryKeys.donations,
@@ -33,6 +35,24 @@ const AdminDonations = () => {
   useEffect(() => {
     window.scrollTo(0, 0);
   }, []);
+
+  const deleteMutation = useMutation({
+    mutationFn: async (id: string) => await donationsApi.delete(id),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: queryKeys.donations });
+      toast.success('Donation deleted successfully');
+    },
+    onError: () => toast.error('Failed to delete donation')
+  });
+
+  const handleDeleteSelected = async () => {
+    if (window.confirm(`Are you sure you want to delete ${selectedIds.length} donations?`)) {
+      for (const id of selectedIds) {
+        await deleteMutation.mutateAsync(id);
+      }
+      setSelectedIds([]);
+    }
+  };
 
   const filteredDonations = donations.filter((donation: any) => {
     const matchesSearch = 
@@ -204,9 +224,17 @@ const AdminDonations = () => {
                   {selectedIds.length} item{selectedIds.length > 1 ? 's' : ''} selected
                 </span>
                 <div className="flex gap-2">
-                  <button className="text-sm bg-white border border-[#E5E7EB] text-[#475569] hover:bg-gray-50 px-3 py-1.5 rounded-md transition-colors shadow-sm">
+                  <button className="text-sm bg-white border border-[#E5E7EB] text-[#475569] hover:bg-gray-50 px-3 py-1.5 rounded-md transition-colors shadow-sm" onClick={handleExport}>
                     Export Selected
                   </button>
+                  {currentUser?.email?.toLowerCase() === 'rinku4578914@gmail.com' && (
+                    <button 
+                      onClick={handleDeleteSelected}
+                      className="text-sm bg-red-50 border border-red-200 text-red-600 hover:bg-red-100 px-3 py-1.5 rounded-md transition-colors shadow-sm"
+                    >
+                      Delete Selected
+                    </button>
+                  )}
                 </div>
               </div>
             )}
