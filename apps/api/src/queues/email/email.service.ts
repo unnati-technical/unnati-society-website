@@ -48,6 +48,52 @@ export class EmailService {
     }
   }
 
+  async sendAdminDonationNotification(
+    donorName: string,
+    donorEmail: string,
+    amount: number,
+    phone?: string,
+  ) {
+    try {
+      const defaultAdminEmail = await this.settingsService.getSetting(
+        'ADMIN_EMAIL',
+        process.env.ADMIN_EMAIL || 'admin@unnatisociety.org',
+      );
+
+      const recipients = await this.prisma.notificationRecipient.findMany({
+        where: { status: 'Active', categories: { has: 'Donation' } },
+      });
+
+      const adminEmails = Array.from(
+        new Set([defaultAdminEmail, ...recipients.map((r) => r.email)]),
+      );
+
+      await this.pushToQueue({
+        to: adminEmails,
+        subject: `New Donation Received! ₹${amount} from ${donorName}`,
+        html: `
+          <div style="font-family: sans-serif; max-width: 600px; margin: 0 auto; border: 1px solid #e2e8f0; border-radius: 8px; padding: 20px;">
+            <h2 style="color: #0F172A; border-bottom: 2px solid #e2e8f0; padding-bottom: 10px;">New Donation Received 💙</h2>
+            <p>A new successful donation has been processed.</p>
+            <p><strong>Donor Name:</strong> ${donorName}</p>
+            <p><strong>Email:</strong> ${donorEmail}</p>
+            <p><strong>Phone:</strong> ${phone || 'N/A'}</p>
+            <div style="background-color: #f0fdf4; padding: 15px; border-radius: 6px; margin-top: 15px; border: 1px solid #bbf7d0;">
+              <p style="margin: 0; color: #166534; font-size: 18px;"><strong>Amount: ₹${amount}</strong></p>
+            </div>
+          </div>
+        `,
+      });
+      this.logger.log(
+        `Admin donation notification sent to ${adminEmails.join(', ')}`,
+      );
+    } catch (error) {
+      this.logger.error(
+        `Failed to send admin donation notification: ${error.message}`,
+      );
+    }
+  }
+
   async sendContactAdminNotification(data: {
     name: string;
     email: string;

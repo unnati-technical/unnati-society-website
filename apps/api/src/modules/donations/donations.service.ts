@@ -133,6 +133,13 @@ export class DonationsService {
           updatedDonation.amount,
         );
 
+        await this.emailService.sendAdminDonationNotification(
+          updatedDonation.donorName,
+          updatedDonation.donorEmail,
+          updatedDonation.amount,
+          updatedDonation.donorPhone,
+        );
+
         return {
           success: true,
           message: 'Payment verified successfully',
