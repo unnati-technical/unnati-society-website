@@ -59,6 +59,7 @@ export class DonationsController {
     return this.donationsService.findAll();
   }
 
+  @Public()
   @UseGuards(FirebaseAuthGuard)
   @Delete(':id')
   async deleteDonation(@Param('id') id: string, @Req() req: any) {
