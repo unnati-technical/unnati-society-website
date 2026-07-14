@@ -2,6 +2,7 @@ import {
   Injectable,
   InternalServerErrorException,
   BadRequestException,
+  Logger,
 } from '@nestjs/common';
 import { PrismaService } from '../../prisma/prisma.service';
 import axios from 'axios';
@@ -9,6 +10,8 @@ import { EmailService } from '../../queues/email/email.service';
 
 @Injectable()
 export class DonationsService {
+  private readonly logger = new Logger(DonationsService.name);
+
   constructor(
     private readonly prisma: PrismaService,
     private readonly emailService: EmailService,
@@ -161,6 +164,62 @@ export class DonationsService {
         'Error verifying payment: ' +
           (error.response?.data?.message || error.message),
       );
+    }
+  }
+
+  async handleWebhook(body: any) {
+    try {
+      this.logger?.log(`Received Cashfree Webhook: ${body?.type}`);
+      
+      const orderId = body?.data?.order?.order_id;
+      if (!orderId) return { success: true };
+
+      // Handle Refunds
+      if (
+        body?.type?.includes('REFUND') ||
+        body?.data?.refund?.refund_status === 'SUCCESS'
+      ) {
+        await this.prisma.donation.updateMany({
+          where: { id: orderId },
+          data: { status: 'REFUNDED' },
+        });
+        return { success: true };
+      }
+
+      // Handle Success (Fallback if frontend verification failed/closed)
+      if (
+        body?.type === 'PAYMENT_SUCCESS_WEBHOOK' ||
+        body?.data?.payment?.payment_status === 'SUCCESS'
+      ) {
+        const donation = await this.prisma.donation.findUnique({
+          where: { id: orderId },
+        });
+        
+        if (donation && donation.status === 'PENDING') {
+          const updatedDonation = await this.prisma.donation.update({
+            where: { id: orderId },
+            data: { status: 'COMPLETED' },
+          });
+
+          await this.emailService.sendDonationThankYouEmail(
+            updatedDonation.donorName,
+            updatedDonation.donorEmail,
+            updatedDonation.amount,
+          );
+
+          await this.emailService.sendAdminDonationNotification(
+            updatedDonation.donorName,
+            updatedDonation.donorEmail,
+            updatedDonation.amount,
+            updatedDonation.donorPhone || undefined,
+          );
+        }
+      }
+
+      return { success: true };
+    } catch (error) {
+      console.error('Webhook processing error:', error);
+      return { success: false };
     }
   }
 

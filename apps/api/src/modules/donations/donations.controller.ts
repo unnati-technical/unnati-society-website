@@ -37,6 +37,12 @@ export class DonationsController {
   }
 
   @Public()
+  @Post('webhook')
+  async handleWebhook(@Body() body: any) {
+    return this.donationsService.handleWebhook(body);
+  }
+
+  @Public()
   @UseGuards(FirebaseAuthGuard)
   @Get()
   async findAll() {

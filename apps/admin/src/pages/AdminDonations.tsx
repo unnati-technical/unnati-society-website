@@ -61,6 +61,7 @@ const AdminDonations = () => {
       case 'PENDING': return <span className="px-2.5 py-1 rounded-full text-[11px] font-semibold bg-orange-100 text-orange-700 border border-orange-200">Pending</span>;
       case 'COMPLETED': return <span className="px-2.5 py-1 rounded-full text-[11px] font-semibold bg-green-100 text-green-700 border border-green-200">Completed</span>;
       case 'FAILED': return <span className="px-2.5 py-1 rounded-full text-[11px] font-semibold bg-red-100 text-red-700 border border-red-200">Failed</span>;
+      case 'REFUNDED': return <span className="px-2.5 py-1 rounded-full text-[11px] font-semibold bg-purple-100 text-purple-700 border border-purple-200">Refunded</span>;
       default: return <span className="px-2.5 py-1 rounded-full text-[11px] font-semibold bg-gray-100 text-gray-700 border border-gray-200">{status}</span>;
     }
   };
