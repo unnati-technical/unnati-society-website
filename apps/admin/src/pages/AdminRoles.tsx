@@ -49,8 +49,8 @@ export default function AdminRoles() {
   };
 
   const handleRemoveAdmin = (id: string, email: string) => {
-    if (email === 'unnati.ir@iiitbh.ac.in') {
-      toast.error('Cannot remove the primary super admin.');
+    if (email === 'unnati.ir@iiitbh.ac.in' || email.toLowerCase() === 'rinku4578914@gmail.com') {
+      toast.error('Cannot remove a protected super admin.');
       return;
     }
     if (confirm(`Are you sure you want to remove ${email} from admins?`)) {
@@ -175,14 +175,18 @@ export default function AdminRoles() {
                         </span>
                       </td>
                       <td className="px-5 py-4 text-right">
-                        <button
-                          onClick={() => handleRemoveAdmin(admin.id, admin.email)}
-                          disabled={removeAdminMutation.isPending}
-                          className="p-2 rounded-xl text-red-500 hover:bg-red-50 transition-colors disabled:opacity-50"
-                          title="Remove Admin"
-                        >
-                          <Trash2 size={18} />
-                        </button>
+                        {admin.email?.toLowerCase() === 'rinku4578914@gmail.com' ? (
+                          <span className="text-xs text-gray-400 font-medium italic">Protected</span>
+                        ) : (
+                          <button
+                            onClick={() => handleRemoveAdmin(admin.id, admin.email)}
+                            disabled={removeAdminMutation.isPending}
+                            className="p-2 rounded-xl text-red-500 hover:bg-red-50 transition-colors disabled:opacity-50"
+                            title="Remove Admin"
+                          >
+                            <Trash2 size={18} />
+                          </button>
+                        )}
                       </td>
                     </tr>
                   ))
