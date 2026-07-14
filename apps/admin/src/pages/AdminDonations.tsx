@@ -71,6 +71,10 @@ const AdminDonations = () => {
     completed: donations.filter((d: any) => d.status === 'COMPLETED').length,
     pending: donations.filter((d: any) => d.status === 'PENDING').length,
     failed: donations.filter((d: any) => d.status === 'FAILED').length,
+    refunded: donations.filter((d: any) => d.status === 'REFUNDED').length,
+    refundedAmount: donations
+      .filter((d: any) => d.status === 'REFUNDED')
+      .reduce((sum: number, d: any) => sum + (d.amount || 0), 0),
     totalAmount: donations
       .filter((d: any) => d.status === 'COMPLETED')
       .reduce((sum: number, d: any) => sum + (d.amount || 0), 0)
@@ -164,12 +168,13 @@ const AdminDonations = () => {
           </div>
 
           {/* Stats Cards */}
-          <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
+          <div className="grid grid-cols-2 lg:grid-cols-5 gap-4">
             {[
               { label: 'Total Volume', value: formatCurrency(stats.totalAmount), icon: Heart, color: 'text-rose-600', bg: 'bg-rose-50' },
               { label: 'Total Transactions', value: stats.total, icon: FileText, color: 'text-blue-600', bg: 'bg-blue-50' },
               { label: 'Completed', value: stats.completed, icon: CheckCircle2, color: 'text-green-600', bg: 'bg-green-50' },
-              { label: 'Pending / Failed', value: stats.pending + stats.failed, icon: Clock, color: 'text-orange-600', bg: 'bg-orange-50' },
+              { label: 'Refunded Volume', value: formatCurrency(stats.refundedAmount), icon: XCircle, color: 'text-purple-600', bg: 'bg-purple-50' },
+              { label: 'Pending/Failed/Refunded', value: stats.pending + stats.failed + stats.refunded, icon: Clock, color: 'text-orange-600', bg: 'bg-orange-50' },
             ].map((stat, i) => (
               <div key={i} className="bg-white p-5 rounded-2xl border border-[#E5E7EB] shadow-[0_2px_10px_rgba(15,23,42,0.02)]">
                 <div className="flex items-center justify-between">
@@ -189,7 +194,7 @@ const AdminDonations = () => {
           <div className="bg-white rounded-2xl border border-[#E5E7EB] shadow-[0_2px_10px_rgba(15,23,42,0.02)] overflow-hidden">
             <div className="p-4 border-b border-[#E5E7EB] flex flex-col md:flex-row md:items-center justify-between gap-4 bg-gray-50/50">
               <div className="flex flex-wrap items-center gap-2">
-                {['ALL', 'COMPLETED', 'PENDING', 'FAILED'].map((f) => (
+                {['ALL', 'COMPLETED', 'PENDING', 'FAILED', 'REFUNDED'].map((f) => (
                   <button
                     key={f}
                     onClick={() => setFilter(f)}

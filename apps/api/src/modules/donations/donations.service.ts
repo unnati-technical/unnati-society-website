@@ -171,7 +171,8 @@ export class DonationsService {
     try {
       this.logger?.log(`Received Cashfree Webhook: ${body?.type}`);
 
-      const orderId = body?.data?.order?.order_id;
+      const orderId =
+        body?.data?.order?.order_id || body?.data?.refund?.order_id;
       if (!orderId) return { success: true };
 
       // Handle Refunds
