@@ -16,7 +16,10 @@ export class AdminsService {
   }
 
   async verifyAdmin(email: string) {
-    if (email === 'unnati.ir@iiitbh.ac.in' || email.toLowerCase() === 'rinku4578914@gmail.com') {
+    if (
+      email === 'unnati.ir@iiitbh.ac.in' ||
+      email.toLowerCase() === 'rinku4578914@gmail.com'
+    ) {
       return { isAuthorized: true };
     }
 
@@ -28,7 +31,10 @@ export class AdminsService {
   }
 
   async create(email: string, name: string) {
-    if (email === 'unnati.ir@iiitbh.ac.in' || email.toLowerCase() === 'rinku4578914@gmail.com') {
+    if (
+      email === 'unnati.ir@iiitbh.ac.in' ||
+      email.toLowerCase() === 'rinku4578914@gmail.com'
+    ) {
       throw new BadRequestException(
         'This email is a protected Super Admin and cannot be modified.',
       );
@@ -59,7 +65,10 @@ export class AdminsService {
       throw new NotFoundException('Admin user not found');
     }
 
-    if (admin.email === 'unnati.ir@iiitbh.ac.in' || admin.email.toLowerCase() === 'rinku4578914@gmail.com') {
+    if (
+      admin.email === 'unnati.ir@iiitbh.ac.in' ||
+      admin.email.toLowerCase() === 'rinku4578914@gmail.com'
+    ) {
       throw new BadRequestException('Cannot delete a protected Super Admin.');
     }
 

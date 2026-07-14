@@ -248,7 +248,7 @@ const Outreach = () => {
 
           <div className="w-full lg:w-1/2 flex gap-4 h-[500px]">
             <div className="w-2/3 h-full rounded-3xl overflow-hidden shadow-xl hover:scale-101 hover: duration-500">
-              <img loading="lazy" src="https://res.cloudinary.com/drhkvdtw2/image/upload/v1782476058/outreach_5_pegoeh.jpg" alt="Campus" className="w-full h-full object-cover" />
+              <img loading="lazy" src="https://res.cloudinary.com/drhkvdtw2/image/upload/v1784036048/outreach/zyhuwgxfbgpfpgrnyo5e.jpg" alt="Campus" className="w-full h-full object-cover" />
             </div>
             <div className="w-1/3 flex flex-col gap-4 h-full">
               <div className="flex-1 rounded-3xl overflow-hidden shadow-xl hover:scale-101 hover: duration-500">
