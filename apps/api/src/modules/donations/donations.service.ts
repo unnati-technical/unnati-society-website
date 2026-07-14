@@ -137,7 +137,7 @@ export class DonationsService {
           updatedDonation.donorName,
           updatedDonation.donorEmail,
           updatedDonation.amount,
-          updatedDonation.donorPhone,
+          updatedDonation.donorPhone || undefined,
         );
 
         return {
