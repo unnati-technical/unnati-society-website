@@ -30,15 +30,11 @@ export class DonationsController {
   @Public()
   @Post('verify-payment')
   async verifyPayment(
-    @Body('razorpay_order_id') orderId: string,
-    @Body('razorpay_payment_id') paymentId: string,
-    @Body('razorpay_signature') signature: string,
+    @Body('orderId') orderId: string,
     @Body('donationId') donationId: string,
   ) {
     return this.donationsService.verifyPayment(
       orderId,
-      paymentId,
-      signature,
       donationId,
     );
   }

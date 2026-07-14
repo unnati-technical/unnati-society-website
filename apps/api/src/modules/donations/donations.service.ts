@@ -4,23 +4,15 @@ import {
   BadRequestException,
 } from '@nestjs/common';
 import { PrismaService } from '../../prisma/prisma.service';
-import Razorpay from 'razorpay';
-import * as crypto from 'crypto';
+import axios from 'axios';
 import { EmailService } from '../../queues/email/email.service';
 
 @Injectable()
 export class DonationsService {
-  private razorpay: any;
-
   constructor(
     private readonly prisma: PrismaService,
     private readonly emailService: EmailService,
-  ) {
-    this.razorpay = new Razorpay({
-      key_id: process.env.RAZORPAY_KEY_ID || 'dummy_key',
-      key_secret: process.env.RAZORPAY_KEY_SECRET || 'dummy_secret',
-    });
-  }
+  ) {}
 
   async createOrder(
     amount: number,
@@ -45,53 +37,80 @@ export class DonationsService {
         },
       });
 
-      // 2. Generate Razorpay Order
-      const options = {
-        amount: amount * 100, // Razorpay works in smallest currency unit (paise)
-        currency: 'INR',
-        receipt: donation.id, // We use our DB ID as receipt ID for mapping
+      // 2. Generate Cashfree Order
+      const cashfreeEnv = process.env.CASHFREE_ENV || 'SANDBOX';
+      const baseUrl =
+        cashfreeEnv === 'PRODUCTION'
+          ? 'https://api.cashfree.com/pg/orders'
+          : 'https://sandbox.cashfree.com/pg/orders';
+
+      const payload = {
+        order_id: donation.id, // We use our DB ID as the Cashfree order_id
+        order_amount: amount,
+        order_currency: 'INR',
+        customer_details: {
+          customer_id: donorEmail.replace(/[^a-zA-Z0-9]/g, '').substring(0, 50) || 'customer',
+          customer_name: donorName || 'Donor',
+          customer_email: donorEmail || 'donor@example.com',
+          customer_phone: donorPhone || '9999999999',
+        },
+        order_meta: {
+          return_url: `${process.env.FRONTEND_URL || 'http://localhost:5173'}/donate?order_id=${donation.id}`,
+        },
       };
 
-      const order = await this.razorpay.orders.create(options);
+      const response = await axios.post(baseUrl, payload, {
+        headers: {
+          'x-client-id': process.env.CASHFREE_APP_ID,
+          'x-client-secret': process.env.CASHFREE_SECRET_KEY,
+          'x-api-version': '2023-08-01',
+          'Content-Type': 'application/json',
+        },
+      });
 
       return {
-        orderId: order.id,
+        orderId: response.data.order_id,
         donationId: donation.id,
-        amount: order.amount,
-        currency: order.currency,
+        amount: response.data.order_amount,
+        currency: response.data.order_currency,
+        payment_session_id: response.data.payment_session_id,
       };
     } catch (error) {
-      console.error('Razorpay Error details:', JSON.stringify(error, null, 2));
+      console.error('Cashfree Error details:', error.response?.data || error.message);
       throw new InternalServerErrorException(
-        'Error creating Razorpay order: ' +
-          (error.message || error.error?.description || 'Unknown error'),
+        'Error creating Cashfree order: ' +
+          (error.response?.data?.message || error.message),
       );
     }
   }
 
-  async verifyPayment(
-    orderId: string,
-    paymentId: string,
-    signature: string,
-    donationId: string,
-  ) {
+  async verifyPayment(orderId: string, donationId: string) {
     try {
-      const generatedSignature = crypto
-        .createHmac('sha256', process.env.RAZORPAY_KEY_SECRET || 'dummy_secret')
-        .update(orderId + '|' + paymentId)
-        .digest('hex');
+      const cashfreeEnv = process.env.CASHFREE_ENV || 'SANDBOX';
+      const baseUrl =
+        cashfreeEnv === 'PRODUCTION'
+          ? `https://api.cashfree.com/pg/orders/${orderId}`
+          : `https://sandbox.cashfree.com/pg/orders/${orderId}`;
 
-      if (generatedSignature === signature) {
-        // Payment is authentic
+      const response = await axios.get(baseUrl, {
+        headers: {
+          'x-client-id': process.env.CASHFREE_APP_ID,
+          'x-client-secret': process.env.CASHFREE_SECRET_KEY,
+          'x-api-version': '2023-08-01',
+        },
+      });
+
+      const orderStatus = response.data.order_status;
+
+      if (orderStatus === 'PAID') {
         const updatedDonation = await this.prisma.donation.update({
           where: { id: donationId },
           data: {
             status: 'COMPLETED',
-            transactionId: paymentId,
+            transactionId: orderId,
           },
         });
 
-        // Send a heartfelt thank you email!
         await this.emailService.sendDonationThankYouEmail(
           updatedDonation.donorName,
           updatedDonation.donorEmail,
@@ -104,17 +123,17 @@ export class DonationsService {
           donation: updatedDonation,
         };
       } else {
-        // Payment is fake/tampered
         await this.prisma.donation.update({
           where: { id: donationId },
           data: { status: 'FAILED' },
         });
-        throw new BadRequestException('Invalid payment signature');
+        throw new BadRequestException(`Payment not successful. Status: ${orderStatus}`);
       }
     } catch (error) {
       if (error instanceof BadRequestException) throw error;
+      console.error('Verify error:', error.response?.data || error.message);
       throw new InternalServerErrorException(
-        'Error verifying payment: ' + error.message,
+        'Error verifying payment: ' + (error.response?.data?.message || error.message),
       );
     }
   }

@@ -11,6 +11,7 @@ import { donationsApi } from '../api/donations.api';
 import Navbar from '../components/common/Navbar';
 import NavUnn from '../components/common/NavUnn';
 import Footer from '../components/common/Footer';
+import { load } from '@cashfreepayments/cashfree-js';
 
 /* ─── Donor Details Modal ──────────────────────────────────────────────── */
 const DonorModal = ({ open, onClose, onSubmit, isProcessing }) => {
@@ -72,6 +73,29 @@ const Donate = () => {
   const [isProcessing, setIsProcessing] = useState(false);
   const [modalOpen, setModalOpen] = useState(false);
 
+  useEffect(() => {
+    const params = new URLSearchParams(window.location.search);
+    const orderId = params.get('order_id');
+    if (orderId) {
+      setIsProcessing(true);
+      donationsApi.verifyPayment({ orderId, donationId: orderId })
+        .then((v) => {
+          if (v.success) {
+            toast.success('Donation Successful! Thank you.');
+            window.history.replaceState(null, '', window.location.pathname);
+          } else {
+            toast.error('Payment verification failed');
+          }
+        })
+        .catch(() => {
+          toast.error('Payment verification error');
+        })
+        .finally(() => {
+          setIsProcessing(false);
+        });
+    }
+  }, []);
+
   const presetAmounts = [100, 500, 1000, 2500, 5000, 'Custom'];
 
   const getImpactMessage = (amt) => {
@@ -113,32 +137,43 @@ const Donate = () => {
     setIsProcessing(true);
     try {
       const order = await donationsApi.createOrder({ amount: finalAmount, donorName, donorEmail, donorPhone, donorPan, donorAddress });
-      if (!order || !order.orderId) throw new Error('Could not create order');
-      const options = {
-        key: import.meta.env.VITE_RAZORPAY_KEY_ID || 'dummy_key',
-        amount: order.amount,
-        currency: order.currency,
-        name: 'Unnati Society',
-        description: 'NGO Donation',
-        order_id: order.orderId,
-        handler: async (response) => {
+      if (!order || !order.payment_session_id) throw new Error('Could not create Cashfree order');
+      
+      const cashfree = await load({ mode: "production" });
+      
+      const checkoutOptions = {
+        paymentSessionId: order.payment_session_id,
+        redirectTarget: "_modal",
+      };
+
+      cashfree.checkout(checkoutOptions).then(async (result) => {
+        if (result.error) {
+          toast.error("Payment failed: " + result.error.message);
+          return;
+        }
+        if (result.redirect) {
+          // This will be true if the payment redirects (UPI Intent on mobile etc)
+          return;
+        }
+        if (result.paymentDetails) {
+          // Verify payment on backend
           try {
             const v = await donationsApi.verifyPayment({
-              razorpay_order_id: response.razorpay_order_id,
-              razorpay_payment_id: response.razorpay_payment_id,
-              razorpay_signature: response.razorpay_signature,
+              orderId: order.orderId,
               donationId: order.donationId
             });
-            if (v.success) { toast.success('Donation Successful! Thank you.'); setAmount(500); setModalOpen(false); }
-            else toast.error('Payment verification failed');
-          } catch { toast.error('Payment verification error'); }
-        },
-        prefill: { name: donorName, email: donorEmail, contact: donorPhone },
-        theme: { color: '#1E63E9' }
-      };
-      const rzp1 = new window.Razorpay(options);
-      rzp1.on('payment.failed', (r) => toast.error('Payment failed: ' + r.error.description));
-      rzp1.open();
+            if (v.success) { 
+              toast.success('Donation Successful! Thank you.'); 
+              setAmount(500); 
+              setModalOpen(false); 
+            } else {
+              toast.error('Payment verification failed');
+            }
+          } catch { 
+            toast.error('Payment verification error'); 
+          }
+        }
+      });
     } catch (e) {
       toast.error(e.message || 'Something went wrong!');
     } finally {
