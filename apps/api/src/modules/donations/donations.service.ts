@@ -22,6 +22,9 @@ export class DonationsService {
     donorPan?: string,
     donorAddress?: string,
   ) {
+    if (amount > 100000) {
+      throw new BadRequestException('Maximum donation amount is ₹1,00,000');
+    }
     try {
       // 1. Create a Pending Donation in Database
       const donation = await this.prisma.donation.create({
@@ -44,18 +47,28 @@ export class DonationsService {
           ? 'https://api.cashfree.com/pg/orders'
           : 'https://sandbox.cashfree.com/pg/orders';
 
+      let validPhone = donorPhone ? donorPhone.replace(/\D/g, '') : '';
+      if (validPhone.length < 10) validPhone = '9999999999';
+      if (validPhone.length > 10)
+        validPhone = validPhone.substring(validPhone.length - 10);
+
+      let validName = donorName ? donorName.trim() : 'Donor';
+      if (validName.length < 3) validName = validName + '  ';
+
       const payload = {
         order_id: donation.id, // We use our DB ID as the Cashfree order_id
         order_amount: amount,
         order_currency: 'INR',
         customer_details: {
-          customer_id: donorEmail.replace(/[^a-zA-Z0-9]/g, '').substring(0, 50) || 'customer',
-          customer_name: donorName || 'Donor',
+          customer_id:
+            donorEmail.replace(/[^a-zA-Z0-9]/g, '').substring(0, 50) ||
+            'customer',
+          customer_name: validName,
           customer_email: donorEmail || 'donor@example.com',
-          customer_phone: donorPhone || '9999999999',
+          customer_phone: validPhone,
         },
         order_meta: {
-          return_url: `${process.env.FRONTEND_URL || 'http://localhost:5173'}/donate?order_id=${donation.id}`,
+          return_url: `${process.env.FRONTEND_URL || 'https://unnati.iiitbh.ac.in'}/donate?order_id=${donation.id}`,
         },
       };
 
@@ -76,7 +89,10 @@ export class DonationsService {
         payment_session_id: response.data.payment_session_id,
       };
     } catch (error) {
-      console.error('Cashfree Error details:', error.response?.data || error.message);
+      console.error(
+        'Cashfree Error details:',
+        error.response?.data || error.message,
+      );
       throw new InternalServerErrorException(
         'Error creating Cashfree order: ' +
           (error.response?.data?.message || error.message),
@@ -127,13 +143,16 @@ export class DonationsService {
           where: { id: donationId },
           data: { status: 'FAILED' },
         });
-        throw new BadRequestException(`Payment not successful. Status: ${orderStatus}`);
+        throw new BadRequestException(
+          `Payment not successful. Status: ${orderStatus}`,
+        );
       }
     } catch (error) {
       if (error instanceof BadRequestException) throw error;
       console.error('Verify error:', error.response?.data || error.message);
       throw new InternalServerErrorException(
-        'Error verifying payment: ' + (error.response?.data?.message || error.message),
+        'Error verifying payment: ' +
+          (error.response?.data?.message || error.message),
       );
     }
   }

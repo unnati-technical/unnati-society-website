@@ -125,6 +125,7 @@ const Donate = () => {
   const handleProceed = () => {
     const finalAmount = amount === 'Custom' ? Number(customAmount) : amount;
     if (!finalAmount || finalAmount < 100) return toast.error('Minimum donation amount is ₹100');
+    if (finalAmount > 100000) return toast.error('Maximum donation amount is ₹1,00,000');
     setModalOpen(true);
   };
 
@@ -134,6 +135,8 @@ const Donate = () => {
 
   const handleDonate = async (donorName, donorEmail, donorPhone, donorPan, donorAddress) => {
     const finalAmount = amount === 'Custom' ? Number(customAmount) : amount;
+    if (finalAmount > 100000) return toast.error('Maximum donation amount is ₹1,00,000');
+    
     setIsProcessing(true);
     try {
       const order = await donationsApi.createOrder({ amount: finalAmount, donorName, donorEmail, donorPhone, donorPan, donorAddress });
@@ -255,7 +258,11 @@ const Donate = () => {
                       type="number" 
                       autoFocus
                       value={customAmount}
-                      onChange={e => setCustomAmount(e.target.value)}
+                      onChange={e => {
+                        const val = e.target.value;
+                        if (Number(val) > 100000) return;
+                        setCustomAmount(val);
+                      }}
                       onBlur={() => { if (!customAmount || Number(customAmount) < 100) { setIsEditingAmount(false); setAmount(100); } }}
                       className="font-extrabold text-2xl text-[#081B3A] bg-transparent outline-none w-full"
                       placeholder="Enter amount"

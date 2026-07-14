@@ -33,10 +33,7 @@ export class DonationsController {
     @Body('orderId') orderId: string,
     @Body('donationId') donationId: string,
   ) {
-    return this.donationsService.verifyPayment(
-      orderId,
-      donationId,
-    );
+    return this.donationsService.verifyPayment(orderId, donationId);
   }
 
   @Public()
