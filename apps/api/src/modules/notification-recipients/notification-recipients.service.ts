@@ -31,7 +31,22 @@ export class NotificationRecipientsService {
     });
 
     if (existing) {
-      throw new ConflictException('Recipient with this email already exists.');
+      // If the email already exists, just merge the categories and update the name/details
+      const mergedCategories = Array.from(
+        new Set([...existing.categories, ...(data.categories || [])]),
+      );
+      const recipient = await this.prisma.notificationRecipient.update({
+        where: { id: existing.id },
+        data: {
+          name: data.name,
+          department: data.department || existing.department,
+          phone: data.phone || existing.phone,
+          status: data.status || existing.status,
+          categories: mergedCategories,
+        },
+      });
+      this.logger.log(`Updated existing notification recipient: ${data.email}`);
+      return recipient;
     }
 
     const recipient = await this.prisma.notificationRecipient.create({
