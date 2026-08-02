@@ -2,7 +2,11 @@ import { Processor, WorkerHost, OnWorkerEvent } from '@nestjs/bullmq';
 import { Job } from 'bullmq';
 import { Logger } from '@nestjs/common';
 import * as nodemailer from 'nodemailer';
+import * as dns from 'dns';
 import { SystemSettingsService } from '../../modules/system-settings/system-settings.service';
+
+// Force IPv4 first to prevent ENETUNREACH errors on hosts without IPv6 internet access
+dns.setDefaultResultOrder('ipv4first');
 
 @Processor('email')
 export class EmailProcessor extends WorkerHost {
