@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 // eslint-disable-next-line no-unused-vars
 import { motion, AnimatePresence, animate } from "framer-motion";
-import { cloudinaryImage } from "../../../utils/cloudinary";
+import { imagekitImage } from "../../../utils/imagekit";
 import { useNavigate, useLocation } from "react-router-dom";
 
 import AnimatedCounter from "../../common/AnimatedCounter";
@@ -14,7 +14,7 @@ const programsData = [
     description: "Empowering students with essential digital literacy skills through engaging workshops.",
     stats: { value: 2800, suffix: "+", label: "Students Reached" },
     tags: ["Digital Literacy", "Technology", "Computer Skills", "Future Ready"],
-    image: cloudinaryImage("WhatsApp_Image_2026-02-03_at_1.39.40_PM_whvo3l"),
+    image: imagekitImage("WhatsApp_Image_2026-02-03_at_1.39.40_PM_whvo3l"),
     link: "/programs/digiXplore",
   },
   {
@@ -24,7 +24,7 @@ const programsData = [
     description: "Guiding the youth towards a brighter future with mentorship and leadership training.",
     stats: { value: 600, suffix: "+", label: "Students Guided" },
     tags: ["Career Guidance", "Mentorship", "Leadership", "Awareness"],
-    image: cloudinaryImage("WhatsApp_Image_2026-02-03_at_1.39.38_PM_3_thxqic"),
+    image: imagekitImage("WhatsApp_Image_2026-02-03_at_1.39.38_PM_3_thxqic"),
     link: "/programs/netritva",
   },
   {
@@ -34,7 +34,7 @@ const programsData = [
     description: "Fostering communication and literacy skills for a better tomorrow.",
     stats: { value: 200, suffix: "+", label: "Students Taught" },
     tags: ["English Learning", "Communication", "Literacy", "Education"],
-    image: cloudinaryImage("WhatsApp_Image_2026-02-03_at_1.39.39_PM_5_ney7sn"),
+    image: imagekitImage("WhatsApp_Image_2026-02-03_at_1.39.39_PM_5_ney7sn"),
     link: "/programs/akshar",
   }
 ];

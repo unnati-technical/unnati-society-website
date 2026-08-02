@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { PrismaService } from '../../prisma/prisma.service';
 import { EventsRepository } from './repositories/events.repository';
-import { CloudinaryService } from '../cloudinary/cloudinary.service';
+import { ImageKitService } from '../imagekit/imagekit.service';
 import { CreateEventDto } from './create-event.dto';
 // eslint-disable-next-line @typescript-eslint/no-require-imports
 const Holidays = require('date-holidays');
@@ -16,7 +16,7 @@ const lastFetchedHolidays = 0;
 export class EventsService {
   constructor(
     private readonly prisma: PrismaService,
-    private readonly cloudinaryService: CloudinaryService,
+    private readonly imagekitService: ImageKitService,
     private readonly eventsRepository: EventsRepository,
   ) {}
 
@@ -59,15 +59,9 @@ export class EventsService {
           (p) => !newPhotos.includes(p),
         );
         for (const url of removedPhotos) {
-          const match = url.match(/\/v\d+\/(.+)\.[a-zA-Z]+$/);
-          if (match && match[1]) {
-            this.cloudinaryService.deleteFile(match[1]).catch((err) => {
-              console.error(
-                `Failed to delete removed event image ${match[1]} from Cloudinary`,
-                err,
-              );
-            });
-          }
+          // ImageKit deletion requires fileId which is not stored in photo URLs.
+          // Old Cloudinary URLs are kept as-is (disabled account).
+          void url;
         }
       }
     }
@@ -89,14 +83,6 @@ export class EventsService {
 
   async remove(id: string) {
     const event = await this.eventsRepository.findUnique({ where: { id } });
-    if (event && event.photos && event.photos.length > 0) {
-      for (const url of event.photos) {
-        const match = url.match(/\/v\d+\/(.+)\.[a-zA-Z]+$/);
-        if (match && match[1]) {
-          await this.cloudinaryService.deleteFile(match[1]).catch(() => {});
-        }
-      }
-    }
     return this.eventsRepository.delete({ where: { id } });
   }
 

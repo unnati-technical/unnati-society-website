@@ -167,7 +167,7 @@ const PartnerModal = ({ isOpen, onClose }) => {
           </div>
           
           <div className="h-[120px] xl:h-[200px] w-full shrink-0 relative mt-auto overflow-hidden z-10 bg-[#040C1D]">
-             <img loading="lazy" src="https://res.cloudinary.com/drhkvdtw2/image/upload/v1782396803/unnati_assets/iiit-bhagalpur.png" alt="IIIT Bhagalpur Building" className="absolute inset-0 w-full h-full object-cover opacity-70" />
+             <img loading="lazy" src="https://ik.imagekit.io/unnati/v1782396803/unnati_assets/iiit-bhagalpur.png" alt="IIIT Bhagalpur Building" className="absolute inset-0 w-full h-full object-cover opacity-70" />
              <div className="absolute inset-0 bg-gradient-to-t from-[#040C1D] via-[#040C1D]/60 to-transparent" />
           </div>
         </div>

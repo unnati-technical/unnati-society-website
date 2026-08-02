@@ -1,7 +1,7 @@
 import React from "react";
 import Navbar from "./../../common/Navbar";
 import NavUnn from "./../../common/NavUnn";
-import { cloudinaryImage } from "./../../../utils/cloudinary";
+import { imagekitImage } from "./../../../utils/imagekit";
 
 const images = [
   "children_sDay-9_bx5hmt",
@@ -33,7 +33,7 @@ const MediaEvent2 = () => {
             {images.map((id, i) => (
               <img loading="lazy" 
                 key={i}
-                src={cloudinaryImage(id)}
+                src={imagekitImage(id)}
                 alt="Rangchakra"
                 className="mb-4 w-full rounded-xl break-inside-avoid shadow-md hover:scale-[1.02] transition"
               />

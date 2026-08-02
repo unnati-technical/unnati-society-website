@@ -1,8 +1,8 @@
 import React from "react";
-const Akshar = "https://res.cloudinary.com/drhkvdtw2/image/upload/v1782396806/unnati_assets/aksharImg.png";
-const bgImg = "https://res.cloudinary.com/drhkvdtw2/image/upload/v1782397308/unnati_assets/za0fhj6fv3ypxemijuum.webp";
+const Akshar = "https://ik.imagekit.io/unnati/v1782396806/unnati_assets/aksharImg.png";
+const bgImg = "https://ik.imagekit.io/unnati/v1782397308/unnati_assets/za0fhj6fv3ypxemijuum.webp";
 import { useNavigate } from "react-router-dom";
-import { cloudinaryImage } from "../../../utils/cloudinary";
+import { imagekitImage } from "../../../utils/imagekit";
 
 const HeroSection = () => {
   const navigate = useNavigate();
@@ -11,7 +11,7 @@ const HeroSection = () => {
     <section
       className="relative bg-cover bg-center bg-no-repeat min-h-screen w-full text-white overflow-hidden"
       style={{
-        backgroundImage: `url(${cloudinaryImage("schlvisit_uw7s37")})`,
+        backgroundImage: `url(${imagekitImage("schlvisit_uw7s37")})`,
       }}
     >
       <div className="absolute inset-0 z-10 bg-black/50"></div>
@@ -46,7 +46,7 @@ const HeroSection = () => {
             <div
               className="relative h-50 w-50 text-2xl flex justify-center items-center rounded-2xl bg-[#c3c3c3] border-8 border-white/35 text-black purple-purse-regular cursor-pointer bg-cover bg-center bg-no-repeat"
               style={{
-                backgroundImage: `url(${cloudinaryImage(
+                backgroundImage: `url(${imagekitImage(
                   "mountasisi-5_ssxaxg"
                 )})`,
               }}
@@ -63,7 +63,7 @@ const HeroSection = () => {
             <div
               className="relative h-50 w-50 text-2xl flex justify-center items-center rounded-2xl bg-[#c3c3c3] border-8 border-white/35 text-black purple-purse-regular cursor-pointer bg-cover bg-center bg-no-repeat"
               style={{
-                backgroundImage: `url(${cloudinaryImage(
+                backgroundImage: `url(${imagekitImage(
                   "IMG_20251211_124331_qfj72p"
                 )})`,
               }}
@@ -80,7 +80,7 @@ const HeroSection = () => {
             <div
               className="relative h-50 w-50 text-xl flex justify-center items-center rounded-2xl bg-[#c3c3c3] border-8 border-white/35 text-black purple-purse-regular cursor-pointer bg-cover bg-center bg-no-repeat"
               style={{
-                backgroundImage: `url(${cloudinaryImage(
+                backgroundImage: `url(${imagekitImage(
                   "schlvisit_asj47s"
                 )})`,
               }}
@@ -100,7 +100,7 @@ const HeroSection = () => {
             <div
               className="relative h-50 w-50 text-2xl flex justify-center items-center rounded-2xl bg-[#c3c3c3] border-8 border-white/35 text-black purple-purse-regular cursor-pointer bg-cover bg-center bg-no-repeat"
               style={{
-                backgroundImage: `url(${cloudinaryImage(
+                backgroundImage: `url(${imagekitImage(
                   "sfs-1_yr8bcn"
                 )})`,
               }}

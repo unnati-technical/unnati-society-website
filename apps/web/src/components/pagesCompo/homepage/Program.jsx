@@ -1,5 +1,5 @@
 import React from "react";
-import { cloudinaryImage } from "../../../utils/cloudinary";
+import { imagekitImage } from "../../../utils/imagekit";
 import { useNavigate } from "react-router-dom";
 import AnimatedCounter from "../../../components/common/AnimatedCounter";
 import Leaderboard from "./Leaderboard";
@@ -133,7 +133,7 @@ const Program = () => {
               {/* Card Image */}
               <div className="w-full aspect-[16/9] overflow-hidden">
                 <img loading="lazy"
-                  src={cloudinaryImage(prog.img)}
+                  src={imagekitImage(prog.img)}
                   alt={prog.name}
                   className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-[1.03]"
                 />

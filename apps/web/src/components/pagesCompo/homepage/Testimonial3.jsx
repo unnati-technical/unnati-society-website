@@ -1,5 +1,5 @@
 import React from 'react'
-import { cloudinaryImage2 } from '../../../utils/cloudinary'
+import { imagekitImage2 } from '../../../utils/imagekit'
 
 const Testimonial3 = () => {
   return (
@@ -14,7 +14,7 @@ const Testimonial3 = () => {
         <div className="relative group">
         <div className="absolute inset-0 bg-cyan-300/20 blur-2xl rounded-full scale-90 opacity-0 group-hover:opacity-100 transition-all duration-500" />
         <img loading="lazy" 
-          src={cloudinaryImage2("4_wafb1x")}
+          src={imagekitImage2("4_wafb1x")}
           alt="testimonial"
           className="relative w-full h-30 object-cover rounded-[28px] shadow-xl transition-all duration-500 group-hover:-translate-y-2"
         />

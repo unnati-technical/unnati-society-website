@@ -1,4 +1,4 @@
-import { Processor, WorkerHost } from '@nestjs/bullmq';
+import { Processor, WorkerHost, OnWorkerEvent } from '@nestjs/bullmq';
 import { Job } from 'bullmq';
 import { Logger } from '@nestjs/common';
 import * as nodemailer from 'nodemailer';
@@ -10,6 +10,12 @@ export class EmailProcessor extends WorkerHost {
 
   constructor(private readonly settingsService: SystemSettingsService) {
     super();
+  }
+
+  @OnWorkerEvent('error')
+  onError(err: Error) {
+    // Just log connection errors quietly instead of crashing the app
+    this.logger.error(`Worker error: ${err.message}`);
   }
 
   private async getTransporter() {

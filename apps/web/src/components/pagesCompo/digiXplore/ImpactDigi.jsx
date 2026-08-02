@@ -1,5 +1,5 @@
 import React from "react";
-import { cloudinaryImage } from "../../../utils/cloudinary";
+import { imagekitImage } from "../../../utils/imagekit";
 import { FiTrendingUp } from "react-icons/fi";
 
 const ImpactDigi = () => {
@@ -16,7 +16,7 @@ const ImpactDigi = () => {
             
             {/* Main Image */}
             <div className="w-full h-full rounded-3xl overflow-hidden shadow-xl border-4 border-white bg-gray-100">
-              <img loading="lazy" src={cloudinaryImage("IMG-20250412-WA0001_geachy")} alt="Impact" className="w-full h-full object-cover transition-shadow duration-300 hover:shadow-[0_10px_40px_rgba(0,0,0,0.15)]" />
+              <img loading="lazy" src={imagekitImage("IMG-20250412-WA0001_geachy")} alt="Impact" className="w-full h-full object-cover transition-shadow duration-300 hover:shadow-[0_10px_40px_rgba(0,0,0,0.15)]" />
             </div>
           </div>
         </div>

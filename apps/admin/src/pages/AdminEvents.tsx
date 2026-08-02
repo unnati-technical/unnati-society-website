@@ -124,10 +124,10 @@ const EmptyModal = ({ onClose, onSave, initial }) => {
             />
           </div>
           <div>
-            <label className="text-xs font-bold text-gray-600 uppercase tracking-wide block mb-1.5">Cloudinary Link (optional)</label>
+            <label className="text-xs font-bold text-gray-600 uppercase tracking-wide block mb-1.5">ImageKit Link (optional)</label>
             <input
               className="w-full border border-gray-200 rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
-              placeholder="e.g. https://res.cloudinary.com/drhkvdtw2/image/upload/..."
+              placeholder="e.g. https://res.imagekit.com/drhkvdtw2/image/upload/..."
               value={form.link}
               onChange={e => setForm(f => ({ ...f, link: e.target.value }))}
             />

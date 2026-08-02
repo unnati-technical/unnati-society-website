@@ -8,7 +8,7 @@ import {
 import { CreateOutreachDto } from './dto/create-outreach.dto';
 import { CreateCampusVisitDto } from './dto/create-campus-visit.dto';
 import { CreatePartnerDto } from './dto/create-partner.dto';
-import { CloudinaryService } from '../cloudinary/cloudinary.service';
+import { ImageKitService } from '../imagekit/imagekit.service';
 import { NotificationsService } from '../notifications/notifications.service';
 import { EmailService } from '../../queues/email/email.service';
 
@@ -18,7 +18,7 @@ export class OutreachService {
 
   constructor(
     private readonly prisma: PrismaService,
-    private readonly cloudinary: CloudinaryService,
+    private readonly imagekit: ImageKitService,
     private readonly notificationsService: NotificationsService,
     private readonly emailService: EmailService,
     private readonly inviteRepo: InviteRepository,
@@ -107,10 +107,10 @@ export class OutreachService {
 
     if (file) {
       try {
-        const uploadResult = await this.cloudinary.uploadFile(file);
-        documentUrl = uploadResult.secure_url;
+        const uploadResult = await this.imagekit.uploadFile(file, 'partners');
+        documentUrl = uploadResult.url;
       } catch (error) {
-        this.logger.error('Failed to upload file to Cloudinary', error);
+        this.logger.error('Failed to upload file to ImageKit', error);
       }
     }
 

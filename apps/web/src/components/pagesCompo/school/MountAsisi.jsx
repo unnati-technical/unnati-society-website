@@ -1,7 +1,7 @@
 import React from "react";
 import Navbar from "./../../common/Navbar";
 import NavUnn from "./../../common/NavUnn";
-import { cloudinaryImage } from "./../../../utils/cloudinary";
+import { imagekitImage } from "./../../../utils/imagekit";
 
 const images = [
   "mountasisi-6_l0o5cc",
@@ -20,7 +20,7 @@ const MountAsisi = () => {
       <Navbar />
       <NavUnn />
 
-      <section className="relative flex justify-center items-center py-10 w-full bg-cover bg-center bg-no-repeat " style={{ backgroundImage: `url(${cloudinaryImage("schlvisit_uw7s37")})` }}
+      <section className="relative flex justify-center items-center py-10 w-full bg-cover bg-center bg-no-repeat " style={{ backgroundImage: `url(${imagekitImage("schlvisit_uw7s37")})` }}
       >
         <div className="absolute inset-0 z-10 bg-black/40"></div>
         <div className="max-w-6xl px-4 flex z-20 flex-col justify-center items-center">
@@ -33,7 +33,7 @@ const MountAsisi = () => {
             {images.map((id, i) => (
               <img loading="lazy" 
                 key={i}
-                src={cloudinaryImage(id)}
+                src={imagekitImage(id)}
                 alt="Mount Asisi"
                 className="mb-4 w-full rounded-xl break-inside-avoid shadow-md hover:scale-[1.02] transition"
               />

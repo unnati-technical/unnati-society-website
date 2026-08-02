@@ -2,10 +2,10 @@ import { Module } from '@nestjs/common';
 import { VolunteerLeaderboardService } from './volunteer-leaderboard.service';
 import { VolunteerLeaderboardController } from './volunteer-leaderboard.controller';
 import { PrismaModule } from '../../prisma/prisma.module';
-import { CloudinaryModule } from '../cloudinary/cloudinary.module';
+import { ImageKitModule } from '../imagekit/imagekit.module';
 
 @Module({
-  imports: [PrismaModule, CloudinaryModule],
+  imports: [PrismaModule, ImageKitModule],
   controllers: [VolunteerLeaderboardController],
   providers: [VolunteerLeaderboardService],
   exports: [VolunteerLeaderboardService],

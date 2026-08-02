@@ -1,20 +1,14 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { PrismaService } from '../../prisma/prisma.service';
-import { CloudinaryService } from '../cloudinary/cloudinary.service';
+import { ImageKitService } from '../imagekit/imagekit.service';
 import { UpsertLeaderboardEntryDto } from './upsert-leaderboard-entry.dto';
 
 @Injectable()
 export class VolunteerLeaderboardService {
   constructor(
     private readonly prisma: PrismaService,
-    private readonly cloudinaryService: CloudinaryService,
+    private readonly imagekitService: ImageKitService,
   ) {}
-
-  private extractPublicId(url: string | null): string | null {
-    if (!url) return null;
-    const matches = url.match(/\/upload\/(?:v\d+\/)?([^.]+)/);
-    return matches ? matches[1] : null;
-  }
 
   async findAll(month?: string) {
     if (month) {
@@ -58,25 +52,11 @@ export class VolunteerLeaderboardService {
 
     let avatarUrl = existing?.avatar || null;
     if (file) {
-      // Delete old photo from Cloudinary if it exists
-      if (existing?.avatar) {
-        const publicId = this.extractPublicId(existing.avatar);
-        if (publicId) {
-          try {
-            await this.cloudinaryService.deleteFile(publicId);
-          } catch (err) {
-            console.error(
-              `Failed to delete old avatar ${publicId} from Cloudinary`,
-              err,
-            );
-          }
-        }
-      }
-      const uploadResult = await this.cloudinaryService.uploadFile(
+      const uploadResult = await this.imagekitService.uploadFile(
         file,
         'leaderboard',
       );
-      avatarUrl = uploadResult.secure_url;
+      avatarUrl = uploadResult.url;
     }
 
     return this.prisma.volunteerLeaderboard.upsert({
@@ -117,44 +97,12 @@ export class VolunteerLeaderboardService {
       throw new NotFoundException('Leaderboard entry not found');
     }
 
-    const publicId = this.extractPublicId(entry.avatar);
-    if (publicId) {
-      try {
-        await this.cloudinaryService.deleteFile(publicId);
-      } catch (err) {
-        console.error(
-          `Failed to delete avatar ${publicId} from Cloudinary`,
-          err,
-        );
-      }
-    }
-
     return this.prisma.volunteerLeaderboard.delete({
       where: { id },
     });
   }
 
   async removeMonth(month: string) {
-    const entries = await this.prisma.volunteerLeaderboard.findMany({
-      where: { month },
-    });
-
-    for (const entry of entries) {
-      if (entry.avatar) {
-        const publicId = this.extractPublicId(entry.avatar);
-        if (publicId) {
-          try {
-            await this.cloudinaryService.deleteFile(publicId);
-          } catch (err) {
-            console.error(
-              `Failed to delete avatar ${publicId} from Cloudinary`,
-              err,
-            );
-          }
-        }
-      }
-    }
-
     return this.prisma.volunteerLeaderboard.deleteMany({
       where: { month },
     });

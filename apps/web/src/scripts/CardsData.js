@@ -1,8 +1,8 @@
-const directorImg = 'https://res.cloudinary.com/drhkvdtw2/image/upload/v1782396812/unnati_assets/directorsir.png';
-const prImg = 'https://res.cloudinary.com/drhkvdtw2/image/upload/v1782396871/unnati_assets/prsir.png';
-const chetanImg = 'https://res.cloudinary.com/drhkvdtw2/image/upload/v1782396807/unnati_assets/chetansir.jpg';
-const dheerajImg = 'https://res.cloudinary.com/drhkvdtw2/image/upload/v1783592779/leadership_profiles/wwoxj95jq7wzrgdx5x8r.png'
-//import { cloudinaryImage } from '../utils/cloudinary';
+const directorImg = 'https://ik.imagekit.io/unnati/v1782396812/unnati_assets/directorsir.png';
+const prImg = 'https://ik.imagekit.io/unnati/v1782396871/unnati_assets/prsir.png';
+const chetanImg = 'https://ik.imagekit.io/unnati/v1782396807/unnati_assets/chetansir.jpg';
+const dheerajImg = 'https://ik.imagekit.io/unnati/v1783592779/leadership_profiles/wwoxj95jq7wzrgdx5x8r.png'
+//import { imagekitImage } from '../utils/imagekit';
 
 
 const cardData = [

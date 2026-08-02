@@ -9,8 +9,8 @@ import {
 } from 'react-icons/fi';
 import { useMutation } from '@tanstack/react-query';
 import { volunteersApi } from '../../api/volunteers.api';
-import { uploadToCloudinary } from '../../services/cloudinary.service';
-const UnnatiLogo = 'https://res.cloudinary.com/drhkvdtw2/image/upload/v1782396887/unnati_assets/Unnati.png';
+import { uploadToImageKit } from '../../services/imagekit.service';
+const UnnatiLogo = 'https://ik.imagekit.io/unnati/v1782396887/unnati_assets/Unnati.png';
 
 const VolunteerModal = ({ isOpen, onClose }) => {
   const [step, setStep] = useState(1);
@@ -106,7 +106,7 @@ const VolunteerModal = ({ isOpen, onClose }) => {
 
     setIsUploading(true);
     try {
-      const url = await uploadToCloudinary(file);
+      const url = await uploadToImageKit(file);
       setFormData(prev => ({ ...prev, resume: url }));
       toast.success('Resume uploaded successfully!');
     } catch (err) {

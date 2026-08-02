@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import { homeMediaApi } from "../../../api/home-media.api";
 
-const playIcon = 'https://res.cloudinary.com/drhkvdtw2/image/upload/v1782396870/unnati_assets/play.png';
+const playIcon = 'https://ik.imagekit.io/unnati/v1782396870/unnati_assets/play.png';
 
 const VideoSlide = ({ url, isActive, onEnded }) => {
   const videoRef = useRef(null);
@@ -68,7 +68,7 @@ const HeroSection = () => {
       {
         id: "default",
         type: "VIDEO",
-        url: "https://res.cloudinary.com/drhkvdtw2/video/upload/v1782397100/unnati_assets/cc5agh6nevpynajlzkxs.mp4",
+        url: "https://ik.imagekit.io/unnati/v1782397100/unnati_assets/cc5agh6nevpynajlzkxs.mp4",
         title: "EMPOWERING DREAMS",
         subtitle: "Revolutionizing Present, Transforming Future",
       }
@@ -107,8 +107,8 @@ const HeroSection = () => {
   }, [activeIndex, list, currentItem]);
 
   const openVideo = () => {
-    const cloudName = import.meta.env.VITE_CLOUDINARY_CLOUD_NAME || "drhkvdtw2";
-    window.open(`https://player.cloudinary.com/embed/?cloud_name=${cloudName}&public_id=home_video_dq0ac8`, "_blank");
+    // Open the raw mp4 file in a new tab instead of using Cloudinary's player
+    window.open("https://ik.imagekit.io/unnati/v1782397100/unnati_assets/cc5agh6nevpynajlzkxs.mp4", "_blank");
   };
 
   return (

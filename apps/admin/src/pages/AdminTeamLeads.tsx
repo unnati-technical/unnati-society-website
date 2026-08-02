@@ -778,7 +778,7 @@ const AdminTeamLeads = () => {
                       type="text"
                       value={memberForm.profileImage}
                       onChange={e => setMemberForm(f => ({ ...f, profileImage: e.target.value }))}
-                      placeholder="https://res.cloudinary.com/..."
+                      placeholder="https://ik.imagekit.io/unnati/..."
                       className="w-full border border-gray-200 rounded-xl px-3 py-2 focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none text-xs mt-1.5 text-gray-500"
                     />
                   </div>

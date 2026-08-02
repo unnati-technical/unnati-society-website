@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { Send, Globe, Minimize2, Bot } from 'lucide-react';
+import { Send, Globe, Minimize2, Bot, Sparkles, BookOpen } from 'lucide-react';
 import { findIntent } from '../engine/fuzzyMatcher';
 import { routeIntent } from '../engine/router';
 import { ContextManager } from '../engine/contextManager';
@@ -8,20 +8,36 @@ import MessageBubble from './MessageBubble';
 import RichCard from './RichCard';
 import LanguageSelector from './LanguageSelector';
 import WelcomeScreen from './WelcomeScreen';
+import type { SourceCitation } from '../types';
 
 const SMART_SUGGESTIONS = [
-  "Can I volunteer?",
-  "How do I join?",
-  "Request a call",
-  "Where are workshops conducted?"
+  'What is DigiXplore?',
+  'How do I volunteer?',
+  'Upcoming events',
+  'About Unnati',
 ];
 
+interface Message {
+  id: string;
+  sender: 'user' | 'bot';
+  type: 'text' | 'rich_card' | 'navigation';
+  data?: {
+    text?: string;
+    title?: string;
+    description?: string;
+    buttons?: { label: string; action?: string; intent?: string }[];
+  };
+  sources?: SourceCitation[];
+  intent?: string;
+}
+
 export default function ChatWindow({ onClose, onNavigate }) {
-  const [viewState, setViewState] = useState('language');
-  const [messages, setMessages] = useState([]);
+  const [viewState, setViewState] = useState<'language' | 'welcome' | 'chat'>('language');
+  const [messages, setMessages] = useState<Message[]>([]);
   const [inputValue, setInputValue] = useState('');
   const [isTyping, setIsTyping] = useState(false);
-  const messagesEndRef = useRef(null);
+  const [isAiMode, setIsAiMode] = useState(true); // tracks if AI API is responding
+  const messagesEndRef = useRef<HTMLDivElement>(null);
   const context = ContextManager.getInstance();
 
   const scrollToBottom = () => {
@@ -32,95 +48,158 @@ export default function ChatWindow({ onClose, onNavigate }) {
     scrollToBottom();
   }, [messages, isTyping, viewState]);
 
-  const handleLanguageSelect = (langCode) => {
+  const handleLanguageSelect = (langCode: string) => {
     context.setLanguage(langCode);
     setViewState('welcome');
   };
 
-  const startChatWithAction = async (actionOrIntent) => {
+  const startChatWithAction = async (actionOrIntent: string) => {
     if (actionOrIntent === 'change_lang') {
       setViewState('language');
       return;
     }
-    
     setViewState('chat');
-    
     if (actionOrIntent !== 'start_chat') {
       handleAction(actionOrIntent);
     } else {
-      setMessages([{ id: Date.now().toString(), sender: 'bot', type: 'text', data: { text: t('greeting') } }]);
+      setMessages([
+        {
+          id: Date.now().toString(),
+          sender: 'bot',
+          type: 'text',
+          data: { text: t('greeting') },
+        },
+      ]);
     }
   };
 
-  const handleAction = async (intentOrAction) => {
+  const handleAction = async (intentOrAction: string) => {
     if (intentOrAction === 'action_whatsapp') {
-      const waNumber = import.meta.env.VITE_WHATSAPP_NUMBER || '';
-      if (waNumber) {
-        window.open(`https://wa.me/${waNumber}`, '_blank');
-        setMessages(prev => [...prev, { id: Date.now().toString(), sender: 'bot', type: 'text', data: { text: 'Opening WhatsApp...' } }]);
-      }
+      const waNumber = (import.meta as any).env?.VITE_WHATSAPP_NUMBER || '';
+      if (waNumber) window.open(`https://wa.me/${waNumber}`, '_blank');
       return;
     }
 
     if (intentOrAction.startsWith('nav_')) {
       if (onNavigate) {
         onNavigate(intentOrAction);
-        setMessages(prev => [...prev, { id: Date.now().toString(), sender: 'bot', type: 'text', data: { text: t('navigating') } }]);
+        setMessages((prev) => [
+          ...prev,
+          {
+            id: Date.now().toString(),
+            sender: 'bot',
+            type: 'text',
+            data: { text: t('navigating') },
+          },
+        ]);
       }
       return;
     }
 
+    // SQL tool quick actions
+    if (intentOrAction === 'sql_events') {
+      await handleSubmit(null, 'What are the upcoming events?');
+      return;
+    }
+
     setIsTyping(true);
-    await new Promise(resolve => setTimeout(resolve, 800));
-    
+    await new Promise((r) => setTimeout(r, 600));
     const response = await routeIntent(intentOrAction, '');
-    setMessages(prev => [...prev, { id: Date.now().toString(), sender: 'bot', ...response }]);
+    appendBotResponse(response);
     setIsTyping(false);
   };
 
-  const handleSubmit = async (e, forcedText = null) => {
+  const appendBotResponse = (response: any) => {
+    // Handle BotMessage format (from AI API)
+    if (response && response.role === 'assistant') {
+      setIsAiMode(true);
+      setMessages((prev) => [
+        ...prev,
+        {
+          id: response.id || Date.now().toString(),
+          sender: 'bot',
+          type: response.type || 'text',
+          data: {
+            text: response.content,
+            title: response.title,
+            description: response.description,
+            buttons: response.buttons,
+          },
+          sources: response.sources,
+          intent: response.intent,
+        },
+      ]);
+    } else {
+      // Legacy local response format
+      setMessages((prev) => [
+        ...prev,
+        { id: Date.now().toString(), sender: 'bot', ...response },
+      ]);
+    }
+  };
+
+  const handleSubmit = async (e: React.FormEvent | null, forcedText: string | null = null) => {
     if (e) e.preventDefault();
-    const userText = forcedText || inputValue.trim();
+    const userText = (forcedText || inputValue).trim();
     if (!userText) return;
 
     setInputValue('');
-    setMessages(prev => [...prev, { id: Date.now().toString(), sender: 'user', type: 'text', data: { text: userText } }]);
+    setMessages((prev) => [
+      ...prev,
+      { id: Date.now().toString(), sender: 'user', type: 'text', data: { text: userText } },
+    ]);
 
     setIsTyping(true);
-    await new Promise(resolve => setTimeout(resolve, 800));
+    await new Promise((r) => setTimeout(r, 400));
 
-    if (context.getActiveForm()) {
-      const response = await routeIntent('form_input', userText);
-      setMessages(prev => [...prev, { id: Date.now().toString(), sender: 'bot', ...response }]);
+    const intent = context.getActiveForm() ? 'form_input' : findIntent(userText);
+    const response = await routeIntent(intent, userText);
+
+    if (response && (response as any).type === 'navigation' && onNavigate) {
+      onNavigate((response as any).action);
+      setMessages((prev) => [
+        ...prev,
+        {
+          id: Date.now().toString(),
+          sender: 'bot',
+          type: 'text',
+          data: { text: 'Taking you to that page...' },
+        },
+      ]);
     } else {
-      const intent = findIntent(userText);
-      const response = await routeIntent(intent, userText);
-      
-      if (response.type === 'navigation' && onNavigate) {
-        onNavigate(response.action);
-        setMessages(prev => [...prev, { id: Date.now().toString(), sender: 'bot', type: 'text', data: { text: 'Taking you to that page...' } }]);
-      } else {
-        setMessages(prev => [...prev, { id: Date.now().toString(), sender: 'bot', ...response }]);
-      }
+      appendBotResponse(response);
     }
-    
+
     setIsTyping(false);
   };
 
   return (
-    <div className="w-[360px] h-[550px] bg-white rounded-2xl shadow-2xl flex flex-col overflow-hidden border border-gray-100">
+    <div className="w-[370px] h-[580px] bg-white rounded-2xl shadow-2xl flex flex-col overflow-hidden border border-gray-100">
       {/* Header */}
       <div className="bg-gradient-to-r from-blue-600 to-blue-800 p-4 text-white flex justify-between items-center z-10 shadow-sm">
-        <div>
-          <h3 className="font-semibold text-lg">Udaan AI</h3>
-          <div className="flex items-center text-xs text-blue-100">
-            <span className="w-2 h-2 rounded-full bg-green-400 mr-2"></span>
-            Online
+        <div className="flex items-center gap-2">
+          <div className="w-8 h-8 rounded-full bg-white/20 flex items-center justify-center">
+            <Sparkles size={16} />
+          </div>
+          <div>
+            <h3 className="font-semibold text-sm leading-tight">Unnati AI Assistant</h3>
+            <div className="flex items-center text-xs text-blue-100 gap-1">
+              <span className="w-1.5 h-1.5 rounded-full bg-green-400 inline-block" />
+              {isAiMode ? 'AI Powered · RAG' : 'Online'}
+            </div>
           </div>
         </div>
         <div className="flex items-center gap-3">
-          <button onClick={() => setViewState('language')} className="text-white/80 hover:text-white transition" title="Change Language"><Globe size={18} /></button>
-          <button onClick={onClose} className="text-white/80 hover:text-white transition"><Minimize2 size={18} /></button>
+          <button
+            onClick={() => setViewState('language')}
+            className="text-white/80 hover:text-white transition"
+            title="Change Language"
+          >
+            <Globe size={18} />
+          </button>
+          <button onClick={onClose} className="text-white/80 hover:text-white transition">
+            <Minimize2 size={18} />
+          </button>
         </div>
       </div>
 
@@ -132,23 +211,52 @@ export default function ChatWindow({ onClose, onNavigate }) {
           <div className="flex-1 overflow-y-auto p-4 bg-gray-50/50 flex flex-col">
             <div className="space-y-4 flex-1">
               {messages.map((msg) => (
-                <div key={msg.id} className={`flex ${msg.sender === 'user' ? 'justify-end' : 'justify-start'}`}>
-                  {msg.type === 'text' && <MessageBubble sender={msg.sender} text={msg.data.text} buttons={msg.data.buttons} onAction={handleAction} />}
-                  {msg.type === 'rich_card' && <RichCard data={msg.data} onAction={handleAction} />}
+                <div
+                  key={msg.id}
+                  className={`flex flex-col ${msg.sender === 'user' ? 'items-end' : 'items-start'}`}
+                >
+                  <div className={`flex ${msg.sender === 'user' ? 'justify-end' : 'justify-start'} w-full`}>
+                    {msg.type === 'text' && (
+                      <MessageBubble
+                        sender={msg.sender}
+                        text={msg.data?.text}
+                        buttons={msg.data?.buttons}
+                        onAction={handleAction}
+                      />
+                    )}
+                    {msg.type === 'rich_card' && (
+                      <RichCard data={msg.data} onAction={handleAction} />
+                    )}
+                  </div>
+
+                  {/* Source citations from RAG */}
+                  {msg.sender === 'bot' && msg.sources && msg.sources.length > 0 && (
+                    <div className="mt-1 ml-2 flex items-center gap-1 flex-wrap">
+                      <BookOpen size={10} className="text-gray-400 flex-shrink-0" />
+                      {msg.sources.map((s, i) => (
+                        <span
+                          key={i}
+                          className="text-[10px] text-gray-400 bg-gray-100 rounded px-1.5 py-0.5"
+                          title={s.source}
+                        >
+                          {s.title}
+                        </span>
+                      ))}
+                    </div>
+                  )}
                 </div>
               ))}
-              
+
+              {/* Typing indicator */}
               {isTyping && (
-                <div className="flex items-end gap-2 max-w-full flex-row">
+                <div className="flex items-end gap-2">
                   <div className="w-6 h-6 rounded-full flex items-center justify-center flex-shrink-0 bg-blue-100 text-blue-600">
                     <Bot size={14} />
                   </div>
-                  <div className="flex flex-col max-w-[85%]">
-                    <div className="bg-white border border-gray-100 rounded-2xl rounded-tl-sm px-4 py-3 shadow-sm flex space-x-1 h-[38px] items-center">
-                      <div className="w-1.5 h-1.5 bg-gray-400 rounded-full animate-bounce" style={{ animationDelay: '0ms' }}></div>
-                      <div className="w-1.5 h-1.5 bg-gray-400 rounded-full animate-bounce" style={{ animationDelay: '150ms' }}></div>
-                      <div className="w-1.5 h-1.5 bg-gray-400 rounded-full animate-bounce" style={{ animationDelay: '300ms' }}></div>
-                    </div>
+                  <div className="bg-white border border-gray-100 rounded-2xl rounded-tl-sm px-4 py-3 shadow-sm flex space-x-1 h-[38px] items-center">
+                    <div className="w-1.5 h-1.5 bg-blue-400 rounded-full animate-bounce" style={{ animationDelay: '0ms' }} />
+                    <div className="w-1.5 h-1.5 bg-blue-400 rounded-full animate-bounce" style={{ animationDelay: '150ms' }} />
+                    <div className="w-1.5 h-1.5 bg-blue-400 rounded-full animate-bounce" style={{ animationDelay: '300ms' }} />
                   </div>
                 </div>
               )}
@@ -157,20 +265,24 @@ export default function ChatWindow({ onClose, onNavigate }) {
           </div>
 
           {/* Quick Suggestions */}
-          {!isTyping && messages.length > 0 && messages[messages.length - 1].sender === 'bot' && !context.getActiveForm() && (
-            <div className="px-3 pb-2 pt-1 flex overflow-x-auto scrollbar-hide space-x-2 bg-white">
-              {SMART_SUGGESTIONS.map((suggestion, idx) => (
-                <button
-                  key={idx}
-                  onClick={() => handleSubmit(null, suggestion)}
-                  className="whitespace-nowrap px-3 py-1.5 bg-blue-50 text-blue-600 border border-blue-100 rounded-full text-xs font-medium hover:bg-blue-100 transition-colors"
-                >
-                  {suggestion}
-                </button>
-              ))}
-            </div>
-          )}
+          {!isTyping &&
+            messages.length > 0 &&
+            messages[messages.length - 1].sender === 'bot' &&
+            !context.getActiveForm() && (
+              <div className="px-3 pb-2 pt-1 flex overflow-x-auto scrollbar-hide space-x-2 bg-white">
+                {SMART_SUGGESTIONS.map((suggestion, idx) => (
+                  <button
+                    key={idx}
+                    onClick={() => handleSubmit(null, suggestion)}
+                    className="whitespace-nowrap px-3 py-1.5 bg-blue-50 text-blue-600 border border-blue-100 rounded-full text-xs font-medium hover:bg-blue-100 transition-colors"
+                  >
+                    {suggestion}
+                  </button>
+                ))}
+              </div>
+            )}
 
+          {/* Input */}
           <div className="p-3 bg-white border-t border-gray-100 shadow-[0_-4px_6px_-1px_rgba(0,0,0,0.05)] z-10">
             <form onSubmit={(e) => handleSubmit(e)} className="relative flex items-center">
               <input
@@ -182,12 +294,13 @@ export default function ChatWindow({ onClose, onNavigate }) {
               />
               <button
                 type="submit"
-                disabled={!inputValue.trim()}
-                className="absolute right-2 p-2 rounded-full text-blue-600 hover:bg-blue-50 disabled:opacity-50 transition-colors"
+                disabled={!inputValue.trim() || isTyping}
+                className="absolute right-2 p-2 rounded-full text-blue-600 hover:bg-blue-50 disabled:opacity-40 transition-colors"
               >
                 <Send size={18} />
               </button>
             </form>
+            <p className="text-center text-[10px] text-gray-300 mt-1">Powered by Gemini AI · RAG</p>
           </div>
         </>
       )}

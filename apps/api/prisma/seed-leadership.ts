@@ -7,7 +7,7 @@ import * as path from 'path';
 // Load .env from the api directory
 dotenv.config({ path: path.join(__dirname, '..', '.env') });
 
-const CLOUD_BASE = 'https://res.cloudinary.com/drhkvdtw2/image/upload/w_400,q_auto,f_auto';
+const CLOUD_BASE = 'https://ik.imagekit.io/unnati/w_400,q_auto,f_auto';
 
 const img = (publicId: string) => {
   if (publicId.startsWith('http')) return publicId;

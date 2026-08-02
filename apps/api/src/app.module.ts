@@ -45,6 +45,7 @@ import { HomeMediaModule } from './modules/home-media/home-media.module';
 import { VolunteerLeaderboardModule } from './modules/volunteer-leaderboard/volunteer-leaderboard.module';
 import { ScheduleModule } from '@nestjs/schedule';
 import { CronModule } from './modules/cron/cron.module';
+import { ChatModule } from './modules/chat/chat.module';
 
 // BullMQ Redis config — maxRetriesPerRequest: null is required by BullMQ
 // retryStrategy returns null quickly so the app doesn't hang waiting for Redis
@@ -59,7 +60,6 @@ const bullRedisConfig = {
       : undefined,
   maxRetriesPerRequest: null, // Required for BullMQ
   lazyConnect: true, // Don't block app startup if Redis is down
-  enableOfflineQueue: false, // Drop jobs instead of queuing when offline
   connectTimeout: 5000,
   // Use a sensible retry strategy that doesn't give up immediately.
   // Returning null causes unhandled "Connection is closed" errors when BullMQ tries to use the client.
@@ -147,6 +147,7 @@ const bullRedisConfig = {
     SubscribersModule,
     TeamLeadsModule,
     CronModule,
+    ChatModule,
   ],
   controllers: [AppController],
   providers: [

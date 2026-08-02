@@ -1,6 +1,6 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
-import { cloudinaryImage2 } from "../../../utils/cloudinary";
+import { imagekitImage2 } from "../../../utils/imagekit";
 
 
 const Hero = () => {
@@ -29,7 +29,7 @@ const Hero = () => {
 
           <div
             className="h-50 w-50 md:h-50 md:w-50 border-0 rounded-full p-15 text-black aspect-square flex justify-center items-center oswald-font-3 text-2xl cursor-pointer bg-cover bg-center bg-no-repeat"
-            style={{ backgroundImage: `url(${cloudinaryImage2("Netritva_circle_t847xu")})` }}
+            style={{ backgroundImage: `url(${imagekitImage2("Netritva_circle_t847xu")})` }}
           ></div>
 
           <div

@@ -153,7 +153,7 @@ const CertificateCanvas = React.forwardRef<HTMLDivElement, { data: CertData }>((
     >
       {/* Background template (clean blank) */}
       <img 
-        src="https://res.cloudinary.com/drhkvdtw2/image/upload/v1783182561/certificates/wsiz3egpixlklxo3fni0.png" 
+        src="https://res.imagekit.com/drhkvdtw2/image/upload/v1783182561/certificates/wsiz3egpixlklxo3fni0.png" 
         alt="Certificate Template" 
         style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', objectFit: 'cover', display: 'block' }}
         crossOrigin="anonymous"
@@ -231,7 +231,7 @@ const CertificateCanvas = React.forwardRef<HTMLDivElement, { data: CertData }>((
             Sig2: left≈415, bottom≈118
             Sig3: left≈790, bottom≈118                              */}
       <SigBlock
-        imgSrc="https://res.cloudinary.com/drhkvdtw2/image/upload/e_make_transparent:20/v1783182562/certificates/fyqmzwit6gejnpyw0tgo.png"
+        imgSrc="https://ik.imagekit.io/unnati/"
         name={data.signer1Name}
         title={data.signer1Title}
         subtitle={data.signer1Subtitle}
@@ -241,7 +241,7 @@ const CertificateCanvas = React.forwardRef<HTMLDivElement, { data: CertData }>((
         imgH={0}
       />
       <SigBlock
-        imgSrc="https://res.cloudinary.com/drhkvdtw2/image/upload/e_make_transparent:20/v1783182563/certificates/ivkkvujsef8yhtkawmvl.png"
+        imgSrc="https://ik.imagekit.io/unnati/"
         name={data.signer2Name}
         title={data.signer2Title}
         subtitle={data.signer2Subtitle}
@@ -251,7 +251,7 @@ const CertificateCanvas = React.forwardRef<HTMLDivElement, { data: CertData }>((
         imgH={0}
       />
       <SigBlock
-        imgSrc="https://res.cloudinary.com/drhkvdtw2/image/upload/e_make_transparent:20/v1783182564/certificates/rsnjl2kjyzjj15iahumn.png"
+        imgSrc="https://ik.imagekit.io/unnati/"
         name={data.signer3Name}
         title={data.signer3Title}
         subtitle={data.signer3Subtitle}

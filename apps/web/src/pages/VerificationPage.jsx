@@ -74,7 +74,7 @@ const CertificateCanvas = React.forwardRef(({ data }, ref) => {
     >
       {/* Background template */}
       <img 
-        src="https://res.cloudinary.com/drhkvdtw2/image/upload/v1783182561/certificates/wsiz3egpixlklxo3fni0.png" 
+        src="https://ik.imagekit.io/unnati/v1783182561/certificates/wsiz3egpixlklxo3fni0.png" 
         alt="Certificate Template" 
         style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', objectFit: 'cover', display: 'block' }}
         crossOrigin="anonymous"
@@ -108,21 +108,21 @@ const CertificateCanvas = React.forwardRef(({ data }, ref) => {
       </div>
 
       <SigBlock
-        imgSrc="https://res.cloudinary.com/drhkvdtw2/image/upload/e_make_transparent:20/v1783182562/certificates/fyqmzwit6gejnpyw0tgo.png"
+        imgSrc="https://ik.imagekit.io/unnati/e_make_transparent:20/v1783182562/certificates/fyqmzwit6gejnpyw0tgo.png"
         name="DR. CHETAN BARDE"
         title="FACULTY MENTOR"
         subtitle="UNNATI SOCIETY"
         left={60} bottom={118} imgW={145}
       />
       <SigBlock
-        imgSrc="https://res.cloudinary.com/drhkvdtw2/image/upload/e_make_transparent:20/v1783182563/certificates/ivkkvujsef8yhtkawmvl.png"
+        imgSrc="https://ik.imagekit.io/unnati/e_make_transparent:20/v1783182563/certificates/ivkkvujsef8yhtkawmvl.png"
         name="DR. DHEERAJ KUMAR SINHA"
         title="ASSOCIATE DEAN"
         subtitle="STUDENT WELFARE"
         left={430} bottom={118} imgW={135}
       />
       <SigBlock
-        imgSrc="https://res.cloudinary.com/drhkvdtw2/image/upload/e_make_transparent:20/v1783182564/certificates/rsnjl2kjyzjj15iahumn.png"
+        imgSrc="https://ik.imagekit.io/unnati/e_make_transparent:20/v1783182564/certificates/rsnjl2kjyzjj15iahumn.png"
         name="DR. PRAKASH RANJAN"
         title="ASSOCIATE DEAN"
         subtitle="ALUMI AND INSTITUTIONAL RELATIONS"

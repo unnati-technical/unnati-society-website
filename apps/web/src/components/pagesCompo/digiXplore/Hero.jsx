@@ -1,6 +1,6 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
-import { cloudinaryImage } from "../../../utils/cloudinary";
+import { imagekitImage } from "../../../utils/imagekit";
 
 const Hero = () => {
   const navigate = useNavigate();
@@ -29,7 +29,7 @@ const Hero = () => {
         <div className="relative flex justify-center items-center w-full h-100">
           <div
             className="h-40 w-40 md:h-50 md:w-50 border-0 rounded-full p-15 text-black aspect-square flex justify-center items-center oswald-font-3 text-2xl cursor-pointer bg-cover bg-center bg-no-repeat"
-            style={{ backgroundImage: `url(${cloudinaryImage("mission2_pdc0bn")})` }}
+            style={{ backgroundImage: `url(${imagekitImage("mission2_pdc0bn")})` }}
           ></div>
 
           <div

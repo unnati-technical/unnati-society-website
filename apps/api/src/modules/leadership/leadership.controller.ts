@@ -15,7 +15,7 @@ import { FileInterceptor } from '@nestjs/platform-express';
 import { memoryStorage } from 'multer';
 import { LeadershipService } from './leadership.service';
 import { FirebaseAuthGuard } from '../auth/guards/firebase-auth.guard';
-import { CloudinaryService } from '../cloudinary/cloudinary.service';
+import { ImageKitService } from '../imagekit/imagekit.service';
 import { Public } from '../auth/decorators/public.decorator';
 import {
   CreateLeadershipYearDto,
@@ -29,7 +29,7 @@ import {
 export class LeadershipController {
   constructor(
     private readonly leadershipService: LeadershipService,
-    private readonly cloudinaryService: CloudinaryService,
+    private readonly imagekitService: ImageKitService,
   ) {}
 
   // ---------- Public Read Endpoints ----------
@@ -51,11 +51,11 @@ export class LeadershipController {
   @Post('upload-image')
   @UseInterceptors(FileInterceptor('image', { storage: memoryStorage() }))
   async uploadImage(@UploadedFile() file: Express.Multer.File) {
-    const result = await this.cloudinaryService.uploadFile(
+    const result = await this.imagekitService.uploadFile(
       file,
       'leadership_profiles',
     );
-    return { url: (result as any).secure_url };
+    return { url: result.url };
   }
 
   // ---------- Year CRUD ----------

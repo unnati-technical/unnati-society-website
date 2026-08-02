@@ -1,19 +1,13 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { PrismaService } from '../../prisma/prisma.service';
-import { CloudinaryService } from '../cloudinary/cloudinary.service';
+import { ImageKitService } from '../imagekit/imagekit.service';
 
 @Injectable()
 export class HomeMediaService {
   constructor(
     private readonly prisma: PrismaService,
-    private readonly cloudinaryService: CloudinaryService,
+    private readonly imagekitService: ImageKitService,
   ) {}
-
-  private extractPublicId(url: string): string | null {
-    if (!url) return null;
-    const matches = url.match(/\/upload\/(?:v\d+\/)?([^.]+)/);
-    return matches ? matches[1] : null;
-  }
 
   async findAll() {
     return this.prisma.homeMedia.findMany({
@@ -34,11 +28,11 @@ export class HomeMediaService {
     let mediaUrl = data.url || '';
 
     if (file) {
-      const uploadResult = await this.cloudinaryService.uploadFile(
+      const uploadResult = await this.imagekitService.uploadFile(
         file,
         'home_media',
       );
-      mediaUrl = uploadResult.secure_url;
+      mediaUrl = uploadResult.url;
     }
 
     const displayOrder = data.displayOrder ? Number(data.displayOrder) : 0;
@@ -81,21 +75,6 @@ export class HomeMediaService {
       updateData.displayOrder = Number(data.displayOrder);
     }
 
-    if (data.url !== undefined && data.url !== existing.url) {
-      const publicId = this.extractPublicId(existing.url);
-      if (publicId) {
-        try {
-          const resourceType = existing.type === 'VIDEO' ? 'video' : 'image';
-          await this.cloudinaryService.deleteFile(publicId, resourceType);
-        } catch (err) {
-          console.error(
-            `Failed to delete old asset ${publicId} from Cloudinary:`,
-            err,
-          );
-        }
-      }
-    }
-
     return this.prisma.homeMedia.update({
       where: { id },
       data: updateData,
@@ -109,19 +88,6 @@ export class HomeMediaService {
 
     if (!existing) {
       throw new NotFoundException('Home media item not found');
-    }
-
-    // Delete from Cloudinary if it's a Cloudinary URL
-    const publicId = this.extractPublicId(existing.url);
-    if (publicId) {
-      try {
-        await this.cloudinaryService.deleteFile(publicId);
-      } catch (err) {
-        console.error(
-          `Failed to delete asset ${publicId} from Cloudinary:`,
-          err,
-        );
-      }
     }
 
     return this.prisma.homeMedia.delete({

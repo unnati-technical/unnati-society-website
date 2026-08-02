@@ -1,6 +1,6 @@
 import React from 'react'
-const digiXplore = 'https://res.cloudinary.com/drhkvdtw2/image/upload/v1782396808/unnati_assets/digiImage.png'
-const bgImg = 'https://res.cloudinary.com/drhkvdtw2/image/upload/v1782396841/unnati_assets/imageDigi.png'
+const digiXplore = 'https://ik.imagekit.io/unnati/v1782396808/unnati_assets/digiImage.png'
+const bgImg = 'https://ik.imagekit.io/unnati/v1782396841/unnati_assets/imageDigi.png'
 import { useNavigate } from 'react-router-dom'
 
 const HeroSection = () => {

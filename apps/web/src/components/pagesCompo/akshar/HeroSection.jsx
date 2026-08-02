@@ -1,9 +1,9 @@
 import React from "react";
-const Akshar = "https://res.cloudinary.com/drhkvdtw2/image/upload/v1782396806/unnati_assets/aksharImg.png";
-const bgImg = "https://res.cloudinary.com/drhkvdtw2/image/upload/v1782397308/unnati_assets/za0fhj6fv3ypxemijuum.webp";
-const rangchakraimg = "https://res.cloudinary.com/drhkvdtw2/image/upload/v1782396876/unnati_assets/rangchakra.png";
+const Akshar = "https://ik.imagekit.io/unnati/v1782396806/unnati_assets/aksharImg.png";
+const bgImg = "https://ik.imagekit.io/unnati/v1782397308/unnati_assets/za0fhj6fv3ypxemijuum.webp";
+const rangchakraimg = "https://ik.imagekit.io/unnati/v1782396876/unnati_assets/rangchakra.png";
 import { useNavigate } from "react-router-dom";
-import { cloudinaryImage2 } from "./../../../utils/cloudinary";
+import { imagekitImage2 } from "./../../../utils/imagekit";
 
 const HeroSection = () => {
     const navigate = useNavigate();
@@ -31,7 +31,7 @@ const HeroSection = () => {
         <div className='mr-10 flex flex-col gap-5 justify-center'>
         <div className="mr-10 flex flex-row gap-5">
           <div className="relative h-50 w-60 text-2xl flex justify-center items-center rounded-2xl bg-[#c3c3c3] border-8 border-white/35 text-black purple-purse-regular cursor-pointer bg-cover bg-center bg-no-repeat"  
-          style={{ backgroundImage: `url(${cloudinaryImage2("rangchakra-25_s2ibwr")})` }}
+          style={{ backgroundImage: `url(${imagekitImage2("rangchakra-25_s2ibwr")})` }}
            onClick={() => navigate('/media/akshar/event-3')}
           >
             <div className="absolute inset-0 z-10 bg-black/40 rounded-2xl "></div>
@@ -50,7 +50,7 @@ const HeroSection = () => {
             </h1>
           </div>
           <div className="relative h-50 w-60 text-2xl flex justify-center items-center rounded-2xl bg-[#c3c3c3] border-8 border-white/35 text-black purple-purse-regular cursor-pointer bg-cover bg-center bg-no-repeat " 
-          style={{ backgroundImage: `url(${cloudinaryImage2("childrensDay_kjscjp")})` }}
+          style={{ backgroundImage: `url(${imagekitImage2("childrensDay_kjscjp")})` }}
           onClick={() => navigate('/media/akshar/event-2')}
           >
             <div className="absolute inset-0 z-10 bg-black/40 rounded-2xl"></div>
@@ -60,7 +60,7 @@ const HeroSection = () => {
           </div>
           
           <div className="relative h-50 w-60 text-2xl flex justify-center items-center rounded-2xl bg-[#c3c3c3] border-8 border-white/35 text-black purple-purse-regular cursor-pointer bg-cover bg-center bg-no-repeat"  
-          style={{ backgroundImage: `url(${cloudinaryImage2("IMG10_zuszig")})` }}
+          style={{ backgroundImage: `url(${imagekitImage2("IMG10_zuszig")})` }}
            onClick={() => navigate('/media/akshar/BabupurClass')}
           >
             <div className="absolute inset-0 z-10 bg-black/40 rounded-2xl "></div>

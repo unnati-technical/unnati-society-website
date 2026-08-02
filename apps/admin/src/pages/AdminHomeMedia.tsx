@@ -243,13 +243,13 @@ const MediaModal: React.FC<MediaModalProps> = ({ onClose, onSave, itemToEdit }) 
           {!itemToEdit && sourceType === 'url' && (
             <div>
               <label className="text-xs font-bold text-gray-600 uppercase tracking-wide block mb-1.5">
-                Media URL (Cloudinary or Direct Link) *
+                Media URL (ImageKit or Direct Link) *
               </label>
               <input
                 type="url"
                 required
                 className="w-full border border-gray-200 rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
-                placeholder="https://res.cloudinary.com/..."
+                placeholder="https://ik.imagekit.io/unnati/..."
                 value={url}
                 onChange={(e) => setUrl(e.target.value)}
                 disabled={saving}
@@ -313,7 +313,7 @@ const AdminHomeMedia: React.FC = () => {
   }, []);
 
   const handleDelete = async (id: string) => {
-    if (!window.confirm('Are you sure you want to delete this asset? This will also remove it from Cloudinary.')) {
+    if (!window.confirm('Are you sure you want to delete this asset? This will also remove it from ImageKit.')) {
       return;
     }
 

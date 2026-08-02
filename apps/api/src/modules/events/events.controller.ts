@@ -15,7 +15,7 @@ import { FilesInterceptor } from '@nestjs/platform-express';
 import { memoryStorage } from 'multer';
 import { CacheTTL } from '@nestjs/cache-manager';
 import { EventsService } from './events.service';
-import { CloudinaryService } from '../cloudinary/cloudinary.service';
+import { ImageKitService } from '../imagekit/imagekit.service';
 import { CreateEventDto } from './create-event.dto';
 import { Public } from '../auth/decorators/public.decorator';
 
@@ -28,7 +28,7 @@ const storage = memoryStorage();
 export class EventsController {
   constructor(
     private readonly eventsService: EventsService,
-    private readonly cloudinaryService: CloudinaryService,
+    private readonly imagekitService: ImageKitService,
   ) {}
 
   // Public endpoint: returns events for the homepage (depends on auto mode)
@@ -73,12 +73,12 @@ export class EventsController {
     const event = await this.eventsService.findOne(id);
     if (!event) throw new NotFoundException('Event not found');
 
-    const urls = await Promise.all(
-      files.map((file) => this.cloudinaryService.uploadFile(file)),
+    const results = await Promise.all(
+      files.map((file) => this.imagekitService.uploadFile(file, 'events')),
     );
 
     const updatedEvent = await this.eventsService.update(id, {
-      photos: [...(event.photos || []), ...urls.map((u) => u.secure_url)],
+      photos: [...(event.photos || []), ...results.map((r) => r.url)],
     });
 
     return updatedEvent;

@@ -4,11 +4,11 @@ import { FaLinkedin } from "react-icons/fa";
 import { useQuery } from '@tanstack/react-query';
 import { leadershipApi } from "../../../api/leadership.api";
 import { queryKeys } from "../../../constants/queryKeys";
-import { cloudinaryImage } from "../../../utils/cloudinary";
+import { imagekitImage } from "../../../utils/imagekit";
 import { useLocation } from "react-router-dom";
-const directorImg = "https://res.cloudinary.com/drhkvdtw2/image/upload/v1782396812/unnati_assets/directorsir.png";
-const prImg = "https://res.cloudinary.com/drhkvdtw2/image/upload/v1782396871/unnati_assets/prsir.png";
-const chetanImg = "https://res.cloudinary.com/drhkvdtw2/image/upload/v1782396807/unnati_assets/chetansir.jpg";
+const directorImg = "https://ik.imagekit.io/unnati/v1782396812/unnati_assets/directorsir.png";
+const prImg = "https://ik.imagekit.io/unnati/v1782396871/unnati_assets/prsir.png";
+const chetanImg = "https://ik.imagekit.io/unnati/v1782396807/unnati_assets/chetansir.jpg";
 
 
 const SectionHeader = ({ title }) => (
@@ -19,9 +19,9 @@ const SectionHeader = ({ title }) => (
 
 import { ProgressiveImage } from "../../common/ProgressiveImage";
 
-const ProfileCard = ({ member, isCloudinary = true, showSocials = true }) => {
-  const isCloudinaryFinal = member.img && typeof member.img === 'string' && member.img.startsWith("http") ? false : isCloudinary;
-  let imgSrc = isCloudinaryFinal && member.img ? cloudinaryImage(member.img) : member.img;
+const ProfileCard = ({ member, isImageKit = true, showSocials = true }) => {
+  const isImageKitFinal = member.img && typeof member.img === 'string' && member.img.startsWith("http") ? false : isImageKit;
+  let imgSrc = isImageKitFinal && member.img ? imagekitImage(member.img) : member.img;
   if (!imgSrc) {
     imgSrc = `https://ui-avatars.com/api/?name=${encodeURIComponent(member.name || 'User')}&background=random&color=fff&size=256`;
   }
@@ -172,7 +172,7 @@ const ExecutiveBody = () => {
           <div className="flex flex-wrap justify-center gap-6 max-w-5xl mx-auto">
             {facultyExecutive.map((member, index) => (
               <div key={index} className="w-full sm:w-[320px]">
-                <ProfileCard member={member} isCloudinary={false} showSocials={false} />
+                <ProfileCard member={member} isImageKit={false} showSocials={false} />
               </div>
             ))}
           </div>

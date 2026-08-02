@@ -1,7 +1,7 @@
 import React from "react";
-const Unnati = "https://res.cloudinary.com/drhkvdtw2/image/upload/v1782396887/unnati_assets/Unnati.png";
-const IIITBh = "https://res.cloudinary.com/drhkvdtw2/image/upload/v1782396815/unnati_assets/IIITBh.png";
-const locationTag = "https://res.cloudinary.com/drhkvdtw2/image/upload/v1782396854/unnati_assets/location-on-map.svg";
+const Unnati = "https://ik.imagekit.io/unnati/v1782396887/unnati_assets/Unnati.png";
+const IIITBh = "https://ik.imagekit.io/unnati/v1782396815/unnati_assets/IIITBh.png";
+const locationTag = "https://ik.imagekit.io/unnati/v1782396854/unnati_assets/location-on-map.svg";
 
 const Navbar = () => {
   return (

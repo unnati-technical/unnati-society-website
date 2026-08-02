@@ -1,5 +1,5 @@
 import React from "react";
-const vision = "https://res.cloudinary.com/drhkvdtw2/image/upload/v1782396896/unnati_assets/visionAboutus.jpg";
+const vision = "https://ik.imagekit.io/unnati/v1782396896/unnati_assets/visionAboutus.jpg";
 
 const Aboutus = () => {
   return (

@@ -12,18 +12,20 @@ export const ProgressiveImage = ({
   const [currentSrc, setCurrentSrc] = useState('');
 
   // Very simple blur placeholder based on CDN if possible, else just use CSS blur
-  // Cloudinary allows transforming to very small low quality image by adding /w_100,e_blur:1000,q_1/
-  // But since we don't know the exact CDN structure for every image, we'll use a generic approach.
-  const isCloudinary = src && src.includes('res.cloudinary.com') && src.includes('/upload/');
+  // ImageKit allows transforming to very small low quality image by adding /tr:w-100,bl-10/
+  const isImageKit = src && src.includes('ik.imagekit.io');
   
   const getLowQualitySrc = (originalSrc) => {
-    if (!isCloudinary) return originalSrc; // fallback to original
-    // Insert transformation after /upload/
-    const parts = originalSrc.split('/upload/');
-    if (parts.length === 2) {
-      return `${parts[0]}/upload/w_100,e_blur:1000,q_1/${parts[1]}`;
+    if (!isImageKit) return originalSrc; // fallback to original
+    
+    // If the URL already has a query string transformation (e.g. ?tr=w-2560), replace it
+    if (originalSrc.includes('?tr=')) {
+      return originalSrc.replace(/\?tr=[^&]+/, '?tr=w-100,bl-10,q-10');
     }
-    return originalSrc;
+    
+    // Otherwise, append the query parameter for ImageKit transformations
+    const separator = originalSrc.includes('?') ? '&' : '?';
+    return `${originalSrc}${separator}tr=w-100,bl-10,q-10`;
   };
 
   useEffect(() => {

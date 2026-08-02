@@ -3,7 +3,7 @@ import React from "react";
 import { motion } from "framer-motion";
 import { FiUsers, FiTrendingUp } from "react-icons/fi";
 import { FaGraduationCap } from "react-icons/fa";
-const mission = "https://res.cloudinary.com/drhkvdtw2/image/upload/v1782396858/unnati_assets/mission2.jpg";
+const mission = "https://ik.imagekit.io/unnati/v1782396858/unnati_assets/mission2.jpg";
 
 const Vision = () => {
   const containerVariants = {

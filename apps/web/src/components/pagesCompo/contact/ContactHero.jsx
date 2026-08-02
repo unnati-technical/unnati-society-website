@@ -2,7 +2,7 @@ import React from 'react';
 // eslint-disable-next-line no-unused-vars
 import { motion, AnimatePresence } from 'framer-motion';
 import { Clock, Users, ShieldCheck } from 'lucide-react';
-import { cloudinaryImage2 } from '../../../utils/cloudinary';
+import { imagekitImage2 } from '../../../utils/imagekit';
 
 const ContactHero = () => {
   return (
@@ -94,7 +94,7 @@ const ContactHero = () => {
             <div className="absolute inset-0 rounded-[32px] overflow-hidden shadow-2xl shadow-blue-900/50 group">
               <div className="absolute inset-0 bg-[#041C5C]/30 z-10 transition-opacity duration-500 group-hover:bg-[#041C5C]/10"></div>
               <img loading="eager" fetchpriority="high"
-                src={cloudinaryImage2("contact_vzejk5") || "https://images.unsplash.com/photo-1541339907198-e08756dedf3f?auto=format&fit=crop&q=80"} 
+                src={imagekitImage2("contact_vzejk5") || "https://images.unsplash.com/photo-1541339907198-e08756dedf3f?auto=format&fit=crop&q=80"} 
                 alt="IIIT Bhagalpur Campus" 
                 className="w-full h-full object-cover scale-105 transition-transform duration-700 group-hover:scale-110"
               />

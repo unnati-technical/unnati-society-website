@@ -1,5 +1,5 @@
 import React from "react";
-import { cloudinaryImage } from "../../../utils/cloudinary";
+import { imagekitImage } from "../../../utils/imagekit";
 import { FiTarget } from "react-icons/fi";
 
 const FutureScopeAkshar = () => {
@@ -36,7 +36,7 @@ const FutureScopeAkshar = () => {
             
             {/* Main Image */}
             <div className="w-full h-full rounded-3xl overflow-hidden shadow-[0_20px_50px_rgba(37,99,235,0.15)] border-4 border-white bg-gray-100">
-              <img loading="lazy" src="https://res.cloudinary.com/drhkvdtw2/image/upload/v1782501994/Scanned_20250804-0002-10_torepk.jpg" alt="Future Scope" className="w-full h-full object-cover -scale-x-100 transition-shadow duration-300 hover:shadow-[0_10px_40px_rgba(0,0,0,0.15)]" />
+              <img loading="lazy" src="https://ik.imagekit.io/unnati/v1782501994/Scanned_20250804-0002-10_torepk.jpg" alt="Future Scope" className="w-full h-full object-cover -scale-x-100 transition-shadow duration-300 hover:shadow-[0_10px_40px_rgba(0,0,0,0.15)]" />
             </div>
           </div>
         </div>

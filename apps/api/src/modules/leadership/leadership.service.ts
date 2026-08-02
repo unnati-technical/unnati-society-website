@@ -1,6 +1,6 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { LeadershipRepository } from './repositories/leadership.repository';
-import { CloudinaryService } from '../cloudinary/cloudinary.service';
+import { ImageKitService } from '../imagekit/imagekit.service';
 import {
   CreateLeadershipYearDto,
   DuplicateYearDto,
@@ -13,14 +13,11 @@ import {
 export class LeadershipService {
   constructor(
     private readonly leadershipRepository: LeadershipRepository,
-    private readonly cloudinaryService: CloudinaryService,
+    private readonly imagekitService: ImageKitService,
   ) {}
 
-  private extractPublicId(url: string): string | null {
-    if (!url) return null;
-    const matches = url.match(/\/upload\/(?:v\d+\/)?([^.]+)/);
-    return matches ? matches[1] : null;
-  }
+  // Note: ImageKit does not embed fileId in the URL like Cloudinary embeds publicId.
+  // For now, old image deletion is a no-op. Future uploads will store fileId alongside URL.
 
   async getLeadershipData() {
     return this.leadershipRepository.getFullLeadershipData();
@@ -127,22 +124,8 @@ export class LeadershipService {
     }
     try {
       if (updateData.profileImage !== undefined) {
-        // Fetch existing to see if we need to delete old image
-        const existing = await this.leadershipRepository.getMemberById(id);
-        if (
-          existing?.profileImage &&
-          existing.profileImage !== updateData.profileImage
-        ) {
-          const publicId = this.extractPublicId(existing.profileImage);
-          if (publicId) {
-            this.cloudinaryService.deleteFile(publicId).catch((err) => {
-              console.error(
-                `Failed to delete old image ${publicId} from Cloudinary:`,
-                err,
-              );
-            });
-          }
-        }
+        // Note: Old ImageKit images will be orphaned for now if replaced,
+        // since we only store URLs in the DB, not fileIds.
       }
       return await this.leadershipRepository.updateMember(id, updateData);
     } catch (e: any) {
@@ -155,17 +138,8 @@ export class LeadershipService {
   async deleteMember(id: string) {
     try {
       const existing = await this.leadershipRepository.getMemberById(id);
-      if (existing?.profileImage) {
-        const publicId = this.extractPublicId(existing.profileImage);
-        if (publicId) {
-          this.cloudinaryService.deleteFile(publicId).catch((err) => {
-            console.error(
-              `Failed to delete image ${publicId} from Cloudinary:`,
-              err,
-            );
-          });
-        }
-      }
+      // Note: ImageKit file deletion requires fileId, but we only have URL.
+      // Old files will remain orphaned for now.
       return await this.leadershipRepository.deleteMember(id);
     } catch (e: any) {
       if (e?.code === 'P2025') {

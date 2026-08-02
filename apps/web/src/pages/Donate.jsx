@@ -390,10 +390,10 @@ const Donate = () => {
             {/* Center: 2x2 Circular Images */}
             <div className="grid grid-cols-2 gap-4 w-full max-w-[440px] shrink-0">
               {[
-                { img: 'https://res.cloudinary.com/drhkvdtw2/image/upload/v1782502259/IMG_1207_ap4tzu.jpg', border: 'border-[#1E63E9]', rounded: 'rounded-tl-full rounded-tr-full rounded-br-full' },
-                { img: 'https://res.cloudinary.com/drhkvdtw2/image/upload/v1782502260/IMG_0736_dmevg9.jpg', border: 'border-[#F7B500]', rounded: 'rounded-tl-full rounded-tr-full rounded-bl-full' },
-                { img: 'https://res.cloudinary.com/drhkvdtw2/image/upload/v1782502260/IMG_20250301_110601_ozuxbh.jpg', border: 'border-[#F7B500]', rounded: 'rounded-tl-full rounded-br-full rounded-bl-full' },
-                { img: 'https://res.cloudinary.com/drhkvdtw2/image/upload/v1782502260/IMG_20260405_164312_ykh2k8.jpg', border: 'border-[#1E63E9]', rounded: 'rounded-tr-full rounded-br-full rounded-bl-full' },
+                { img: 'https://ik.imagekit.io/unnati/v1782502259/IMG_1207_ap4tzu.jpg', border: 'border-[#1E63E9]', rounded: 'rounded-tl-full rounded-tr-full rounded-br-full' },
+                { img: 'https://ik.imagekit.io/unnati/v1782502260/IMG_0736_dmevg9.jpg', border: 'border-[#F7B500]', rounded: 'rounded-tl-full rounded-tr-full rounded-bl-full' },
+                { img: 'https://ik.imagekit.io/unnati/v1782502260/IMG_20250301_110601_ozuxbh.jpg', border: 'border-[#F7B500]', rounded: 'rounded-tl-full rounded-br-full rounded-bl-full' },
+                { img: 'https://ik.imagekit.io/unnati/v1782502260/IMG_20260405_164312_ykh2k8.jpg', border: 'border-[#1E63E9]', rounded: 'rounded-tr-full rounded-br-full rounded-bl-full' },
               ].map((item, i) => (
                 <div key={i} className={`aspect-square overflow-hidden border-[6px] ${item.border} ${item.rounded} shadow-lg`}>
                   <img loading="lazy" src={item.img} alt={`Impact ${i + 1}`} className="w-full h-full object-cover hover:scale-110 transition-transform duration-500" />

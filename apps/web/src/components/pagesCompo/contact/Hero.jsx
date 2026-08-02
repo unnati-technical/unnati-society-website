@@ -1,5 +1,5 @@
 import React from "react";
-import { cloudinaryImage2 } from "../../../utils/cloudinary";
+import { imagekitImage2 } from "../../../utils/imagekit";
 
 const Hero = () => {
   return (
@@ -9,7 +9,7 @@ const Hero = () => {
 
         <div className="absolute right-0 top-0 h-full w-1/3 overflow-hidden">
           <img loading="lazy" 
-            src={cloudinaryImage2("contact_vzejk5")}
+            src={imagekitImage2("contact_vzejk5")}
             alt="support"
             className="h-full w-full object-cover"
           />

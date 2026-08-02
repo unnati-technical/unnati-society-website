@@ -370,7 +370,7 @@ const CampusVisitModal = ({ isOpen, onClose }) => {
               {/* LEFT SIDEBAR */}
               <div className="hidden lg:flex w-[320px] bg-white border-r border-gray-200 flex-col p-6 shrink-0 h-fit min-h-full">
                 <div className="rounded-xl overflow-hidden mb-6 h-36 shrink-0 relative">
-                  <img loading="lazy" src="https://res.cloudinary.com/drhkvdtw2/image/upload/v1782476427/outreach_campus_visit3_zii4fj.jpg" alt="Campus" className="w-full h-full object-cover" />
+                  <img loading="lazy" src="https://ik.imagekit.io/unnati/v1782476427/outreach_campus_visit3_zii4fj.jpg" alt="Campus" className="w-full h-full object-cover" />
                   <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent"></div>
                 </div>
 

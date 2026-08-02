@@ -1,7 +1,7 @@
 import React from "react";
 import Navbar from "./../../common/Navbar";
 import NavUnn from "./../../common/NavUnn";
-import { cloudinaryImage2 } from "./../../../utils/cloudinary";
+import { imagekitImage2 } from "./../../../utils/imagekit";
 import { ProgressiveImage } from "../../common/ProgressiveImage";
 
 const images = [
@@ -38,7 +38,7 @@ const PrashastiMedia = () => {
             {images.map((id, i) => (
               <ProgressiveImage
                 key={i}
-                src={cloudinaryImage2(id)}
+                src={imagekitImage2(id)}
                 alt="Prashasti"
                 className="mb-4 w-full rounded-xl break-inside-avoid shadow-md hover:scale-[1.02] transition"
               />

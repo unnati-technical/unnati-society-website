@@ -403,7 +403,7 @@ model VolunteerLeaderboard {
   id        String   @id @default(uuid())
   name      String
   role      String
-  avatar    String?  // Cloudinary image URL or ID
+  avatar    String?  // ImageKit image URL or ID
   workshops Int      @default(0)
   hours     Int      @default(0)
   linkedin  String?
@@ -424,3 +424,39 @@ model NewsletterSubscriber {
   createdAt DateTime @default(now())
 }
 
+// ─── RAG Knowledge Base ───────────────────────────────────────────────────────
+
+model KnowledgeDocument {
+  id        String           @id @default(uuid())
+  title     String
+  type      String           @default("markdown") // markdown | faq | policy | program
+  source    String           // filename or URL
+  isActive  Boolean          @default(true)
+  createdAt DateTime         @default(now())
+  updatedAt DateTime         @updatedAt
+  chunks    KnowledgeChunk[]
+}
+
+model KnowledgeChunk {
+  id         String            @id @default(uuid())
+  documentId String
+  content    String
+  embedding  Unsupported("vector(768)")?
+  metadata   String            @default("{}") // JSON string: {page, section, language}
+  chunkIndex Int               @default(0)
+  createdAt  DateTime          @default(now())
+  document   KnowledgeDocument @relation(fields: [documentId], references: [id], onDelete: Cascade)
+
+  @@index([documentId])
+}
+
+// ─── Chat Sessions ────────────────────────────────────────────────────────────
+
+model ChatSession {
+  id        String   @id @default(uuid())
+  userId    String?  // Firebase UID if authenticated
+  messages  String   @default("[]") // JSON array of {role, content, timestamp}
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  expiresAt DateTime
+}
