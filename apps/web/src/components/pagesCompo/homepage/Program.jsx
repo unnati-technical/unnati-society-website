@@ -10,9 +10,18 @@ import {
   FiArrowRight,
   FiUsers,
   FiLayers,
-  FiHeart
+  FiHeart,
 } from "react-icons/fi";
-import { FaRegBuilding, FaUserGraduate, FaSchool, FaLayerGroup, FaChalkboardTeacher } from "react-icons/fa";
+import {
+  FaRegBuilding,
+  FaUserGraduate,
+  FaSchool,
+  FaLayerGroup,
+  FaChalkboardTeacher,
+} from "react-icons/fa";
+const digiXplore = "https://ik.imagekit.io/zpkfsvgtn/Home/digi.webp";
+const netritva = "https://ik.imagekit.io/zpkfsvgtn/Home/netritva.webp";
+const akshar = "https://ik.imagekit.io/zpkfsvgtn/Home/akshar.webp";
 
 const Program = () => {
   const navigate = useNavigate();
@@ -24,7 +33,7 @@ const Program = () => {
       category: "Digital Literacy Program",
       desc: "Teaching students essential digital skills, internet literacy, and technology to prepare them for the future.",
       icon: <FiMonitor size={18} strokeWidth={1.5} />,
-      img: "WhatsApp_Image_2026-02-03_at_1.43.14_PM_rnt51c"
+      img: digiXplore,
     },
     {
       id: "netritva",
@@ -32,7 +41,7 @@ const Program = () => {
       category: "Career Guidance Initiative",
       desc: "Helping students explore career options, build life skills, and connect with opportunities for a brighter tomorrow.",
       icon: <FiTarget size={18} strokeWidth={1.5} />,
-      img: "WhatsApp_Image_2026-02-03_at_1.39.40_PM_4_ex22tr"
+      img: netritva,
     },
     {
       id: "akshar",
@@ -40,20 +49,17 @@ const Program = () => {
       category: "Foundational Learning Program",
       desc: "Building strong foundations in literacy, communication, and confidence to help every child learn and grow.",
       icon: <FiBookOpen size={18} strokeWidth={1.5} />,
-      img: "WhatsApp_Image_2026-02-03_at_1.39.39_PM_1_kmyefy"
-    }
+      img: akshar,
+    },
   ];
 
   return (
     <section className="bg-[#FAFAFA] py-8 lg:py-12 px-6 lg:px-20 w-full font-sans overflow-hidden flex justify-center">
       <div className="max-w-[1200px] w-full flex flex-col gap-6 lg:gap-8">
-
         {/* Top Layout Section: Two columns on desktop */}
         <div className="flex flex-col lg:flex-row gap-8 items-start justify-between">
-          
           {/* Left Column: Heading and Stats */}
           <div className="flex flex-col gap-6 w-full lg:max-w-[38%]">
-            
             {/* Header Area */}
             <div className="flex flex-col gap-2">
               <div className="flex items-center gap-2">
@@ -63,13 +69,14 @@ const Program = () => {
                 </span>
               </div>
               <h2 className="oswald-font-3 text-3xl md:text-5xl font-bold leading-[1.1] text-[#0F172A] tracking-tight">
-                Creating Pathways<br />for Every Child
+                Creating Pathways
+                <br />
+                for Every Child
               </h2>
             </div>
 
             {/* Impact Statistics Card (Vertical Stack) */}
             <div className="flex flex-col gap-5 bg-white p-6 rounded-[24px] shadow-[0_8px_30px_rgb(0,0,0,0.06)] border border-gray-100 w-full max-w-[280px]">
-
               {/* Stat 1 */}
               <div className="flex items-center gap-4">
                 <div className="w-12 h-12 rounded-xl bg-blue-50 flex items-center justify-center text-blue-600 shadow-sm border border-blue-100 shrink-0">
@@ -79,7 +86,9 @@ const Program = () => {
                   <h3 className="text-2xl font-black text-[#0F172A] leading-none tracking-tight oswald-font-3">
                     <AnimatedCounter value={4000} suffix="+" />
                   </h3>
-                  <p className="text-gray-400 text-[10px] uppercase tracking-widest font-bold mt-1">Students</p>
+                  <p className="text-gray-400 text-[10px] uppercase tracking-widest font-bold mt-1">
+                    Students
+                  </p>
                 </div>
               </div>
 
@@ -94,7 +103,9 @@ const Program = () => {
                   <h3 className="text-2xl font-black text-[#0F172A] leading-none tracking-tight oswald-font-3">
                     <AnimatedCounter value={360} suffix="+" />
                   </h3>
-                  <p className="text-gray-400 text-[10px] uppercase tracking-widest font-bold mt-1">Sessions</p>
+                  <p className="text-gray-400 text-[10px] uppercase tracking-widest font-bold mt-1">
+                    Sessions
+                  </p>
                 </div>
               </div>
 
@@ -109,10 +120,11 @@ const Program = () => {
                   <h3 className="text-2xl font-black text-[#0F172A] leading-none tracking-tight oswald-font-3">
                     <AnimatedCounter value={20} suffix="+" />
                   </h3>
-                  <p className="text-gray-400 text-[10px] uppercase tracking-widest font-bold mt-1">Schools</p>
+                  <p className="text-gray-400 text-[10px] uppercase tracking-widest font-bold mt-1">
+                    Schools
+                  </p>
                 </div>
               </div>
-
             </div>
           </div>
 
@@ -132,8 +144,9 @@ const Program = () => {
             >
               {/* Card Image */}
               <div className="w-full aspect-[16/9] overflow-hidden">
-                <img loading="lazy"
-                  src={imagekitImage(prog.img)}
+                <img
+                  loading="lazy"
+                  src={prog.img}
                   alt={prog.name}
                   className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-[1.03]"
                 />
@@ -141,7 +154,6 @@ const Program = () => {
 
               {/* Card Content */}
               <div className="p-4 md:p-5 flex flex-col flex-1">
-
                 {/* Icon & Title */}
                 <div className="flex items-center gap-3 mb-3">
                   <div className="w-10 h-10 shrink-0 bg-[#EFF6FF] rounded-lg flex justify-center items-center text-[#3B82F6]">
@@ -165,15 +177,15 @@ const Program = () => {
                 {/* Learn More Link */}
                 <div className="flex items-center gap-1.5 text-[#3B82F6] font-semibold text-[13px] mt-4">
                   Learn More
-                  <FiArrowRight size={14} className="transition-transform duration-300 group-hover:translate-x-1" />
+                  <FiArrowRight
+                    size={14}
+                    className="transition-transform duration-300 group-hover:translate-x-1"
+                  />
                 </div>
               </div>
             </div>
           ))}
         </div>
-
-
-
       </div>
     </section>
   );

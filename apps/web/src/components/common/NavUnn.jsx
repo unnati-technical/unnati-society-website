@@ -1,7 +1,8 @@
 import React, { useState, useEffect, useRef } from "react";
-const Unnati = "https://ik.imagekit.io/unnati/v1782396887/unnati_assets/Unnati.png";
+const Unnati =
+  "https://ik.imagekit.io/zpkfsvgtn/Navbar/Unnati.png?updatedAt=1785681448621";
 import { gsap } from "gsap";
-import './../../styles/navunn.css'
+import "./../../styles/navunn.css";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { useNavigate, useLocation } from "react-router-dom";
 
@@ -36,7 +37,8 @@ const NavUnn = () => {
   };
 
   const getDesktopClass = (path) => {
-    const base = "px-1 sm:px-3 py-1 cursor-pointer text-[10px] sm:text-[11px] md:text-[12px] hover:text-blue-400 hover:underline underline-offset-4 decoration-2 transition-colors";
+    const base =
+      "px-1 sm:px-3 py-1 cursor-pointer text-[10px] sm:text-[11px] md:text-[12px] hover:text-blue-400 hover:underline underline-offset-4 decoration-2 transition-colors";
     return isActive(path) ? `${base} text-blue-400 underline` : base;
   };
 
@@ -56,17 +58,16 @@ const NavUnn = () => {
   ];
 
   return (
-    <header 
-      ref={header2Ref} 
+    <header
+      ref={header2Ref}
       className="bg-black/90 w-full flex justify-between sm:justify-around items-center px-2 sm:px-4 py-1 gap-2 sm:gap-10 transition-colors"
     >
-
       {/* Left Section */}
       <div className="flex items-center">
-        
         <div className="img-cont relative w-10 h-10 sm:w-10 sm:h-10 md:w-14 md:h-14 mr-2 sm:mr-3">
-          <img loading="lazy" 
-            src={Unnati} 
+          <img
+            loading="lazy"
+            src={Unnati}
             alt="Unnati logo"
             className="w-full h-full object-contain hidden"
           />
@@ -88,74 +89,143 @@ const NavUnn = () => {
           if (link.name === "OUTREACH") {
             return (
               <div key={link.name} className="relative group">
-                <h3 
-                  className={getDesktopClass(link.path)} 
+                <h3
+                  className={getDesktopClass(link.path)}
                   onClick={() => navigate(link.path)}
                 >
                   {link.name}
                 </h3>
                 <div className="absolute left-0 mt-2 w-48 bg-white border border-gray-200 rounded-md shadow-xl opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 z-50 py-2">
-                  <p className="px-4 py-2 text-[12px] text-gray-700 font-semibold hover:text-blue-600 hover:bg-blue-50 cursor-pointer" onClick={() => navigate('/outreach#campus-visit')}>Campus Visit</p>
-                  <p className="px-4 py-2 text-[12px] text-gray-700 font-semibold hover:text-blue-600 hover:bg-blue-50 cursor-pointer" onClick={() => navigate('/outreach#invite')}>Invite</p>
-                  <p className="px-4 py-2 text-[12px] text-gray-700 font-semibold hover:text-blue-600 hover:bg-blue-50 cursor-pointer" onClick={() => navigate('/outreach#collaborate')}>Collaborate/Partner</p>
+                  <p
+                    className="px-4 py-2 text-[12px] text-gray-700 font-semibold hover:text-blue-600 hover:bg-blue-50 cursor-pointer"
+                    onClick={() => navigate("/outreach#campus-visit")}
+                  >
+                    Campus Visit
+                  </p>
+                  <p
+                    className="px-4 py-2 text-[12px] text-gray-700 font-semibold hover:text-blue-600 hover:bg-blue-50 cursor-pointer"
+                    onClick={() => navigate("/outreach#invite")}
+                  >
+                    Invite
+                  </p>
+                  <p
+                    className="px-4 py-2 text-[12px] text-gray-700 font-semibold hover:text-blue-600 hover:bg-blue-50 cursor-pointer"
+                    onClick={() => navigate("/outreach#collaborate")}
+                  >
+                    Collaborate/Partner
+                  </p>
                 </div>
               </div>
             );
           } else if (link.name === "PROGRAMS") {
             return (
               <div key={link.name} className="relative group">
-                <h3 
-                  className={getDesktopClass(link.path)} 
+                <h3
+                  className={getDesktopClass(link.path)}
                   onClick={() => navigate(link.path)}
                 >
                   {link.name}
                 </h3>
                 <div className="absolute left-0 mt-2 w-48 bg-white border border-gray-200 rounded-md shadow-xl opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 z-50 py-2">
-                  <p className="px-4 py-2 text-[12px] text-gray-700 font-semibold hover:text-blue-600 hover:bg-blue-50 cursor-pointer" onClick={() => navigate('/programs')}>Impact</p>
-                  <p className="px-4 py-2 text-[12px] text-gray-700 font-semibold hover:text-blue-600 hover:bg-blue-50 cursor-pointer" onClick={() => navigate('/programs/digiXplore')}>DigiXplore</p>
-                  <p className="px-4 py-2 text-[12px] text-gray-700 font-semibold hover:text-blue-600 hover:bg-blue-50 cursor-pointer" onClick={() => navigate('/programs/netritva')}>Netritva</p>
-                  <p className="px-4 py-2 text-[12px] text-gray-700 font-semibold hover:text-blue-600 hover:bg-blue-50 cursor-pointer" onClick={() => navigate('/programs/akshar')}>Akshar</p>
+                  <p
+                    className="px-4 py-2 text-[12px] text-gray-700 font-semibold hover:text-blue-600 hover:bg-blue-50 cursor-pointer"
+                    onClick={() => navigate("/programs")}
+                  >
+                    Impact
+                  </p>
+                  <p
+                    className="px-4 py-2 text-[12px] text-gray-700 font-semibold hover:text-blue-600 hover:bg-blue-50 cursor-pointer"
+                    onClick={() => navigate("/programs/digiXplore")}
+                  >
+                    DigiXplore
+                  </p>
+                  <p
+                    className="px-4 py-2 text-[12px] text-gray-700 font-semibold hover:text-blue-600 hover:bg-blue-50 cursor-pointer"
+                    onClick={() => navigate("/programs/netritva")}
+                  >
+                    Netritva
+                  </p>
+                  <p
+                    className="px-4 py-2 text-[12px] text-gray-700 font-semibold hover:text-blue-600 hover:bg-blue-50 cursor-pointer"
+                    onClick={() => navigate("/programs/akshar")}
+                  >
+                    Akshar
+                  </p>
                 </div>
               </div>
             );
           } else if (link.name === "PEOPLE") {
             return (
               <div key={link.name} className="relative group">
-                <h3 
-                  className={getDesktopClass(link.path)} 
+                <h3
+                  className={getDesktopClass(link.path)}
                   onClick={() => navigate(link.path)}
                 >
                   {link.name}
                 </h3>
                 <div className="absolute left-0 mt-2 w-52 bg-white border border-gray-200 rounded-md shadow-xl opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 z-50 py-2">
-                  <p className="px-4 py-2 text-[12px] text-gray-700 font-semibold hover:text-blue-600 hover:bg-blue-50 cursor-pointer" onClick={() => navigate('/executive-body#governing-body')}>Governing Body</p>
-                  <p className="px-4 py-2 text-[12px] text-gray-700 font-semibold hover:text-blue-600 hover:bg-blue-50 cursor-pointer" onClick={() => navigate('/executive-body#executive-body')}>Executive Body</p>
-                  <div className="px-4 py-2 text-[12px] text-gray-700 font-bold border-t border-gray-100 mt-1 pt-2">Team Leads</div>
-                  <p className="px-6 py-2 text-[11px] text-gray-600 font-semibold hover:text-blue-600 hover:bg-blue-50 cursor-pointer" onClick={() => navigate('/executive-body#program-leads')}>Program Lead</p>
-                  <p className="px-6 py-2 text-[11px] text-gray-600 font-semibold hover:text-blue-600 hover:bg-blue-50 cursor-pointer" onClick={() => navigate('/executive-body#public-relations-leads')}>Public Relation Lead</p>
-                  <p className="px-6 py-2 text-[11px] text-gray-600 font-semibold hover:text-blue-600 hover:bg-blue-50 cursor-pointer" onClick={() => navigate('/executive-body#technical-leads')}>Technical Lead</p>
+                  <p
+                    className="px-4 py-2 text-[12px] text-gray-700 font-semibold hover:text-blue-600 hover:bg-blue-50 cursor-pointer"
+                    onClick={() => navigate("/executive-body#governing-body")}
+                  >
+                    Governing Body
+                  </p>
+                  <p
+                    className="px-4 py-2 text-[12px] text-gray-700 font-semibold hover:text-blue-600 hover:bg-blue-50 cursor-pointer"
+                    onClick={() => navigate("/executive-body#executive-body")}
+                  >
+                    Executive Body
+                  </p>
+                  <div className="px-4 py-2 text-[12px] text-gray-700 font-bold border-t border-gray-100 mt-1 pt-2">
+                    Team Leads
+                  </div>
+                  <p
+                    className="px-6 py-2 text-[11px] text-gray-600 font-semibold hover:text-blue-600 hover:bg-blue-50 cursor-pointer"
+                    onClick={() => navigate("/executive-body#program-leads")}
+                  >
+                    Program Lead
+                  </p>
+                  <p
+                    className="px-6 py-2 text-[11px] text-gray-600 font-semibold hover:text-blue-600 hover:bg-blue-50 cursor-pointer"
+                    onClick={() =>
+                      navigate("/executive-body#public-relations-leads")
+                    }
+                  >
+                    Public Relation Lead
+                  </p>
+                  <p
+                    className="px-6 py-2 text-[11px] text-gray-600 font-semibold hover:text-blue-600 hover:bg-blue-50 cursor-pointer"
+                    onClick={() => navigate("/executive-body#technical-leads")}
+                  >
+                    Technical Lead
+                  </p>
                 </div>
               </div>
             );
           }
           return (
-            <h3 
+            <h3
               key={link.name}
-              className={getDesktopClass(link.path)} 
+              className={getDesktopClass(link.path)}
               onClick={() => navigate(link.path)}
             >
               {link.name}
             </h3>
           );
         })}
-        <h3 className="bg-[#2563EB] hover:bg-blue-600 text-white px-3 py-1 cursor-pointer text-[10px] sm:text-[11px] md:text-[12px] rounded-md transition-colors font-bold tracking-wide shadow-md hover:shadow-lg" onClick={() => navigate('/donate')}>DONATE</h3>
+        <h3
+          className="bg-[#2563EB] hover:bg-blue-600 text-white px-3 py-1 cursor-pointer text-[10px] sm:text-[11px] md:text-[12px] rounded-md transition-colors font-bold tracking-wide shadow-md hover:shadow-lg"
+          onClick={() => navigate("/donate")}
+        >
+          DONATE
+        </h3>
       </div>
 
       {/* Mobile Menu Button */}
       <div className="flex sm:hidden">
         <p
           className="text-white text-xl font-bold cursor-pointer"
-          onClick={() => setShow(prev => !prev)}
+          onClick={() => setShow((prev) => !prev)}
         >
           ☰
         </p>
@@ -168,72 +238,189 @@ const NavUnn = () => {
             if (link.name === "OUTREACH") {
               return (
                 <div key={link.name} className="flex flex-col gap-2">
-                  <h3 
-                    className={getMobileClass(link.path)} 
-                    onClick={() => { navigate(link.path); setShow(false); }}
+                  <h3
+                    className={getMobileClass(link.path)}
+                    onClick={() => {
+                      navigate(link.path);
+                      setShow(false);
+                    }}
                   >
                     {link.name}
                   </h3>
                   <div className="flex flex-col pl-3 gap-2 border-l-2 border-gray-100 ml-1">
-                    <p className="text-[10px] text-gray-500 font-medium cursor-pointer hover:text-blue-500" onClick={() => { navigate('/outreach#campus-visit'); setShow(false); }}>Campus Visit</p>
-                    <p className="text-[10px] text-gray-500 font-medium cursor-pointer hover:text-blue-500" onClick={() => { navigate('/outreach#invite'); setShow(false); }}>Invite</p>
-                    <p className="text-[10px] text-gray-500 font-medium cursor-pointer hover:text-blue-500" onClick={() => { navigate('/outreach#collaborate'); setShow(false); }}>Collaborate/Partner</p>
+                    <p
+                      className="text-[10px] text-gray-500 font-medium cursor-pointer hover:text-blue-500"
+                      onClick={() => {
+                        navigate("/outreach#campus-visit");
+                        setShow(false);
+                      }}
+                    >
+                      Campus Visit
+                    </p>
+                    <p
+                      className="text-[10px] text-gray-500 font-medium cursor-pointer hover:text-blue-500"
+                      onClick={() => {
+                        navigate("/outreach#invite");
+                        setShow(false);
+                      }}
+                    >
+                      Invite
+                    </p>
+                    <p
+                      className="text-[10px] text-gray-500 font-medium cursor-pointer hover:text-blue-500"
+                      onClick={() => {
+                        navigate("/outreach#collaborate");
+                        setShow(false);
+                      }}
+                    >
+                      Collaborate/Partner
+                    </p>
                   </div>
                 </div>
               );
             } else if (link.name === "PROGRAMS") {
               return (
                 <div key={link.name} className="flex flex-col gap-2">
-                  <h3 
-                    className={getMobileClass(link.path)} 
-                    onClick={() => { navigate(link.path); setShow(false); }}
+                  <h3
+                    className={getMobileClass(link.path)}
+                    onClick={() => {
+                      navigate(link.path);
+                      setShow(false);
+                    }}
                   >
                     {link.name}
                   </h3>
                   <div className="flex flex-col pl-3 gap-2 border-l-2 border-gray-100 ml-1">
-                    <p className="text-[10px] text-gray-500 font-medium cursor-pointer hover:text-blue-500" onClick={() => { navigate('/programs'); setShow(false); }}>Impact</p>
-                    <p className="text-[10px] text-gray-500 font-medium cursor-pointer hover:text-blue-500" onClick={() => { navigate('/programs/digiXplore'); setShow(false); }}>DigiXplore</p>
-                    <p className="text-[10px] text-gray-500 font-medium cursor-pointer hover:text-blue-500" onClick={() => { navigate('/programs/netritva'); setShow(false); }}>Netritva</p>
-                    <p className="text-[10px] text-gray-500 font-medium cursor-pointer hover:text-blue-500" onClick={() => { navigate('/programs/akshar'); setShow(false); }}>Akshar</p>
+                    <p
+                      className="text-[10px] text-gray-500 font-medium cursor-pointer hover:text-blue-500"
+                      onClick={() => {
+                        navigate("/programs");
+                        setShow(false);
+                      }}
+                    >
+                      Impact
+                    </p>
+                    <p
+                      className="text-[10px] text-gray-500 font-medium cursor-pointer hover:text-blue-500"
+                      onClick={() => {
+                        navigate("/programs/digiXplore");
+                        setShow(false);
+                      }}
+                    >
+                      DigiXplore
+                    </p>
+                    <p
+                      className="text-[10px] text-gray-500 font-medium cursor-pointer hover:text-blue-500"
+                      onClick={() => {
+                        navigate("/programs/netritva");
+                        setShow(false);
+                      }}
+                    >
+                      Netritva
+                    </p>
+                    <p
+                      className="text-[10px] text-gray-500 font-medium cursor-pointer hover:text-blue-500"
+                      onClick={() => {
+                        navigate("/programs/akshar");
+                        setShow(false);
+                      }}
+                    >
+                      Akshar
+                    </p>
                   </div>
                 </div>
               );
             } else if (link.name === "PEOPLE") {
               return (
                 <div key={link.name} className="flex flex-col gap-2">
-                  <h3 
-                    className={getMobileClass(link.path)} 
-                    onClick={() => { navigate(link.path); setShow(false); }}
+                  <h3
+                    className={getMobileClass(link.path)}
+                    onClick={() => {
+                      navigate(link.path);
+                      setShow(false);
+                    }}
                   >
                     {link.name}
                   </h3>
                   <div className="flex flex-col pl-3 gap-2 border-l-2 border-gray-100 ml-1">
-                    <p className="text-[10px] text-gray-500 font-medium cursor-pointer hover:text-blue-500" onClick={() => { navigate('/executive-body#governing-body'); setShow(false); }}>Governing Body</p>
-                    <p className="text-[10px] text-gray-500 font-medium cursor-pointer hover:text-blue-500" onClick={() => { navigate('/executive-body#executive-body'); setShow(false); }}>Executive Body</p>
-                    <p className="text-[10px] text-gray-700 font-bold mt-1 border-t border-gray-100 pt-1">Team Leads</p>
+                    <p
+                      className="text-[10px] text-gray-500 font-medium cursor-pointer hover:text-blue-500"
+                      onClick={() => {
+                        navigate("/executive-body#governing-body");
+                        setShow(false);
+                      }}
+                    >
+                      Governing Body
+                    </p>
+                    <p
+                      className="text-[10px] text-gray-500 font-medium cursor-pointer hover:text-blue-500"
+                      onClick={() => {
+                        navigate("/executive-body#executive-body");
+                        setShow(false);
+                      }}
+                    >
+                      Executive Body
+                    </p>
+                    <p className="text-[10px] text-gray-700 font-bold mt-1 border-t border-gray-100 pt-1">
+                      Team Leads
+                    </p>
                     <div className="flex flex-col pl-2 gap-2 border-l-2 border-gray-100 ml-1">
-                      <p className="text-[10px] text-gray-500 font-medium cursor-pointer hover:text-blue-500" onClick={() => { navigate('/executive-body#program-leads'); setShow(false); }}>Program Lead</p>
-                      <p className="text-[10px] text-gray-500 font-medium cursor-pointer hover:text-blue-500" onClick={() => { navigate('/executive-body#public-relations-leads'); setShow(false); }}>Public Relation Lead</p>
-                      <p className="text-[10px] text-gray-500 font-medium cursor-pointer hover:text-blue-500" onClick={() => { navigate('/executive-body#technical-leads'); setShow(false); }}>Technical Lead</p>
+                      <p
+                        className="text-[10px] text-gray-500 font-medium cursor-pointer hover:text-blue-500"
+                        onClick={() => {
+                          navigate("/executive-body#program-leads");
+                          setShow(false);
+                        }}
+                      >
+                        Program Lead
+                      </p>
+                      <p
+                        className="text-[10px] text-gray-500 font-medium cursor-pointer hover:text-blue-500"
+                        onClick={() => {
+                          navigate("/executive-body#public-relations-leads");
+                          setShow(false);
+                        }}
+                      >
+                        Public Relation Lead
+                      </p>
+                      <p
+                        className="text-[10px] text-gray-500 font-medium cursor-pointer hover:text-blue-500"
+                        onClick={() => {
+                          navigate("/executive-body#technical-leads");
+                          setShow(false);
+                        }}
+                      >
+                        Technical Lead
+                      </p>
                     </div>
                   </div>
                 </div>
               );
             }
             return (
-              <h3 
+              <h3
                 key={link.name}
-                className={getMobileClass(link.path)} 
-                onClick={() => { navigate(link.path); setShow(false); }}
+                className={getMobileClass(link.path)}
+                onClick={() => {
+                  navigate(link.path);
+                  setShow(false);
+                }}
               >
                 {link.name}
               </h3>
             );
           })}
-          <h3 className="bg-[#2563EB] px-2 py-1.5 cursor-pointer text-[11px] text-white text-center rounded font-bold tracking-wide" onClick={() => { navigate("/donate"); setShow(false); }}>DONATE</h3>
+          <h3
+            className="bg-[#2563EB] px-2 py-1.5 cursor-pointer text-[11px] text-white text-center rounded font-bold tracking-wide"
+            onClick={() => {
+              navigate("/donate");
+              setShow(false);
+            }}
+          >
+            DONATE
+          </h3>
         </div>
       )}
-
     </header>
   );
 };
