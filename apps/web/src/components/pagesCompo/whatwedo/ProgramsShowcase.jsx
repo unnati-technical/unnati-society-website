@@ -11,32 +11,35 @@ const programsData = [
     id: "digiXplore",
     name: "DigiXplore",
     title: "Digital Literacy Program",
-    description: "Empowering students with essential digital literacy skills through engaging workshops.",
+    description:
+      "Empowering students with essential digital literacy skills through engaging workshops.",
     stats: { value: 2800, suffix: "+", label: "Students Reached" },
     tags: ["Digital Literacy", "Technology", "Computer Skills", "Future Ready"],
-    image: imagekitImage("WhatsApp_Image_2026-02-03_at_1.39.40_PM_whvo3l"),
+    image: "https://ik.imagekit.io/zpkfsvgtn/Programs/mission2.png",
     link: "/programs/digiXplore",
   },
   {
     id: "netritva",
     name: "Netritva",
     title: "Career Guidance Program",
-    description: "Guiding the youth towards a brighter future with mentorship and leadership training.",
+    description:
+      "Guiding the youth towards a brighter future with mentorship and leadership training.",
     stats: { value: 600, suffix: "+", label: "Students Guided" },
     tags: ["Career Guidance", "Mentorship", "Leadership", "Awareness"],
-    image: imagekitImage("WhatsApp_Image_2026-02-03_at_1.39.38_PM_3_thxqic"),
+    image: "https://ik.imagekit.io/zpkfsvgtn/Programs/imageNet.png",
     link: "/programs/netritva",
   },
   {
     id: "akshar",
     name: "Akshar",
     title: "English Literacy Program",
-    description: "Fostering communication and literacy skills for a better tomorrow.",
+    description:
+      "Fostering communication and literacy skills for a better tomorrow.",
     stats: { value: 200, suffix: "+", label: "Students Taught" },
     tags: ["English Learning", "Communication", "Literacy", "Education"],
-    image: imagekitImage("WhatsApp_Image_2026-02-03_at_1.39.39_PM_5_ney7sn"),
+    image: "https://ik.imagekit.io/zpkfsvgtn/Programs/rangchakra.jpg",
     link: "/programs/akshar",
-  }
+  },
 ];
 
 const ProgramsShowcase = ({ activeProgramId = "digiXplore" }) => {
@@ -50,7 +53,8 @@ const ProgramsShowcase = ({ activeProgramId = "digiXplore" }) => {
     return () => window.removeEventListener("resize", handleResize);
   }, []);
 
-  const activeData = programsData.find((p) => p.id === activeProgramId) || programsData[0];
+  const activeData =
+    programsData.find((p) => p.id === activeProgramId) || programsData[0];
   const inactivePrograms = programsData.filter((p) => p.id !== activeData.id);
 
   return (
@@ -65,7 +69,6 @@ const ProgramsShowcase = ({ activeProgramId = "digiXplore" }) => {
       />
 
       <div className="relative z-10 w-full max-w-7xl flex flex-col lg:flex-row items-center justify-between gap-12 lg:gap-8">
-
         {/* Left Side: Content Details */}
         <div className="w-full lg:w-1/2 flex flex-col justify-center space-y-6 lg:pr-10 min-h-[500px]">
           <AnimatePresence mode="wait">
@@ -85,7 +88,10 @@ const ProgramsShowcase = ({ activeProgramId = "digiXplore" }) => {
                 >
                   Unnati Flagship Programs
                 </motion.h3>
-                <motion.h1 className="text-5xl sm:text-7xl font-bold text-white drop-shadow-lg uppercase tracking-tight" style={{ fontFamily: "Oswald, sans-serif" }}>
+                <motion.h1
+                  className="text-5xl sm:text-7xl font-bold text-white drop-shadow-lg uppercase tracking-tight"
+                  style={{ fontFamily: "Oswald, sans-serif" }}
+                >
                   {activeData.name}
                 </motion.h1>
               </div>
@@ -102,9 +108,14 @@ const ProgramsShowcase = ({ activeProgramId = "digiXplore" }) => {
 
               {/* Stats Section */}
               <motion.div className="mt-4">
-                <h3 className="text-6xl font-bold text-white mb-1" style={{ fontFamily: "Oswald, sans-serif" }}>
+                <h3
+                  className="text-6xl font-bold text-white mb-1"
+                  style={{ fontFamily: "Oswald, sans-serif" }}
+                >
                   <AnimatedCounter value={activeData.stats.value} />
-                  <span className="text-blue-500">{activeData.stats.suffix}</span>
+                  <span className="text-blue-500">
+                    {activeData.stats.suffix}
+                  </span>
                 </h3>
                 <p className="text-gray-400 uppercase tracking-widest text-xs font-semibold">
                   {activeData.stats.label}
@@ -118,7 +129,11 @@ const ProgramsShowcase = ({ activeProgramId = "digiXplore" }) => {
                     key={tag}
                     initial={{ opacity: 0, y: 15 }}
                     animate={{ opacity: 1, y: 0 }}
-                    transition={{ delay: 0.3 + idx * 0.1, type: "spring", stiffness: 100 }}
+                    transition={{
+                      delay: 0.3 + idx * 0.1,
+                      type: "spring",
+                      stiffness: 100,
+                    }}
                     className="px-4 py-1.5 rounded-full bg-blue-900/20 border border-blue-500/30 text-blue-300 text-sm font-medium shadow-lg backdrop-blur-sm"
                   >
                     {tag}
@@ -129,7 +144,10 @@ const ProgramsShowcase = ({ activeProgramId = "digiXplore" }) => {
               <motion.button
                 onClick={() => {
                   if (location.pathname === activeData.link) {
-                    window.scrollTo({ top: window.innerHeight, behavior: 'smooth' });
+                    window.scrollTo({
+                      top: window.innerHeight,
+                      behavior: "smooth",
+                    });
                   } else {
                     navigate(activeData.link);
                   }
@@ -146,7 +164,6 @@ const ProgramsShowcase = ({ activeProgramId = "digiXplore" }) => {
 
         {/* Right Side: Orbital System */}
         <div className="w-full lg:w-1/2 h-[400px] lg:h-[700px] relative flex items-center justify-center">
-
           {/* Active Center Item */}
           <motion.div
             key={activeData.id}
@@ -158,7 +175,7 @@ const ProgramsShowcase = ({ activeProgramId = "digiXplore" }) => {
               top: "50%",
               left: "50%",
               x: "-50%",
-              y: "-50%"
+              y: "-50%",
             }}
             transition={{ type: "spring", stiffness: 100, damping: 20 }}
           >
@@ -181,8 +198,12 @@ const ProgramsShowcase = ({ activeProgramId = "digiXplore" }) => {
             const radius = isMobile ? 180 : 320;
             // On mobile, position top and bottom. On desktop, position left and right slightly angled
             const angle = isMobile
-              ? index === 0 ? -Math.PI / 2 : Math.PI / 2
-              : index === 0 ? Math.PI * 0.85 : Math.PI * 0.15; // 153deg and 27deg
+              ? index === 0
+                ? -Math.PI / 2
+                : Math.PI / 2
+              : index === 0
+                ? Math.PI * 0.85
+                : Math.PI * 0.15; // 153deg and 27deg
 
             const x = Math.cos(angle) * radius;
             const y = Math.sin(angle) * radius;
@@ -198,7 +219,7 @@ const ProgramsShowcase = ({ activeProgramId = "digiXplore" }) => {
                   top: "50%",
                   left: "50%",
                   marginTop: isMobile ? "-50px" : "-75px",
-                  marginLeft: isMobile ? "-50px" : "-75px"
+                  marginLeft: isMobile ? "-50px" : "-75px",
                 }}
                 initial={{ x, y, opacity: 0 }}
                 animate={{ x, y, scale: 1, opacity: 0.85 }}
@@ -206,15 +227,20 @@ const ProgramsShowcase = ({ activeProgramId = "digiXplore" }) => {
                   scale: 1.1,
                   opacity: 1,
                   boxShadow: "0 0 30px rgba(59,130,246,0.5)",
-                  borderColor: "rgba(59,130,246,0.6)"
+                  borderColor: "rgba(59,130,246,0.6)",
                 }}
                 transition={{ type: "spring", stiffness: 100, damping: 20 }}
                 onClick={() => navigate(prog.link)}
               >
-                <img loading="lazy" src={prog.image}
+                <img
+                  loading="lazy"
+                  src={prog.image}
                   className="w-full h-full object-cover opacity-40 group-hover:opacity-70 transition-opacity duration-300"
                 />
-                <span className="absolute text-white font-bold text-sm lg:text-xl drop-shadow-[0_2px_4px_rgba(0,0,0,0.8)] z-10 tracking-wide text-center px-2" style={{ fontFamily: "Oswald, sans-serif" }}>
+                <span
+                  className="absolute text-white font-bold text-sm lg:text-xl drop-shadow-[0_2px_4px_rgba(0,0,0,0.8)] z-10 tracking-wide text-center px-2"
+                  style={{ fontFamily: "Oswald, sans-serif" }}
+                >
                   {prog.name}
                 </span>
                 {/* Subtle orbital path glow */}
@@ -223,7 +249,6 @@ const ProgramsShowcase = ({ activeProgramId = "digiXplore" }) => {
             );
           })}
         </div>
-
       </div>
     </section>
   );

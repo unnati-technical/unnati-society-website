@@ -3,7 +3,8 @@ import { useNavigate } from "react-router-dom";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import { homeMediaApi } from "../../../api/home-media.api";
 
-const playIcon = 'https://ik.imagekit.io/unnati/v1782396870/unnati_assets/play.png';
+const playIcon =
+  "https://ik.imagekit.io/unnati/v1782396870/unnati_assets/play.png";
 
 const VideoSlide = ({ url, isActive, onEnded }) => {
   const videoRef = useRef(null);
@@ -12,7 +13,7 @@ const VideoSlide = ({ url, isActive, onEnded }) => {
     if (videoRef.current) {
       if (isActive) {
         videoRef.current.currentTime = 0;
-        videoRef.current.play().catch(error => {
+        videoRef.current.play().catch((error) => {
           if (error.name !== "NotAllowedError" && error.name !== "AbortError") {
             console.error("Video auto-play failed:", error);
           }
@@ -71,7 +72,7 @@ const HeroSection = () => {
         url: "https://ik.imagekit.io/unnati/v1782397100/unnati_assets/cc5agh6nevpynajlzkxs.mp4",
         title: "EMPOWERING DREAMS",
         subtitle: "Revolutionizing Present, Transforming Future",
-      }
+      },
     ];
   };
 
@@ -108,7 +109,10 @@ const HeroSection = () => {
 
   const openVideo = () => {
     // Open the raw mp4 file in a new tab instead of using Cloudinary's player
-    window.open("https://ik.imagekit.io/unnati/v1782397100/unnati_assets/cc5agh6nevpynajlzkxs.mp4", "_blank");
+    window.open(
+      "https://ik.imagekit.io/unnati/v1782397100/unnati_assets/cc5agh6nevpynajlzkxs.mp4",
+      "_blank",
+    );
   };
 
   return (
@@ -164,7 +168,8 @@ const HeroSection = () => {
         {/* Subtitle */}
         <div>
           <p className="text-2xl md:text-3xl lg:text-3xl great-vibes-regular text-[#60A5FA] tracking-wide drop-shadow-md">
-            {currentItem.subtitle || "Revolutionizing Present, Transforming Future"}
+            {currentItem.subtitle ||
+              "Revolutionizing Present, Transforming Future"}
           </p>
         </div>
 
@@ -180,7 +185,7 @@ const HeroSection = () => {
         {/* Call to Actions */}
         <div className="flex flex-wrap items-center gap-5 mt-6">
           <button
-            onClick={() => navigate('/join-us')}
+            onClick={() => navigate("/join-us")}
             className="bg-white text-black font-extrabold oswald-font-2 px-8 py-3 text-sm md:text-base tracking-wider hover:bg-gray-100 transition shadow-lg"
           >
             JOIN US
@@ -191,7 +196,12 @@ const HeroSection = () => {
             className="flex items-center gap-3 border-2 border-white px-6 py-2.5 hover:bg-white/10 transition shadow-lg"
           >
             <div className="bg-white rounded-full p-1.5 flex items-center justify-center">
-              <img loading="lazy" src={playIcon} alt="play" className="w-3 h-3 ml-[1px]" />
+              <img
+                loading="lazy"
+                src={playIcon}
+                alt="play"
+                className="w-3 h-3 ml-[1px]"
+              />
             </div>
             <span className="oswald-font-3 font-bold text-sm md:text-base tracking-wider">
               Impact Film
@@ -208,7 +218,9 @@ const HeroSection = () => {
               key={idx}
               onClick={() => setActiveIndex(idx)}
               className={`w-2.5 h-2.5 rounded-full transition-all duration-300 ${
-                activeIndex === idx ? "bg-[#60A5FA] w-6" : "bg-white/40 hover:bg-white/60"
+                activeIndex === idx
+                  ? "bg-[#60A5FA] w-6"
+                  : "bg-white/40 hover:bg-white/60"
               }`}
             />
           ))}

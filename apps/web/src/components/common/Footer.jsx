@@ -1,6 +1,8 @@
 import React, { useState } from "react";
-const Unnati = "https://ik.imagekit.io/unnati/v1782396887/unnati_assets/Unnati.png";
-const IIITBh = "https://ik.imagekit.io/unnati/v1782396815/unnati_assets/IIITBh.png";
+const Unnati =
+  "https://ik.imagekit.io/zpkfsvgtn/Navbar/Unnati.png?updatedAt=1785681448621";
+const IIITBh =
+  "https://ik.imagekit.io/zpkfsvgtn/Navbar/IIITBh.png?updatedAt=1785681479724";
 import { useNavigate, useLocation } from "react-router-dom";
 import { FaInstagram, FaLinkedin, FaXTwitter } from "react-icons/fa6";
 import AuthModal from "./AuthModal";
@@ -10,7 +12,7 @@ import { toast } from "sonner";
 const Footer = () => {
   const navigate = useNavigate();
   const location = useLocation();
-  const isPeoplePage = location.pathname === '/executive-body';
+  const isPeoplePage = location.pathname === "/executive-body";
   const [isAuthOpen, setIsAuthOpen] = useState(false);
   const [email, setEmail] = useState("");
   const [isSubscribing, setIsSubscribing] = useState(false);
@@ -20,7 +22,7 @@ const Footer = () => {
       toast.error("Please enter a valid email address");
       return;
     }
-    
+
     setIsSubscribing(true);
     try {
       await apiClient.post("/api/subscribers", { email });
@@ -38,7 +40,8 @@ const Footer = () => {
       <div className="max-w-7xl mx-auto grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-8">
         <div className="flex flex-col gap-6">
           <div className="flex items-center gap-4">
-            <img loading="lazy"
+            <img
+              loading="lazy"
               src={IIITBh}
               alt="IIIT Bhagalpur logo"
               className="h-12 object-contain"
@@ -46,32 +49,39 @@ const Footer = () => {
 
             <div className="w-0.5 h-10 bg-white/60"></div>
 
-            <img loading="lazy"
+            <img
+              loading="lazy"
               src={Unnati}
               alt="Unnati logo"
               className="h-12 object-contain"
             />
           </div>
           <div className="flex gap-4 text-white/70">
-            <a href="https://www.instagram.com/unnati_society_iiitbh_/"
+            <a
+              href="https://www.instagram.com/unnati_society_iiitbh_/"
               target="_blank"
               rel="noopener noreferrer"
               className="w-8 h-8 rounded-full border border-white/40 flex items-center justify-center cursor-pointer hover:border-[#E1306C] hover:text-[#E1306C] hover:bg-[#E1306C]/10 transition-all duration-200"
-              aria-label="Instagram">
+              aria-label="Instagram"
+            >
               <FaInstagram size={16} />
             </a>
-            <a href="https://x.com/Unnati_Welfare"
+            <a
+              href="https://x.com/Unnati_Welfare"
               target="_blank"
               rel="noopener noreferrer"
               className="w-8 h-8 rounded-full border border-white/40 flex items-center justify-center cursor-pointer hover:border-white hover:text-white hover:bg-white/10 transition-all duration-200"
-              aria-label="X (formerly Twitter)">
+              aria-label="X (formerly Twitter)"
+            >
               <FaXTwitter size={15} />
             </a>
-            <a href="https://www.linkedin.com/company/unnati-society-iiit-bhagalpur/"
+            <a
+              href="https://www.linkedin.com/company/unnati-society-iiit-bhagalpur/"
               target="_blank"
               rel="noopener noreferrer"
               className="w-8 h-8 rounded-full border border-white/40 flex items-center justify-center cursor-pointer hover:border-[#0A66C2] hover:text-[#0A66C2] hover:bg-[#0A66C2]/10 transition-all duration-200"
-              aria-label="LinkedIn">
+              aria-label="LinkedIn"
+            >
               <FaLinkedin size={16} />
             </a>
           </div>
@@ -102,7 +112,8 @@ const Footer = () => {
             >
               Impact
             </li>
-            <li className="hover:text-white cursor-pointer"
+            <li
+              className="hover:text-white cursor-pointer"
               onClick={() => navigate("/join-us")}
             >
               Join Us
@@ -195,7 +206,7 @@ const Footer = () => {
               className="px-3 py-2 text-sm bg-white text-black outline-none disabled:opacity-75"
               disabled={isSubscribing}
             />
-            <button 
+            <button
               onClick={handleSubscribe}
               disabled={isSubscribing}
               className="px-4 py-2 text-sm bg-white text-black font-semibold disabled:opacity-75"

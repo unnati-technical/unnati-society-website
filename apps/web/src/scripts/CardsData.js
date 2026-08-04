@@ -1,7 +1,7 @@
-const directorImg = 'https://ik.imagekit.io/unnati/v1782396812/unnati_assets/directorsir.png';
-const prImg = 'https://ik.imagekit.io/unnati/v1782396871/unnati_assets/prsir.png';
-const chetanImg = 'https://ik.imagekit.io/unnati/v1782396807/unnati_assets/chetansir.jpg';
-const dheerajImg = 'https://ik.imagekit.io/unnati/v1783592779/leadership_profiles/wwoxj95jq7wzrgdx5x8r.png'
+const directorImg = 'https://ik.imagekit.io/zpkfsvgtn/leadership_profiles/directorsir.png?updatedAt=1785677499424';
+const prImg = 'https://ik.imagekit.io/zpkfsvgtn/leadership_profiles/prsir.png?updatedAt=1785677498951';
+const chetanImg = 'https://ik.imagekit.io/zpkfsvgtn/leadership_profiles/chetansir.jpg?updatedAt=1785677498860';
+const dheerajImg = 'https://ik.imagekit.io/zpkfsvgtn/leadership_profiles/dheeraj_cuclko.webp?updatedAt=1785675940550'
 //import { imagekitImage } from '../utils/imagekit';
 
 

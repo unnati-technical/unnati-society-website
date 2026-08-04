@@ -8,7 +8,6 @@ const DigiXplore = () => {
   return (
     <section className="bg-white text-black w-full flex flex-col items-center py-20 px-6 lg:px-10 overflow-hidden font-sans">
       <div className="w-full max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-center gap-12 md:gap-8">
-
         {/* Left Side: Text and Cards */}
         <div className="flex flex-col gap-6 w-full md:w-1/2">
           {/* Pill */}
@@ -25,10 +24,9 @@ const DigiXplore = () => {
 
           {/* Description */}
           <p className="text-gray-600 text-lg max-w-lg mt-4 leading-relaxed">
-            DigiXplore is our flagship digital literacy program
-            empowering government school students with
-            essential computer skills and digital confidence
-            to thrive in the modern world.
+            DigiXplore is our flagship digital literacy program empowering
+            government school students with essential computer skills and
+            digital confidence to thrive in the modern world.
           </p>
 
           {/* Stats Cards */}
@@ -38,9 +36,17 @@ const DigiXplore = () => {
                 <FaUsers size={24} />
               </div>
               <div className="flex flex-col">
-                <span className="text-blue-600 font-black text-4xl"><AnimatedCounter value={2800} suffix="+" /></span>
-                <span className="text-gray-900 font-bold text-sm tracking-wider uppercase mt-1">CHILDREN</span>
-                <span className="text-gray-500 text-sm mt-1 leading-tight">Received quality<br />education</span>
+                <span className="text-blue-600 font-black text-4xl">
+                  <AnimatedCounter value={2800} suffix="+" />
+                </span>
+                <span className="text-gray-900 font-bold text-sm tracking-wider uppercase mt-1">
+                  CHILDREN
+                </span>
+                <span className="text-gray-500 text-sm mt-1 leading-tight">
+                  Received quality
+                  <br />
+                  education
+                </span>
               </div>
             </div>
 
@@ -49,9 +55,17 @@ const DigiXplore = () => {
                 <FaSchool size={24} />
               </div>
               <div className="flex flex-col">
-                <span className="text-blue-600 font-black text-4xl"><AnimatedCounter value={9} /></span>
-                <span className="text-gray-900 font-bold text-sm tracking-wider uppercase mt-1">SCHOOLS</span>
-                <span className="text-gray-500 text-sm mt-1 leading-tight">Reached across<br />communities</span>
+                <span className="text-blue-600 font-black text-4xl">
+                  <AnimatedCounter value={9} />
+                </span>
+                <span className="text-gray-900 font-bold text-sm tracking-wider uppercase mt-1">
+                  SCHOOLS
+                </span>
+                <span className="text-gray-500 text-sm mt-1 leading-tight">
+                  Reached across
+                  <br />
+                  communities
+                </span>
               </div>
             </div>
           </div>
@@ -62,9 +76,12 @@ const DigiXplore = () => {
               <FiTarget size={32} />
             </div>
             <div className="flex flex-col">
-              <span className="text-gray-900 font-bold text-lg">Our Mission</span>
+              <span className="text-gray-900 font-bold text-lg">
+                Our Mission
+              </span>
               <span className="text-gray-600 text-sm mt-1 leading-relaxed">
-                To bridge the digital divide and create equal opportunities for every child through technology.
+                To bridge the digital divide and create equal opportunities for
+                every child through technology.
               </span>
             </div>
           </div>
@@ -76,16 +93,44 @@ const DigiXplore = () => {
             {/* The 2x2 rotated grid */}
             <div className="absolute inset-0 grid grid-cols-2 gap-4 rotate-45 transform origin-center">
               <div className="overflow-hidden rounded-3xl shadow-xl bg-gray-200 relative group">
-                <img loading="lazy" src={imagekitImage("WhatsApp_Image_2026-02-03_at_1.39.40_PM_whvo3l")} alt="Impact" className="w-full h-full object-cover -rotate-45 scale-[1.5] origin-center transition-transform duration-700 group-hover:scale-[1.6]" />
+                <img
+                  loading="lazy"
+                  src={imagekitImage(
+                    "WhatsApp_Image_2026-02-03_at_1.39.40_PM_whvo3l",
+                  )}
+                  alt="Impact"
+                  className="w-full h-full object-cover -rotate-45 scale-[1.5] origin-center transition-transform duration-700 group-hover:scale-[1.6]"
+                />
               </div>
               <div className="overflow-hidden rounded-3xl shadow-xl bg-gray-200 relative group">
-                <img loading="lazy" src={imagekitImage("WhatsApp_Image_2026-02-03_at_1.39.42_PM_1_sgnwyj")} alt="Impact" className="w-full h-full object-cover -rotate-45 scale-[1.5] origin-center transition-transform duration-700 group-hover:scale-[1.6]" />
+                <img
+                  loading="lazy"
+                  src={imagekitImage(
+                    "WhatsApp_Image_2026-02-03_at_1.39.42_PM_1_sgnwyj",
+                  )}
+                  alt="Impact"
+                  className="w-full h-full object-cover -rotate-45 scale-[1.5] origin-center transition-transform duration-700 group-hover:scale-[1.6]"
+                />
               </div>
               <div className="overflow-hidden rounded-3xl shadow-xl bg-gray-200 relative group">
-                <img loading="lazy" src={imagekitImage("WhatsApp_Image_2026-02-03_at_1.39.38_PM_4_khsl6d")} alt="Impact" className="w-full h-full object-cover -rotate-45 scale-[1.5] origin-center transition-transform duration-700 group-hover:scale-[1.6]" />
+                <img
+                  loading="lazy"
+                  src={imagekitImage(
+                    "WhatsApp_Image_2026-02-03_at_1.39.38_PM_4_khsl6d",
+                  )}
+                  alt="Impact"
+                  className="w-full h-full object-cover -rotate-45 scale-[1.5] origin-center transition-transform duration-700 group-hover:scale-[1.6]"
+                />
               </div>
               <div className="overflow-hidden rounded-3xl shadow-xl bg-gray-200 relative group">
-                <img loading="lazy" src={imagekitImage("WhatsApp_Image_2026-02-03_at_1.43.19_PM_1_do5fjx")} alt="Impact" className="w-full h-full object-cover -rotate-45 scale-[1.5] origin-center transition-transform duration-700 group-hover:scale-[1.6]" />
+                <img
+                  loading="lazy"
+                  src={imagekitImage(
+                    "WhatsApp_Image_2026-02-03_at_1.43.19_PM_1_do5fjx",
+                  )}
+                  alt="Impact"
+                  className="w-full h-full object-cover -rotate-45 scale-[1.5] origin-center transition-transform duration-700 group-hover:scale-[1.6]"
+                />
               </div>
             </div>
 
@@ -98,7 +143,10 @@ const DigiXplore = () => {
             {/* Dot pattern */}
             <div className="absolute top-1/2 -right-8 sm:-right-16 transform -translate-y-1/2 grid grid-cols-4 gap-2.5 opacity-40">
               {[...Array(16)].map((_, i) => (
-                <div key={i} className="w-1.5 h-1.5 rounded-full bg-[#6395ec]"></div>
+                <div
+                  key={i}
+                  className="w-1.5 h-1.5 rounded-full bg-[#6395ec]"
+                ></div>
               ))}
             </div>
           </div>
@@ -111,25 +159,40 @@ const DigiXplore = () => {
           <div className="bg-blue-600 rounded-full p-2.5 text-white shadow-md shadow-blue-600/30">
             <FiMonitor size={22} />
           </div>
-          <span className="text-gray-800 font-semibold text-sm leading-tight">Computer<br />Fundamentals</span>
+          <span className="text-gray-800 font-semibold text-sm leading-tight">
+            Computer
+            <br />
+            Fundamentals
+          </span>
         </div>
         <div className="flex items-center gap-4">
           <div className="bg-blue-600 rounded-full p-2.5 text-white shadow-md shadow-blue-600/30">
             <FiGlobe size={22} />
           </div>
-          <span className="text-gray-800 font-semibold text-sm leading-tight">Internet<br />Literacy</span>
+          <span className="text-gray-800 font-semibold text-sm leading-tight">
+            Internet
+            <br />
+            Literacy
+          </span>
         </div>
         <div className="flex items-center gap-4">
           <div className="bg-blue-600 rounded-full p-2.5 text-white shadow-md shadow-blue-600/30">
             <FiShield size={22} />
           </div>
-          <span className="text-gray-800 font-semibold text-sm leading-tight">Digital Safety<br />& Awareness</span>
+          <span className="text-gray-800 font-semibold text-sm leading-tight">
+            Digital Safety
+            <br />& Awareness
+          </span>
         </div>
         <div className="flex items-center gap-4">
           <div className="bg-blue-600 rounded-full p-2.5 text-white shadow-md shadow-blue-600/30">
             <FaLightbulb size={22} />
           </div>
-          <span className="text-gray-800 font-semibold text-sm leading-tight">Creative<br />Digital Skills</span>
+          <span className="text-gray-800 font-semibold text-sm leading-tight">
+            Creative
+            <br />
+            Digital Skills
+          </span>
         </div>
       </div>
     </section>
