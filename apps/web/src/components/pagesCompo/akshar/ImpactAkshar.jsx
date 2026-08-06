@@ -6,17 +6,21 @@ const ImpactAkshar = () => {
   return (
     <section className="bg-[#f8fbff] text-black py-20 px-6 lg:px-10 overflow-hidden font-sans">
       <div className="w-full max-w-7xl mx-auto flex flex-col-reverse md:flex-row justify-between items-center gap-12 lg:gap-16">
-        
         {/* Left Side: Image */}
         <div className="w-full md:w-1/2 flex justify-center items-center relative mt-10 md:mt-0">
           <div className="relative w-full max-w-[500px] aspect-[4/3]">
             {/* Decorative BG */}
             <div className="absolute -top-4 -left-4 w-full h-full bg-blue-200/50 rounded-3xl -z-10"></div>
             <div className="absolute top-1/2 -right-10 w-24 h-24 bg-blue-600/10 rounded-full blur-2xl -z-10"></div>
-            
+
             {/* Main Image */}
             <div className="w-full h-full rounded-3xl overflow-hidden shadow-xl border-4 border-white bg-gray-100">
-              <img loading="lazy" src="https://ik.imagekit.io/unnati/v1782501993/img5_wapjwy.jpg" alt="Impact" className="w-full h-full object-cover transition-shadow duration-300 hover:shadow-[0_10px_40px_rgba(0,0,0,0.15)]" />
+              <img
+                loading="lazy"
+                src="https://ik.imagekit.io/zpkfsvgtn/Programs/Akshar/IMG_20251012_164034.jpg"
+                alt="Impact"
+                className="w-full h-full object-cover transition-shadow duration-300 hover:shadow-[0_10px_40px_rgba(0,0,0,0.15)]"
+              />
             </div>
           </div>
         </div>
@@ -27,21 +31,24 @@ const ImpactAkshar = () => {
           <div className="bg-white border border-blue-100 shadow-sm text-blue-600 font-bold px-4 py-1.5 rounded-full text-xs tracking-wider uppercase w-fit flex items-center gap-2 mb-6">
             <FiTrendingUp size={16} /> OUR IMPACT
           </div>
-          
+
           {/* Heading */}
           <div className="text-5xl lg:text-6xl font-black leading-tight tracking-tight mb-6 flex flex-col md:items-end">
             <h1 className="text-gray-900">IMPACT OF</h1>
             <h1 className="text-blue-600 mt-1">AKSHAR</h1>
           </div>
-          
+
           <div className="w-16 h-1.5 bg-blue-600 rounded-full mb-6"></div>
-          
+
           {/* Description */}
           <p className="text-gray-600 text-lg max-w-[500px] leading-relaxed">
-             Akshar has brought education to children who were previously out of the formal schooling system, helping them learn to read, write, and communicate with confidence. The program has ignited a love for learning and created hope among families for a better future for their children.
+            Akshar has brought education to children who were previously out of
+            the formal schooling system, helping them learn to read, write, and
+            communicate with confidence. The program has ignited a love for
+            learning and created hope among families for a better future for
+            their children.
           </p>
         </div>
-        
       </div>
     </section>
   );

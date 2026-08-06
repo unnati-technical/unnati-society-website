@@ -95,9 +95,9 @@ const DigiXplore = () => {
               <div className="overflow-hidden rounded-3xl shadow-xl bg-gray-200 relative group">
                 <img
                   loading="lazy"
-                  src={imagekitImage(
-                    "WhatsApp_Image_2026-02-03_at_1.39.40_PM_whvo3l",
-                  )}
+                  src={
+                    "https://ik.imagekit.io/zpkfsvgtn/Programs/WhatsApp_Image_2026-02-03_at_1.39%20(1).jpg?updatedAt=1785897036551"
+                  }
                   alt="Impact"
                   className="w-full h-full object-cover -rotate-45 scale-[1.5] origin-center transition-transform duration-700 group-hover:scale-[1.6]"
                 />
@@ -105,9 +105,9 @@ const DigiXplore = () => {
               <div className="overflow-hidden rounded-3xl shadow-xl bg-gray-200 relative group">
                 <img
                   loading="lazy"
-                  src={imagekitImage(
-                    "WhatsApp_Image_2026-02-03_at_1.39.42_PM_1_sgnwyj",
-                  )}
+                  src={
+                    "https://ik.imagekit.io/zpkfsvgtn/Programs/WhatsApp_Image_2026-02-03_at_1.39.jpg?updatedAt=1785897036797"
+                  }
                   alt="Impact"
                   className="w-full h-full object-cover -rotate-45 scale-[1.5] origin-center transition-transform duration-700 group-hover:scale-[1.6]"
                 />
@@ -115,9 +115,9 @@ const DigiXplore = () => {
               <div className="overflow-hidden rounded-3xl shadow-xl bg-gray-200 relative group">
                 <img
                   loading="lazy"
-                  src={imagekitImage(
-                    "WhatsApp_Image_2026-02-03_at_1.39.38_PM_4_khsl6d",
-                  )}
+                  src={
+                    "https://ik.imagekit.io/zpkfsvgtn/Programs/WhatsApp_Image_2026-02-03_at_1.39%20(2).jpg?updatedAt=1785897036949"
+                  }
                   alt="Impact"
                   className="w-full h-full object-cover -rotate-45 scale-[1.5] origin-center transition-transform duration-700 group-hover:scale-[1.6]"
                 />
@@ -125,9 +125,9 @@ const DigiXplore = () => {
               <div className="overflow-hidden rounded-3xl shadow-xl bg-gray-200 relative group">
                 <img
                   loading="lazy"
-                  src={imagekitImage(
-                    "WhatsApp_Image_2026-02-03_at_1.43.19_PM_1_do5fjx",
-                  )}
+                  src={
+                    "https://ik.imagekit.io/zpkfsvgtn/Programs/WhatsApp_Image_2026-02-03_at_1.43.jpg?updatedAt=1785897036936"
+                  }
                   alt="Impact"
                   className="w-full h-full object-cover -rotate-45 scale-[1.5] origin-center transition-transform duration-700 group-hover:scale-[1.6]"
                 />

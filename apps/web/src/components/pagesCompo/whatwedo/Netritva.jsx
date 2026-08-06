@@ -10,16 +10,23 @@ const Netritva = () => {
   return (
     <section className="bg-white text-black w-full flex flex-col items-center py-20 px-6 lg:px-10 overflow-hidden font-sans">
       <div className="w-full max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-start gap-12 md:gap-16">
-
         {/* Left Side: Image Cluster and Our Focus Box */}
         <div className="w-full md:w-1/2 flex flex-col items-center relative">
-
           {/* Image Cluster Container */}
           <div className="relative w-full aspect-square max-w-[500px] mx-auto mt-4">
-
             {/* Background SVG curved dotted line */}
-            <svg className="absolute inset-0 w-full h-full pointer-events-none z-0" viewBox="0 0 500 500">
-              <path d="M 80 280 C 120 80, 350 40, 420 160" fill="transparent" stroke="#3b82f6" strokeWidth="1.5" strokeDasharray="6 6" className="opacity-70" />
+            <svg
+              className="absolute inset-0 w-full h-full pointer-events-none z-0"
+              viewBox="0 0 500 500"
+            >
+              <path
+                d="M 80 280 C 120 80, 350 40, 420 160"
+                fill="transparent"
+                stroke="#3b82f6"
+                strokeWidth="1.5"
+                strokeDasharray="6 6"
+                className="opacity-70"
+              />
             </svg>
 
             {/* Solid light blue circle (left) */}
@@ -31,23 +38,47 @@ const Netritva = () => {
             {/* Dots pattern (bottom left) */}
             <div className="absolute bottom-16 left-16 sm:left-24 grid grid-cols-4 gap-2 opacity-40 z-0">
               {[...Array(16)].map((_, i) => (
-                <div key={i} className="w-1.5 h-1.5 rounded-full bg-blue-600"></div>
+                <div
+                  key={i}
+                  className="w-1.5 h-1.5 rounded-full bg-blue-600"
+                ></div>
               ))}
             </div>
 
             {/* Top Right Image */}
             <div className="absolute top-8 sm:top-8 right-2 sm:right-2 z-0 w-36 h-36 sm:w-44 sm:h-44 rounded-full border-[6px] sm:border-8 border-white shadow-xl overflow-hidden group bg-gray-200">
-              <img loading="lazy" src={imagekitImage("WhatsApp_Image_2026-02-03_at_1.39.38_PM_3_thxqic")} alt="Impact Top" className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" />
+              <img
+                loading="lazy"
+                src={
+                  "https://ik.imagekit.io/zpkfsvgtn/Programs/WhatsApp_Image_2026-02-03_at_1.39%20(4).jpg"
+                }
+                alt="Impact Top"
+                className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
+              />
             </div>
 
             {/* Center Main Image */}
             <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 z-10 w-64 h-64 sm:w-80 sm:h-80 rounded-full border-[6px] sm:border-8 border-white shadow-2xl overflow-hidden group bg-gray-200">
-              <img loading="lazy" src={imagekitImage("WhatsApp_Image_2026-02-03_at_1.39.42_PM_xs2pm0")} alt="Impact Center" className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" />
+              <img
+                loading="lazy"
+                src={
+                  "https://ik.imagekit.io/zpkfsvgtn/Programs/WhatsApp_Image_2026-02-03_at_1.39%20(3).jpg"
+                }
+                alt="Impact Center"
+                className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
+              />
             </div>
 
             {/* Bottom Left Image */}
             <div className="absolute bottom-2 sm:bottom-2 left-0 sm:left-0 z-20 w-44 h-44 sm:w-52 sm:h-52 rounded-full border-[6px] sm:border-8 border-white shadow-xl overflow-hidden group bg-gray-200">
-              <img loading="lazy" src={imagekitImage("WhatsApp_Image_2026-02-03_at_1.39.39_PM_2_fqc1pi")} alt="Impact Bottom" className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" />
+              <img
+                loading="lazy"
+                src={
+                  "https://ik.imagekit.io/zpkfsvgtn/Programs/WhatsApp_Image_2026-02-03_at_1.39%20(5).jpg"
+                }
+                alt="Impact Bottom"
+                className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
+              />
             </div>
           </div>
 
@@ -59,11 +90,11 @@ const Netritva = () => {
             <div className="flex flex-col">
               <span className="text-gray-900 font-bold text-lg">Our Focus</span>
               <span className="text-gray-600 text-sm mt-1 leading-relaxed">
-                Career guidance, personality development, and life skills for a confident tomorrow.
+                Career guidance, personality development, and life skills for a
+                confident tomorrow.
               </span>
             </div>
           </div>
-
         </div>
 
         {/* Right Side: Text and Cards */}
@@ -84,10 +115,9 @@ const Netritva = () => {
 
           {/* Description */}
           <p className="text-gray-600 text-[15px] sm:text-base max-w-[480px] mt-2 leading-relaxed">
-            Netritva is our mentorship and guidance program
-            that helps students discover their potential,
-            build confidence, and make informed decisions
-            for a brighter future.
+            Netritva is our mentorship and guidance program that helps students
+            discover their potential, build confidence, and make informed
+            decisions for a brighter future.
           </p>
 
           {/* Stats Cards */}
@@ -97,9 +127,17 @@ const Netritva = () => {
                 <HiOutlineUserGroup size={24} />
               </div>
               <div className="flex flex-col">
-                <span className="text-blue-600 font-black text-4xl"><AnimatedCounter value={600} suffix="+" /></span>
-                <span className="text-gray-900 font-bold text-sm tracking-wider uppercase mt-1">CHILDREN</span>
-                <span className="text-gray-500 text-sm mt-1 leading-tight">Received guidance<br />and mentorship</span>
+                <span className="text-blue-600 font-black text-4xl">
+                  <AnimatedCounter value={600} suffix="+" />
+                </span>
+                <span className="text-gray-900 font-bold text-sm tracking-wider uppercase mt-1">
+                  CHILDREN
+                </span>
+                <span className="text-gray-500 text-sm mt-1 leading-tight">
+                  Received guidance
+                  <br />
+                  and mentorship
+                </span>
               </div>
             </div>
 
@@ -108,15 +146,21 @@ const Netritva = () => {
                 <LuSchool size={24} />
               </div>
               <div className="flex flex-col">
-                <span className="text-blue-600 font-black text-4xl"><AnimatedCounter value={3} /></span>
-                <span className="text-gray-900 font-bold text-sm tracking-wider uppercase mt-1">SCHOOLS</span>
-                <span className="text-gray-500 text-sm mt-1 leading-tight">Reached and<br />collaborated</span>
+                <span className="text-blue-600 font-black text-4xl">
+                  <AnimatedCounter value={3} />
+                </span>
+                <span className="text-gray-900 font-bold text-sm tracking-wider uppercase mt-1">
+                  SCHOOLS
+                </span>
+                <span className="text-gray-500 text-sm mt-1 leading-tight">
+                  Reached and
+                  <br />
+                  collaborated
+                </span>
               </div>
             </div>
           </div>
-
         </div>
-
       </div>
     </section>
   );

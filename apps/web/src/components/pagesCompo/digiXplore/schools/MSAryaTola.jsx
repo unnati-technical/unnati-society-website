@@ -4,15 +4,15 @@ import NavUnn from "../../../common/NavUnn";
 import { imagekitImage2 } from "../../../../utils/imagekit";
 
 const images = [
-  "IMG1_sbfknq",
-  "IMG2_pwrcjp",
-  "IMG3_znlvfm",
-  "IMG4_hputqu",
-  "IMG5_eje1c8",
-  "IMG6_m05at5",
-  "IMG7_ffcbvz",
-  "IMG8_x5jbyv",
-  "IMG9_iyie3w"
+  "https://ik.imagekit.io/zpkfsvgtn/Media/Digixplore/MSAryaTola/IMG1_sbfknq.jpg",
+  "https://ik.imagekit.io/zpkfsvgtn/Media/Digixplore/MSAryaTola/IMG2_pwrcjp.jpg",
+  "https://ik.imagekit.io/zpkfsvgtn/Media/Digixplore/MSAryaTola/IMG3_znlvfm.jpg",
+  "https://ik.imagekit.io/zpkfsvgtn/Media/Digixplore/MSAryaTola/IMG4_hputqu.jpg",
+  "https://ik.imagekit.io/zpkfsvgtn/Media/Digixplore/MSAryaTola/IMG5_eje1c8.jpg",
+  "https://ik.imagekit.io/zpkfsvgtn/Media/Digixplore/MSAryaTola/IMG6_m05at5.jpg",
+  "https://ik.imagekit.io/zpkfsvgtn/Media/Digixplore/MSAryaTola/IMG7_ffcbvz.jpg",
+  "https://ik.imagekit.io/zpkfsvgtn/Media/Digixplore/MSAryaTola/IMG8_x5jbyv.jpg",
+  "https://ik.imagekit.io/zpkfsvgtn/Media/Digixplore/MSAryaTola/IMG9_iyie3w.jpg",
 ];
 
 const MSAryaTola = () => {
@@ -30,9 +30,10 @@ const MSAryaTola = () => {
           {/* Pinterest Layout */}
           <div className="columns-1 sm:columns-2 md:columns-3 gap-4">
             {images.map((id, i) => (
-              <img loading="lazy" 
+              <img
+                loading="lazy"
                 key={i}
-                src={imagekitImage2(id)}
+                src={id}
                 alt="Rangchakra"
                 className="mb-4 w-full rounded-xl break-inside-avoid shadow-md hover:scale-[1.02] transition"
               />

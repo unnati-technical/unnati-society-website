@@ -4,14 +4,14 @@ import NavUnn from "../../../common/NavUnn";
 import { imagekitImage2 } from "../../../../utils/imagekit";
 
 const images = [
-  "IMG1_uwuubs",
-  "IMG2_hbkxpz",
-  "IMG3_kfkhop",
-  "IMG4_his5pf",
-  "IMG5_nvfjig",
-  "IMG6_obdhsf",
-  "IMG7_qnrs5d",
-  "IMG8_zxabpu",
+  "https://ik.imagekit.io/zpkfsvgtn/Media/Digixplore/MSMeerachak/Copy_of_IMG20250726120155_zxabpu.heic",
+  "https://ik.imagekit.io/zpkfsvgtn/Media/Digixplore/MSMeerachak/IMG_20250823_152230_qnrs5d.jpg",
+  "https://ik.imagekit.io/zpkfsvgtn/Media/Digixplore/MSMeerachak/IMG_20260214_113715949_HDR_obdhsf.jpg",
+  "https://ik.imagekit.io/zpkfsvgtn/Media/Digixplore/MSMeerachak/IMG20250802123401_uwuubs.heic",
+  "https://ik.imagekit.io/zpkfsvgtn/Media/Digixplore/MSMeerachak/IMG20250802123623_hbkxpz.jpg",
+  "https://ik.imagekit.io/zpkfsvgtn/Media/Digixplore/MSMeerachak/IMG20250806115405_kfkhop.heic",
+  "https://ik.imagekit.io/zpkfsvgtn/Media/Digixplore/MSMeerachak/IMG20250806123030_his5pf.heic",
+  "https://ik.imagekit.io/zpkfsvgtn/Media/Digixplore/MSMeerachak/IMG20250806125126_nvfjig.heic",
 ];
 
 const MSMeerachak = () => {
@@ -29,9 +29,10 @@ const MSMeerachak = () => {
           {/* Pinterest Layout */}
           <div className="columns-1 sm:columns-2 md:columns-3 gap-4">
             {images.map((id, i) => (
-              <img loading="lazy" 
+              <img
+                loading="lazy"
                 key={i}
-                src={imagekitImage2(id)}
+                src={id}
                 alt="Rangchakra"
                 className="mb-4 w-full rounded-xl break-inside-avoid shadow-md hover:scale-[1.02] transition"
               />
