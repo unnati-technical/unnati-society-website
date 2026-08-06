@@ -4,17 +4,17 @@ import NavUnn from "./../../common/NavUnn";
 import { imagekitImage2 } from "./../../../utils/imagekit";
 
 const images = [
-  "IMG1_uo6ieb",
-  "IMG2_etc0q6",
-  "IMG3_svvvoc",
-  "IMG4_iqjgvl",
-  "IMG5_bs3akm",
-  "IMG6_gpumz5",
-  "IMG7_v8nj4j",
-  "IMG8_lri0wj",
-  "IMG9_ymg2v5",
-  "IMG10_zuszig",
-  "IMG11_udiaif",
+  "https://ik.imagekit.io/zpkfsvgtn/Media/Akshar/Babupur/20260201_152645_etc0q6.jpg",
+  "https://ik.imagekit.io/zpkfsvgtn/Media/Akshar/Babupur/IMG_20250831_165546580_HDR_udiaif.jpg",
+  "https://ik.imagekit.io/zpkfsvgtn/Media/Akshar/Babupur/IMG_20251012_164034_gpumz5.jpg",
+  "https://ik.imagekit.io/zpkfsvgtn/Media/Akshar/Babupur/IMG_20260301_143247_svvvoc.jpg",
+  "https://ik.imagekit.io/zpkfsvgtn/Media/Akshar/Babupur/IMG_20260301_153553_uo6ieb.jpg",
+  "https://ik.imagekit.io/zpkfsvgtn/Media/Akshar/Babupur/IMG_20260405_154042092_HDR_zuszig.jpg",
+  "https://ik.imagekit.io/zpkfsvgtn/Media/Akshar/Babupur/img5_v8nj4j.jpg",
+  "https://ik.imagekit.io/zpkfsvgtn/Media/Akshar/Babupur/IMG-20250824-WA0070_lri0wj.jpg",
+  "https://ik.imagekit.io/zpkfsvgtn/Media/Akshar/Babupur/IMG20251109161856_ymg2v5.jpg",
+  "https://ik.imagekit.io/zpkfsvgtn/Media/Akshar/Babupur/Scanned_20250804-0002-13_iqjgvl.jpg",
+  "https://ik.imagekit.io/zpkfsvgtn/Media/Akshar/Babupur/Scanned_20250804-0002-17_bs3akm.jpg",
 ];
 
 const BabupurClass = () => {
@@ -34,7 +34,7 @@ const BabupurClass = () => {
             {images.map((id, i) => (
               <img loading="lazy" 
                 key={i}
-                src={imagekitImage2(id)}
+                src={(id)}
                 alt="Rangchakra"
                 className="mb-4 w-full rounded-xl break-inside-avoid shadow-md hover:scale-[1.02] transition"
               />

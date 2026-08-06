@@ -4,14 +4,14 @@ import NavUnn from "../../../common/NavUnn";
 import { imagekitImage2 } from "../../../../utils/imagekit";
 
 const images = [
-  "IMG1_ir5vdh",
-  "IMG2_eacans",
-  "IMG3_cxeama",
-  "IMG4_jmwppn",
-  "IMG5_aty8cv",
-  "IMG6_jzft3u",
-  "IMG7_sidclm",
-  "IMG8_jlv7lr"
+  "https://ik.imagekit.io/zpkfsvgtn/Media/Digixplore/InterCollegeSabour/IMG-20250802-WA0013_eacans.jpg",
+  "https://ik.imagekit.io/zpkfsvgtn/Media/Digixplore/InterCollegeSabour/IMG-20250802-WA0018_jzft3u.jpg",
+  "https://ik.imagekit.io/zpkfsvgtn/Media/Digixplore/InterCollegeSabour/IMG-20260110-WA0018_sidclm.jpg",
+  "https://ik.imagekit.io/zpkfsvgtn/Media/Digixplore/InterCollegeSabour/IMG-20260110-WA0019_aty8cv.jpg",
+  "https://ik.imagekit.io/zpkfsvgtn/Media/Digixplore/InterCollegeSabour/IMG_20251011_122654_ir5vdh.jpg",
+  "https://ik.imagekit.io/zpkfsvgtn/Media/Digixplore/InterCollegeSabour/IMG_20251011_122758_cxeama.jpg",
+  "https://ik.imagekit.io/zpkfsvgtn/Media/Digixplore/InterCollegeSabour/IMG_20251011_123206_jmwppn.jpg",
+  "https://ik.imagekit.io/zpkfsvgtn/Media/Digixplore/InterCollegeSabour/IMG_20251011_125548_jlv7lr.jpg",
 ];
 
 const InterCollegeSabour = () => {
@@ -29,9 +29,10 @@ const InterCollegeSabour = () => {
           {/* Pinterest Layout */}
           <div className="columns-1 sm:columns-2 md:columns-3 gap-4">
             {images.map((id, i) => (
-              <img loading="lazy" 
+              <img
+                loading="lazy"
                 key={i}
-                src={imagekitImage2(id)}
+                src={id}
                 alt="Rangchakra"
                 className="mb-4 w-full rounded-xl break-inside-avoid shadow-md hover:scale-[1.02] transition"
               />

@@ -4,18 +4,18 @@ import NavUnn from "./../../common/NavUnn";
 import { imagekitImage2 } from "./../../../utils/imagekit";
 
 const images = [
-  "GICS_1_f755go",
-  "GICS_2_izdbb6",
-  "GICS_3_ji24dg",
-  "GICS_4_ljspyy",
-  "GICS_5_gkwxk1",
-  "GICS_6_nxjqcl",
-  "GICS_7_onoxlf",
-  "GICS_8_l8hfqs",
-  "GICS_9_s5ytly",
-  "GICS_10_fnwo6b",
-  "GICS_11_oo9ajh",
-  "GICS_12_kv4alw"
+  "https://ik.imagekit.io/zpkfsvgtn/Media/Netritva/IMG-20260414-WA0024.jpg_onoxlf.jpg",
+  "https://ik.imagekit.io/zpkfsvgtn/Media/Netritva/IMG-20260414-WA0025.jpg_l8hfqs.jpg",
+  "https://ik.imagekit.io/zpkfsvgtn/Media/Netritva/IMG-20260414-WA0026.jpg_s5ytly.jpg",
+  "https://ik.imagekit.io/zpkfsvgtn/Media/Netritva/IMG-20260414-WA0027.jpg_kv4alw.jpg",
+  "https://ik.imagekit.io/zpkfsvgtn/Media/Netritva/IMG-20260414-WA0028.jpg_fnwo6b.jpg",
+  "https://ik.imagekit.io/zpkfsvgtn/Media/Netritva/IMG-20260414-WA0029.jpg_oo9ajh.jpg",
+  "https://ik.imagekit.io/zpkfsvgtn/Media/Netritva/IMG-20260414-WA0030.jpg_gkwxk1.jpg",
+  "https://ik.imagekit.io/zpkfsvgtn/Media/Netritva/IMG-20260414-WA0031.jpg_ljspyy.jpg",
+  "https://ik.imagekit.io/zpkfsvgtn/Media/Netritva/IMG-20260414-WA0032.jpg_izdbb6.jpg",
+  "https://ik.imagekit.io/zpkfsvgtn/Media/Netritva/IMG-20260414-WA0042.jpg_ji24dg.jpg",
+  "https://ik.imagekit.io/zpkfsvgtn/Media/Netritva/IMG-20260414-WA0044.jpg_f755go.jpg",
+  "https://ik.imagekit.io/zpkfsvgtn/Media/Netritva/IMG-20260414-WA0045.jpg_nxjqcl.jpg",
 ];
 
 const MediaEvent1 = () => {
@@ -33,9 +33,10 @@ const MediaEvent1 = () => {
           {/* Pinterest Layout */}
           <div className="columns-1 sm:columns-2 md:columns-3 gap-4">
             {images.map((id, i) => (
-              <img loading="lazy" 
+              <img
+                loading="lazy"
                 key={i}
-                src={imagekitImage2(id)}
+                src={id}
                 alt="Rangchakra"
                 className="mb-4 w-full rounded-xl break-inside-avoid shadow-md hover:scale-[1.02] transition"
               />

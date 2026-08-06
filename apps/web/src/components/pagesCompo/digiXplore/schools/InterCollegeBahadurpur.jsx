@@ -4,15 +4,14 @@ import NavUnn from "../../../common/NavUnn";
 import { imagekitImage2 } from "../../../../utils/imagekit";
 
 const images = [
-  "IMG1_pngazz",
-  "IMG2_jeqyzd",
-  "IMG3_a9rtoz",
-  "IMG4_hkhoto",
-  "IMG5_l8xulx",
-  "IMG6_wmfqpq",
-  "IMG7_dtlzd9",
-  "IMG8_moeaay",
-
+  "https://ik.imagekit.io/zpkfsvgtn/Media/Digixplore/InterCollegeBahadupur/IMG20250808142336_moeaay.jpg",
+  "https://ik.imagekit.io/zpkfsvgtn/Media/Digixplore/InterCollegeBahadupur/IMG20250813134744_a9rtoz.jpg",
+  "https://ik.imagekit.io/zpkfsvgtn/Media/Digixplore/InterCollegeBahadupur/IMG20250813134817_jeqyzd.jpg",
+  "https://ik.imagekit.io/zpkfsvgtn/Media/Digixplore/InterCollegeBahadupur/IMG20250820130655_01_pngazz.jpg",
+  "https://ik.imagekit.io/zpkfsvgtn/Media/Digixplore/InterCollegeBahadupur/IMG20260411120730_hkhoto.jpg",
+  "https://ik.imagekit.io/zpkfsvgtn/Media/Digixplore/InterCollegeBahadupur/IMG20260411120845_wmfqpq.jpg",
+  "https://ik.imagekit.io/zpkfsvgtn/Media/Digixplore/InterCollegeBahadupur/IMG20250808134746_dtlzd9.jpg",
+  "https://ik.imagekit.io/zpkfsvgtn/Media/Digixplore/InterCollegeBahadupur/IMG20250808141627_l8xulx.jpg",
 ];
 
 const InterCollegeBahadurpur = () => {
@@ -30,9 +29,10 @@ const InterCollegeBahadurpur = () => {
           {/* Pinterest Layout */}
           <div className="columns-1 sm:columns-2 md:columns-3 gap-4">
             {images.map((id, i) => (
-              <img loading="lazy" 
+              <img
+                loading="lazy"
                 key={i}
-                src={imagekitImage2(id)}
+                src={id}
                 alt="Rangchakra"
                 className="mb-4 w-full rounded-xl break-inside-avoid shadow-md hover:scale-[1.02] transition"
               />

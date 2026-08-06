@@ -4,14 +4,14 @@ import NavUnn from "../../../common/NavUnn";
 import { imagekitImage2 } from "../../../../utils/imagekit";
 
 const images = [
-  "IMG1_yn67w3",
-  "IMG2_om8uei",
-  "IMG3_wkne2n",
-  "IMG4_n8njxy",
-  "IMG5_qyzyfj",
-  "IMG6_qwxwxn",
-  "IMG7_jwh26o",
-  "IMG8_yr8h0z"
+  "https://ik.imagekit.io/zpkfsvgtn/Media/Digixplore/Girls%20Inter%20College/IMG20250813141021_jwh26o.jpg",
+  "https://ik.imagekit.io/zpkfsvgtn/Media/Digixplore/Girls%20Inter%20College/IMG20250813141021_jwh26o.jpg",
+  "https://ik.imagekit.io/zpkfsvgtn/Media/Digixplore/Girls%20Inter%20College/IMG_6901_qwxwxn.heic",
+  "https://ik.imagekit.io/zpkfsvgtn/Media/Digixplore/Girls%20Inter%20College/IMG20251108113904_qyzyfj.jpg",
+  "https://ik.imagekit.io/zpkfsvgtn/Media/Digixplore/Girls%20Inter%20College/20250823_133413_wkne2n.jpg",
+  "https://ik.imagekit.io/zpkfsvgtn/Media/Digixplore/Girls%20Inter%20College/IMG20250918111700_yn67w3.heic",
+  "https://ik.imagekit.io/zpkfsvgtn/Media/Digixplore/Girls%20Inter%20College/20250823_140030_n8njxy.jpg",
+  "https://ik.imagekit.io/zpkfsvgtn/Media/Digixplore/Girls%20Inter%20College/20250813_132621_yr8h0z.jpg",
 ];
 
 const GirlsInterCollege = () => {
@@ -29,9 +29,10 @@ const GirlsInterCollege = () => {
           {/* Pinterest Layout */}
           <div className="columns-1 sm:columns-2 md:columns-3 gap-4">
             {images.map((id, i) => (
-              <img loading="lazy" 
+              <img
+                loading="lazy"
                 key={i}
-                src={imagekitImage2(id)}
+                src={id}
                 alt="Rangchakra"
                 className="mb-4 w-full rounded-xl break-inside-avoid shadow-md hover:scale-[1.02] transition"
               />

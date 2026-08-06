@@ -4,16 +4,16 @@ import NavUnn from "../../../common/NavUnn";
 import { imagekitImage2 } from "../../../../utils/imagekit";
 
 const images = [
-  "IMG1_znc5gp",
-  "IMG2_mtrtch",
-  "IMG3_c9p6pq",
-  "IMG4_jhmfne",
-  "IMG5_bhrhvw",
-  "IMG6_dtuvve",
-  "IMG7_uyo7y5",
-  "IMG8_dlsiyu",
-  "IMG9_be4y1l",
-  "IMG10_v8mhv6"
+  "https://ik.imagekit.io/zpkfsvgtn/Media/Digixplore/MSRaniTalav/IMG_20250802_144946_mtrtch.jpg",
+  "https://ik.imagekit.io/zpkfsvgtn/Media/Digixplore/MSRaniTalav/IMG_20251004_141211_dtuvve.jpg",
+  "https://ik.imagekit.io/zpkfsvgtn/Media/Digixplore/MSRaniTalav/IMG_20251011_145343_jhmfne.jpg",
+  "https://ik.imagekit.io/zpkfsvgtn/Media/Digixplore/MSRaniTalav/IMG_20260124_133556_v8mhv6.jpg",
+  "https://ik.imagekit.io/zpkfsvgtn/Media/Digixplore/MSRaniTalav/IMG20250802140529_znc5gp.jpg",
+  "https://ik.imagekit.io/zpkfsvgtn/Media/Digixplore/MSRaniTalav/IMG20250802151944_c9p6pq.jpg",
+  "https://ik.imagekit.io/zpkfsvgtn/Media/Digixplore/MSRaniTalav/IMG20250823151002_be4y1l.jpg",
+  "https://ik.imagekit.io/zpkfsvgtn/Media/Digixplore/MSRaniTalav/IMG20251011145741_uyo7y5.jpg",
+  "https://ik.imagekit.io/zpkfsvgtn/Media/Digixplore/MSRaniTalav/IMG20251011145911_dlsiyu.jpg",
+  "https://ik.imagekit.io/zpkfsvgtn/Media/Digixplore/MSRaniTalav/IMG20251011150750_bhrhvw.jpg",
 ];
 
 const MSRaniTalav = () => {
@@ -31,9 +31,10 @@ const MSRaniTalav = () => {
           {/* Pinterest Layout */}
           <div className="columns-1 sm:columns-2 md:columns-3 gap-4">
             {images.map((id, i) => (
-              <img loading="lazy" 
+              <img
+                loading="lazy"
                 key={i}
-                src={imagekitImage2(id)}
+                src={id}
                 alt="Rangchakra"
                 className="mb-4 w-full rounded-xl break-inside-avoid shadow-md hover:scale-[1.02] transition"
               />
