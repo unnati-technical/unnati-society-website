@@ -190,7 +190,7 @@ const Outreach = () => {
               >
                 <img
                   loading="lazy"
-                  src="https://ik.imagekit.io/zpkfsvgtn/Outreach/IMG20250208132538.jpg.jpeg"
+                  src="https://ik.imagekit.io/zpkfsvgtn/Outreach/IMG_9900.JPG.jpeg"
                   alt="Teacher interacting with students"
                   style={{ width: "100%", height: "100%", objectFit: "cover" }}
                 />
@@ -215,7 +215,7 @@ const Outreach = () => {
               >
                 <img
                   loading="lazy"
-                  src="https://ik.imagekit.io/zpkfsvgtn/Outreach/kvschl.jpeg?updatedAt=1785866134629"
+                  src="https://ik.imagekit.io/zpkfsvgtn/Outreach/IMG_20251211_120703.jpg.jpeg"
                   alt="Students using laptops"
                   style={{ width: "100%", height: "100%", objectFit: "cover" }}
                 />
@@ -240,7 +240,7 @@ const Outreach = () => {
               >
                 <img
                   loading="lazy"
-                  src="https://ik.imagekit.io/zpkfsvgtn/Outreach/IMG-20250412-WA0001_geachy.webp"
+                  src="https://ik.imagekit.io/zpkfsvgtn/Outreach/IMG_20251211_111740.jpg.jpeg"
                   alt="Group of students collaborating"
                   style={{ width: "100%", height: "100%", objectFit: "cover" }}
                 />
@@ -474,7 +474,7 @@ const Outreach = () => {
             <div className="w-2/3 h-full rounded-3xl overflow-hidden shadow-xl hover:scale-101 hover: duration-500">
               <img
                 loading="lazy"
-                src="https://ik.imagekit.io/zpkfsvgtn/Outreach/IMG20260228124228.heic"
+                src="https://ik.imagekit.io/zpkfsvgtn/Outreach/IMG_2521.JPG.jpeg"
                 alt="Campus"
                 className="w-full h-full object-cover"
               />

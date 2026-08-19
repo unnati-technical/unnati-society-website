@@ -4,14 +4,14 @@ import NavUnn from "./../../common/NavUnn";
 import { imagekitImage } from "./../../../utils/imagekit";
 
 const images = [
-  "IMG_20251211_124331_qfj72p",
-  "IMG_20251211_113425_irqtrg",
-  "IMG_20251211_110536_img3qo",
-  "IMG_20251211_114023_tnfkgp",
-  "IMG_20251211_120748_wmgzr9",
-  "IMG_20251211_125538_kmmnpe",
-  "IMG_20251211_120710_pdtgoc",
-  "IMG_20251211_111416_ts8ek2",
+  "https://ik.imagekit.io/zpkfsvgtn/Outreach/DPS/IMG_20251211_120723.jpg",
+  "https://ik.imagekit.io/zpkfsvgtn/Outreach/DPS/IMG_20251211_111740.jpg",
+  "https://ik.imagekit.io/zpkfsvgtn/Outreach/DPS/IMG_20251211_114113.jpg",
+  "https://ik.imagekit.io/zpkfsvgtn/Outreach/DPS/IMG_20251211_110609.jpg",
+  "https://ik.imagekit.io/zpkfsvgtn/Outreach/DPS/IMG_20251211_110411.jpg",
+  "https://ik.imagekit.io/zpkfsvgtn/Outreach/DPS/IMG_20251211_120758.jpg",
+  "https://ik.imagekit.io/zpkfsvgtn/Outreach/DPS/IMG_20251211_120733.jpg",
+  "https://ik.imagekit.io/zpkfsvgtn/Outreach/DPS/IMG_20251211_124308.jpg",
 ];
 
 const DPS = () => {
@@ -20,7 +20,9 @@ const DPS = () => {
       <Navbar />
       <NavUnn />
 
-      <section className="relative flex justify-center items-center py-10 w-full bg-cover bg-center bg-no-repeat " style={{ backgroundImage: `url(${imagekitImage("schlvisit_uw7s37")})` }}
+      <section
+        className="relative flex justify-center items-center py-10 w-full bg-cover bg-center bg-no-repeat "
+        style={{ backgroundImage: `url(${imagekitImage("schlvisit_uw7s37")})` }}
       >
         <div className="absolute inset-0 z-10 bg-black/40"></div>
         <div className="max-w-6xl px-4 flex z-20 flex-col justify-center items-center">
@@ -31,9 +33,10 @@ const DPS = () => {
           {/* Pinterest Layout */}
           <div className="columns-1 sm:columns-2 md:columns-3 gap-4">
             {images.map((id, i) => (
-              <img loading="lazy" 
+              <img
+                loading="lazy"
                 key={i}
-                src={imagekitImage(id)}
+                src={id}
                 alt="Mount Asisi"
                 className="mb-4 w-full rounded-xl break-inside-avoid shadow-md hover:scale-[1.02] transition"
               />

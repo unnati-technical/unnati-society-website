@@ -1,63 +1,81 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect } from "react";
 // eslint-disable-next-line no-unused-vars
-import { motion, AnimatePresence } from 'framer-motion';
-import { toast } from 'sonner';
-import { 
-  FiX, FiCheckCircle, FiUser, FiMapPin, FiBookOpen, 
-  FiBriefcase, FiPhone, FiMail, FiCalendar, FiClock,
-  FiFileText, FiShield, FiCheck, FiUsers, FiAward,
-  FiHeart, FiMonitor, FiAlertCircle, FiChevronRight, FiGlobe, FiInfo
-} from 'react-icons/fi';
-import { FaBuilding } from 'react-icons/fa';
-import { BiBuildingHouse, BiChalkboard } from 'react-icons/bi';
-import { jsPDF } from 'jspdf';
-import { outreachApi } from '../../api/outreach.api';
-const UnnatiLogo = 'https://ik.imagekit.io/unnati/v1782396887/unnati_assets/Unnati.png';
+import { motion, AnimatePresence } from "framer-motion";
+import { toast } from "sonner";
+import {
+  FiX,
+  FiCheckCircle,
+  FiUser,
+  FiMapPin,
+  FiBookOpen,
+  FiBriefcase,
+  FiPhone,
+  FiMail,
+  FiCalendar,
+  FiClock,
+  FiFileText,
+  FiShield,
+  FiCheck,
+  FiUsers,
+  FiAward,
+  FiHeart,
+  FiMonitor,
+  FiAlertCircle,
+  FiChevronRight,
+  FiGlobe,
+  FiInfo,
+} from "react-icons/fi";
+import { FaBuilding } from "react-icons/fa";
+import { BiBuildingHouse, BiChalkboard } from "react-icons/bi";
+import { jsPDF } from "jspdf";
+import { outreachApi } from "../../api/outreach.api";
+const UnnatiLogo =
+  "https://ik.imagekit.io/unnati/v1782396887/unnati_assets/Unnati.png";
 
 const InviteUsModal = ({ isOpen, onClose }) => {
   const [step, setStep] = useState(1);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSuccess, setIsSuccess] = useState(false);
 
-  const STORAGE_KEY = 'unnati_invite_us_draft';
+  const STORAGE_KEY = "unnati_invite_us_draft";
   const DRAFT_EXPIRATION = 60 * 60 * 1000; // 1 hour
 
   // Form State
   const [formData, setFormData] = useState(() => {
     const defaultState = {
       // Step 1: Institution
-      institutionName: '',
-      institutionType: '',
-      board: '',
-      studentsCount: '',
-      website: '',
-      state: '',
-      district: '',
-      city: '',
-      address: '',
-      
+      institutionName: "",
+      institutionType: "",
+      board: "",
+      studentsCount: "",
+      website: "",
+      state: "",
+      district: "",
+      city: "",
+      address: "",
+
       // Step 2: Program Needs
       programs: [],
       targetAudience: [],
-      expectedParticipants: '',
-      preferredMode: '',
-      prefDate: '',
-      altDate: '',
-      duration: '',
+      expectedParticipants: "",
+      preferredMode: "",
+      prefDate: "",
+      altDate: "",
+      duration: "",
 
       // Step 3: Contact Person
-      coordinatorName: '',
-      designation: '',
-      phone: '',
-      whatsapp: '',
-      email: '',
-      availability: '',
-      notes: '',
-      specialReqs: '',
+      coordinatorName: "",
+      designation: "",
+      phone: "",
+      whatsapp: "",
+      email: "",
+      availability: "",
+      notes: "",
+      specialReqs: "",
 
       // Step 4: Review
       agreement1: false,
-      agreement2: false
+      agreement2: false,
     };
 
     if (isOpen) {
@@ -80,37 +98,40 @@ const InviteUsModal = ({ isOpen, onClose }) => {
 
   useEffect(() => {
     if (isOpen) {
-      localStorage.setItem(STORAGE_KEY, JSON.stringify({
-        data: formData,
-        timestamp: Date.now()
-      }));
+      localStorage.setItem(
+        STORAGE_KEY,
+        JSON.stringify({
+          data: formData,
+          timestamp: Date.now(),
+        }),
+      );
     }
   }, [formData, isOpen]);
 
   useEffect(() => {
     if (isOpen) {
-      document.body.style.overflow = 'hidden';
+      document.body.style.overflow = "hidden";
     } else {
-      document.body.style.overflow = '';
+      document.body.style.overflow = "";
     }
     return () => {
-      document.body.style.overflow = '';
+      document.body.style.overflow = "";
     };
   }, [isOpen]);
 
   const handleInputChange = (e) => {
     const { name, value, type, checked } = e.target;
-    setFormData(prev => ({
+    setFormData((prev) => ({
       ...prev,
-      [name]: type === 'checkbox' ? checked : value
+      [name]: type === "checkbox" ? checked : value,
     }));
   };
 
   const handleArrayToggle = (field, value) => {
-    setFormData(prev => {
+    setFormData((prev) => {
       const array = prev[field];
       if (array.includes(value)) {
-        return { ...prev, [field]: array.filter(item => item !== value) };
+        return { ...prev, [field]: array.filter((item) => item !== value) };
       } else {
         return { ...prev, [field]: [...array, value] };
       }
@@ -120,63 +141,63 @@ const InviteUsModal = ({ isOpen, onClose }) => {
   const validateStep = (currentStep) => {
     if (currentStep === 1) {
       if (!formData.institutionName || !formData.institutionName.trim()) {
-        toast.error('Institution Name is required');
+        toast.error("Institution Name is required");
         return false;
       }
       if (!formData.institutionType) {
-        toast.error('Institution Type is required');
+        toast.error("Institution Type is required");
         return false;
       }
       if (!formData.state) {
-        toast.error('State is required');
+        toast.error("State is required");
         return false;
       }
       if (!formData.district) {
-        toast.error('District is required');
+        toast.error("District is required");
         return false;
       }
       if (!formData.city || !formData.city.trim()) {
-        toast.error('City/Town is required');
+        toast.error("City/Town is required");
         return false;
       }
       if (!formData.address || !formData.address.trim()) {
-        toast.error('Complete Address is required');
+        toast.error("Complete Address is required");
         return false;
       }
     } else if (currentStep === 3) {
       if (!formData.coordinatorName || !formData.coordinatorName.trim()) {
-        toast.error('Coordinator Name is required');
+        toast.error("Coordinator Name is required");
         return false;
       }
       if (!formData.designation || !formData.designation.trim()) {
-        toast.error('Designation is required');
+        toast.error("Designation is required");
         return false;
       }
       if (!formData.email || !formData.email.trim()) {
-        toast.error('Email Address is required');
+        toast.error("Email Address is required");
         return false;
       }
       const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
       if (!emailRegex.test(formData.email.trim())) {
-        toast.error('Please enter a valid email address');
+        toast.error("Please enter a valid email address");
         return false;
       }
       if (!formData.phone || !formData.phone.trim()) {
-        toast.error('Phone number is required');
+        toast.error("Phone number is required");
         return false;
       }
-      const phoneClean = formData.phone.replace(/\D/g, '');
+      const phoneClean = formData.phone.replace(/\D/g, "");
       if (phoneClean.length < 10) {
-        toast.error('Please enter a valid 10-digit phone number');
+        toast.error("Please enter a valid 10-digit phone number");
         return false;
       }
       if (!formData.whatsapp || !formData.whatsapp.trim()) {
-        toast.error('WhatsApp number is required');
+        toast.error("WhatsApp number is required");
         return false;
       }
-      const whatsappClean = formData.whatsapp.replace(/\D/g, '');
+      const whatsappClean = formData.whatsapp.replace(/\D/g, "");
       if (whatsappClean.length < 10) {
-        toast.error('Please enter a valid 10-digit WhatsApp number');
+        toast.error("Please enter a valid 10-digit WhatsApp number");
         return false;
       }
     }
@@ -185,10 +206,10 @@ const InviteUsModal = ({ isOpen, onClose }) => {
 
   const handleNext = () => {
     if (validateStep(step)) {
-      setStep(prev => Math.min(prev + 1, 4));
+      setStep((prev) => Math.min(prev + 1, 4));
     }
   };
-  const handlePrev = () => setStep(prev => Math.max(prev - 1, 1));
+  const handlePrev = () => setStep((prev) => Math.max(prev - 1, 1));
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -196,11 +217,11 @@ const InviteUsModal = ({ isOpen, onClose }) => {
       return;
     }
     if (!formData.agreement1 || !formData.agreement2) {
-      toast.error('Please accept all agreements before submitting');
+      toast.error("Please accept all agreements before submitting");
       return;
     }
     setIsSubmitting(true);
-    
+
     try {
       // Remove UI-only fields that cause 400 Bad Request due to forbidNonWhitelisted
       const { agreement1, agreement2, ...payload } = formData;
@@ -209,8 +230,8 @@ const InviteUsModal = ({ isOpen, onClose }) => {
       setIsSuccess(true);
       localStorage.removeItem(STORAGE_KEY);
     } catch (error) {
-      console.error('Error submitting form:', error);
-      toast.error(error.message || 'Error submitting form. Please try again.');
+      console.error("Error submitting form:", error);
+      toast.error(error.message || "Error submitting form. Please try again.");
     } finally {
       setIsSubmitting(false);
     }
@@ -218,36 +239,42 @@ const InviteUsModal = ({ isOpen, onClose }) => {
 
   const handleDownloadSummary = () => {
     const doc = new jsPDF();
-    
+
     // Header
     doc.setFontSize(22);
     doc.setTextColor(37, 99, 235);
     doc.text("UNNATI SOCIETY", 105, 20, { align: "center" });
-    
+
     doc.setFontSize(14);
     doc.setTextColor(71, 85, 105);
     doc.text("School Invite Request Summary", 105, 30, { align: "center" });
-    
+
     doc.setFontSize(10);
     doc.setTextColor(0, 0, 0);
     doc.text(`Reference ID: INV-2026-00125`, 20, 45);
     doc.text(`Date Submitted: ${new Date().toLocaleDateString()}`, 20, 52);
-    
+
     doc.setDrawColor(226, 232, 240);
     doc.line(20, 57, 190, 57);
-    
+
     let y = 67;
     const addSection = (title) => {
-      if (y > 270) { doc.addPage(); y = 20; }
+      if (y > 270) {
+        doc.addPage();
+        y = 20;
+      }
       doc.setFontSize(11);
       doc.setFont("helvetica", "bold");
       doc.setTextColor(15, 23, 42);
       doc.text(title, 20, y);
       y += 8;
     };
-    
+
     const addLine = (label, value) => {
-      if (y > 280) { doc.addPage(); y = 20; }
+      if (y > 280) {
+        doc.addPage();
+        y = 20;
+      }
       doc.setFontSize(10);
       doc.setFont("helvetica", "bold");
       doc.setTextColor(71, 85, 105);
@@ -256,43 +283,48 @@ const InviteUsModal = ({ isOpen, onClose }) => {
       doc.setTextColor(15, 23, 42);
       const textLines = doc.splitTextToSize(String(value), 120);
       doc.text(textLines, 60, y);
-      y += (textLines.length * 5) + 2;
+      y += textLines.length * 5 + 2;
     };
 
     addSection("INSTITUTION DETAILS");
     addLine("Name", formData.institutionName);
     addLine("Type", formData.institutionType);
-    addLine("Board", formData.board || 'N/A');
-    addLine("Website", formData.website || 'N/A');
-    addLine("Location", `${formData.city}, ${formData.district}, ${formData.state}`);
+    addLine("Board", formData.board || "N/A");
+    addLine("Website", formData.website || "N/A");
+    addLine(
+      "Location",
+      `${formData.city}, ${formData.district}, ${formData.state}`,
+    );
     addLine("Address", formData.address);
-    addLine("Total Students", formData.studentsCount || 'N/A');
-    
+    addLine("Total Students", formData.studentsCount || "N/A");
+
     y += 5;
     addSection("CONTACT PERSON");
     addLine("Name", formData.coordinatorName);
     addLine("Designation", formData.designation);
     addLine("Email", formData.email);
     addLine("Phone", formData.phone);
-    addLine("WhatsApp", formData.whatsapp || 'N/A');
-    addLine("Availability", formData.availability || 'N/A');
-    
+    addLine("WhatsApp", formData.whatsapp || "N/A");
+    addLine("Availability", formData.availability || "N/A");
+
     y += 5;
     addSection("PROGRAM REQUIREMENTS");
-    addLine("Programs Required", formData.programs.join(', ') || 'None');
-    addLine("Target Audience", formData.targetAudience.join(', ') || 'None');
-    addLine("Expected Participants", formData.expectedParticipants || 'N/A');
-    addLine("Preferred Mode", formData.preferredMode || 'N/A');
-    addLine("Preferred Date", formData.prefDate || 'N/A');
-    addLine("Alternate Date", formData.altDate || 'N/A');
-    addLine("Duration", formData.duration || 'N/A');
-    
+    addLine("Programs Required", formData.programs.join(", ") || "None");
+    addLine("Target Audience", formData.targetAudience.join(", ") || "None");
+    addLine("Expected Participants", formData.expectedParticipants || "N/A");
+    addLine("Preferred Mode", formData.preferredMode || "N/A");
+    addLine("Preferred Date", formData.prefDate || "N/A");
+    addLine("Alternate Date", formData.altDate || "N/A");
+    addLine("Duration", formData.duration || "N/A");
+
     y += 5;
     addSection("ADDITIONAL DETAILS");
-    addLine("Notes", formData.notes || 'None');
-    addLine("Special Requirements", formData.specialReqs || 'None');
-    
-    doc.save(`SchoolInvite_Summary_${formData.institutionName.replace(/\\s+/g, '_')}.pdf`);
+    addLine("Notes", formData.notes || "None");
+    addLine("Special Requirements", formData.specialReqs || "None");
+
+    doc.save(
+      `SchoolInvite_Summary_${formData.institutionName.replace(/\\s+/g, "_")}.pdf`,
+    );
   };
 
   const resetAndClose = () => {
@@ -305,13 +337,15 @@ const InviteUsModal = ({ isOpen, onClose }) => {
 
   return (
     <AnimatePresence>
-      <motion.div 
-        initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
+      <motion.div
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        exit={{ opacity: 0 }}
         className="fixed inset-0 z-[100] flex items-center justify-center bg-black/60 backdrop-blur-sm"
       >
-        <motion.div 
-          initial={{ opacity: 0, scale: 0.98, y: 10 }} 
-          animate={{ opacity: 1, scale: 1, y: 0 }} 
+        <motion.div
+          initial={{ opacity: 0, scale: 0.98, y: 10 }}
+          animate={{ opacity: 1, scale: 1, y: 0 }}
           exit={{ opacity: 0, scale: 0.98, y: 10 }}
           transition={{ duration: 0.3, ease: "easeOut" }}
           className="bg-white w-[90vw] max-w-[1440px] h-[88vh] rounded-[24px] shadow-2xl flex overflow-hidden border border-gray-200"
@@ -320,38 +354,73 @@ const InviteUsModal = ({ isOpen, onClose }) => {
           <div className="hidden lg:flex w-[30%] bg-gradient-to-b from-[#0F2C8C] to-[#0A1F66] flex-col p-6 text-white relative shrink-0 overflow-y-auto custom-scrollbar">
             {/* Logo */}
             <div className="w-12 h-12 bg-white rounded-full flex items-center justify-center mb-6 shrink-0 shadow-lg overflow-hidden">
-              <img loading="lazy" src={UnnatiLogo} alt="Unnati Logo" className="w-full h-full object-cover scale-125" />
+              <img
+                loading="lazy"
+                src={UnnatiLogo}
+                alt="Unnati Logo"
+                className="w-full h-full object-cover scale-125"
+              />
             </div>
 
             {/* Hero Message */}
             <div className="shrink-0 mb-6">
-              <h2 className="text-3xl font-bold leading-tight mb-2 text-white">Invite Unnati to Your School</h2>
+              <h2 className="text-3xl font-bold leading-tight mb-2 text-white">
+                Invite Unnati to Your School
+              </h2>
               <p className="text-sm text-blue-100/90 leading-relaxed font-medium">
-                Let's collaborate to bring impactful sessions, workshops, and guidance programs to your students.
+                Let's collaborate to bring impactful sessions, workshops, and
+                guidance programs to your students.
               </p>
             </div>
 
             {/* Hero Illustration */}
             <div className="w-full h-40 rounded-2xl overflow-hidden shadow-xl mb-6 shrink-0 border-4 border-white/10 relative">
-              <img loading="lazy" src="https://ik.imagekit.io/unnati/v1782475437/outreach_4_ju0fxm.jpg" alt="Workshop" className="w-full h-full object-cover" />
+              <img
+                loading="lazy"
+                src="https://ik.imagekit.io/zpkfsvgtn/Outreach/Copy%20of%20IMG_5062.JPG?updatedAt=1786958723196"
+                alt="Workshop"
+                className="w-full h-full object-cover"
+              />
             </div>
 
             <div className="bg-white rounded-xl p-4 text-[#0F172A] mb-4 shrink-0 shadow-lg flex flex-col">
-              <h4 className="font-bold text-sm mb-3 text-blue-900">What You Get</h4>
+              <h4 className="font-bold text-sm mb-3 text-blue-900">
+                What You Get
+              </h4>
               <ul className="space-y-3">
                 {[
-                  { title: "Expert-led Sessions", desc: "Career guidance & digital literacy", icon: <FiUsers /> },
-                  { title: "Engaging Workshops", desc: "Hands-on learning & skill development", icon: <BiChalkboard /> },
-                  { title: "Inspiring Talks", desc: "Motivation, leadership & innovation", icon: <FiAward /> },
-                  { title: "Complete Support", desc: "From planning to execution", icon: <FiCheckCircle /> }
+                  {
+                    title: "Expert-led Sessions",
+                    desc: "Career guidance & digital literacy",
+                    icon: <FiUsers />,
+                  },
+                  {
+                    title: "Engaging Workshops",
+                    desc: "Hands-on learning & skill development",
+                    icon: <BiChalkboard />,
+                  },
+                  {
+                    title: "Inspiring Talks",
+                    desc: "Motivation, leadership & innovation",
+                    icon: <FiAward />,
+                  },
+                  {
+                    title: "Complete Support",
+                    desc: "From planning to execution",
+                    icon: <FiCheckCircle />,
+                  },
                 ].map((item, i) => (
                   <li key={i} className="flex items-start gap-3">
                     <div className="w-8 h-8 rounded-full bg-blue-50 text-blue-600 flex items-center justify-center shrink-0 mt-0.5">
                       {item.icon}
                     </div>
                     <div>
-                      <div className="text-xs font-bold text-gray-800 leading-tight">{item.title}</div>
-                      <div className="text-[10px] text-gray-500 font-medium mt-0.5 leading-tight">{item.desc}</div>
+                      <div className="text-xs font-bold text-gray-800 leading-tight">
+                        {item.title}
+                      </div>
+                      <div className="text-[10px] text-gray-500 font-medium mt-0.5 leading-tight">
+                        {item.desc}
+                      </div>
                     </div>
                   </li>
                 ))}
@@ -361,12 +430,17 @@ const InviteUsModal = ({ isOpen, onClose }) => {
             {/* Quote Section */}
             <div className="bg-white/10 border border-white/20 rounded-xl p-4 shrink-0 backdrop-blur-md">
               <div className="flex gap-3">
-                <div className="text-blue-300"><FaBuilding size={20} /></div>
+                <div className="text-blue-300">
+                  <FaBuilding size={20} />
+                </div>
                 <div>
                   <p className="text-xs text-blue-50 font-medium italic leading-relaxed mb-2">
-                    "Education is the most powerful weapon which you can use to change the world."
+                    "Education is the most powerful weapon which you can use to
+                    change the world."
                   </p>
-                  <p className="text-[10px] text-yellow-400 font-bold">— Nelson Mandela</p>
+                  <p className="text-[10px] text-yellow-400 font-bold">
+                    — Nelson Mandela
+                  </p>
                 </div>
               </div>
             </div>
@@ -374,14 +448,20 @@ const InviteUsModal = ({ isOpen, onClose }) => {
 
           {/* MAIN CONTENT AREA (70%) */}
           <div className="flex-1 flex flex-col bg-white overflow-hidden">
-            
             {/* HEADER */}
             <div className="px-10 py-6 border-b border-gray-100 flex justify-between items-start shrink-0 bg-white">
               <div>
-                <h2 className="text-2xl font-bold text-[#0F172A] mb-1">Send Us an Invitation</h2>
-                <p className="text-sm text-gray-500">Fill in the details and our team will get in touch with you.</p>
+                <h2 className="text-2xl font-bold text-[#0F172A] mb-1">
+                  Send Us an Invitation
+                </h2>
+                <p className="text-sm text-gray-500">
+                  Fill in the details and our team will get in touch with you.
+                </p>
               </div>
-              <button onClick={resetAndClose} className="w-8 h-8 flex items-center justify-center rounded-full border border-gray-200 text-gray-500 hover:bg-gray-100 transition-colors">
+              <button
+                onClick={resetAndClose}
+                className="w-8 h-8 flex items-center justify-center rounded-full border border-gray-200 text-gray-500 hover:bg-gray-100 transition-colors"
+              >
                 <FiX size={16} />
               </button>
             </div>
@@ -389,46 +469,89 @@ const InviteUsModal = ({ isOpen, onClose }) => {
             {/* MAIN AREA */}
             {isSuccess ? (
               <div className="flex-1 flex flex-col p-8 bg-gray-50/50 overflow-y-auto custom-scrollbar">
-                 <motion.div initial={{ scale: 0.9, opacity: 0 }} animate={{ scale: 1, opacity: 1 }} className="max-w-md w-full my-auto mx-auto text-center bg-white p-10 rounded-3xl shadow-xl border border-gray-100">
-                   <div className="w-24 h-24 bg-green-50 text-green-500 rounded-full flex items-center justify-center mx-auto mb-6">
-                     <FiCheckCircle size={48} />
-                   </div>
-                   <h2 className="text-2xl font-bold text-[#0F172A] mb-3">Invitation Submitted Successfully</h2>
-                   <p className="text-gray-600 text-sm mb-6 leading-relaxed">Thank you for inviting Unnati Society. Our outreach team will review your request and connect with you within 24–48 hours.</p>
-                   <div className="bg-gray-50 border border-gray-200 rounded-xl p-4 mb-8">
-                     <p className="text-xs text-gray-500 font-bold uppercase tracking-wider mb-1">Reference ID</p>
-                     <p className="text-xl font-mono font-bold text-gray-800">OUT-2026-00152</p>
-                   </div>
-                   <div className="flex flex-col gap-3">
-                     <button onClick={handleDownloadSummary} className="px-6 py-2.5 bg-white border border-gray-200 text-gray-700 font-bold rounded-lg hover:bg-gray-50 text-sm transition-colors">
-                       Download Summary
-                     </button>
-                     <button onClick={resetAndClose} className="w-full px-6 py-3 bg-blue-600 text-white font-bold rounded-xl hover:bg-blue-700 text-sm transition-colors shadow-lg shadow-blue-600/30">
-                       Return to Outreach Page
-                     </button>
-                   </div>
-                 </motion.div>
+                <motion.div
+                  initial={{ scale: 0.9, opacity: 0 }}
+                  animate={{ scale: 1, opacity: 1 }}
+                  className="max-w-md w-full my-auto mx-auto text-center bg-white p-10 rounded-3xl shadow-xl border border-gray-100"
+                >
+                  <div className="w-24 h-24 bg-green-50 text-green-500 rounded-full flex items-center justify-center mx-auto mb-6">
+                    <FiCheckCircle size={48} />
+                  </div>
+                  <h2 className="text-2xl font-bold text-[#0F172A] mb-3">
+                    Invitation Submitted Successfully
+                  </h2>
+                  <p className="text-gray-600 text-sm mb-6 leading-relaxed">
+                    Thank you for inviting Unnati Society. Our outreach team
+                    will review your request and connect with you within 24–48
+                    hours.
+                  </p>
+                  <div className="bg-gray-50 border border-gray-200 rounded-xl p-4 mb-8">
+                    <p className="text-xs text-gray-500 font-bold uppercase tracking-wider mb-1">
+                      Reference ID
+                    </p>
+                    <p className="text-xl font-mono font-bold text-gray-800">
+                      OUT-2026-00152
+                    </p>
+                  </div>
+                  <div className="flex flex-col gap-3">
+                    <button
+                      onClick={handleDownloadSummary}
+                      className="px-6 py-2.5 bg-white border border-gray-200 text-gray-700 font-bold rounded-lg hover:bg-gray-50 text-sm transition-colors"
+                    >
+                      Download Summary
+                    </button>
+                    <button
+                      onClick={resetAndClose}
+                      className="w-full px-6 py-3 bg-blue-600 text-white font-bold rounded-xl hover:bg-blue-700 text-sm transition-colors shadow-lg shadow-blue-600/30"
+                    >
+                      Return to Outreach Page
+                    </button>
+                  </div>
+                </motion.div>
               </div>
             ) : (
               <div className="flex-1 flex flex-col overflow-hidden">
-                
                 {/* STEPPER */}
                 <div className="px-10 pt-8 pb-4 shrink-0 bg-white">
                   <div className="flex items-center justify-between relative max-w-2xl mx-auto">
                     <div className="absolute left-0 top-4 w-full h-[2px] bg-gray-100 z-0"></div>
-                    <div className="absolute left-0 top-4 h-[2px] bg-blue-600 z-0 transition-all duration-300" style={{ width: `${((step - 1) / 3) * 100}%` }}></div>
-                    
+                    <div
+                      className="absolute left-0 top-4 h-[2px] bg-blue-600 z-0 transition-all duration-300"
+                      style={{ width: `${((step - 1) / 3) * 100}%` }}
+                    ></div>
+
                     {[
-                      { num: 1, title: "Institution", icon: <BiBuildingHouse size={14}/> },
-                      { num: 2, title: "Program Needs", icon: <FiMonitor size={14}/> },
-                      { num: 3, title: "Contact Person", icon: <FiUsers size={14}/> },
-                      { num: 4, title: "Review", icon: <FiCheck size={14}/> }
+                      {
+                        num: 1,
+                        title: "Institution",
+                        icon: <BiBuildingHouse size={14} />,
+                      },
+                      {
+                        num: 2,
+                        title: "Program Needs",
+                        icon: <FiMonitor size={14} />,
+                      },
+                      {
+                        num: 3,
+                        title: "Contact Person",
+                        icon: <FiUsers size={14} />,
+                      },
+                      { num: 4, title: "Review", icon: <FiCheck size={14} /> },
                     ].map((s) => (
-                      <div key={s.num} className="relative z-10 flex flex-col items-center gap-2">
-                        <div className={`w-8 h-8 rounded-full flex items-center justify-center font-bold transition-colors ${step >= s.num ? 'bg-blue-600 text-white ring-4 ring-white' : 'bg-white border-2 border-gray-200 text-gray-400 ring-4 ring-white'}`}>
+                      <div
+                        key={s.num}
+                        className="relative z-10 flex flex-col items-center gap-2"
+                      >
+                        <div
+                          className={`w-8 h-8 rounded-full flex items-center justify-center font-bold transition-colors ${step >= s.num ? "bg-blue-600 text-white ring-4 ring-white" : "bg-white border-2 border-gray-200 text-gray-400 ring-4 ring-white"}`}
+                        >
                           {step > s.num ? <FiCheck size={14} /> : s.icon}
                         </div>
-                        <div className={`text-[11px] font-bold ${step >= s.num ? 'text-blue-600' : 'text-gray-400'}`}>{s.title}</div>
+                        <div
+                          className={`text-[11px] font-bold ${step >= s.num ? "text-blue-600" : "text-gray-400"}`}
+                        >
+                          {s.title}
+                        </div>
                       </div>
                     ))}
                   </div>
@@ -437,85 +560,217 @@ const InviteUsModal = ({ isOpen, onClose }) => {
                 {/* FORM WIZARD */}
                 <div className="flex-1 px-10 py-4 overflow-y-auto custom-scrollbar">
                   <form className="min-h-full flex flex-col w-full mx-auto max-w-3xl">
-                    
                     {/* STEP 1: Institution */}
                     {step === 1 && (
-                      <motion.div initial={{ opacity: 0, x: 10 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: -10 }} className="flex flex-col min-h-full space-y-4 pb-4">
-                        <h3 className="text-base font-bold text-blue-600 flex items-center gap-2 mb-2"><BiBuildingHouse size={18}/> Institution Information</h3>
-                        
+                      <motion.div
+                        initial={{ opacity: 0, x: 10 }}
+                        animate={{ opacity: 1, x: 0 }}
+                        exit={{ opacity: 0, x: -10 }}
+                        className="flex flex-col min-h-full space-y-4 pb-4"
+                      >
+                        <h3 className="text-base font-bold text-blue-600 flex items-center gap-2 mb-2">
+                          <BiBuildingHouse size={18} /> Institution Information
+                        </h3>
+
                         <div className="grid grid-cols-2 gap-4">
                           <div>
-                            <label className="block text-[11px] font-bold text-[#0F172A] mb-1">Institution Name <span className="text-red-500">*</span></label>
-                            <input type="text" name="institutionName" value={formData.institutionName} onChange={handleInputChange} placeholder="Enter institution name" className="w-full border border-gray-200 rounded-lg px-3 py-2 text-xs focus:border-blue-500 outline-none" />
+                            <label className="block text-[11px] font-bold text-[#0F172A] mb-1">
+                              Institution Name{" "}
+                              <span className="text-red-500">*</span>
+                            </label>
+                            <input
+                              type="text"
+                              name="institutionName"
+                              value={formData.institutionName}
+                              onChange={handleInputChange}
+                              placeholder="Enter institution name"
+                              className="w-full border border-gray-200 rounded-lg px-3 py-2 text-xs focus:border-blue-500 outline-none"
+                            />
                           </div>
                           <div>
-                            <label className="block text-[11px] font-bold text-[#0F172A] mb-1">Institution Type <span className="text-red-500">*</span></label>
-                            <select name="institutionType" value={formData.institutionType} onChange={handleInputChange} className="w-full border border-gray-200 rounded-lg px-3 py-2 text-xs focus:border-blue-500 outline-none bg-white">
+                            <label className="block text-[11px] font-bold text-[#0F172A] mb-1">
+                              Institution Type{" "}
+                              <span className="text-red-500">*</span>
+                            </label>
+                            <select
+                              name="institutionType"
+                              value={formData.institutionType}
+                              onChange={handleInputChange}
+                              className="w-full border border-gray-200 rounded-lg px-3 py-2 text-xs focus:border-blue-500 outline-none bg-white"
+                            >
                               <option value="">Select type</option>
-                              <option>Government School</option><option>Private School</option><option>College</option><option>University</option><option>Coaching Institute</option><option>NGO</option><option>Training Center</option><option>Other</option>
+                              <option>Government School</option>
+                              <option>Private School</option>
+                              <option>College</option>
+                              <option>University</option>
+                              <option>Coaching Institute</option>
+                              <option>NGO</option>
+                              <option>Training Center</option>
+                              <option>Other</option>
                             </select>
                           </div>
                         </div>
 
                         <div className="grid grid-cols-3 gap-4">
                           <div>
-                            <label className="block text-[11px] font-bold text-[#0F172A] mb-1">Board / Affiliation</label>
-                            <select name="board" value={formData.board} onChange={handleInputChange} className="w-full border border-gray-200 rounded-lg px-3 py-2 text-xs focus:border-blue-500 outline-none bg-white">
+                            <label className="block text-[11px] font-bold text-[#0F172A] mb-1">
+                              Board / Affiliation
+                            </label>
+                            <select
+                              name="board"
+                              value={formData.board}
+                              onChange={handleInputChange}
+                              className="w-full border border-gray-200 rounded-lg px-3 py-2 text-xs focus:border-blue-500 outline-none bg-white"
+                            >
                               <option value="">Select board</option>
-                              <option>CBSE</option><option>ICSE</option><option>Bihar Board</option><option>State Board</option><option>University</option><option>Other</option>
+                              <option>CBSE</option>
+                              <option>ICSE</option>
+                              <option>Bihar Board</option>
+                              <option>State Board</option>
+                              <option>University</option>
+                              <option>Other</option>
                             </select>
                           </div>
                           <div>
-                            <label className="block text-[11px] font-bold text-[#0F172A] mb-1">Total Students</label>
-                            <input type="number" name="studentsCount" value={formData.studentsCount} onChange={handleInputChange} placeholder="Approx. count" className="w-full border border-gray-200 rounded-lg px-3 py-2 text-xs focus:border-blue-500 outline-none" />
+                            <label className="block text-[11px] font-bold text-[#0F172A] mb-1">
+                              Total Students
+                            </label>
+                            <input
+                              type="number"
+                              name="studentsCount"
+                              value={formData.studentsCount}
+                              onChange={handleInputChange}
+                              placeholder="Approx. count"
+                              className="w-full border border-gray-200 rounded-lg px-3 py-2 text-xs focus:border-blue-500 outline-none"
+                            />
                           </div>
                           <div>
-                            <label className="block text-[11px] font-bold text-[#0F172A] mb-1">Website (Optional)</label>
-                            <input type="url" name="website" value={formData.website} onChange={handleInputChange} placeholder="https://" className="w-full border border-gray-200 rounded-lg px-3 py-2 text-xs focus:border-blue-500 outline-none" />
+                            <label className="block text-[11px] font-bold text-[#0F172A] mb-1">
+                              Website (Optional)
+                            </label>
+                            <input
+                              type="url"
+                              name="website"
+                              value={formData.website}
+                              onChange={handleInputChange}
+                              placeholder="https://"
+                              className="w-full border border-gray-200 rounded-lg px-3 py-2 text-xs focus:border-blue-500 outline-none"
+                            />
                           </div>
                         </div>
 
-                        <h3 className="text-base font-bold text-blue-600 flex items-center gap-2 mt-2 mb-2"><FiMapPin size={16}/> Location</h3>
-                        
+                        <h3 className="text-base font-bold text-blue-600 flex items-center gap-2 mt-2 mb-2">
+                          <FiMapPin size={16} /> Location
+                        </h3>
+
                         <div className="grid grid-cols-3 gap-4">
                           <div>
-                            <label className="block text-[11px] font-bold text-[#0F172A] mb-1">State <span className="text-red-500">*</span></label>
-                            <select name="state" value={formData.state} onChange={handleInputChange} className="w-full border border-gray-200 rounded-lg px-3 py-2 text-xs focus:border-blue-500 outline-none bg-white">
+                            <label className="block text-[11px] font-bold text-[#0F172A] mb-1">
+                              State <span className="text-red-500">*</span>
+                            </label>
+                            <select
+                              name="state"
+                              value={formData.state}
+                              onChange={handleInputChange}
+                              className="w-full border border-gray-200 rounded-lg px-3 py-2 text-xs focus:border-blue-500 outline-none bg-white"
+                            >
                               <option value="">Select state</option>
-                              <option>Bihar</option><option>Jharkhand</option><option>West Bengal</option><option>Other</option>
+                              <option>Bihar</option>
+                              <option>Jharkhand</option>
+                              <option>West Bengal</option>
+                              <option>Other</option>
                             </select>
                           </div>
                           <div>
-                            <label className="block text-[11px] font-bold text-[#0F172A] mb-1">District <span className="text-red-500">*</span></label>
-                            <select name="district" value={formData.district} onChange={handleInputChange} className="w-full border border-gray-200 rounded-lg px-3 py-2 text-xs focus:border-blue-500 outline-none bg-white">
+                            <label className="block text-[11px] font-bold text-[#0F172A] mb-1">
+                              District <span className="text-red-500">*</span>
+                            </label>
+                            <select
+                              name="district"
+                              value={formData.district}
+                              onChange={handleInputChange}
+                              className="w-full border border-gray-200 rounded-lg px-3 py-2 text-xs focus:border-blue-500 outline-none bg-white"
+                            >
                               <option value="">Select district</option>
-                              <option>Bhagalpur</option><option>Patna</option><option>Munger</option><option>Banka</option><option>Other</option>
+                              <option>Bhagalpur</option>
+                              <option>Patna</option>
+                              <option>Munger</option>
+                              <option>Banka</option>
+                              <option>Other</option>
                             </select>
                           </div>
                           <div>
-                            <label className="block text-[11px] font-bold text-[#0F172A] mb-1">City / Town <span className="text-red-500">*</span></label>
-                            <input type="text" name="city" value={formData.city} onChange={handleInputChange} placeholder="Enter city" className="w-full border border-gray-200 rounded-lg px-3 py-2 text-xs focus:border-blue-500 outline-none" />
+                            <label className="block text-[11px] font-bold text-[#0F172A] mb-1">
+                              City / Town{" "}
+                              <span className="text-red-500">*</span>
+                            </label>
+                            <input
+                              type="text"
+                              name="city"
+                              value={formData.city}
+                              onChange={handleInputChange}
+                              placeholder="Enter city"
+                              className="w-full border border-gray-200 rounded-lg px-3 py-2 text-xs focus:border-blue-500 outline-none"
+                            />
                           </div>
                         </div>
 
                         <div className="flex-1 min-h-0 flex flex-col">
-                          <label className="block text-[11px] font-bold text-[#0F172A] mb-1">Complete Address <span className="text-red-500">*</span></label>
-                          <textarea name="address" value={formData.address} onChange={handleInputChange} placeholder="Enter complete address..." className="w-full border border-gray-200 rounded-lg px-3 py-2 text-xs focus:border-blue-500 outline-none resize-none flex-1 min-h-[60px]"></textarea>
+                          <label className="block text-[11px] font-bold text-[#0F172A] mb-1">
+                            Complete Address{" "}
+                            <span className="text-red-500">*</span>
+                          </label>
+                          <textarea
+                            name="address"
+                            value={formData.address}
+                            onChange={handleInputChange}
+                            placeholder="Enter complete address..."
+                            className="w-full border border-gray-200 rounded-lg px-3 py-2 text-xs focus:border-blue-500 outline-none resize-none flex-1 min-h-[60px]"
+                          ></textarea>
                         </div>
                       </motion.div>
                     )}
 
                     {/* STEP 2: Program Needs */}
                     {step === 2 && (
-                      <motion.div initial={{ opacity: 0, x: 10 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: -10 }} className="flex flex-col min-h-full space-y-4 pb-4">
-                        
+                      <motion.div
+                        initial={{ opacity: 0, x: 10 }}
+                        animate={{ opacity: 1, x: 0 }}
+                        exit={{ opacity: 0, x: -10 }}
+                        className="flex flex-col min-h-full space-y-4 pb-4"
+                      >
                         <div className="flex-1 min-h-0 flex flex-col">
-                          <h3 className="text-sm font-bold text-blue-600 border-b border-gray-100 pb-2 mb-2">Which Programs Are You Interested In?</h3>
+                          <h3 className="text-sm font-bold text-blue-600 border-b border-gray-100 pb-2 mb-2">
+                            Which Programs Are You Interested In?
+                          </h3>
                           <div className="grid grid-cols-3 gap-2 flex-1 overflow-hidden">
-                            {['Digital Literacy', 'Career Guidance', 'Scholarship Awareness', 'Leadership Development', 'Women Empowerment', 'Cyber Safety', 'Soft Skills', 'Study Skills', 'Motivation Session', 'Technology Awareness'].map(p => (
-                              <label key={p} className="flex items-center gap-2 cursor-pointer group">
-                                <input type="checkbox" onChange={() => handleArrayToggle('programs', p)} checked={formData.programs.includes(p)} className="w-3.5 h-3.5 rounded text-blue-600 border-gray-300 focus:ring-blue-500" />
-                                <span className="text-[11px] text-gray-700 font-medium group-hover:text-black">{p}</span>
+                            {[
+                              "Digital Literacy",
+                              "Career Guidance",
+                              "Scholarship Awareness",
+                              "Leadership Development",
+                              "Women Empowerment",
+                              "Cyber Safety",
+                              "Soft Skills",
+                              "Study Skills",
+                              "Motivation Session",
+                              "Technology Awareness",
+                            ].map((p) => (
+                              <label
+                                key={p}
+                                className="flex items-center gap-2 cursor-pointer group"
+                              >
+                                <input
+                                  type="checkbox"
+                                  onChange={() =>
+                                    handleArrayToggle("programs", p)
+                                  }
+                                  checked={formData.programs.includes(p)}
+                                  className="w-3.5 h-3.5 rounded text-blue-600 border-gray-300 focus:ring-blue-500"
+                                />
+                                <span className="text-[11px] text-gray-700 font-medium group-hover:text-black">
+                                  {p}
+                                </span>
                               </label>
                             ))}
                           </div>
@@ -523,100 +778,248 @@ const InviteUsModal = ({ isOpen, onClose }) => {
 
                         <div className="grid grid-cols-2 gap-6 pt-2 border-t border-gray-100">
                           <div>
-                            <h3 className="text-sm font-bold text-blue-600 mb-2">Target Audience</h3>
+                            <h3 className="text-sm font-bold text-blue-600 mb-2">
+                              Target Audience
+                            </h3>
                             <div className="grid grid-cols-2 gap-2">
-                              {['Class 6–8', 'Class 9–10', 'Class 11–12', 'College Students', 'Teachers', 'Parents'].map(a => (
-                                <label key={a} className="flex items-center gap-2 cursor-pointer group">
-                                  <input type="checkbox" onChange={() => handleArrayToggle('targetAudience', a)} checked={formData.targetAudience.includes(a)} className="w-3.5 h-3.5 rounded text-blue-600 border-gray-300" />
-                                  <span className="text-[11px] text-gray-700 font-medium">{a}</span>
+                              {[
+                                "Class 6–8",
+                                "Class 9–10",
+                                "Class 11–12",
+                                "College Students",
+                                "Teachers",
+                                "Parents",
+                              ].map((a) => (
+                                <label
+                                  key={a}
+                                  className="flex items-center gap-2 cursor-pointer group"
+                                >
+                                  <input
+                                    type="checkbox"
+                                    onChange={() =>
+                                      handleArrayToggle("targetAudience", a)
+                                    }
+                                    checked={formData.targetAudience.includes(
+                                      a,
+                                    )}
+                                    className="w-3.5 h-3.5 rounded text-blue-600 border-gray-300"
+                                  />
+                                  <span className="text-[11px] text-gray-700 font-medium">
+                                    {a}
+                                  </span>
                                 </label>
                               ))}
                             </div>
                           </div>
 
                           <div className="space-y-3">
-                            <h3 className="text-sm font-bold text-blue-600 mb-2">Logistics</h3>
+                            <h3 className="text-sm font-bold text-blue-600 mb-2">
+                              Logistics
+                            </h3>
                             <div className="grid grid-cols-2 gap-3">
                               <div>
-                                <label className="block text-[10px] font-bold text-[#0F172A] mb-1">Expected Participants</label>
-                                <input type="number" name="expectedParticipants" value={formData.expectedParticipants} onChange={handleInputChange} className="w-full border border-gray-200 rounded-md px-2 py-1.5 text-xs outline-none" placeholder="Count"/>
+                                <label className="block text-[10px] font-bold text-[#0F172A] mb-1">
+                                  Expected Participants
+                                </label>
+                                <input
+                                  type="number"
+                                  name="expectedParticipants"
+                                  value={formData.expectedParticipants}
+                                  onChange={handleInputChange}
+                                  className="w-full border border-gray-200 rounded-md px-2 py-1.5 text-xs outline-none"
+                                  placeholder="Count"
+                                />
                               </div>
                               <div>
-                                <label className="block text-[10px] font-bold text-[#0F172A] mb-1">Preferred Mode</label>
-                                <select name="preferredMode" value={formData.preferredMode} onChange={handleInputChange} className="w-full border border-gray-200 rounded-md px-2 py-1.5 text-xs outline-none bg-white">
+                                <label className="block text-[10px] font-bold text-[#0F172A] mb-1">
+                                  Preferred Mode
+                                </label>
+                                <select
+                                  name="preferredMode"
+                                  value={formData.preferredMode}
+                                  onChange={handleInputChange}
+                                  className="w-full border border-gray-200 rounded-md px-2 py-1.5 text-xs outline-none bg-white"
+                                >
                                   <option value="">Select mode</option>
-                                  <option>Offline</option><option>Online</option><option>Hybrid</option>
+                                  <option>Offline</option>
+                                  <option>Online</option>
+                                  <option>Hybrid</option>
                                 </select>
                               </div>
                             </div>
                             <div className="grid grid-cols-3 gap-3">
                               <div>
-                                <label className="block text-[10px] font-bold text-[#0F172A] mb-1">Preferred Date</label>
-                                <input type="date" name="prefDate" value={formData.prefDate} onChange={handleInputChange} className="w-full border border-gray-200 rounded-md px-2 py-1.5 text-[10px] outline-none" />
+                                <label className="block text-[10px] font-bold text-[#0F172A] mb-1">
+                                  Preferred Date
+                                </label>
+                                <input
+                                  type="date"
+                                  name="prefDate"
+                                  value={formData.prefDate}
+                                  onChange={handleInputChange}
+                                  className="w-full border border-gray-200 rounded-md px-2 py-1.5 text-[10px] outline-none"
+                                />
                               </div>
                               <div>
-                                <label className="block text-[10px] font-bold text-[#0F172A] mb-1">Alternative Date</label>
-                                <input type="date" name="altDate" value={formData.altDate} onChange={handleInputChange} className="w-full border border-gray-200 rounded-md px-2 py-1.5 text-[10px] outline-none" />
+                                <label className="block text-[10px] font-bold text-[#0F172A] mb-1">
+                                  Alternative Date
+                                </label>
+                                <input
+                                  type="date"
+                                  name="altDate"
+                                  value={formData.altDate}
+                                  onChange={handleInputChange}
+                                  className="w-full border border-gray-200 rounded-md px-2 py-1.5 text-[10px] outline-none"
+                                />
                               </div>
                               <div>
-                                <label className="block text-[10px] font-bold text-[#0F172A] mb-1">Session Duration</label>
-                                <select name="duration" value={formData.duration} onChange={handleInputChange} className="w-full border border-gray-200 rounded-md px-2 py-1.5 text-xs outline-none bg-white">
-                                  <option value="">Select</option><option>1 Hour</option><option>Half Day</option><option>Full Day</option>
+                                <label className="block text-[10px] font-bold text-[#0F172A] mb-1">
+                                  Session Duration
+                                </label>
+                                <select
+                                  name="duration"
+                                  value={formData.duration}
+                                  onChange={handleInputChange}
+                                  className="w-full border border-gray-200 rounded-md px-2 py-1.5 text-xs outline-none bg-white"
+                                >
+                                  <option value="">Select</option>
+                                  <option>1 Hour</option>
+                                  <option>Half Day</option>
+                                  <option>Full Day</option>
                                 </select>
                               </div>
                             </div>
                           </div>
                         </div>
-
                       </motion.div>
                     )}
 
                     {/* STEP 3: Contact Person */}
                     {step === 3 && (
-                      <motion.div initial={{ opacity: 0, x: 10 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: -10 }} className="flex flex-col min-h-full space-y-4 pb-4">
+                      <motion.div
+                        initial={{ opacity: 0, x: 10 }}
+                        animate={{ opacity: 1, x: 0 }}
+                        exit={{ opacity: 0, x: -10 }}
+                        className="flex flex-col min-h-full space-y-4 pb-4"
+                      >
                         <div className="grid grid-cols-2 gap-6 h-full">
                           <div className="flex flex-col space-y-3">
-                            <h3 className="text-sm font-bold text-blue-600 border-b border-gray-100 pb-2">Coordinator Details</h3>
-                            
+                            <h3 className="text-sm font-bold text-blue-600 border-b border-gray-100 pb-2">
+                              Coordinator Details
+                            </h3>
+
                             <div>
-                              <label className="block text-[11px] font-bold text-[#0F172A] mb-1">Coordinator Name *</label>
-                              <input type="text" name="coordinatorName" value={formData.coordinatorName} onChange={handleInputChange} className="w-full border border-gray-200 rounded-lg px-3 py-2 text-xs focus:border-blue-500 outline-none" placeholder="Full name"/>
+                              <label className="block text-[11px] font-bold text-[#0F172A] mb-1">
+                                Coordinator Name *
+                              </label>
+                              <input
+                                type="text"
+                                name="coordinatorName"
+                                value={formData.coordinatorName}
+                                onChange={handleInputChange}
+                                className="w-full border border-gray-200 rounded-lg px-3 py-2 text-xs focus:border-blue-500 outline-none"
+                                placeholder="Full name"
+                              />
                             </div>
                             <div>
-                              <label className="block text-[11px] font-bold text-[#0F172A] mb-1">Designation *</label>
-                              <input type="text" name="designation" value={formData.designation} onChange={handleInputChange} className="w-full border border-gray-200 rounded-lg px-3 py-2 text-xs focus:border-blue-500 outline-none" placeholder="e.g. Principal, Headmaster"/>
+                              <label className="block text-[11px] font-bold text-[#0F172A] mb-1">
+                                Designation *
+                              </label>
+                              <input
+                                type="text"
+                                name="designation"
+                                value={formData.designation}
+                                onChange={handleInputChange}
+                                className="w-full border border-gray-200 rounded-lg px-3 py-2 text-xs focus:border-blue-500 outline-none"
+                                placeholder="e.g. Principal, Headmaster"
+                              />
                             </div>
                             <div>
-                              <label className="block text-[11px] font-bold text-[#0F172A] mb-1">Email Address *</label>
-                              <input type="email" name="email" value={formData.email} onChange={handleInputChange} className="w-full border border-gray-200 rounded-lg px-3 py-2 text-xs focus:border-blue-500 outline-none" placeholder="Email"/>
+                              <label className="block text-[11px] font-bold text-[#0F172A] mb-1">
+                                Email Address *
+                              </label>
+                              <input
+                                type="email"
+                                name="email"
+                                value={formData.email}
+                                onChange={handleInputChange}
+                                className="w-full border border-gray-200 rounded-lg px-3 py-2 text-xs focus:border-blue-500 outline-none"
+                                placeholder="Email"
+                              />
                             </div>
                             <div className="grid grid-cols-2 gap-3">
                               <div>
-                                <label className="block text-[11px] font-bold text-[#0F172A] mb-1">Phone *</label>
-                                <input type="tel" name="phone" value={formData.phone} onChange={handleInputChange} className="w-full border border-gray-200 rounded-lg px-3 py-2 text-xs focus:border-blue-500 outline-none" placeholder="Mobile No."/>
+                                <label className="block text-[11px] font-bold text-[#0F172A] mb-1">
+                                  Phone *
+                                </label>
+                                <input
+                                  type="tel"
+                                  name="phone"
+                                  value={formData.phone}
+                                  onChange={handleInputChange}
+                                  className="w-full border border-gray-200 rounded-lg px-3 py-2 text-xs focus:border-blue-500 outline-none"
+                                  placeholder="Mobile No."
+                                />
                               </div>
                               <div>
-                                <label className="block text-[11px] font-bold text-[#0F172A] mb-1">WhatsApp *</label>
-                                <input type="tel" name="whatsapp" value={formData.whatsapp} onChange={handleInputChange} className="w-full border border-gray-200 rounded-lg px-3 py-2 text-xs focus:border-blue-500 outline-none" placeholder="WhatsApp No."/>
+                                <label className="block text-[11px] font-bold text-[#0F172A] mb-1">
+                                  WhatsApp *
+                                </label>
+                                <input
+                                  type="tel"
+                                  name="whatsapp"
+                                  value={formData.whatsapp}
+                                  onChange={handleInputChange}
+                                  className="w-full border border-gray-200 rounded-lg px-3 py-2 text-xs focus:border-blue-500 outline-none"
+                                  placeholder="WhatsApp No."
+                                />
                               </div>
                             </div>
                             <div>
-                                <label className="block text-[11px] font-bold text-[#0F172A] mb-1">Best Time to Call</label>
-                                <select name="availability" value={formData.availability} onChange={handleInputChange} className="w-full border border-gray-200 rounded-lg px-3 py-2 text-xs focus:border-blue-500 outline-none bg-white">
-                                  <option value="">Select availability</option><option>Morning</option><option>Afternoon</option><option>Evening</option>
-                                </select>
+                              <label className="block text-[11px] font-bold text-[#0F172A] mb-1">
+                                Best Time to Call
+                              </label>
+                              <select
+                                name="availability"
+                                value={formData.availability}
+                                onChange={handleInputChange}
+                                className="w-full border border-gray-200 rounded-lg px-3 py-2 text-xs focus:border-blue-500 outline-none bg-white"
+                              >
+                                <option value="">Select availability</option>
+                                <option>Morning</option>
+                                <option>Afternoon</option>
+                                <option>Evening</option>
+                              </select>
                             </div>
                           </div>
 
                           <div className="flex flex-col space-y-3 h-full">
-                            <h3 className="text-sm font-bold text-blue-600 border-b border-gray-100 pb-2">Additional Information</h3>
+                            <h3 className="text-sm font-bold text-blue-600 border-b border-gray-100 pb-2">
+                              Additional Information
+                            </h3>
                             <div className="flex-1 min-h-0 flex flex-col">
-                              <label className="block text-[11px] font-bold text-[#0F172A] mb-1">Additional Notes</label>
-                              <textarea name="notes" value={formData.notes} onChange={handleInputChange} className="w-full border border-gray-200 rounded-lg px-3 py-2 text-xs focus:border-blue-500 outline-none resize-none flex-1 min-h-[60px]" placeholder="Anything else we should know?"></textarea>
+                              <label className="block text-[11px] font-bold text-[#0F172A] mb-1">
+                                Additional Notes
+                              </label>
+                              <textarea
+                                name="notes"
+                                value={formData.notes}
+                                onChange={handleInputChange}
+                                className="w-full border border-gray-200 rounded-lg px-3 py-2 text-xs focus:border-blue-500 outline-none resize-none flex-1 min-h-[60px]"
+                                placeholder="Anything else we should know?"
+                              ></textarea>
                             </div>
                             <div className="flex-1 min-h-0 flex flex-col">
-                              <label className="block text-[11px] font-bold text-[#0F172A] mb-1">Special Requirements</label>
-                              <textarea name="specialReqs" value={formData.specialReqs} onChange={handleInputChange} className="w-full border border-gray-200 rounded-lg px-3 py-2 text-xs focus:border-blue-500 outline-none resize-none flex-1 min-h-[60px]" placeholder="Specific topics to cover, logistics support needed, etc."></textarea>
+                              <label className="block text-[11px] font-bold text-[#0F172A] mb-1">
+                                Special Requirements
+                              </label>
+                              <textarea
+                                name="specialReqs"
+                                value={formData.specialReqs}
+                                onChange={handleInputChange}
+                                className="w-full border border-gray-200 rounded-lg px-3 py-2 text-xs focus:border-blue-500 outline-none resize-none flex-1 min-h-[60px]"
+                                placeholder="Specific topics to cover, logistics support needed, etc."
+                              ></textarea>
                             </div>
                           </div>
                         </div>
@@ -625,59 +1028,133 @@ const InviteUsModal = ({ isOpen, onClose }) => {
 
                     {/* STEP 4: Review */}
                     {step === 4 && (
-                      <motion.div initial={{ opacity: 0, x: 10 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: -10 }} className="flex flex-col min-h-full space-y-4 pb-8">
-                        <h3 className="text-sm font-bold text-blue-600 border-b border-gray-100 pb-2">Review & Submit</h3>
-                        
+                      <motion.div
+                        initial={{ opacity: 0, x: 10 }}
+                        animate={{ opacity: 1, x: 0 }}
+                        exit={{ opacity: 0, x: -10 }}
+                        className="flex flex-col min-h-full space-y-4 pb-8"
+                      >
+                        <h3 className="text-sm font-bold text-blue-600 border-b border-gray-100 pb-2">
+                          Review & Submit
+                        </h3>
+
                         <div className="grid grid-cols-2 gap-4">
                           {/* Summary Cards */}
                           <div className="bg-gray-50 border border-gray-200 rounded-xl p-3">
-                            <div className="text-[10px] text-gray-500 font-bold uppercase mb-1">Institution</div>
-                            <div className="text-xs font-bold text-gray-800">{formData.institutionName || 'Not provided'}</div>
-                            <div className="text-[10px] text-gray-600 mt-1">{formData.city ? `${formData.city}, ${formData.state}` : 'Location not provided'}</div>
-                          </div>
-                          
-                          <div className="bg-gray-50 border border-gray-200 rounded-xl p-3">
-                            <div className="text-[10px] text-gray-500 font-bold uppercase mb-1">Programs Requested</div>
-                            <div className="text-xs font-bold text-gray-800">{formData.programs.length > 0 ? formData.programs.join(', ') : 'None selected'}</div>
-                          </div>
-                          
-                          <div className="bg-gray-50 border border-gray-200 rounded-xl p-3">
-                            <div className="text-[10px] text-gray-500 font-bold uppercase mb-1">Audience & Dates</div>
-                            <div className="text-xs font-bold text-gray-800">
-                              {formData.expectedParticipants || '0'} Participants ({formData.preferredMode || 'Any mode'})
+                            <div className="text-[10px] text-gray-500 font-bold uppercase mb-1">
+                              Institution
                             </div>
-                            <div className="text-[10px] text-gray-600 mt-1">Date: {formData.prefDate || 'Flexible'}</div>
+                            <div className="text-xs font-bold text-gray-800">
+                              {formData.institutionName || "Not provided"}
+                            </div>
+                            <div className="text-[10px] text-gray-600 mt-1">
+                              {formData.city
+                                ? `${formData.city}, ${formData.state}`
+                                : "Location not provided"}
+                            </div>
                           </div>
-                          
+
                           <div className="bg-gray-50 border border-gray-200 rounded-xl p-3">
-                            <div className="text-[10px] text-gray-500 font-bold uppercase mb-1">Coordinator</div>
-                            <div className="text-xs font-bold text-gray-800">{formData.coordinatorName || 'Not provided'}</div>
-                            <div className="text-[10px] text-gray-600 mt-1">{formData.phone || 'No phone'} | {formData.email || 'No email'}</div>
+                            <div className="text-[10px] text-gray-500 font-bold uppercase mb-1">
+                              Programs Requested
+                            </div>
+                            <div className="text-xs font-bold text-gray-800">
+                              {formData.programs.length > 0
+                                ? formData.programs.join(", ")
+                                : "None selected"}
+                            </div>
+                          </div>
+
+                          <div className="bg-gray-50 border border-gray-200 rounded-xl p-3">
+                            <div className="text-[10px] text-gray-500 font-bold uppercase mb-1">
+                              Audience & Dates
+                            </div>
+                            <div className="text-xs font-bold text-gray-800">
+                              {formData.expectedParticipants || "0"}{" "}
+                              Participants (
+                              {formData.preferredMode || "Any mode"})
+                            </div>
+                            <div className="text-[10px] text-gray-600 mt-1">
+                              Date: {formData.prefDate || "Flexible"}
+                            </div>
+                          </div>
+
+                          <div className="bg-gray-50 border border-gray-200 rounded-xl p-3">
+                            <div className="text-[10px] text-gray-500 font-bold uppercase mb-1">
+                              Coordinator
+                            </div>
+                            <div className="text-xs font-bold text-gray-800">
+                              {formData.coordinatorName || "Not provided"}
+                            </div>
+                            <div className="text-[10px] text-gray-600 mt-1">
+                              {formData.phone || "No phone"} |{" "}
+                              {formData.email || "No email"}
+                            </div>
                           </div>
                         </div>
 
                         {/* What Happens Next */}
                         <div className="bg-blue-50 border border-blue-100 rounded-xl p-4 mt-2">
-                          <h4 className="font-bold text-blue-800 text-xs mb-3">What Happens Next?</h4>
+                          <h4 className="font-bold text-blue-800 text-xs mb-3">
+                            What Happens Next?
+                          </h4>
                           <div className="flex items-center justify-between text-[10px] font-medium text-blue-900">
-                            <div className="flex flex-col items-center gap-1"><FiCheckCircle className="text-blue-600" size={16}/> Request Reviewed</div>
+                            <div className="flex flex-col items-center gap-1">
+                              <FiCheckCircle
+                                className="text-blue-600"
+                                size={16}
+                              />{" "}
+                              Request Reviewed
+                            </div>
                             <div className="w-8 h-[1px] bg-blue-200"></div>
-                            <div className="flex flex-col items-center gap-1"><FiPhone className="text-blue-600" size={16}/> Team Contacts You</div>
+                            <div className="flex flex-col items-center gap-1">
+                              <FiPhone className="text-blue-600" size={16} />{" "}
+                              Team Contacts You
+                            </div>
                             <div className="w-8 h-[1px] bg-blue-200"></div>
-                            <div className="flex flex-col items-center gap-1"><FiCalendar className="text-blue-600" size={16}/> Session Planned</div>
+                            <div className="flex flex-col items-center gap-1">
+                              <FiCalendar className="text-blue-600" size={16} />{" "}
+                              Session Planned
+                            </div>
                             <div className="w-8 h-[1px] bg-blue-200"></div>
-                            <div className="flex flex-col items-center gap-1"><BiChalkboard className="text-blue-600" size={16}/> Program Delivered</div>
+                            <div className="flex flex-col items-center gap-1">
+                              <BiChalkboard
+                                className="text-blue-600"
+                                size={16}
+                              />{" "}
+                              Program Delivered
+                            </div>
                           </div>
                         </div>
 
                         <div className="flex flex-col space-y-3 pt-6 mt-auto">
                           <label className="flex items-start gap-2 cursor-pointer">
-                            <input type="checkbox" name="agreement1" checked={formData.agreement1} onChange={handleInputChange} className="mt-0.5 w-3.5 h-3.5 rounded text-blue-600 focus:ring-blue-500" />
-                            <span className="text-[11px] text-gray-700 leading-tight">I confirm that the information provided is accurate and I am authorized to invite organizations on behalf of the institution.</span>
+                            <input
+                              type="checkbox"
+                              name="agreement1"
+                              checked={formData.agreement1}
+                              onChange={handleInputChange}
+                              className="mt-0.5 w-3.5 h-3.5 rounded text-blue-600 focus:ring-blue-500"
+                            />
+                            <span className="text-[11px] text-gray-700 leading-tight">
+                              I confirm that the information provided is
+                              accurate and I am authorized to invite
+                              organizations on behalf of the institution.
+                            </span>
                           </label>
                           <label className="flex items-start gap-2 cursor-pointer">
-                            <input type="checkbox" name="agreement2" checked={formData.agreement2} onChange={handleInputChange} className="mt-0.5 w-3.5 h-3.5 rounded text-blue-600 focus:ring-blue-500" />
-                            <span className="text-[11px] text-gray-700 leading-tight">Our institution agrees to coordinate logistics such as space, projector, and students' availability as required for the session.</span>
+                            <input
+                              type="checkbox"
+                              name="agreement2"
+                              checked={formData.agreement2}
+                              onChange={handleInputChange}
+                              className="mt-0.5 w-3.5 h-3.5 rounded text-blue-600 focus:ring-blue-500"
+                            />
+                            <span className="text-[11px] text-gray-700 leading-tight">
+                              Our institution agrees to coordinate logistics
+                              such as space, projector, and students'
+                              availability as required for the session.
+                            </span>
                           </label>
                         </div>
                       </motion.div>
@@ -687,25 +1164,41 @@ const InviteUsModal = ({ isOpen, onClose }) => {
 
                 {/* FOOTER NAVIGATION */}
                 <div className="px-10 py-4 border-t border-gray-100 bg-gray-50 flex items-center justify-between shrink-0">
-                  <span className="text-xs text-gray-400 font-medium">Step {step} of 4</span>
+                  <span className="text-xs text-gray-400 font-medium">
+                    Step {step} of 4
+                  </span>
                   <div className="flex items-center gap-3">
                     {step > 1 && (
-                      <button onClick={handlePrev} className="px-5 py-2 text-sm font-bold text-gray-500 hover:text-gray-800 hover:bg-gray-200 rounded-xl transition-colors">
+                      <button
+                        onClick={handlePrev}
+                        className="px-5 py-2 text-sm font-bold text-gray-500 hover:text-gray-800 hover:bg-gray-200 rounded-xl transition-colors"
+                      >
                         Previous
                       </button>
                     )}
                     {step < 4 ? (
-                      <button onClick={handleNext} className="px-8 py-2.5 bg-blue-600 text-white text-sm font-bold rounded-xl hover:bg-blue-700 transition-colors shadow-lg shadow-blue-600/30">
+                      <button
+                        onClick={handleNext}
+                        className="px-8 py-2.5 bg-blue-600 text-white text-sm font-bold rounded-xl hover:bg-blue-700 transition-colors shadow-lg shadow-blue-600/30"
+                      >
                         Next Step &rarr;
                       </button>
                     ) : (
-                      <button onClick={handleSubmit} disabled={isSubmitting || !formData.agreement1 || !formData.agreement2} className="px-8 py-2.5 bg-green-600 text-white text-sm font-bold rounded-xl hover:bg-green-700 transition-colors shadow-lg shadow-green-600/30 disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-2">
-                        {isSubmitting ? 'Submitting...' : 'Submit Invitation'} {<FiCheckCircle />}
+                      <button
+                        onClick={handleSubmit}
+                        disabled={
+                          isSubmitting ||
+                          !formData.agreement1 ||
+                          !formData.agreement2
+                        }
+                        className="px-8 py-2.5 bg-green-600 text-white text-sm font-bold rounded-xl hover:bg-green-700 transition-colors shadow-lg shadow-green-600/30 disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-2"
+                      >
+                        {isSubmitting ? "Submitting..." : "Submit Invitation"}{" "}
+                        {<FiCheckCircle />}
                       </button>
                     )}
                   </div>
                 </div>
-
               </div>
             )}
           </div>

@@ -4,14 +4,14 @@ import NavUnn from "./../../common/NavUnn";
 import { imagekitImage } from "./../../../utils/imagekit";
 
 const images = [
-  "mountasisi-6_l0o5cc",
-  "mountasisi-3_wx1rzz",
-  "mountasisi-2_msuk6b",
-  "mountasisi-1_toyudk",
-  "mountasisi-7_xzmufq",
-  "mountasisi-5_ssxaxg",
-  "mountasisi-4_dnq7lx",
-  "mountasisi-8_fckbjj",
+  "https://ik.imagekit.io/zpkfsvgtn/Outreach/Mount%20Assissi/IMG_2480.JPG",
+  "https://ik.imagekit.io/zpkfsvgtn/Outreach/Mount%20Assissi/IMG_2509.JPG",
+  "https://ik.imagekit.io/zpkfsvgtn/Outreach/Mount%20Assissi/IMG_2512.JPG",
+  "https://ik.imagekit.io/zpkfsvgtn/Outreach/Mount%20Assissi/IMG_2524.JPG",
+  "https://ik.imagekit.io/zpkfsvgtn/Outreach/Mount%20Assissi/IMG_2481.JPG",
+  "https://ik.imagekit.io/zpkfsvgtn/Outreach/Mount%20Assissi/IMG_2503.JPG",
+  "https://ik.imagekit.io/zpkfsvgtn/Outreach/Mount%20Assissi/IMG_2441.JPG",
+  "https://ik.imagekit.io/zpkfsvgtn/Outreach/Mount%20Assissi/IMG_2462.JPG",
 ];
 
 const MountAsisi = () => {
@@ -20,7 +20,9 @@ const MountAsisi = () => {
       <Navbar />
       <NavUnn />
 
-      <section className="relative flex justify-center items-center py-10 w-full bg-cover bg-center bg-no-repeat " style={{ backgroundImage: `url(${imagekitImage("schlvisit_uw7s37")})` }}
+      <section
+        className="relative flex justify-center items-center py-10 w-full bg-cover bg-center bg-no-repeat "
+        style={{ backgroundImage: `url(${imagekitImage("schlvisit_uw7s37")})` }}
       >
         <div className="absolute inset-0 z-10 bg-black/40"></div>
         <div className="max-w-6xl px-4 flex z-20 flex-col justify-center items-center">
@@ -31,9 +33,10 @@ const MountAsisi = () => {
           {/* Pinterest Layout */}
           <div className="columns-1 sm:columns-2 md:columns-3 gap-4">
             {images.map((id, i) => (
-              <img loading="lazy" 
+              <img
+                loading="lazy"
                 key={i}
-                src={imagekitImage(id)}
+                src={(id)}
                 alt="Mount Asisi"
                 className="mb-4 w-full rounded-xl break-inside-avoid shadow-md hover:scale-[1.02] transition"
               />

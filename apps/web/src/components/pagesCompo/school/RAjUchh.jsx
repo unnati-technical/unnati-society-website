@@ -4,18 +4,18 @@ import NavUnn from "./../../common/NavUnn";
 import { imagekitImage } from "./../../../utils/imagekit";
 
 const images = [
-  "Copy_of_IMG_4978_ngnxxn",
-  "Copy_of_IMG_4988_ajn5c1",
-  "Copy_of_IMG_4999_m5dexd",
-  "Copy_of_IMG_5007_hokmqd",
-  "Copy_of_IMG_5008_uro40o",
-  "Copy_of_IMG_5021_rkeezf",
-  "Copy_of_IMG_5089_ak7bvn",
-  "Copy_of_IMG_5026_k56jlh",
-  "Copy_of_IMG_5090_d2t0xh",
-  "Copy_of_IMG_5034_qnot8x",
-  "Copy_of_IMG_5047_vsdil5",
-  "Copy_of_IMG_5081_gps2hl"
+  "https://ik.imagekit.io/zpkfsvgtn/Outreach/Rajkritya%20Uchh%20Vidyalaya/Copy%20of%20IMG_5029.JPG",
+  "https://ik.imagekit.io/zpkfsvgtn/Outreach/Rajkritya%20Uchh%20Vidyalaya/Copy%20of%20IMG_5034.JPG",
+  "https://ik.imagekit.io/zpkfsvgtn/Outreach/Rajkritya%20Uchh%20Vidyalaya/Copy%20of%20IMG_5036.JPG",
+  "https://ik.imagekit.io/zpkfsvgtn/Outreach/Rajkritya%20Uchh%20Vidyalaya/Copy%20of%20IMG_5068.JPG",
+  "https://ik.imagekit.io/zpkfsvgtn/Outreach/Rajkritya%20Uchh%20Vidyalaya/Copy%20of%20IMG_5081.JPG",
+  "https://ik.imagekit.io/zpkfsvgtn/Outreach/Rajkritya%20Uchh%20Vidyalaya/Copy%20of%20IMG_5088.JPG",
+  "https://ik.imagekit.io/zpkfsvgtn/Outreach/Rajkritya%20Uchh%20Vidyalaya/Copy%20of%20IMG_5095.JPG",
+  "https://ik.imagekit.io/zpkfsvgtn/Outreach/Rajkritya%20Uchh%20Vidyalaya/Copy%20of%20IMG_5121.JPG",
+  "https://ik.imagekit.io/zpkfsvgtn/Outreach/Rajkritya%20Uchh%20Vidyalaya/Copy%20of%20IMG_5138.JPG",
+  "https://ik.imagekit.io/zpkfsvgtn/Outreach/Rajkritya%20Uchh%20Vidyalaya/Copy%20of%20IMG_5007.JPG",
+  "https://ik.imagekit.io/zpkfsvgtn/Outreach/Rajkritya%20Uchh%20Vidyalaya/Copy%20of%20IMG_5004.JPG",
+  "https://ik.imagekit.io/zpkfsvgtn/Outreach/Rajkritya%20Uchh%20Vidyalaya/Copy%20of%20IMG_5005%20(1).JPG",
 ];
 
 const RajUchh = () => {
@@ -24,20 +24,24 @@ const RajUchh = () => {
       <Navbar />
       <NavUnn />
 
-      <section className="relative flex justify-center items-center py-10 w-full bg-cover bg-center bg-no-repeat " style={{ backgroundImage: `url(${imagekitImage("schlvisit_uw7s37")})` }}
+      <section
+        className="relative flex justify-center items-center py-10 w-full bg-cover bg-center bg-no-repeat "
+        style={{ backgroundImage: `url(${imagekitImage("schlvisit_uw7s37")})` }}
       >
         <div className="absolute inset-0 z-10 bg-black/40"></div>
         <div className="max-w-6xl px-4 flex z-20 flex-col justify-center items-center">
           <h1 className=" w-fit text-4xl text-white oswald-font-2 z-20 mb-8 text-center border-b-2 border-blue-400">
-           Rajkiyakrit Adarsh Uchh Vidyalaya, Nayagaon & Uchh Vidyalaya, Kumaitha
+            Rajkiyakrit Adarsh Uchh Vidyalaya, Nayagaon & Uchh Vidyalaya,
+            Kumaitha
           </h1>
 
           {/* Pinterest Layout */}
           <div className="columns-1 sm:columns-2 md:columns-3 gap-4">
             {images.map((id, i) => (
-              <img loading="lazy" 
+              <img
+                loading="lazy"
                 key={i}
-                src={imagekitImage(id)}
+                src={id}
                 alt="Mount Asisi"
                 className="mb-4 w-full rounded-xl break-inside-avoid shadow-md hover:scale-[1.02] transition"
               />
