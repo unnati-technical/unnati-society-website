@@ -4,7 +4,7 @@ import { ChevronLeft, ChevronRight } from "lucide-react";
 import { homeMediaApi } from "../../../api/home-media.api";
 
 const playIcon =
-  "https://ik.imagekit.io/unnati/v1782396870/unnati_assets/play.png";
+  "https://ik.imagekit.io/zpkfsvgtn/Home/play.png?updatedAt=1785865818727";
 
 const VideoSlide = ({ url, isActive, onEnded }) => {
   const videoRef = useRef(null);
@@ -69,7 +69,7 @@ const HeroSection = () => {
       {
         id: "default",
         type: "VIDEO",
-        url: "https://ik.imagekit.io/unnati/v1782397100/unnati_assets/cc5agh6nevpynajlzkxs.mp4",
+        url: "https://ik.imagekit.io/zpkfsvgtn/Home/WhatsApp%20Video%202026-08-11%20at%2022.03.23.mp4",
         title: "EMPOWERING DREAMS",
         subtitle: "Revolutionizing Present, Transforming Future",
       },
@@ -110,7 +110,7 @@ const HeroSection = () => {
   const openVideo = () => {
     // Open the raw mp4 file in a new tab instead of using Cloudinary's player
     window.open(
-      "https://ik.imagekit.io/unnati/v1782397100/unnati_assets/cc5agh6nevpynajlzkxs.mp4",
+      "https://ik.imagekit.io/zpkfsvgtn/Home/home_video_dq0ac8.mp4",
       "_blank",
     );
   };

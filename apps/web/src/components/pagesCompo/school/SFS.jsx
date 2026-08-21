@@ -4,14 +4,14 @@ import NavUnn from "./../../common/NavUnn";
 import { imagekitImage } from "./../../../utils/imagekit";
 
 const images = [
-  "sfs-3_fhfuw5",
-  "sfs-5_ex5dfw",
-  "sfs-2_stxxaj",
-  "sfs-4_pbmrtj",
-  "sfs-1_yr8bcn",
-  "sfs-6_xukdrx",
-  "sfs-7_tingfo",
-  "sfs-8_yk255c"
+  "https://ik.imagekit.io/zpkfsvgtn/Outreach/ST%20Francis/Copy%20of%20IMG_7396%20(1).JPG",
+  "https://ik.imagekit.io/zpkfsvgtn/Outreach/ST%20Francis/Copy%20of%20IMG_7393.JPG",
+  "https://ik.imagekit.io/zpkfsvgtn/Outreach/ST%20Francis/Copy%20of%20IMG_7403.JPG",
+  "https://ik.imagekit.io/zpkfsvgtn/Outreach/ST%20Francis/Copy%20of%20IMG_7415.JPG",
+  "https://ik.imagekit.io/zpkfsvgtn/Outreach/ST%20Francis/Copy%20of%20IMG_7436.JPG",
+  "https://ik.imagekit.io/zpkfsvgtn/Outreach/ST%20Francis/Copy%20of%20IMG_7454%20(1).JPG",
+  "https://ik.imagekit.io/zpkfsvgtn/Outreach/ST%20Francis/Copy%20of%20IMG_7375.JPG",
+  "https://ik.imagekit.io/zpkfsvgtn/Outreach/ST%20Francis/Copy%20of%20IMG_7377.JPG",
 ];
 
 const SFS = () => {
@@ -20,20 +20,23 @@ const SFS = () => {
       <Navbar />
       <NavUnn />
 
-      <section className="relative flex justify-center items-center py-10 w-full bg-cover bg-center bg-no-repeat " style={{ backgroundImage: `url(${imagekitImage("schlvisit_uw7s37")})` }}
+      <section
+        className="relative flex justify-center items-center py-10 w-full bg-cover bg-center bg-no-repeat "
+        style={{ backgroundImage: `url(${imagekitImage("schlvisit_uw7s37")})` }}
       >
         <div className="absolute inset-0 z-10 bg-black/40"></div>
         <div className="max-w-6xl px-4 flex z-20 flex-col justify-center items-center">
           <h1 className=" w-fit text-4xl text-white oswald-font-2 z-20 mb-8 text-center border-b-2 border-blue-400">
-           St. Francis School, Deoghar, Jharkhand
+            St. Francis School, Deoghar, Jharkhand
           </h1>
 
           {/* Pinterest Layout */}
           <div className="columns-1 sm:columns-2 md:columns-3 gap-4">
             {images.map((id, i) => (
-              <img loading="lazy" 
+              <img
+                loading="lazy"
                 key={i}
-                src={imagekitImage(id)}
+                src={id}
                 alt="Mount Asisi"
                 className="mb-4 w-full rounded-xl break-inside-avoid shadow-md hover:scale-[1.02] transition"
               />
