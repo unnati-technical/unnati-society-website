@@ -30,7 +30,7 @@ import { BiBuildingHouse, BiChalkboard } from "react-icons/bi";
 import { jsPDF } from "jspdf";
 import { outreachApi } from "../../api/outreach.api";
 const UnnatiLogo =
-  "https://ik.imagekit.io/unnati/v1782396887/unnati_assets/Unnati.png";
+  "https://ik.imagekit.io/zpkfsvgtn/Navbar/Unnati.png?updatedAt=1785681448621";
 
 const InviteUsModal = ({ isOpen, onClose }) => {
   const [step, setStep] = useState(1);

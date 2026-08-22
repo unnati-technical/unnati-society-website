@@ -19,7 +19,9 @@ const AnimatedCounter = ({ value, duration = 2, prefix = "", suffix = "" }) => {
 
   return (
     <span ref={ref}>
-      {prefix}{count}{suffix}
+      {prefix}
+      {count}
+      {suffix}
     </span>
   );
 };

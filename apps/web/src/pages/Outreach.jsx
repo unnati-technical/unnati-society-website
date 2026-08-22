@@ -215,7 +215,7 @@ const Outreach = () => {
               >
                 <img
                   loading="lazy"
-                  src="https://ik.imagekit.io/zpkfsvgtn/Outreach/IMG_20251211_120703.jpg.jpeg"
+                  src="https://ik.imagekit.io/zpkfsvgtn/Outreach/IMG_20251211_111740.jpg.jpeg?updatedAt=1787160262491"
                   alt="Students using laptops"
                   style={{ width: "100%", height: "100%", objectFit: "cover" }}
                 />
@@ -240,7 +240,7 @@ const Outreach = () => {
               >
                 <img
                   loading="lazy"
-                  src="https://ik.imagekit.io/zpkfsvgtn/Outreach/IMG_20251211_111740.jpg.jpeg"
+                  src="https://ik.imagekit.io/zpkfsvgtn/Outreach/IMG_20251211_120703.jpg.jpeg?updatedAt=1787160262119"
                   alt="Group of students collaborating"
                   style={{ width: "100%", height: "100%", objectFit: "cover" }}
                 />

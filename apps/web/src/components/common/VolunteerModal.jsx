@@ -21,7 +21,7 @@ import { useMutation } from "@tanstack/react-query";
 import { volunteersApi } from "../../api/volunteers.api";
 import { uploadToImageKit } from "../../services/imagekit.service";
 const UnnatiLogo =
-  "https://ik.imagekit.io/unnati/v1782396887/unnati_assets/Unnati.png";
+  "https://ik.imagekit.io/zpkfsvgtn/Navbar/Unnati.png?updatedAt=1785681448621";
 
 const VolunteerModal = ({ isOpen, onClose }) => {
   const [step, setStep] = useState(1);

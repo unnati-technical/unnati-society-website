@@ -2,20 +2,30 @@ import React from "react";
 import { useNavigate } from "react-router-dom";
 import { imagekitImage } from "./../../../utils/imagekit";
 
-
 const HeroSection = () => {
   const navigate = useNavigate();
   return (
-    <section className="w-full relative bg-cover bg-center bg-no-repeat flex justify-center items-center min-h-[50vh] h-screen text-white" style={{backgroundImage:`url(${imagekitImage("mountasisi-5_ssxaxg")})`}}>
+    <section
+      className="w-full relative bg-cover bg-center bg-no-repeat flex justify-center items-center min-h-[50vh] h-screen text-white"
+      style={{
+        backgroundImage:
+          "https://ik.imagekit.io/zpkfsvgtn/Outreach/Copy%20of%20IMG_5116.JPG",
+      }}
+    >
       <div className="absolute inset-0 bg-black/40"></div>
       <div>
         <div className="flex gap-20">
           <div className="relative w-45 h-40">
-            <div className="cursor-pointer w-40 h-40 aspect-square absolute left-0 top-0 bg-[#F5E6DC] flex justify-center items-center rotate-45 z-20 rounded-2xl border border-black"><span className="-rotate-45"
-            onClick={() => navigate("/media/outreach/school-visit")}
-            >
-                <h1 className="oswald-font flex justify-center items-center text-xl text-black">OUTREACH - <br /> SCHOOL VISIT</h1>
-              </span></div>
+            <div className="cursor-pointer w-40 h-40 aspect-square absolute left-0 top-0 bg-[#F5E6DC] flex justify-center items-center rotate-45 z-20 rounded-2xl border border-black">
+              <span
+                className="-rotate-45"
+                onClick={() => navigate("/media/outreach/school-visit")}
+              >
+                <h1 className="oswald-font flex justify-center items-center text-xl text-black">
+                  OUTREACH - <br /> SCHOOL VISIT
+                </h1>
+              </span>
+            </div>
             <div className="rounded-2xl bg-white/30 w-40 h-40 aspect-square border border-black rotate-45 absolute right-0 z-0"></div>
           </div>
         </div>
