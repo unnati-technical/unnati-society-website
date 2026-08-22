@@ -1,22 +1,36 @@
-import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
 // eslint-disable-next-line no-unused-vars
-import { motion, AnimatePresence } from 'framer-motion';
-import Navbar from '../components/common/Navbar';
-import NavUnn from '../components/common/NavUnn';
-import Footer from '../components/common/Footer';
+import { motion, AnimatePresence } from "framer-motion";
+import Navbar from "../components/common/Navbar";
+import NavUnn from "../components/common/NavUnn";
+import Footer from "../components/common/Footer";
 
 import {
-  FiUsers, FiBookOpen, FiBriefcase, FiHeart,
-  FiCheckCircle, FiArrowRight, FiTarget, FiStar, FiAward, FiMessageSquare
-} from 'react-icons/fi';
-import { lazy, Suspense } from 'react';
+  FiUsers,
+  FiBookOpen,
+  FiBriefcase,
+  FiHeart,
+  FiCheckCircle,
+  FiArrowRight,
+  FiTarget,
+  FiStar,
+  FiAward,
+  FiMessageSquare,
+} from "react-icons/fi";
+import { lazy, Suspense } from "react";
 
-const VolunteerModal = lazy(() => import('../components/common/VolunteerModal'));
-const ExploreOpportunitiesModal = lazy(() => import('../components/common/ExploreOpportunitiesModal'));
-const PartnerModal = lazy(() => import('../components/pagesCompo/outreach/PartnerModal'));
+const VolunteerModal = lazy(
+  () => import("../components/common/VolunteerModal"),
+);
+const ExploreOpportunitiesModal = lazy(
+  () => import("../components/common/ExploreOpportunitiesModal"),
+);
+const PartnerModal = lazy(
+  () => import("../components/pagesCompo/outreach/PartnerModal"),
+);
 
-import TestimonialsCarousel from '../components/pagesCompo/joinus/TestimonialsCarousel';
+import TestimonialsCarousel from "../components/pagesCompo/joinus/TestimonialsCarousel";
 
 const JoinUs = () => {
   const navigate = useNavigate();
@@ -26,12 +40,16 @@ const JoinUs = () => {
   // Animation variants
   const fadeUpVariant = {
     hidden: { opacity: 0, y: 30 },
-    visible: { opacity: 1, y: 0, transition: { duration: 0.6, ease: "easeOut" } }
+    visible: {
+      opacity: 1,
+      y: 0,
+      transition: { duration: 0.6, ease: "easeOut" },
+    },
   };
 
   const staggerContainer = {
     hidden: { opacity: 0 },
-    visible: { opacity: 1, transition: { staggerChildren: 0.15 } }
+    visible: { opacity: 1, transition: { staggerChildren: 0.15 } },
   };
 
   return (
@@ -44,32 +62,60 @@ const JoinUs = () => {
       {/* SECTION 1 - HERO */}
       <section className="relative w-full bg-white pt-16 pb-24 px-6 lg:px-16 overflow-hidden">
         {/* Decorative pattern */}
-        <div className="absolute top-12 left-[40%] w-32 h-32 opacity-20 pointer-events-none" style={{ backgroundImage: 'radial-gradient(#2563EB 2px, transparent 2px)', backgroundSize: '16px 16px' }}></div>
+        <div
+          className="absolute top-12 left-[40%] w-32 h-32 opacity-20 pointer-events-none"
+          style={{
+            backgroundImage: "radial-gradient(#2563EB 2px, transparent 2px)",
+            backgroundSize: "16px 16px",
+          }}
+        ></div>
 
         <div className="max-w-[1400px] mx-auto grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
           {/* Left Column */}
           <motion.div
-            initial="hidden" animate="visible" variants={staggerContainer}
+            initial="hidden"
+            animate="visible"
+            variants={staggerContainer}
             className="flex flex-col items-start z-10"
           >
-            <motion.div variants={fadeUpVariant} className="flex items-center gap-3 mb-6">
+            <motion.div
+              variants={fadeUpVariant}
+              className="flex items-center gap-3 mb-6"
+            >
               <div className="w-8 h-[2px] bg-blue-600"></div>
-              <span className="text-sm font-bold tracking-widest text-gray-800 uppercase">Join Us</span>
+              <span className="text-sm font-bold tracking-widest text-gray-800 uppercase">
+                Join Us
+              </span>
             </motion.div>
 
-            <motion.h1 variants={fadeUpVariant} className="text-5xl lg:text-7xl font-extrabold text-[#0F172A] leading-[1.1] mb-6">
-              Be the Change.<br />
+            <motion.h1
+              variants={fadeUpVariant}
+              className="text-5xl lg:text-7xl font-extrabold text-[#0F172A] leading-[1.1] mb-6"
+            >
+              Be the Change.
+              <br />
               <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-blue-400">
                 Build a Better Tomorrow.
               </span>
             </motion.h1>
 
-            <motion.p variants={fadeUpVariant} className="text-lg text-gray-600 mb-10 max-w-lg leading-relaxed">
-              Unnati Society is a community of passionate individuals working together to empower students, promote education, and create meaningful social impact.
+            <motion.p
+              variants={fadeUpVariant}
+              className="text-lg text-gray-600 mb-10 max-w-lg leading-relaxed"
+            >
+              Unnati Society is a community of passionate individuals working
+              together to empower students, promote education, and create
+              meaningful social impact.
             </motion.p>
 
-            <motion.div variants={fadeUpVariant} className="flex flex-col sm:flex-row gap-4 w-full sm:w-auto mb-8">
-              <button onClick={() => setIsModalOpen(true)} className="flex items-center justify-center gap-2 bg-white hover:bg-blue-700 hover:text-white border border-blue-600 text-blue-600 px-8 py-4 rounded-xl font-bold transition-all shadow-md hover:shadow-lg whitespace-nowrap">
+            <motion.div
+              variants={fadeUpVariant}
+              className="flex flex-col sm:flex-row gap-4 w-full sm:w-auto mb-8"
+            >
+              <button
+                onClick={() => setIsModalOpen(true)}
+                className="flex items-center justify-center gap-2 bg-white hover:bg-blue-700 hover:text-white border border-blue-600 text-blue-600 px-8 py-4 rounded-xl font-bold transition-all shadow-md hover:shadow-lg whitespace-nowrap"
+              >
                 <FiUsers size={18} /> I Want to Volunteer
               </button>
               {/* <button onClick={() => setIsExploreModalOpen(true)} className="flex items-center justify-center gap-2 bg-white text-blue-600 border border-blue-200 hover:border-blue-600 hover:bg-blue-50 px-8 py-4 rounded-xl font-bold transition-all duration-300 shadow-sm hover:shadow-md">
@@ -77,7 +123,10 @@ const JoinUs = () => {
               </button> */}
             </motion.div>
 
-            <motion.div variants={fadeUpVariant} className="flex items-center gap-2 text-sm font-medium text-gray-600 bg-gray-50 px-4 py-2 rounded-full border border-gray-100">
+            <motion.div
+              variants={fadeUpVariant}
+              className="flex items-center gap-2 text-sm font-medium text-gray-600 bg-gray-50 px-4 py-2 rounded-full border border-gray-100"
+            >
               <FiCheckCircle className="text-green-500" />
               Join 200+ changemakers making a difference.
             </motion.div>
@@ -85,7 +134,9 @@ const JoinUs = () => {
 
           {/* Right Column (Redesigned Image Frame) */}
           <motion.div
-            initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }} transition={{ duration: 0.8 }}
+            initial={{ opacity: 0, scale: 0.95 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ duration: 0.8 }}
             className="relative w-full h-[500px] lg:h-[600px] z-10 flex items-center justify-center"
           >
             {/* Background Blob/Shape */}
@@ -94,14 +145,21 @@ const JoinUs = () => {
             {/* Decorative organic shape */}
             <div className="absolute -top-4 right-10 w-24 h-24 pointer-events-none opacity-40">
               <svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
-                <path fill="none" stroke="#FBBF24" strokeWidth="4" d="M47.7,-57.2C59.5,-45.3,65.3,-26.2,66.6,-7.4C68,11.3,64.8,29.6,54.7,43.2C44.6,56.8,27.5,65.6,9.1,68.4C-9.3,71.2,-29.1,68,-43.3,56.5C-57.5,45,-66.2,25.2,-67.2,5.2C-68.2,-14.8,-61.6,-34.9,-48.9,-46.8C-36.2,-58.7,-18.1,-62.4,-0.1,-62.3C17.9,-62.2,35.8,-69.1,47.7,-57.2Z" transform="translate(100 100)" />
+                <path
+                  fill="none"
+                  stroke="#FBBF24"
+                  strokeWidth="4"
+                  d="M47.7,-57.2C59.5,-45.3,65.3,-26.2,66.6,-7.4C68,11.3,64.8,29.6,54.7,43.2C44.6,56.8,27.5,65.6,9.1,68.4C-9.3,71.2,-29.1,68,-43.3,56.5C-57.5,45,-66.2,25.2,-67.2,5.2C-68.2,-14.8,-61.6,-34.9,-48.9,-46.8C-36.2,-58.7,-18.1,-62.4,-0.1,-62.3C17.9,-62.2,35.8,-69.1,47.7,-57.2Z"
+                  transform="translate(100 100)"
+                />
               </svg>
             </div>
 
             {/* Image 1 (Large Main) */}
             <div className="absolute top-4 right-0 lg:right-8 w-3/4 h-[80%] rounded-[2rem] rounded-tl-[6rem] rounded-br-[6rem] overflow-hidden shadow-[0_20px_40px_rgba(0,0,0,0.15)] border-4 border-white z-10">
-              <img loading="lazy"
-                src="https://ik.imagekit.io/unnati/v1782396863/unnati_assets/mission2.png"
+              <img
+                loading="lazy"
+                src="https://ik.imagekit.io/zpkfsvgtn/Media/IMG-20250823-WA0004.jpg"
                 alt="Unnati Volunteers"
                 className="w-full h-full object-cover hover:scale-105 transition-transform duration-700"
               />
@@ -109,8 +167,9 @@ const JoinUs = () => {
 
             {/* Image 2 (Small Overlapping) */}
             <div className="absolute bottom-16 left-0 lg:left-4 w-[55%] h-[45%] rounded-[2rem] rounded-tr-[4rem] rounded-bl-[4rem] overflow-hidden shadow-[0_20px_40px_rgba(0,0,0,0.2)] border-4 border-white z-20">
-              <img loading="lazy"
-                src="https://ik.imagekit.io/unnati/v1782396896/unnati_assets/visionAboutus.jpg"
+              <img
+                loading="lazy"
+                src="https://ik.imagekit.io/zpkfsvgtn/Media/IMG_5359.JPG"
                 alt="Students learning"
                 className="w-full h-full object-cover hover:scale-105 transition-transform duration-700"
               />
@@ -144,61 +203,109 @@ const JoinUs = () => {
       <section className="py-24 px-6 lg:px-16 bg-[#F8FAFC]">
         <div className="max-w-[1400px] mx-auto">
           <motion.div
-            initial="hidden" whileInView="visible" viewport={{ once: true, margin: "-100px" }} variants={fadeUpVariant}
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true, margin: "-100px" }}
+            variants={fadeUpVariant}
             className="text-center max-w-3xl mx-auto mb-16"
           >
-            <h2 className="text-4xl md:text-5xl font-bold text-[#0F172A] mb-6">Ways to Get Involved</h2>
-            <p className="text-gray-600 text-lg">Whether you have time, skills, or resources to share, there's a place for you in our journey.</p>
+            <h2 className="text-4xl md:text-5xl font-bold text-[#0F172A] mb-6">
+              Ways to Get Involved
+            </h2>
+            <p className="text-gray-600 text-lg">
+              Whether you have time, skills, or resources to share, there's a
+              place for you in our journey.
+            </p>
           </motion.div>
 
           <motion.div
-            initial="hidden" whileInView="visible" viewport={{ once: true, margin: "-100px" }} variants={staggerContainer}
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true, margin: "-100px" }}
+            variants={staggerContainer}
             className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8"
           >
             {/* Card 1 */}
-            <motion.div variants={fadeUpVariant} className="bg-white rounded-3xl p-8 shadow-sm hover:shadow-xl hover:-translate-y-2 transition-all duration-300 flex flex-col items-center text-center group border border-gray-100">
+            <motion.div
+              variants={fadeUpVariant}
+              className="bg-white rounded-3xl p-8 shadow-sm hover:shadow-xl hover:-translate-y-2 transition-all duration-300 flex flex-col items-center text-center group border border-gray-100"
+            >
               <div className="w-20 h-20 rounded-full bg-blue-50 text-blue-600 flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300">
                 <FiHeart size={32} />
               </div>
-              <h3 className="text-2xl font-bold text-[#0F172A] mb-4">Volunteer</h3>
-              <p className="text-gray-600 mb-8 flex-grow">Give your time and skills to educational and social initiatives.</p>
-              <button onClick={() => setIsModalOpen(true)} className="text-blue-600 font-bold flex items-center gap-2 group-hover:gap-3 transition-all">
+              <h3 className="text-2xl font-bold text-[#0F172A] mb-4">
+                Volunteer
+              </h3>
+              <p className="text-gray-600 mb-8 flex-grow">
+                Give your time and skills to educational and social initiatives.
+              </p>
+              <button
+                onClick={() => setIsModalOpen(true)}
+                className="text-blue-600 font-bold flex items-center gap-2 group-hover:gap-3 transition-all"
+              >
                 Apply Now <FiArrowRight />
               </button>
             </motion.div>
 
             {/* Card 2 */}
-            <motion.div variants={fadeUpVariant} className="bg-white rounded-3xl p-8 shadow-sm hover:shadow-xl hover:-translate-y-2 transition-all duration-300 flex flex-col items-center text-center group border border-gray-100">
+            <motion.div
+              variants={fadeUpVariant}
+              className="bg-white rounded-3xl p-8 shadow-sm hover:shadow-xl hover:-translate-y-2 transition-all duration-300 flex flex-col items-center text-center group border border-gray-100"
+            >
               <div className="w-20 h-20 rounded-full bg-orange-50 text-orange-500 flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300">
                 <FiBookOpen size={32} />
               </div>
               <h3 className="text-2xl font-bold text-[#0F172A] mb-4">Mentor</h3>
-              <p className="text-gray-600 mb-8 flex-grow">Guide and inspire students to help them achieve their dreams.</p>
-              <a href="/contact" className="text-orange-500 font-bold flex items-center gap-2 group-hover:gap-3 transition-all">
+              <p className="text-gray-600 mb-8 flex-grow">
+                Guide and inspire students to help them achieve their dreams.
+              </p>
+              <a
+                href="/contact"
+                className="text-orange-500 font-bold flex items-center gap-2 group-hover:gap-3 transition-all"
+              >
                 Join as Mentor <FiArrowRight />
               </a>
             </motion.div>
 
             {/* Card 3 */}
-            <motion.div variants={fadeUpVariant} className="bg-white rounded-3xl p-8 shadow-sm hover:shadow-xl hover:-translate-y-2 transition-all duration-300 flex flex-col items-center text-center group border border-gray-100">
+            <motion.div
+              variants={fadeUpVariant}
+              className="bg-white rounded-3xl p-8 shadow-sm hover:shadow-xl hover:-translate-y-2 transition-all duration-300 flex flex-col items-center text-center group border border-gray-100"
+            >
               <div className="w-20 h-20 rounded-full bg-purple-50 text-purple-600 flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300">
                 <FiBriefcase size={32} />
               </div>
-              <h3 className="text-2xl font-bold text-[#0F172A] mb-4">Partner</h3>
-              <p className="text-gray-600 mb-8 flex-grow">Collaborate with us as an organization or institution to create larger impact.</p>
-              <button onClick={() => setIsPartnerModalOpen(true)} className="text-purple-600 font-bold flex items-center gap-2 group-hover:gap-3 transition-all">
+              <h3 className="text-2xl font-bold text-[#0F172A] mb-4">
+                Partner
+              </h3>
+              <p className="text-gray-600 mb-8 flex-grow">
+                Collaborate with us as an organization or institution to create
+                larger impact.
+              </p>
+              <button
+                onClick={() => setIsPartnerModalOpen(true)}
+                className="text-purple-600 font-bold flex items-center gap-2 group-hover:gap-3 transition-all"
+              >
                 Partner With Us <FiArrowRight />
               </button>
             </motion.div>
 
             {/* Card 4 */}
-            <motion.div variants={fadeUpVariant} className="bg-white rounded-3xl p-8 shadow-sm hover:shadow-xl hover:-translate-y-2 transition-all duration-300 flex flex-col items-center text-center group border border-gray-100">
+            <motion.div
+              variants={fadeUpVariant}
+              className="bg-white rounded-3xl p-8 shadow-sm hover:shadow-xl hover:-translate-y-2 transition-all duration-300 flex flex-col items-center text-center group border border-gray-100"
+            >
               <div className="w-20 h-20 rounded-full bg-green-50 text-green-600 flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300">
                 <FiStar size={32} />
               </div>
               <h3 className="text-2xl font-bold text-[#0F172A] mb-4">Donate</h3>
-              <p className="text-gray-600 mb-8 flex-grow">Your contribution helps us reach more students and communities.</p>
-              <button onClick={() => navigate('/donate')} className="text-green-600 font-bold flex items-center gap-2 group-hover:gap-3 transition-all">
+              <p className="text-gray-600 mb-8 flex-grow">
+                Your contribution helps us reach more students and communities.
+              </p>
+              <button
+                onClick={() => navigate("/donate")}
+                className="text-green-600 font-bold flex items-center gap-2 group-hover:gap-3 transition-all"
+              >
                 Donate Now <FiArrowRight />
               </button>
             </motion.div>
@@ -209,7 +316,6 @@ const JoinUs = () => {
       {/* SECTION 3 - WHY JOIN UNNATI */}
       <section className="py-24 px-6 lg:px-16 bg-white overflow-hidden">
         <div className="max-w-[1400px] mx-auto grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
-
           {/* Left - Image */}
           <motion.div
             initial={{ opacity: 0, x: -50 }}
@@ -221,14 +327,15 @@ const JoinUs = () => {
             <div
               className="absolute -left-6 -bottom-6 w-24 h-24 opacity-30"
               style={{
-                backgroundImage: "radial-gradient(#2563EB 2px, transparent 2px)",
+                backgroundImage:
+                  "radial-gradient(#2563EB 2px, transparent 2px)",
                 backgroundSize: "12px 12px",
               }}
             ></div>
 
             <img
               loading="lazy"
-              src="https://ik.imagekit.io/unnati/v1782485434/IMG_20250126_160514_ewbb1t.jpg"
+              src="https://ik.imagekit.io/zpkfsvgtn/Media/20260118_183453.jpg"
               alt="Volunteers smiling"
               className="rounded-3xl shadow-2xl relative z-10 w-full h-[500px] object-cover"
               style={{ objectPosition: "center 20%" }}
@@ -237,36 +344,67 @@ const JoinUs = () => {
 
           {/* Right - Content */}
           <motion.div
-            initial="hidden" whileInView="visible" viewport={{ once: true, margin: "-100px" }} variants={staggerContainer}
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true, margin: "-100px" }}
+            variants={staggerContainer}
             className="order-1 lg:order-2"
           >
-            <motion.h2 variants={fadeUpVariant} className="text-4xl md:text-5xl font-bold text-[#0F172A] mb-6">
+            <motion.h2
+              variants={fadeUpVariant}
+              className="text-4xl md:text-5xl font-bold text-[#0F172A] mb-6"
+            >
               Why Join Unnati Society?
             </motion.h2>
-            <motion.p variants={fadeUpVariant} className="text-gray-600 text-lg mb-10 leading-relaxed">
-              Be a part of a purpose-driven community and grow while creating lasting impact.
+            <motion.p
+              variants={fadeUpVariant}
+              className="text-gray-600 text-lg mb-10 leading-relaxed"
+            >
+              Be a part of a purpose-driven community and grow while creating
+              lasting impact.
             </motion.p>
 
             <div className="space-y-8">
               {[
-                { title: "Make a Real Impact", desc: "Contribute to meaningful educational and social initiatives.", icon: <FiTarget size={20} /> },
-                { title: "Learn & Grow", desc: "Enhance leadership, communication, and teamwork skills.", icon: <FiBookOpen size={20} /> },
-                { title: "Network & Collaborate", desc: "Work with students, professionals, and institutions.", icon: <FiUsers size={20} /> },
-                { title: "Certificates & Recognition", desc: "Receive certificates, recommendation letters, and recognition.", icon: <FiAward size={20} /> }
+                {
+                  title: "Make a Real Impact",
+                  desc: "Contribute to meaningful educational and social initiatives.",
+                  icon: <FiTarget size={20} />,
+                },
+                {
+                  title: "Learn & Grow",
+                  desc: "Enhance leadership, communication, and teamwork skills.",
+                  icon: <FiBookOpen size={20} />,
+                },
+                {
+                  title: "Network & Collaborate",
+                  desc: "Work with students, professionals, and institutions.",
+                  icon: <FiUsers size={20} />,
+                },
+                {
+                  title: "Certificates & Recognition",
+                  desc: "Receive certificates, recommendation letters, and recognition.",
+                  icon: <FiAward size={20} />,
+                },
               ].map((item, index) => (
-                <motion.div key={index} variants={fadeUpVariant} className="flex gap-5 group">
+                <motion.div
+                  key={index}
+                  variants={fadeUpVariant}
+                  className="flex gap-5 group"
+                >
                   <div className="w-12 h-12 rounded-full bg-blue-100 text-blue-600 flex items-center justify-center shrink-0 group-hover:bg-blue-600 group-hover:text-white transition-colors duration-300">
                     {item.icon}
                   </div>
                   <div>
-                    <h4 className="text-xl font-bold text-[#0F172A] mb-1">{item.title}</h4>
+                    <h4 className="text-xl font-bold text-[#0F172A] mb-1">
+                      {item.title}
+                    </h4>
                     <p className="text-gray-600">{item.desc}</p>
                   </div>
                 </motion.div>
               ))}
             </div>
           </motion.div>
-
         </div>
       </section>
 
@@ -280,33 +418,69 @@ const JoinUs = () => {
 
         <div className="max-w-[1400px] mx-auto relative z-10">
           <motion.div
-            initial="hidden" whileInView="visible" viewport={{ once: true, margin: "-100px" }} variants={fadeUpVariant}
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true, margin: "-100px" }}
+            variants={fadeUpVariant}
             className="text-center mb-20"
           >
-            <h2 className="text-4xl md:text-5xl font-bold mb-4">How to Get Started</h2>
-            <p className="text-blue-100 text-lg">Joining us is simple. Take the first step today!</p>
+            <h2 className="text-4xl md:text-5xl font-bold mb-4">
+              How to Get Started
+            </h2>
+            <p className="text-blue-100 text-lg">
+              Joining us is simple. Take the first step today!
+            </p>
           </motion.div>
 
           <motion.div
-            initial="hidden" whileInView="visible" viewport={{ once: true, margin: "-100px" }} variants={staggerContainer}
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true, margin: "-100px" }}
+            variants={staggerContainer}
             className="flex flex-col md:flex-row justify-between items-start md:items-center relative"
           >
             {/* Desktop Connector Line */}
             <div className="hidden md:block absolute top-12 left-[10%] right-[10%] h-[2px] bg-blue-800 z-0"></div>
 
             {[
-              { num: "01", title: "Choose Your Path", desc: "Volunteer, mentor, partner or donate.", icon: <FiTarget size={24} /> },
-              { num: "02", title: "Fill the Form", desc: "Submit your details online.", icon: <FiBookOpen size={24} /> },
-              { num: "03", title: "Our Team Connects", desc: "We'll reach out to you within 24-48 hours.", icon: <FiMessageSquare size={24} /> },
-              { num: "04", title: "Start Your Journey", desc: "Begin making a meaningful impact.", icon: <FiStar size={24} /> }
+              {
+                num: "01",
+                title: "Choose Your Path",
+                desc: "Volunteer, mentor, partner or donate.",
+                icon: <FiTarget size={24} />,
+              },
+              {
+                num: "02",
+                title: "Fill the Form",
+                desc: "Submit your details online.",
+                icon: <FiBookOpen size={24} />,
+              },
+              {
+                num: "03",
+                title: "Our Team Connects",
+                desc: "We'll reach out to you within 24-48 hours.",
+                icon: <FiMessageSquare size={24} />,
+              },
+              {
+                num: "04",
+                title: "Start Your Journey",
+                desc: "Begin making a meaningful impact.",
+                icon: <FiStar size={24} />,
+              },
             ].map((step, i) => (
-              <motion.div key={i} variants={fadeUpVariant} className="flex flex-col items-center text-center relative z-10 w-full md:w-1/4 mb-12 md:mb-0 group">
+              <motion.div
+                key={i}
+                variants={fadeUpVariant}
+                className="flex flex-col items-center text-center relative z-10 w-full md:w-1/4 mb-12 md:mb-0 group"
+              >
                 <div className="w-24 h-24 rounded-full bg-white text-blue-600 flex items-center justify-center mb-6 shadow-[0_0_30px_rgba(37,99,235,0.3)] group-hover:scale-110 transition-transform duration-300">
                   {step.icon}
                 </div>
                 <div className="text-blue-400 font-bold mb-2">{step.num}</div>
                 <h4 className="text-xl font-bold mb-2">{step.title}</h4>
-                <p className="text-blue-100 text-sm max-w-[200px]">{step.desc}</p>
+                <p className="text-blue-100 text-sm max-w-[200px]">
+                  {step.desc}
+                </p>
               </motion.div>
             ))}
           </motion.div>
@@ -322,13 +496,21 @@ const JoinUs = () => {
                 <FiHeart size={36} />
               </div>
               <div>
-                <h2 className="text-3xl md:text-4xl font-bold text-[#0F172A] mb-3">Ready to Make a Difference?</h2>
-                <p className="text-gray-600 text-lg">Join Unnati Society and be part of something bigger than yourself.</p>
+                <h2 className="text-3xl md:text-4xl font-bold text-[#0F172A] mb-3">
+                  Ready to Make a Difference?
+                </h2>
+                <p className="text-gray-600 text-lg">
+                  Join Unnati Society and be part of something bigger than
+                  yourself.
+                </p>
               </div>
             </div>
 
             <div className="flex flex-col sm:flex-row gap-4 w-full lg:w-auto">
-              <button onClick={() => setIsModalOpen(true)} className="flex items-center justify-center gap-2 bg-white hover:bg-blue-700 hover:text-white border border-blue-600 text-blue-600 px-8 py-4 rounded-xl font-bold transition-all shadow-md hover:shadow-lg whitespace-nowrap">
+              <button
+                onClick={() => setIsModalOpen(true)}
+                className="flex items-center justify-center gap-2 bg-white hover:bg-blue-700 hover:text-white border border-blue-600 text-blue-600 px-8 py-4 rounded-xl font-bold transition-all shadow-md hover:shadow-lg whitespace-nowrap"
+              >
                 I Want to Volunteer
               </button>
               {/* <button onClick={() => setIsExploreModalOpen(true)} className="flex items-center justify-center gap-2 bg-white text-blue-600 border border-blue-200 hover:border-blue-600 px-8 py-4 rounded-xl font-bold transition-all shadow-sm whitespace-nowrap">
@@ -343,7 +525,10 @@ const JoinUs = () => {
 
       {/* Volunteer Application Modal */}
       <Suspense fallback={null}>
-        <VolunteerModal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} />
+        <VolunteerModal
+          isOpen={isModalOpen}
+          onClose={() => setIsModalOpen(false)}
+        />
       </Suspense>
 
       {/* Explore Opportunities Modal */}

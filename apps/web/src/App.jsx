@@ -23,6 +23,7 @@ const ScrollToTop = () => {
 };
 
 // Lazy Loaded Routes
+const Fresher = React.lazy(() => import("./pages/Fresher"));
 const Homepage = React.lazy(() => import("./pages/Homepage"));
 const AboutUs = React.lazy(() => import("./pages/AboutUs"));
 const WhatWeDo = React.lazy(() => import("./pages/WhatWeDo"));
@@ -79,6 +80,7 @@ const BabupurClass = React.lazy(
 const MediaSchool = React.lazy(() => import("./pages/MediaSchool"));
 const DPS = React.lazy(() => import("./components/pagesCompo/school/DPS"));
 const SFS = React.lazy(() => import("./components/pagesCompo/school/SFS"));
+const JNV = React.lazy(() => import("./components/pagesCompo/school/JNV"));
 const MountAsisi = React.lazy(
   () => import("./components/pagesCompo/school/MountAsisi"),
 );
@@ -142,6 +144,7 @@ const App = () => {
       <DelayedChatbot onNavigate={handleBotNavigate} />
       <Suspense fallback={<GlobalLoader />}>
         <Routes>
+          <Route path="/fresher" element={<Fresher />} />
           <Route path="/" element={<Homepage />} />
           <Route path="/about-us" element={<AboutUs />} />
           <Route path="/contact" element={<Contact />} />
@@ -210,6 +213,7 @@ const App = () => {
             element={<MountAsisi />}
           />
           <Route path="/media/outreach/school-visit/DPS" element={<DPS />} />
+          <Route path="/media/outreach/school-visit/JNV" element={<JNV />} />
           <Route path="/media/outreach/school-visit/SFS" element={<SFS />} />
           <Route
             path="/media/outreach/school-visit/uchh-vidyalaya"

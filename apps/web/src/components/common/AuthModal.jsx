@@ -4,7 +4,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { FiX, FiEye, FiEyeOff, FiLock, FiShield, FiCheckCircle } from 'react-icons/fi';
 import { FaGraduationCap, FaUserTie, FaHandsHelping, FaUsers } from 'react-icons/fa';
 import { authApi } from '../../api/auth.api';
-const UnnatiLogo = 'https://ik.imagekit.io/unnati/v1782396887/unnati_assets/Unnati.png';
+const UnnatiLogo = 'https://ik.imagekit.io/zpkfsvgtn/Navbar/Unnati.png?updatedAt=1785681448621';
 import { signInWithEmailAndPassword, createUserWithEmailAndPassword, signInWithPopup } from 'firebase/auth';
 import { auth, googleProvider, githubProvider } from '../../lib/firebase';
 import { useNavigate } from 'react-router-dom';

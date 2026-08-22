@@ -4,14 +4,12 @@ import NavUnn from "./../../common/NavUnn";
 import { imagekitImage } from "./../../../utils/imagekit";
 
 const images = [
-  "https://ik.imagekit.io/zpkfsvgtn/Outreach/Mount%20Assissi/IMG_2480.JPG",
-  "https://ik.imagekit.io/zpkfsvgtn/Outreach/Mount%20Assissi/IMG_2509.JPG",
-  "https://ik.imagekit.io/zpkfsvgtn/Outreach/Mount%20Assissi/IMG_2512.JPG",
-  "https://ik.imagekit.io/zpkfsvgtn/Outreach/Mount%20Assissi/IMG_2524.JPG",
-  "https://ik.imagekit.io/zpkfsvgtn/Outreach/Mount%20Assissi/IMG_2481.JPG",
-  "https://ik.imagekit.io/zpkfsvgtn/Outreach/Mount%20Assissi/IMG_2503.JPG",
-  "https://ik.imagekit.io/zpkfsvgtn/Outreach/Mount%20Assissi/IMG_2441.JPG",
-  "https://ik.imagekit.io/zpkfsvgtn/Outreach/Mount%20Assissi/IMG_2462.JPG",
+  "https://ik.imagekit.io/zpkfsvgtn/Outreach/KV/Campua%20Visits%20(5).png",
+  "https://ik.imagekit.io/zpkfsvgtn/Outreach/KV/Campua%20Visits%20(4).png",
+  "https://ik.imagekit.io/zpkfsvgtn/Outreach/KV/Campua%20Visits.png",
+  "https://ik.imagekit.io/zpkfsvgtn/Outreach/KV/Campua%20Visits%20(1).png",
+  "https://ik.imagekit.io/zpkfsvgtn/Outreach/KV/Campua%20Visits%20(2).png",
+  "https://ik.imagekit.io/zpkfsvgtn/Outreach/KV/Campua%20Visits%20(3).png",
 ];
 
 const KendriyaVidyalay = () => {
@@ -27,7 +25,7 @@ const KendriyaVidyalay = () => {
         <div className="absolute inset-0 z-10 bg-black/40"></div>
         <div className="max-w-6xl px-4 flex z-20 flex-col justify-center items-center">
           <h1 className=" w-fit text-4xl text-white oswald-font-2 z-20 mb-8 text-center border-b-2 border-blue-400">
-            Mount Assisi, Sabour, Bhagalpur, Bihar
+            Kendriya Vidyalaya
           </h1>
 
           {/* Pinterest Layout */}
