@@ -19,7 +19,7 @@ const SplitChars = ({ text, className }) => {
 };
 
 const ASSETS = {
-  video: "/assets/welcome.mp4",
+  video: "/assets/intro.webm",
   campus1: "/assets/campus-01.jpg",
   campus2: "/assets/campus-02.jpg",
   hostel: "/assets/hostel.jpg",
@@ -437,6 +437,7 @@ export default function WelcomePage() {
     </main>
   );
 }
+
 
 
 
