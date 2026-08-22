@@ -1,4 +1,5 @@
-import React, { useState, useEffect } from "react";
+﻿import React, { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 // eslint-disable-next-line no-unused-vars
 import { motion, AnimatePresence } from "framer-motion";
 import { toast } from "sonner";
@@ -28,6 +29,7 @@ const VolunteerModal = ({ isOpen, onClose }) => {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSuccess, setIsSuccess] = useState(false);
   const [isUploading, setIsUploading] = useState(false);
+  const navigate = useNavigate();
 
   const STORAGE_KEY = "unnati_volunteer_draft";
   const DRAFT_EXPIRATION = 60 * 60 * 1000; // 1 hour
@@ -229,6 +231,7 @@ const VolunteerModal = ({ isOpen, onClose }) => {
   const applyMutation = useMutation({
     mutationFn: volunteersApi.apply,
     onSuccess: () => {
+      setTimeout(() => navigate("/welcome"), 1800);
       setIsSuccess(true);
       localStorage.removeItem(STORAGE_KEY);
     },
@@ -355,7 +358,7 @@ const VolunteerModal = ({ isOpen, onClose }) => {
                 <FiUsers /> Join 200+ Changemakers
               </span>
               <span className="flex items-center gap-1.5">
-                <FiClock /> Avg Response: 24–48 Hrs
+                <FiClock /> Avg Response: 24â€“48 Hrs
               </span>
               <span className="flex items-center gap-1.5">
                 <FiAward /> Certificate Available
@@ -395,7 +398,7 @@ const VolunteerModal = ({ isOpen, onClose }) => {
                 <p className="text-gray-600 mb-8">
                   Thank you for applying to become a volunteer at Unnati
                   Society. Our team will review your application and contact you
-                  within 24–48 hours.
+                  within 24â€“48 hours.
                 </p>
 
                 <div className="bg-gray-50 rounded-xl p-4 mb-8 text-left text-sm text-gray-600 space-y-2 border border-gray-100">
@@ -548,7 +551,7 @@ const VolunteerModal = ({ isOpen, onClose }) => {
                       grandest intention.
                     </p>
                     <p className="text-blue-600 text-xs font-bold mt-3 relative z-10">
-                      — Oscar Wilde
+                      â€” Oscar Wilde
                     </p>
                   </div>
                 </div>
@@ -1001,7 +1004,7 @@ const VolunteerModal = ({ isOpen, onClose }) => {
                                   />
                                 </div>
                                 <span className="text-sm text-gray-700 group-hover:text-black transition-colors">
-                                  I agree to follow Unnati Society’s volunteer
+                                  I agree to follow Unnati Societyâ€™s volunteer
                                   code of conduct and maintain professional
                                   behavior during all activities.{" "}
                                   <span className="text-red-500 font-bold">
@@ -1093,3 +1096,4 @@ const VolunteerModal = ({ isOpen, onClose }) => {
 };
 
 export default VolunteerModal;
+

@@ -1,4 +1,4 @@
-import React, { Suspense, useEffect } from "react";
+﻿import React, { Suspense, useEffect } from "react";
 import { Route, Routes, useNavigate, useLocation } from "react-router-dom";
 import { DelayedChatbot } from "./components/common/DelayedChatbot";
 import { Toaster } from "sonner";
@@ -24,6 +24,7 @@ const ScrollToTop = () => {
 
 // Lazy Loaded Routes
 const Fresher = React.lazy(() => import("./pages/Fresher"));
+const Welcome = React.lazy(() => import("./pages/Welcome/WelcomePage"));
 const Homepage = React.lazy(() => import("./pages/Homepage"));
 const AboutUs = React.lazy(() => import("./pages/AboutUs"));
 const WhatWeDo = React.lazy(() => import("./pages/WhatWeDo"));
@@ -145,6 +146,7 @@ const App = () => {
       <Suspense fallback={<GlobalLoader />}>
         <Routes>
           <Route path="/fresher" element={<Fresher />} />
+          <Route path="/welcome" element={<Welcome />} />
           <Route path="/" element={<Homepage />} />
           <Route path="/about-us" element={<AboutUs />} />
           <Route path="/contact" element={<Contact />} />
@@ -244,3 +246,6 @@ const App = () => {
 };
 
 export default App;
+
+
+

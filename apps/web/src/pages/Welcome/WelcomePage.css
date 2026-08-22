@@ -1,0 +1,999 @@
+﻿@import url("https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap");
+
+:root {
+  --blue: #1769ff;
+  --navy: #071426;
+  --white: #ffffff;
+  --cream: #f5f5f1;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html, body {
+  margin: 0;
+  padding: 0;
+  cursor: default; /* Use default cursor mostly, we have a custom glow */
+}
+
+body {
+  font-family: "DM Sans", sans-serif;
+  background: var(--cream);
+}
+
+/* ==========================================
+   GLOBAL EFFECTS
+========================================== */
+.welcome-page {
+  width: 100%;
+  overflow-x: hidden;
+  color: var(--navy);
+  position: relative;
+}
+
+/* 1. Global Film Grain */
+.welcome-page::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  pointer-events: none;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+  opacity: 0.04;
+  mix-blend-mode: overlay;
+}
+
+/* 2. Cursor Glow */
+.cursor-glow {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 400px;
+  height: 400px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(23,105,255,0.12) 0%, rgba(23,105,255,0) 70%);
+  pointer-events: none;
+  z-index: 9998;
+  transform: translate(-50%, -50%); /* quickTo will handle x, y */
+  opacity: 0;
+  transition: opacity 0.5s ease;
+  mix-blend-mode: screen;
+}
+@media (max-width: 1024px) {
+  .cursor-glow { display: none; }
+}
+
+/* 3. Background Textures */
+.texture-dark {
+  background: #05090f;
+  background-image: radial-gradient(circle at 50% 0%, rgba(23, 105, 255, 0.05), transparent 60%);
+}
+
+.texture-light {
+  background: var(--cream);
+  background-image: radial-gradient(circle at 100% 100%, rgba(0, 0, 0, 0.02), transparent 50%);
+}
+
+.texture-blueprint {
+  background-image: 
+    linear-gradient(rgba(255,255,255,0.03) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255,255,255,0.03) 1px, transparent 1px);
+  background-size: 50px 50px;
+}
+
+.welcome-page img {
+  display: block;
+}
+
+.welcome-page em {
+  color: var(--blue);
+  font-style: normal;
+}
+
+/* ==========================================
+   HERO
+========================================== */
+.hero {
+  position: relative;
+  height: 100vh;
+  overflow: hidden;
+  color: white;
+}
+
+.hero-video {
+  position: absolute;
+  inset: -8%;
+  width: 116%;
+  height: 116%;
+  object-fit: cover;
+  object-position: 25% center;
+  transform: scale(1.35); /* Start extremely zoomed as requested */
+  will-change: transform;
+}
+
+/* Animated scan lines for hero */
+.hero::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to bottom, transparent 50%, rgba(0,0,0,0.1) 51%);
+  background-size: 100% 4px;
+  z-index: 3;
+  pointer-events: none;
+  opacity: 0.3;
+}
+
+.hero-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    90deg,
+    rgba(0, 0, 0, 0.8),
+    rgba(0, 0, 0, 0.35),
+    rgba(0, 0, 0, 0.2)
+  );
+  z-index: 2;
+}
+
+/* Subtle blue light sweep */
+.hero-light-sweep {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(90deg, transparent, rgba(23,105,255,0.15), transparent);
+  width: 200%;
+  left: -200%;
+  z-index: 4;
+  pointer-events: none;
+  mix-blend-mode: screen;
+}
+
+.hero-nav {
+  position: absolute;
+  top: 32px;
+  left: 42px;
+  right: 42px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  z-index: 10;
+  font-size: 12px;
+  letter-spacing: 0.2em;
+  opacity: 0; /* Fades in after title */
+}
+
+.hero-nav strong {
+  font-family: "Space Grotesk", sans-serif;
+  font-size: 20px;
+  letter-spacing: 0.08em;
+}
+
+.hero-nav span {
+  opacity: 0.7;
+}
+
+.hero-content {
+  position: absolute;
+  z-index: 5;
+  left: 9vw;
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+.hero-kicker {
+  opacity: 0;
+  font-size: 13px;
+  letter-spacing: 0.3em;
+  margin-bottom: 25px;
+}
+
+.hero h1 {
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  font-family: "Space Grotesk", sans-serif;
+  font-size: clamp(70px, 11vw, 180px);
+  line-height: 0.8;
+  letter-spacing: -0.075em;
+  perspective: 1000px; /* For 3D character transforms */
+}
+
+.split-char {
+  display: inline-block;
+  opacity: 0;
+  will-change: transform, opacity, filter;
+}
+
+.hero-location {
+  margin-top: 35px;
+  opacity: 0;
+  font-size: 13px;
+  letter-spacing: 0.25em;
+}
+
+.hero-scroll {
+  position: absolute;
+  z-index: 5;
+  left: 50%;
+  bottom: 35px;
+  transform: translateX(-50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  font-size: 9px;
+  letter-spacing: 0.3em;
+  opacity: 0;
+}
+
+.hero-scroll span {
+  width: 1px;
+  height: 50px;
+  background: white;
+}
+
+/* ==========================================
+   GENERIC CINEMATIC
+========================================== */
+.cinematic {
+  position: relative;
+  height: 100vh;
+  overflow: hidden;
+}
+
+.dark-layer {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    90deg,
+    rgba(0, 0, 0, 0.78),
+    rgba(0, 0, 0, 0.2)
+  );
+  z-index: 2;
+}
+
+/* ==========================================
+   CHAPTER ONE
+========================================== */
+.chapter-one {
+  color: white;
+}
+
+.chapter-one-image {
+  position: absolute;
+  inset: -10%;
+  width: 120%;
+  height: 120%;
+  object-fit: cover;
+  will-change: transform;
+}
+
+.chapter-one-content {
+  position: absolute;
+  z-index: 5;
+  left: 9vw;
+  top: 50%;
+  transform: translateY(-50%);
+  max-width: 700px;
+}
+
+.chapter-one-number {
+  display: block;
+  color: #5b8dff;
+  font-size: 15px;
+  letter-spacing: 0.2em;
+  margin-bottom: 25px;
+}
+
+.chapter-one-title {
+  font-family: "Space Grotesk", sans-serif;
+  font-size: clamp(70px, 9vw, 150px);
+  line-height: 0.82;
+  letter-spacing: -0.075em;
+  margin: 0;
+}
+
+.chapter-one-content p {
+  max-width: 420px;
+  margin-top: 35px;
+  font-size: 17px;
+  line-height: 1.6;
+  color: rgba(255,255,255,0.7);
+}
+
+/* ==========================================
+   CHAPTER TWO
+========================================== */
+.chapter-two {
+  color: white;
+}
+
+.chapter-two-image-wrapper {
+  position: absolute;
+  right: 4vw;
+  top: 10vh;
+  width: 62vw;
+  height: 80vh;
+  overflow: hidden;
+}
+
+.chapter-two-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  will-change: transform, clip-path;
+}
+
+.chapter-two-text {
+  position: absolute;
+  left: 8vw;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 4;
+  max-width: 550px;
+}
+
+.chapter-two-text span {
+  color: #6d96ff;
+  font-size: 12px;
+  letter-spacing: 0.2em;
+}
+
+.chapter-two-text h2 {
+  font-family: "Space Grotesk", sans-serif;
+  font-size: clamp(65px, 8vw, 140px);
+  line-height: 0.8;
+  letter-spacing: -0.07em;
+  margin: 30px 0;
+}
+
+.chapter-two-text p {
+  max-width: 400px;
+  color: rgba(255,255,255,0.65);
+  line-height: 1.6;
+}
+
+/* ==========================================
+   PEOPLE
+========================================== */
+.people {
+  position: relative;
+  height: 100vh;
+  overflow: hidden;
+}
+
+.people-title {
+  position: absolute;
+  z-index: 10;
+  left: 8vw;
+  top: 18vh;
+}
+
+.people-title span {
+  color: var(--blue);
+  font-size: 12px;
+  letter-spacing: 0.2em;
+}
+
+.people-title h2 {
+  font-family: "Space Grotesk", sans-serif;
+  font-size: clamp(65px, 9vw, 150px);
+  line-height: 0.78;
+  letter-spacing: -0.075em;
+  margin-top: 25px;
+}
+
+.people-image {
+  position: absolute;
+  object-fit: cover;
+  will-change: transform;
+  box-shadow: 0 30px 80px rgba(0,0,0,0.18);
+}
+
+.people-image-1 {
+  width: 33vw;
+  height: 48vh;
+  right: 8vw;
+  top: 8vh;
+  z-index: 3;
+}
+
+.people-image-2 {
+  width: 28vw;
+  height: 40vh;
+  right: 28vw;
+  bottom: 4vh;
+  z-index: 2;
+}
+
+.people-image-3 {
+  width: 23vw;
+  height: 30vh;
+  left: 5vw;
+  bottom: 4vh;
+  z-index: 4;
+}
+
+/* ==========================================
+   HORIZONTAL CAMPUS
+========================================== */
+.campus-horizontal {
+  position: relative;
+  height: 100vh;
+  overflow: hidden;
+  color: white;
+}
+
+.campus-heading {
+  position: absolute;
+  z-index: 10;
+  left: 5vw;
+  top: 12vh;
+  width: 240px;
+}
+
+.campus-heading span {
+  color: #5b8dff;
+  font-size: 14px;
+}
+
+.campus-heading h2 {
+  font-family: "Space Grotesk", sans-serif;
+  font-size: 75px;
+  line-height: 0.8;
+  letter-spacing: -0.07em;
+}
+
+.campus-track {
+  position: absolute;
+  left: 30vw;
+  top: 0;
+  height: 100%;
+  display: flex;
+  gap: 30px;
+  width: max-content;
+  align-items: center;
+  will-change: transform;
+}
+
+.campus-track article {
+  position: relative;
+  width: 62vw;
+  height: 72vh;
+  flex-shrink: 0;
+  overflow: hidden;
+  clip-path: inset(0 0 0 0); /* We animate this during entry */
+}
+
+.campus-track article img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  will-change: transform;
+}
+
+.campus-track article::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    transparent 40%,
+    rgba(0,0,0,0.8)
+  );
+}
+
+.campus-track article div {
+  position: absolute;
+  z-index: 3;
+  left: 35px;
+  bottom: 35px;
+}
+
+.campus-track article span {
+  color: #70a0ff;
+  font-size: 13px;
+}
+
+.campus-track article h3 {
+  font-family: "Space Grotesk", sans-serif;
+  font-size: 38px;
+  letter-spacing: -0.03em;
+}
+
+/* ==========================================
+   UNNATI
+========================================== */
+.unnati {
+  position: relative;
+  height: 100vh;
+  overflow: hidden;
+}
+
+.unnati-main {
+  position: absolute;
+  z-index: 5;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  text-align: center;
+}
+
+.unnati-main span {
+  color: var(--blue);
+  font-size: 12px;
+  letter-spacing: 0.2em;
+}
+
+.unnati-main h2 {
+  font-family: "Space Grotesk", sans-serif;
+  font-size: clamp(60px, 8vw, 140px);
+  line-height: 0.8;
+  letter-spacing: -0.07em;
+  will-change: transform; /* Scaling effect */
+}
+
+.giant-word {
+  position: absolute;
+  font-family: "Space Grotesk", sans-serif;
+  font-size: clamp(100px, 17vw, 280px);
+  font-weight: 700;
+  line-height: 0.7;
+  letter-spacing: -0.08em;
+  color: rgba(23,105,255,0.06);
+  white-space: nowrap;
+  will-change: transform;
+  z-index: 1;
+}
+
+.word-learn {
+  right: -5vw;
+  bottom: 20vh;
+}
+
+.word-connect {
+  left: -10vw;
+  bottom: 8vh;
+}
+
+.word-create {
+  right: 5vw;
+  top: 10vh;
+}
+
+/* ==========================================
+   PROGRAMS
+========================================== */
+.programs {
+  padding: 15vh 8vw;
+}
+
+.programs-header span {
+  color: var(--blue);
+  font-size: 12px;
+  letter-spacing: 0.2em;
+}
+
+.programs-header h2 {
+  font-family: "Space Grotesk", sans-serif;
+  font-size: clamp(70px, 9vw, 150px);
+  line-height: 0.8;
+  letter-spacing: -0.075em;
+}
+
+.program-grid {
+  margin-top: 100px;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 25px;
+}
+
+.program-card {
+  border-top: 1px solid #ccd1da;
+  padding-top: 20px;
+}
+
+.program-image {
+  height: 430px;
+  overflow: hidden;
+  margin-bottom: 25px;
+}
+
+.program-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 1.2s cubic-bezier(.2,.7,.2,1);
+}
+
+.program-card:hover img {
+  transform: scale(1.08);
+}
+
+.program-card > span {
+  color: var(--blue);
+  font-size: 13px;
+}
+
+.program-card h3 {
+  font-family: "Space Grotesk", sans-serif;
+  font-size: 35px;
+  margin: 15px 0 10px;
+  letter-spacing: -0.04em;
+}
+
+.program-card p {
+  color: #697386;
+  line-height: 1.5;
+}
+
+/* ==========================================
+   RESPONSIVE
+========================================== */
+@media (max-width: 900px) {
+  .hero-content {
+    left: 7vw;
+  }
+  .hero h1 {
+    font-size: 17vw;
+  }
+  .chapter-two-image-wrapper {
+    width: 82vw;
+    height: 55vh;
+    right: 5vw;
+    top: 32vh;
+  }
+  .chapter-two-text {
+    top: 12vh;
+    transform: none;
+  }
+  .chapter-two-text h2 {
+    font-size: 14vw;
+  }
+  .people-image-1 {
+    width: 55vw;
+    height: 38vh;
+  }
+  .people-image-2 {
+    width: 45vw;
+    height: 30vh;
+  }
+  .people-image-3 {
+    width: 40vw;
+    height: 25vh;
+  }
+  .campus-heading {
+    left: 6vw;
+  }
+  .campus-track {
+    left: 20vw;
+  }
+  .campus-track article {
+    width: 78vw;
+  }
+  .program-grid {
+    grid-template-columns: 1fr;
+  }
+  .program-image {
+    height: 55vh;
+  }
+  .final-title {
+    font-size: 18vw;
+  }
+}
+/* ==========================================
+   FINAL SECTION ENVIRONMENT
+========================================== */
+.cinematic-environment {
+  --mouse-x: 50%;
+  --mouse-y: 50%;
+  --stretch: 0px;
+  --angle: 0deg;
+  --aura-opacity: 0.035;
+
+  position: relative;
+  height: 100vh;
+  background: #030811; /* Deep navy */
+  color: white;
+  overflow: hidden;
+  cursor: default;
+}
+
+/* 1. Ambient Background Movement */
+.final-ambient-bg {
+  position: absolute;
+  inset: -30%;
+  background:
+    radial-gradient(
+      circle at 20% 30%,
+      rgba(255,255,255,0.03),
+      transparent 30%
+    ),
+    radial-gradient(
+      circle at 80% 70%,
+      rgba(37,99,235,0.06),
+      transparent 35%
+    );
+  animation: ambientMove 14s ease-in-out infinite alternate;
+  pointer-events: none;
+  z-index: 1;
+}
+
+@keyframes ambientMove {
+  from { transform: translate3d(-2%, -2%, 0) scale(1); }
+  to { transform: translate3d(2%, 2%, 0) scale(1.05); }
+}
+
+/* 2. Cursor Reactive Light & Spotlight */
+.cinematic-environment::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 2;
+  /* Combine large soft blue aurora with stretched velocity aura and tiny bright spotlight */
+  background:
+    radial-gradient(
+      500px circle at var(--mouse-x) var(--mouse-y),
+      rgba(255,255,255, var(--aura-opacity)),
+      transparent 65%
+    ),
+    radial-gradient(
+      ellipse calc(600px + var(--stretch)) 600px at var(--mouse-x) var(--mouse-y),
+      rgba(37, 99, 235, 0.16),
+      rgba(37, 99, 235, 0.06) 30%,
+      transparent 70%
+    );
+  transform-origin: var(--mouse-x) var(--mouse-y);
+  /* The rotation for velocity stretching */
+  transform: rotate(var(--angle));
+}
+
+/* 3. Animated Architectural Grid (Cursor Reactive) */
+.final-grid {
+  position: absolute;
+  inset: 0;
+  z-index: 3;
+  pointer-events: none;
+  background:
+    linear-gradient(rgba(255,255,255,0.025) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255,255,255,0.025) 1px, transparent 1px);
+  background-size: 80px 80px;
+  
+  /* Mask it so it only illuminates heavily near cursor, faintly everywhere else */
+  mask-image: radial-gradient(
+    400px circle at var(--mouse-x) var(--mouse-y),
+    black,
+    rgba(0,0,0,0.15) 80%
+  );
+  -webkit-mask-image: radial-gradient(
+    400px circle at var(--mouse-x) var(--mouse-y),
+    black,
+    rgba(0,0,0,0.15) 80%
+  );
+}
+
+/* 4. Particles */
+.particles-container {
+  position: absolute;
+  inset: 0;
+  z-index: 4;
+  pointer-events: none;
+}
+
+.particle {
+  position: absolute;
+  background: white;
+  border-radius: 50%;
+  box-shadow: 0 0 4px rgba(255,255,255,0.5);
+  will-change: transform;
+}
+
+/* 5. Button & Content */
+.final-content {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  text-align: center;
+  z-index: 5;
+  pointer-events: none; /* Let wrappers handle pointer */
+}
+
+.final-small {
+  color: #77a0ff;
+  font-size: 12px;
+  letter-spacing: 0.25em;
+  pointer-events: auto;
+}
+
+.final-title {
+  font-family: "Space Grotesk", sans-serif;
+  font-size: clamp(80px, 12vw, 200px);
+  line-height: 0.78;
+  letter-spacing: -0.08em;
+  margin: 45px 0;
+  pointer-events: auto;
+}
+
+.final-button-wrapper {
+  padding: 40px; 
+  cursor: pointer;
+  pointer-events: auto;
+}
+
+.final-button {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  border: 1px solid rgba(255,255,255,0.25);
+  background: transparent;
+  color: white;
+  padding: 18px 36px;
+  font-size: 12px;
+  letter-spacing: 0.15em;
+  border-radius: 4px;
+  pointer-events: none; 
+  will-change: transform, scale;
+  overflow: hidden;
+  transition: border-color 0.4s;
+}
+
+.final-button::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: #ffffff; /* Solid white for hover contrast */
+  transform: scaleY(0);
+  transform-origin: bottom;
+  transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+  z-index: 0;
+}
+
+.final-button span, .final-button svg {
+  position: relative;
+  z-index: 1;
+  transition: transform 0.4s ease;
+}
+
+.final-button-wrapper:hover .final-button {
+  border-color: rgba(255,255,255,0.6);
+}
+
+.final-button-wrapper:hover .final-button::before {
+  transform: scaleY(1);
+}
+
+.final-button-wrapper:hover .final-button svg {
+  transform: translateX(8px);
+}
+
+/* 6. Cinematic Transition Overlay */
+.final-transition-overlay {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 100px;
+  height: 100px;
+  margin-top: -50px;
+  margin-left: -50px;
+  background: radial-gradient(circle, rgba(23,105,255,1) 0%, rgba(23,105,255,0) 80%);
+  border-radius: 50%;
+  opacity: 0;
+  pointer-events: none;
+  z-index: 10;
+  will-change: transform, opacity;
+}
+
+/* Touch device overrides */
+@media (hover: none) {
+  .cinematic-environment::before {
+    display: none;
+  }
+}
+
+
+/* ==========================================
+   FINAL SECTION (3D Books)
+========================================== */
+.final {
+  position: relative;
+  min-height: 100vh;
+  width: 100%;
+  background: #02060d; /* Matches WebGL clearColor */
+  color: white;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.final-content {
+  position: relative;
+  z-index: 5;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  text-align: center;
+  pointer-events: none; /* Let WebGL mouse events pass through */
+}
+
+.final-small {
+  color: #77a0ff;
+  font-size: 12px;
+  letter-spacing: 0.25em;
+  pointer-events: auto;
+}
+
+.final-title {
+  font-family: "Space Grotesk", sans-serif;
+  font-size: clamp(80px, 12vw, 200px);
+  line-height: 0.78;
+  letter-spacing: -0.08em;
+  margin: 45px 0;
+  pointer-events: auto;
+}
+
+/* Magnetic Button Styles */
+.final-button-wrapper {
+  padding: 40px; 
+  cursor: pointer;
+  pointer-events: auto; /* Re-enable pointer events for button */
+}
+
+.final-button {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  border: 1px solid rgba(255,255,255,0.25);
+  background: transparent;
+  color: white;
+  padding: 18px 36px;
+  font-size: 12px;
+  letter-spacing: 0.15em;
+  border-radius: 4px;
+  pointer-events: none; 
+  will-change: transform;
+  overflow: hidden;
+  transition: border-color 0.4s;
+}
+
+.final-button::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: white; /* Solid white for hover contrast */
+  transform: scaleY(0);
+  transform-origin: bottom;
+  transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+  z-index: 0;
+}
+
+.final-button span, .final-button svg {
+  position: relative;
+  z-index: 1;
+  transition: transform 0.4s ease, color 0.4s ease;
+}
+
+.final-button-wrapper:hover .final-button {
+  border-color: rgba(255,255,255,0.6);
+}
+
+.final-button-wrapper:hover .final-button::before {
+  transform: scaleY(1);
+}
+
+.final-button-wrapper:hover .final-button span,
+.final-button-wrapper:hover .final-button svg {
+  color: #02060d; /* Dark text on white background */
+}
+
+.final-button-wrapper:hover .final-button svg {
+  transform: translateX(8px);
+}
+
+

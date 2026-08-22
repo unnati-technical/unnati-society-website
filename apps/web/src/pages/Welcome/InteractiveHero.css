@@ -1,0 +1,175 @@
+﻿.interactive-hero-section {
+  position: relative;
+  width: 100%;
+  height: 100vh;
+  overflow: hidden;
+  background-color: #030811;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  perspective: 1200px; /* For the camera rotation effect */
+}
+
+.interactive-hero-scene {
+  position: absolute;
+  width: 110%; /* Extra width for parallax bleed */
+  height: 110%;
+  transform-style: preserve-3d;
+}
+
+.scene-layer {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  pointer-events: none;
+  will-change: transform;
+}
+
+.interactive-hero-overlay {
+  position: relative;
+  z-index: 10;
+  text-align: center;
+  color: #ffffff;
+  pointer-events: none;
+}
+
+.interactive-hero-overlay h1 {
+  font-size: clamp(3rem, 6vw, 6rem);
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  margin-bottom: 1rem;
+  text-shadow: 0 10px 30px rgba(0,0,0,0.5);
+}
+
+.interactive-hero-overlay p {
+  font-size: 1.2rem;
+  color: #94a3b8;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+/* PLACEHOLDER ARTWORK STYLES */
+/* These simulate the visual layers until real PNGs are dropped in */
+
+.layer-bg .placeholder-art {
+  width: 100%;
+  height: 100%;
+  background: radial-gradient(circle at top right, #0f172a, #030811);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: rgba(255,255,255,0.05);
+}
+
+.layer-room .placeholder-art {
+  width: 80%;
+  height: 70%;
+  border: 2px dashed rgba(255, 255, 255, 0.05);
+  background: rgba(15, 23, 42, 0.2);
+  display: flex;
+  align-items: flex-start;
+  justify-content: flex-end;
+  padding: 40px;
+  color: rgba(255,255,255,0.1);
+}
+
+.layer-student .silhouette {
+  width: 280px;
+  height: 400px;
+  background: #020617;
+  border-radius: 140px 140px 0 0;
+  transform: translate(80px, 150px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: rgba(255,255,255,0.2);
+  box-shadow: inset 15px 0 40px rgba(37, 99, 235, 0.3);
+}
+
+.layer-pc .monitor {
+  width: 320px;
+  height: 200px;
+  background: #1e293b;
+  border: 4px solid #334155;
+  border-radius: 12px;
+  transform: translate(-120px, 50px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 0 20px rgba(37, 99, 235, 0.2);
+}
+
+.layer-pc .screen-content {
+  width: 95%;
+  height: 90%;
+  background: #020617;
+  border-radius: 6px;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.layer-pc .screen-content span {
+  color: #3b82f6;
+  font-weight: bold;
+  font-size: 1.2rem;
+  letter-spacing: 0.1em;
+}
+
+.layer-pc .code-line {
+  height: 6px;
+  width: 80%;
+  background: #334155;
+  border-radius: 3px;
+}
+
+.layer-pc .code-line.short {
+  width: 40%;
+}
+
+.layer-desk .desk-surface {
+  position: absolute;
+  bottom: -50px;
+  width: 120%;
+  height: 250px;
+  background: linear-gradient(to bottom, #1e1b4b, #030811);
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  padding-top: 20px;
+  color: rgba(255,255,255,0.1);
+  border-top: 2px solid #312e81;
+}
+
+.layer-fg .lamp {
+  position: absolute;
+  bottom: 80px;
+  right: 15%;
+  width: 60px;
+  height: 180px;
+  background: #334155;
+  border-radius: 30px 30px 0 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: rgba(255,255,255,0.1);
+  box-shadow: -20px -20px 40px rgba(250, 204, 21, 0.05);
+}
+
+.layer-fg .foreground-books {
+  position: absolute;
+  bottom: 30px;
+  left: 10%;
+  width: 180px;
+  height: 90px;
+  background: #475569;
+  transform: rotate(-15deg);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: rgba(255,255,255,0.1);
+  box-shadow: 20px 20px 40px rgba(0,0,0,0.5);
+}

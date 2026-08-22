@@ -107,3 +107,14 @@
   -ms-overflow-style: none;
   scrollbar-width: none;
 }
+
+/* ─── Welcome Page ─────────────────────────────────────────── */
+@keyframes slideDown {
+  0%   { transform: translateY(-100%); }
+  100% { transform: translateY(200%); }
+}
+
+/* Hide native cursor on the welcome page */
+.welcome-cursor-hide {
+  cursor: none;
+}
