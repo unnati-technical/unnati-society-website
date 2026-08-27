@@ -103,13 +103,19 @@ body {
 
 .hero-video {
   position: absolute;
-  inset: -8%;
-  width: 116%;
-  height: 116%;
-  object-fit: cover;
-  object-position: 25% center;
-  transform: scale(1.35); /* Start extremely zoomed as requested */
+  top: -50%;
+  bottom: -50%;
+  left: -50%;
+  right: -50%;
+  margin: auto;
+  width: 100vw;
+  height: 56.25vw;
+  min-height: 100vh;
+  min-width: 177.77vh;
+  transform: scale(1.35);
   will-change: transform;
+  pointer-events: none;
+  border: none;
 }
 
 /* Animated scan lines for hero */
@@ -995,5 +1001,6 @@ body {
 .final-button-wrapper:hover .final-button svg {
   transform: translateX(8px);
 }
+
 
 

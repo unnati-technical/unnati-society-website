@@ -267,6 +267,24 @@ export default function WelcomePage() {
       ================================================== */
       ScrollTrigger.refresh();
 
+      ScrollTrigger.create({
+        trigger: ".hero",
+        start: "top top",
+        end: "bottom top",
+        onLeave: () => {
+          const iframe = document.getElementById("hero-yt");
+          if (iframe && iframe.contentWindow) {
+            iframe.contentWindow.postMessage('{"event":"command","func":"pauseVideo","args":""}', "*");
+          }
+        },
+        onEnterBack: () => {
+          const iframe = document.getElementById("hero-yt");
+          if (iframe && iframe.contentWindow) {
+            iframe.contentWindow.postMessage('{"event":"command","func":"playVideo","args":""}', "*");
+          }
+        }
+      });
+
       return () => {
         lenis.destroy();
         gsap.ticker.remove(raf);
@@ -282,7 +300,30 @@ export default function WelcomePage() {
 
       {/* ================= HERO ================= */}
       <section className="hero texture-dark">
-        <video className="hero-video" src={ASSETS.video} autoPlay muted loop playsInline preload="auto" />
+        <iframe id="hero-yt" className="hero-video" src="https://www.youtube.com/embed/Ji9sXfyaQrQ?enablejsapi=1&autoplay=1&mute=0&vq=hd1080&controls=0&loop=1&playlist=Ji9sXfyaQrQ&showinfo=0&rel=0&playsinline=1" allow="autoplay; encrypted-media" title="Hero Background Video" frameBorder="0" />
+        <button 
+          onClick={(e) => {
+            const btn = e.currentTarget;
+            const isMuted = btn.getAttribute("data-muted") === "true";
+            const iframe = document.getElementById("hero-yt");
+            if (iframe && iframe.contentWindow) {
+              if (isMuted) {
+                iframe.contentWindow.postMessage('{"event":"command","func":"unMute","args":""}', "*");
+                iframe.contentWindow.postMessage('{"event":"command","func":"setVolume","args":[100]}', "*");
+                btn.setAttribute("data-muted", "false");
+                btn.innerHTML = "SOUND ON";
+              } else {
+                iframe.contentWindow.postMessage('{"event":"command","func":"mute","args":""}', "*");
+                btn.setAttribute("data-muted", "true");
+                btn.innerHTML = "SOUND OFF";
+              }
+            }
+          }}
+          data-muted="false"
+          style={{ position: "absolute", bottom: "30px", right: "30px", zIndex: 100, backgroundColor: "rgba(0,0,0,0.5)", color: "white", padding: "8px 16px", borderRadius: "20px", fontSize: "12px", border: "1px solid rgba(255,255,255,0.2)", cursor: "pointer", letterSpacing: "1px" }}
+        >
+          SOUND ON
+        </button>
         <div className="hero-overlay" />
         <div className="hero-light-sweep" />
         
@@ -437,6 +478,12 @@ export default function WelcomePage() {
     </main>
   );
 }
+
+
+
+
+
+
 
 
 
