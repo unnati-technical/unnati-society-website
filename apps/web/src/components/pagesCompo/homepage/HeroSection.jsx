@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from "react";
+﻿import React, { useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import { homeMediaApi } from "../../../api/home-media.api";
@@ -251,3 +251,4 @@ const HeroSection = () => {
 };
 
 export default HeroSection;
+
