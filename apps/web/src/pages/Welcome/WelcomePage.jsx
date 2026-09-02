@@ -398,28 +398,28 @@ export default function WelcomePage() {
             <img src="https://ik.imagekit.io/zpkfsvgtn/Programs/WhatsApp_Image_2026-02-03_at_1.39%20(8).jpg" alt="Computer Centre" />
             <div>
               <span>01</span>
-              <h3>COMPUTER CENTRE</h3>
+              <h3>RANG CHAKRA</h3>
             </div>
           </article>
           <article>
             <img src="https://ik.imagekit.io/zpkfsvgtn/events/1787828202848-IMG_20251114_150923_pWzdkOZqS.jpg" alt="Academic Life" />
             <div>
               <span>02</span>
-              <h3>ACADEMIC LIFE</h3>
+              <h3>CHILDREN'S DAY</h3>
             </div>
           </article>
           <article>
             <img src="https://ik.imagekit.io/zpkfsvgtn/events/1787829489687-WhatsApp_Image_2026-08-27_at_16.17.10__1__Sbke9OWre.jpeg" alt="Hostel Life" />
             <div>
               <span>03</span>
-              <h3>HOSTEL LIFE</h3>
+              <h3>REPUBLIC DAY</h3>
             </div>
           </article>
           <article>
             <img src="https://ik.imagekit.io/zpkfsvgtn/Programs/WhatsApp_Image_2026-02-03_at_1.39%20(6).jpg" alt="Community" />
             <div>
               <span>04</span>
-              <h3>COMMUNITY</h3>
+              <h3>MONTHLY TESTS</h3>
             </div>
           </article>
         </div>
