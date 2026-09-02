@@ -1,4 +1,4 @@
-﻿import { useLayoutEffect, useRef, useEffect, useState } from "react";
+import { useLayoutEffect, useRef, useEffect, useState } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import Lenis from "@studio-freight/lenis";
@@ -158,7 +158,7 @@ export default function WelcomePage() {
         .to(".chapter-two-text", { xPercent: -20, opacity: 0, filter: "blur(5px)", duration: 0.3 }, 0.7);
 
       /* ==================================================
-         CHAPTER 03 — PEOPLE (Depth parallax)
+         CHAPTER 03 � PEOPLE (Depth parallax)
       ================================================== */
       const peopleTimeline = gsap.timeline({
         scrollTrigger: {
@@ -184,7 +184,7 @@ export default function WelcomePage() {
         .to(".people-title", { opacity: 0, scale: 1.1, duration: 0.3 }, 0.7);
 
       /* ==================================================
-         CHAPTER 04 — HORIZONTAL CAMPUS
+         CHAPTER 04 � HORIZONTAL CAMPUS
       ================================================== */
       const campusTrack = document.querySelector(".campus-track");
       if (campusTrack) {
@@ -203,7 +203,7 @@ export default function WelcomePage() {
       }
 
       /* ==================================================
-         CHAPTER 05 — UNNATI (Cinematic Pause)
+         CHAPTER 05 � UNNATI (Cinematic Pause)
       ================================================== */
       const unnatiTimeline = gsap.timeline({
         scrollTrigger: {
@@ -227,7 +227,7 @@ export default function WelcomePage() {
         .to(".unnati-main h2", { filter: "blur(20px)", opacity: 0, scale: 2.5, duration: 0.2 }, 0.8);
 
       /* ==================================================
-         CHAPTER 06 — PROGRAMS
+         CHAPTER 06 � PROGRAMS
       ================================================== */
       gsap.utils.toArray(".program-card").forEach((card, index) => {
         gsap.fromTo(card,
@@ -300,7 +300,7 @@ export default function WelcomePage() {
 
       {/* ================= HERO ================= */}
       <section className="hero texture-dark">
-        <iframe id="hero-yt" className="hero-video" src="https://www.youtube.com/embed/Ji9sXfyaQrQ?enablejsapi=1&autoplay=1&mute=0&vq=hd1080&controls=0&loop=1&playlist=Ji9sXfyaQrQ&showinfo=0&rel=0&playsinline=1" allow="autoplay; encrypted-media" title="Hero Background Video" frameBorder="0" />
+        <iframe id="hero-yt" className="hero-video" src="https://www.youtube.com/embed/Ji9sXfyaQrQ?enablejsapi=1&autoplay=1&mute=1&vq=hd1080&controls=0&loop=1&playlist=Ji9sXfyaQrQ&showinfo=0&rel=0&playsinline=1&modestbranding=1&iv_load_policy=3&disablekb=1&fs=0" allow="autoplay; encrypted-media" title="Hero Background Video" frameBorder="0" />
         <button 
           onClick={(e) => {
             const btn = e.currentTarget;
@@ -319,11 +319,9 @@ export default function WelcomePage() {
               }
             }
           }}
-          data-muted="false"
+          data-muted="true"
           style={{ position: "absolute", bottom: "30px", right: "30px", zIndex: 100, backgroundColor: "rgba(0,0,0,0.5)", color: "white", padding: "8px 16px", borderRadius: "20px", fontSize: "12px", border: "1px solid rgba(255,255,255,0.2)", cursor: "pointer", letterSpacing: "1px" }}
-        >
-          SOUND ON
-        </button>
+        >SOUND OFF</button>
         <div className="hero-overlay" />
         <div className="hero-light-sweep" />
         
@@ -367,11 +365,11 @@ export default function WelcomePage() {
       {/* ================= CHAPTER 02 ================= */}
       <section className="chapter-two cinematic texture-dark">
         <div className="chapter-two-image-wrapper">
-          <img className="chapter-two-image" src={ASSETS.hostel} alt="" />
+          <img className="chapter-two-image" src="/assets/team.jpeg" alt="" />
         </div>
         <div className="chapter-two-text">
-          <span>02 — CAMPUS LIFE</span>
-          <h2>MORE <br /> THAN <br /> A <em>CAMPUS.</em></h2>
+          <span>02  CAMPUS LIFE</span>
+          <h2>MORE <br /> THAN <br /> A <em>CLUB.</em></h2>
           <p>The classrooms are only the beginning. The people, experiences and memories become part of your journey.</p>
         </div>
       </section>
@@ -379,46 +377,46 @@ export default function WelcomePage() {
       {/* ================= PEOPLE ================= */}
       <section className="people texture-light">
         <div className="people-title">
-          <span>03 — COMMUNITY</span>
-          <h2>FIND <br /> YOUR <br /> <em>PEOPLE.</em></h2>
+          <span>03 � COMMUNITY</span>
+          <h2>DISCOVER <br /> YOUR <br /> <em>JOY.</em></h2>
         </div>
 
-        <img className="people-image people-image-1" src={ASSETS.students} alt="" />
-        <img className="people-image people-image-2" src={ASSETS.community} alt="" />
-        <img className="people-image people-image-3" src={ASSETS.campus2} alt="" />
+        <img className="people-image people-image-1" src="/assets/j1.jpeg" alt="" />
+        <img className="people-image people-image-2" src="/assets/j2.jpeg" alt="" />
+        <img className="people-image people-image-3" src="/assets/j3.jpeg" alt="" />
       </section>
 
       {/* ================= HORIZONTAL ================= */}
       <section className="campus-horizontal texture-blueprint">
         <div className="campus-heading">
           <span>04</span>
-          <h2>YOUR <br /> CAMPUS.</h2>
+          <h2>OUR <br /> EVENTS.</h2>
         </div>
 
         <div className="campus-track">
           <article>
-            <img src={ASSETS.campus1} alt="" />
+            <img src="https://ik.imagekit.io/zpkfsvgtn/Programs/WhatsApp_Image_2026-02-03_at_1.39%20(8).jpg" alt="Computer Centre" />
             <div>
               <span>01</span>
               <h3>COMPUTER CENTRE</h3>
             </div>
           </article>
           <article>
-            <img src={ASSETS.campus2} alt="" />
+            <img src="https://ik.imagekit.io/zpkfsvgtn/events/1787828202848-IMG_20251114_150923_pWzdkOZqS.jpg" alt="Academic Life" />
             <div>
               <span>02</span>
               <h3>ACADEMIC LIFE</h3>
             </div>
           </article>
           <article>
-            <img src={ASSETS.hostel} alt="" />
+            <img src="https://ik.imagekit.io/zpkfsvgtn/events/1787829489687-WhatsApp_Image_2026-08-27_at_16.17.10__1__Sbke9OWre.jpeg" alt="Hostel Life" />
             <div>
               <span>03</span>
               <h3>HOSTEL LIFE</h3>
             </div>
           </article>
           <article>
-            <img src={ASSETS.community} alt="" />
+            <img src="https://ik.imagekit.io/zpkfsvgtn/Programs/WhatsApp_Image_2026-02-03_at_1.39%20(6).jpg" alt="Community" />
             <div>
               <span>04</span>
               <h3>COMMUNITY</h3>
@@ -430,7 +428,7 @@ export default function WelcomePage() {
       {/* ================= UNNATI ================= */}
       <section className="unnati texture-light">
         <div className="unnati-main">
-          <span>05 — UNNATI</span>
+          <span>05 � UNNATI</span>
           <h2>UNNATI <br /> IS MORE <br /> THAN A <br /> <em>SOCIETY.</em></h2>
         </div>
 
@@ -442,14 +440,14 @@ export default function WelcomePage() {
       {/* ================= PROGRAMS ================= */}
       <section className="programs texture-light">
         <div className="programs-header">
-          <span>06 — PROGRAMS</span>
+          <span>06 � PROGRAMS</span>
           <h2>WHAT <br /> WE <br /> <em>DO.</em></h2>
         </div>
 
         <div className="program-grid">
           <article className="program-card">
             <div className="program-image">
-              <img src={ASSETS.campus1} alt="" />
+              <img src="https://ik.imagekit.io/zpkfsvgtn/Programs/Digi/IMG-20250412-WA0001_geachy.jpg" alt="Digixplore" />
             </div>
             <span>01</span>
             <h3>DIGIXPLORE</h3>
@@ -457,7 +455,7 @@ export default function WelcomePage() {
           </article>
           <article className="program-card">
             <div className="program-image">
-              <img src={ASSETS.students} alt="" />
+              <img src="https://ik.imagekit.io/zpkfsvgtn/Programs/Akshar/IMG_20251012_164240.jpg" alt="Akshar" />
             </div>
             <span>02</span>
             <h3>AKSHAR</h3>
@@ -465,7 +463,7 @@ export default function WelcomePage() {
           </article>
           <article className="program-card">
             <div className="program-image">
-              <img src={ASSETS.community} alt="" />
+              <img src="https://ik.imagekit.io/zpkfsvgtn/Programs/Netritva/IMG_6230.HEIC.heif" alt="Netritva" />
             </div>
             <span>03</span>
             <h3>NETRITVA</h3>

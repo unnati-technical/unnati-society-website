@@ -1,4 +1,4 @@
-﻿@import url("https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap");
 
 :root {
   --blue: #1769ff;
@@ -103,17 +103,12 @@ body {
 
 .hero-video {
   position: absolute;
-  top: -50%;
-  bottom: -50%;
-  left: -50%;
-  right: -50%;
-  margin: auto;
-  width: 100vw;
-  height: 56.25vw;
-  min-height: 100vh;
-  min-width: 177.77vh;
-  transform: scale(1.35);
-  will-change: transform;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  /* Contain: always show the full video, no cropping */
+  width: min(100vw, 177.78vh);
+  height: min(100vh, 56.25vw);
   pointer-events: none;
   border: none;
 }
