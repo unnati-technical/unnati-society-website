@@ -115,38 +115,16 @@ body {
 
 /* Animated scan lines for hero */
 .hero::after {
-  content: "";
-  position: absolute;
-  inset: 0;
-  background: linear-gradient(to bottom, transparent 50%, rgba(0,0,0,0.1) 51%);
-  background-size: 100% 4px;
-  z-index: 3;
-  pointer-events: none;
-  opacity: 0.3;
+  display: none;
 }
 
 .hero-overlay {
-  position: absolute;
-  inset: 0;
-  background: linear-gradient(
-    90deg,
-    rgba(0, 0, 0, 0.8),
-    rgba(0, 0, 0, 0.35),
-    rgba(0, 0, 0, 0.2)
-  );
-  z-index: 2;
+  display: none;
 }
 
 /* Subtle blue light sweep */
 .hero-light-sweep {
-  position: absolute;
-  inset: 0;
-  background: linear-gradient(90deg, transparent, rgba(23,105,255,0.15), transparent);
-  width: 200%;
-  left: -200%;
-  z-index: 4;
-  pointer-events: none;
-  mix-blend-mode: screen;
+  display: none;
 }
 
 .hero-nav {
