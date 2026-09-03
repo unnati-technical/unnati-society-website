@@ -1,4 +1,4 @@
-﻿import React, { Suspense, useEffect } from "react";
+import React, { Suspense, useEffect } from "react";
 import { Route, Routes, useNavigate, useLocation } from "react-router-dom";
 import { DelayedChatbot } from "./components/common/DelayedChatbot";
 import { Toaster } from "sonner";
@@ -108,6 +108,8 @@ const TermsAndConditions = React.lazy(
 
 // Trigger Vercel deployment update
 const App = () => {
+  const location = useLocation();
+  const isWelcomePage = location.pathname === "/welcome";
   const navigate = useNavigate();
 
   const handleBotNavigate = (action) => {
@@ -142,7 +144,7 @@ const App = () => {
     <div>
       <ScrollToTop />
       <Toaster position="top-right" richColors />
-      <DelayedChatbot onNavigate={handleBotNavigate} />
+      {!isWelcomePage && <DelayedChatbot onNavigate={handleBotNavigate} />}
       <Suspense fallback={<GlobalLoader />}>
         <Routes>
           <Route path="/fresher" element={<Fresher />} />
