@@ -1,16 +1,29 @@
 import React, { useState } from 'react';
 import { FiBookOpen, FiMail, FiArrowRight } from 'react-icons/fi';
 import ResourceReader from './ResourceReader';
+import Options from './Options';
 
 const Resource = () => {
     const [readerOpen, setReaderOpen] = useState(false);
+    const [activeOptions, setActiveOptions] = useState(null);
     const [selectedDoc, setSelectedDoc] = useState({ url: '', title: '' });
 
     const resources = [
         {
             title: "Unnati Magazine",
             desc: "Explore our official Unnati magazine filled with insights, stories, and achievements.",
-            link: "https://heyzine.com/flip-book/2f239fd2b7.html?utm_source=ig&utm_medium=social&utm_content=link_in_bio&fbclid=PAZXh0bgNhZW0CMTEAc3J0YwZhcHBfaWQMMjU2MjgxMDQwNTU4AAGnJe35WrkyDf7qDLkcFr_t0fB98gZkeMip1WbOKXBLZ_bWf_jcuDwr2-bukLM_aem_PMREjp6a8NEgJru_ygoldA#page/1",
+            options: [
+                {
+                    title: "Unnati Magazine 2025",
+                    description: "Open the 2025 edition",
+                    url: "https://heyzine.com/flip-book/2f239fd2b7.html?utm_source=ig&utm_medium=social&utm_content=link_in_bio&fbclid=PAZXh0bgNhZW0CMTEAc3J0YwZhcHBfaWQMMjU2MjgxMDQwNTU4AAGnJe35WrkyDf7qDLkcFr_t0fB98gZkeMip1WbOKXBLZ_bWf_jcuDwr2-bukLM_aem_PMREjp6a8NEgJru_ygoldA#page/1",
+                },
+                {
+                    title: "Unnati Magazine 2026",
+                    description: "The 2026 edition will be available here once published.",
+                    disabled: true,
+                },
+            ],
             icon: <FiBookOpen size={24} />,
             watermark: (
                 <svg width="220" height="220" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="0.8" className="w-full h-full text-white/5">
@@ -92,7 +105,18 @@ const Resource = () => {
 
             </div>
 
-            {/* CARDS SECTION (OVERLAPPING THE WAVE DIVIDER) */}
+            {activeOptions ? (
+                <Options
+                    title={activeOptions.title}
+                    options={activeOptions.options}
+                    onBack={() => setActiveOptions(null)}
+                    onSelect={(option) => {
+                        setSelectedDoc({ url: option.url, title: option.title });
+                        setReaderOpen(true);
+                    }}
+                />
+            ) : (
+            /* CARDS SECTION (OVERLAPPING THE WAVE DIVIDER) */
             <div className="relative z-10 max-w-5xl mx-auto px-6 -mt-28 grid md:grid-cols-2 gap-8 w-full pb-24">
                 
                 {resources.map((item, index) => (
@@ -133,8 +157,12 @@ const Resource = () => {
                         <div className="relative z-10">
                             <button
                                 onClick={() => {
-                                    setSelectedDoc({ url: item.link, title: item.title });
-                                    setReaderOpen(true);
+                                    if (item.options) {
+                                        setActiveOptions({ title: item.title, options: item.options });
+                                    } else {
+                                        setSelectedDoc({ url: item.link, title: item.title });
+                                        setReaderOpen(true);
+                                    }
                                 }}
                                 className="bg-[#FBBF24] hover:bg-yellow-500 text-black px-6 py-3 rounded-xl flex items-center gap-2 font-bold text-xs uppercase tracking-wider transition-all shadow-md hover:shadow-lg active:scale-95 cursor-pointer w-fit"
                             >
@@ -146,6 +174,7 @@ const Resource = () => {
                 ))}
 
             </div>
+            )}
 
             {/* DECORATIVE CORNER LEAF SVGS */}
             {/* Bottom Left Leaves */}
