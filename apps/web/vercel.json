@@ -2,7 +2,7 @@
   "rewrites": [
     {
       "source": "/api/(.*)",
-      "destination": "https://unnati-website-main.onrender.com/api/$1"
+      "destination": "https://unnati-api.onrender.com/api/$1"
     },
     {
       "source": "/(.*)",
