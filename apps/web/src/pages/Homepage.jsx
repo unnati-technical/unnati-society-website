@@ -9,6 +9,7 @@ const Vision = lazy(() => import('../components/pagesCompo/homepage/Vision'))
 const Program = lazy(() => import('../components/pagesCompo/homepage/Program'))
 const Data = lazy(() => import('../components/pagesCompo/homepage/Data'))
 const Events = lazy(() => import('../components/pagesCompo/homepage/Events'))
+const Sponsers = lazy(() => import('../components/pagesCompo/homepage/Sponsers'))
 const Education = lazy(() => import('../components/pagesCompo/homepage/Education'))
 const Footer = lazy(() => import('../components/common/Footer'))
 const Testimonial1 = lazy(() => import('../components/pagesCompo/homepage/Testimonial1'))
@@ -29,6 +30,7 @@ const Homepage = () => {
         <LazySection><Program/></LazySection>
         <LazySection><Data/></LazySection>
         <LazySection><Events/></LazySection>
+        <LazySection><Sponsers/></LazySection>
         <LazySection><Footer/></LazySection>
     </div>
   )
