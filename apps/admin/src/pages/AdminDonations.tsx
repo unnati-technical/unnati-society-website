@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { 
-  Heart, Search, Clock, CheckCircle2, XCircle, FileText, ChevronLeft, MapPin, 
+import {
+  Heart, Search, Clock, CheckCircle2, XCircle, FileText, ChevronLeft, MapPin,
   CreditCard, ChevronDown, Check, Building, FileEdit, Printer, Copy, Download,
   MoreVertical, Loader2
 } from 'lucide-react';
@@ -23,8 +23,8 @@ const AdminDonations = () => {
     }
   });
 
-  const donations = Array.isArray(rawDonations) 
-    ? rawDonations 
+  const donations = Array.isArray(rawDonations)
+    ? rawDonations
     : (rawDonations as any).data || [];
 
   const [searchTerm, setSearchTerm] = useState('');
@@ -55,14 +55,14 @@ const AdminDonations = () => {
   };
 
   const filteredDonations = donations.filter((donation: any) => {
-    const matchesSearch = 
-      (donation.donorName ?? '').toLowerCase().includes(searchTerm.toLowerCase()) || 
+    const matchesSearch =
+      (donation.donorName ?? '').toLowerCase().includes(searchTerm.toLowerCase()) ||
       (donation.donorEmail ?? '').toLowerCase().includes(searchTerm.toLowerCase()) ||
       (donation.transactionId ?? '').toLowerCase().includes(searchTerm.toLowerCase());
-    
+
     let matchesFilter = true;
     if (filter !== 'ALL') matchesFilter = donation.status === filter;
-    
+
     return matchesSearch && matchesFilter;
   });
 
@@ -109,7 +109,7 @@ const AdminDonations = () => {
         d.transactionId || 'N/A',
         new Date(d.createdAt).toLocaleDateString()
       ]);
-      
+
       const csvContent = [headers.join(','), ...csvData.map(row => row.join(','))].join('\n');
       const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
       const url = URL.createObjectURL(blob);
@@ -147,7 +147,7 @@ const AdminDonations = () => {
     <AdminLayout>
       <div className="flex-1 overflow-y-auto bg-[#F8FAFC]">
         <div className="max-w-[1400px] mx-auto p-4 lg:p-8 space-y-8">
-          
+
           {/* Header */}
           <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
             <div>
@@ -157,7 +157,7 @@ const AdminDonations = () => {
               </p>
             </div>
             <div className="flex items-center gap-3">
-              <button 
+              <button
                 onClick={handleExport}
                 className="bg-white border border-[#E5E7EB] text-[#475569] hover:bg-gray-50 px-4 py-2.5 rounded-xl font-medium flex items-center gap-2 transition-all shadow-sm"
               >
@@ -198,11 +198,10 @@ const AdminDonations = () => {
                   <button
                     key={f}
                     onClick={() => setFilter(f)}
-                    className={`px-4 py-2 rounded-lg text-sm font-medium transition-all ${
-                      filter === f 
-                        ? 'bg-white text-[#2563EB] shadow-sm border border-[#E5E7EB]' 
+                    className={`px-4 py-2 rounded-lg text-sm font-medium transition-all ${filter === f
+                        ? 'bg-white text-[#2563EB] shadow-sm border border-[#E5E7EB]'
                         : 'text-[#64748B] hover:bg-gray-100 hover:text-[#0F172A] border border-transparent'
-                    }`}
+                      }`}
                   >
                     {f === 'ALL' ? 'All Donations' : f.charAt(0) + f.slice(1).toLowerCase()}
                   </button>
@@ -211,9 +210,9 @@ const AdminDonations = () => {
               <div className="flex items-center gap-3 w-full md:w-auto">
                 <div className="relative flex-1 md:w-64">
                   <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" size={16} />
-                  <input 
-                    type="text" 
-                    placeholder="Search by name, email, txn id..." 
+                  <input
+                    type="text"
+                    placeholder="Search by name, email, txn id..."
                     value={searchTerm}
                     onChange={e => setSearchTerm(e.target.value)}
                     className="w-full pl-10 pr-4 py-2 bg-white border border-[#E5E7EB] rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-[#2563EB]/20 focus:border-[#2563EB] transition-all"
@@ -232,8 +231,8 @@ const AdminDonations = () => {
                   <button className="text-sm bg-white border border-[#E5E7EB] text-[#475569] hover:bg-gray-50 px-3 py-1.5 rounded-md transition-colors shadow-sm" onClick={handleExport}>
                     Export Selected
                   </button>
-                  {currentUser?.email?.toLowerCase() === 'rinku4578914@gmail.com' && (
-                    <button 
+                  {currentUser?.email?.toLowerCase() === 'technical.ir@iiitbh.ac.in' && (
+                    <button
                       onClick={handleDeleteSelected}
                       className="text-sm bg-red-50 border border-red-200 text-red-600 hover:bg-red-100 px-3 py-1.5 rounded-md transition-colors shadow-sm"
                     >
@@ -265,8 +264,8 @@ const AdminDonations = () => {
                     <tr>
                       <th className="px-6 py-4 w-[40px]">
                         <div className="flex items-center justify-center">
-                          <input 
-                            type="checkbox" 
+                          <input
+                            type="checkbox"
                             checked={selectedIds.length === filteredDonations.length && filteredDonations.length > 0}
                             onChange={toggleSelectAll}
                             className="w-4 h-4 rounded border-gray-300 text-[#2563EB] focus:ring-[#2563EB]"
@@ -286,16 +285,15 @@ const AdminDonations = () => {
                       const isSelected = selectedIds.includes(donation.id);
                       return (
                         <React.Fragment key={donation.id}>
-                          <tr 
+                          <tr
                             onClick={() => setExpandedDonationId(isExpanded ? null : donation.id)}
-                            className={`group cursor-pointer transition-colors ${
-                              isExpanded || isSelected ? 'bg-blue-50/30' : 'hover:bg-gray-50'
-                            }`}
+                            className={`group cursor-pointer transition-colors ${isExpanded || isSelected ? 'bg-blue-50/30' : 'hover:bg-gray-50'
+                              }`}
                           >
                             <td className="px-6 py-4" onClick={e => e.stopPropagation()}>
                               <div className="flex items-center justify-center">
-                                <input 
-                                  type="checkbox" 
+                                <input
+                                  type="checkbox"
                                   checked={isSelected}
                                   onChange={(e) => {
                                     e.stopPropagation();
@@ -328,14 +326,14 @@ const AdminDonations = () => {
                             <td className="px-6 py-4">
                               <div className="text-[#0F172A] font-medium">{new Date(donation.createdAt).toLocaleDateString()}</div>
                               <div className="text-[#64748B] text-xs mt-0.5">
-                                {new Date(donation.createdAt).toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'})}
+                                {new Date(donation.createdAt).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
                               </div>
                             </td>
                             <td className="px-6 py-4">
                               {getStatusBadge(donation.status)}
                             </td>
                           </tr>
-                          
+
                           {/* Expanded Content View */}
                           <AnimatePresence>
                             {isExpanded && (
@@ -348,7 +346,7 @@ const AdminDonations = () => {
                               >
                                 <td colSpan={6} className="p-0">
                                   <div className="p-6 md:p-8 grid grid-cols-1 md:grid-cols-3 gap-8">
-                                    
+
                                     {/* Column 1: Details */}
                                     <div className="space-y-6">
                                       <div>
@@ -413,7 +411,7 @@ const AdminDonations = () => {
                                         </div>
                                       </div>
                                     </div>
-                                    
+
                                     {/* Column 3: Actions */}
                                     <div className="space-y-4 flex flex-col justify-end h-full">
                                       {donation.status === 'COMPLETED' && (
@@ -423,7 +421,7 @@ const AdminDonations = () => {
                                         </button>
                                       )}
                                     </div>
-                                    
+
                                   </div>
                                 </td>
                               </motion.tr>
@@ -436,7 +434,7 @@ const AdminDonations = () => {
                 </table>
               )}
             </div>
-            
+
             {/* Pagination area */}
             {!isLoading && filteredDonations.length > 0 && (
               <div className="p-4 border-t border-[#E5E7EB] flex items-center justify-between text-sm text-[#64748B] bg-gray-50/50">
