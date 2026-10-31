@@ -128,7 +128,7 @@ const PrashastiHero = () => {
               </div>
               <div className="text-left">
                 <span className="text-xs text-gray-300 block font-normal leading-tight">2026 Edition</span>
-                <span className="text-xs sm:text-sm font-semibold text-white">02 Nov, 2026</span>
+                <span className="text-xs sm:text-sm font-semibold text-white">03 Nov, 2026</span>
               </div>
             </div>
 

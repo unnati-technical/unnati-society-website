@@ -8,6 +8,7 @@ const Aboutus = lazy(() => import('../components/pagesCompo/homepage/Aboutus'))
 const Vision = lazy(() => import('../components/pagesCompo/homepage/Vision'))
 const Program = lazy(() => import('../components/pagesCompo/homepage/Program'))
 const Data = lazy(() => import('../components/pagesCompo/homepage/Data'))
+const WallOfChange = lazy(() => import('../components/pagesCompo/homepage/WallOfChange'))
 const Events = lazy(() => import('../components/pagesCompo/homepage/Events'))
 const Sponsers = lazy(() => import('../components/pagesCompo/homepage/Sponsers'))
 const Education = lazy(() => import('../components/pagesCompo/homepage/Education'))
@@ -29,6 +30,7 @@ const Homepage = () => {
         <LazySection><Testimonial2/></LazySection>
         <LazySection><Program/></LazySection>
         <LazySection><Data/></LazySection>
+        <LazySection><WallOfChange/></LazySection>
         <LazySection><Events/></LazySection>
         <LazySection><Sponsers/></LazySection>
         <LazySection><Footer/></LazySection>

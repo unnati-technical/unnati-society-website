@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
+import { Link } from 'react-router-dom';
 import { useQuery } from '@tanstack/react-query';
-import { ChevronLeft, ChevronRight, MapPin, Calendar } from 'lucide-react';
+import { ChevronLeft, ChevronRight, MapPin, Calendar, ArrowUpRight } from 'lucide-react';
 import { eventsApi } from "../../../api/events.api";
 import { queryKeys } from "../../../constants/queryKeys";
 
@@ -10,10 +11,11 @@ const MONTHS = ['JAN','FEB','MAR','APR','MAY','JUN','JUL','AUG','SEP','OCT','NOV
 const STATIC_EVENTS = [
   {
     id: 's1',
-    title: 'UNNATI PRASASTHI SAMAROH',
+    title: 'UNNATI PRASHASTI SAMAROH',
     description: 'Celebrating the achievements and outstanding contributions of our volunteers and community leaders in the outreach program.',
-    date: '2026-08-05T00:00:00Z',
+    date: '2026-11-03T00:00:00Z',
     location: 'Main Auditorium, IIIT Bhagalpur',
+    link: '/prashasti',
     photos: []
   },
   {
@@ -117,10 +119,22 @@ const Events = () => {
               const year = d.getFullYear();
               const photo = ev.photos && ev.photos.length > 0 ? ev.photos[0] : null;
 
+              const isPrashasti =
+                ev.link ||
+                ev.title?.toUpperCase().includes('PRASAS') ||
+                ev.title?.toUpperCase().includes('PRASHAS');
+              const eventLink = ev.link || (isPrashasti ? '/prashasti' : null);
+
+              const CardTag = eventLink ? Link : 'div';
+              const cardProps = eventLink ? { to: eventLink } : {};
+
               return (
-                <div
+                <CardTag
                   key={ev.id || idx}
-                  className="w-full md:w-1/3 flex flex-col bg-white border border-gray-100 rounded-3xl overflow-hidden shadow-sm hover:shadow-md transition duration-300 transform hover:-translate-y-1 h-[370px]"
+                  {...cardProps}
+                  className={`w-full md:w-1/3 flex flex-col bg-white border border-gray-100 rounded-3xl overflow-hidden shadow-sm hover:shadow-md transition duration-300 transform hover:-translate-y-1 h-[370px] ${
+                    eventLink ? 'group cursor-pointer hover:border-blue-300 hover:shadow-lg' : ''
+                  }`}
                 >
                   {/* Event Image */}
                   <div className="relative h-40 w-full bg-slate-100 overflow-hidden shrink-0">
@@ -152,7 +166,9 @@ const Events = () => {
                       <span className="text-[#3B82F6] text-[10px] font-black tracking-widest uppercase block">
                         Tentative: {day} {month} {year}
                       </span>
-                      <h3 className="oswald-font-3 text-lg font-black text-gray-900 leading-snug line-clamp-2 uppercase">
+                      <h3 className={`oswald-font-3 text-lg font-black text-gray-900 leading-snug line-clamp-2 uppercase ${
+                        eventLink ? 'group-hover:text-[#3B82F6] transition-colors' : ''
+                      }`}>
                         {ev.title}
                       </h3>
                       <p className="text-xs text-gray-500 leading-relaxed line-clamp-3">
@@ -160,12 +176,19 @@ const Events = () => {
                       </p>
                     </div>
 
-                    <div className="flex items-center gap-1.5 text-xs text-gray-600 font-bold pt-4 border-t border-gray-50 shrink-0">
-                      <MapPin className="w-4 h-4 text-gray-400" />
-                      <span className="truncate">{ev.location || "TBA"}</span>
+                    <div className="flex items-center justify-between text-xs text-gray-600 font-bold pt-4 border-t border-gray-50 shrink-0">
+                      <div className="flex items-center gap-1.5 truncate">
+                        <MapPin className="w-4 h-4 text-gray-400 shrink-0" />
+                        <span className="truncate">{ev.location || "TBA"}</span>
+                      </div>
+                      {eventLink && (
+                        <span className="text-[#3B82F6] font-semibold text-[11px] inline-flex items-center gap-0.5 group-hover:translate-x-0.5 transition-transform shrink-0">
+                          View Page <ArrowUpRight className="w-3.5 h-3.5" />
+                        </span>
+                      )}
                     </div>
                   </div>
-                </div>
+                </CardTag>
               );
             })}
           </div>

@@ -77,7 +77,7 @@ const EmptyModal = ({ onClose, onSave, initial }) => {
             <label className="text-xs font-bold text-gray-600 uppercase tracking-wide block mb-1.5">Event Title *</label>
             <input
               className="w-full border border-gray-200 rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-              placeholder="e.g. Unnati Prasasthi Samaroh"
+              placeholder="e.g. Unnati Prashasti Samaroh"
               value={form.title}
               onChange={e => setForm(f => ({ ...f, title: e.target.value }))}
             />
