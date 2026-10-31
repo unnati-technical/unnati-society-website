@@ -52,7 +52,6 @@ const NavUnn = () => {
     { name: "ABOUT", path: "/about-us" },
     { name: "OUTREACH", path: "/outreach" },
     { name: "PROGRAMS", path: "/programs" },
-    { name: "PRASHASTI", path: "/prashasti" },
     { name: "PEOPLE", path: "/executive-body" },
     { name: "MEDIA", path: "/media" },
     { name: "RESOURCES", path: "/resources" },
