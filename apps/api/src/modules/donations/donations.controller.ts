@@ -15,7 +15,7 @@ import { FirebaseAuthGuard } from '../auth/guards/firebase-auth.guard';
 
 @Controller('donations')
 export class DonationsController {
-  constructor(private readonly donationsService: DonationsService) {}
+  constructor(private readonly donationsService: DonationsService) { }
 
   @Public()
   @Post('create-order')
@@ -64,7 +64,7 @@ export class DonationsController {
   @Delete(':id')
   async deleteDonation(@Param('id') id: string, @Req() req: any) {
     // Only allow specific admin to delete donations
-    if (req.user?.email?.toLowerCase() !== 'rinku4578914@gmail.com') {
+    if (req.user?.email?.toLowerCase() !== 'technical.ir@iiitbh.ac.in') {
       throw new BadRequestException('Unauthorized to delete donations');
     }
     return this.donationsService.deleteDonation(id);

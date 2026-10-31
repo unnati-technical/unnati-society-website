@@ -22,10 +22,14 @@ export class HealthController {
   @HealthCheck()
   check() {
     return this.health.check([
-      // Check database connection
-      () => this.prismaHealth.pingCheck('database', this.prisma),
-      // Check public website
-      () => this.http.pingCheck('public-web', 'https://unnati.iiitbh.ac.in'),
+      // Check database connection with serverless wake-up allowance
+      () => this.prismaHealth.pingCheck('database', this.prisma, { timeout: 5000 }),
+      // Check the official public website
+      () =>
+        this.http.pingCheck(
+          'public-web',
+          process.env.FRONTEND_URL || 'https://unnati.iiitbh.ac.in',
+        ),
     ]);
   }
 }

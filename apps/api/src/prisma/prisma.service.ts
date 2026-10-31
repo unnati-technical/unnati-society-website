@@ -48,10 +48,15 @@ export class PrismaService
 
             // Hook into write operations for tracked models
             if (model && trackedModels.includes(model)) {
+              const res = result as unknown as
+                | { id?: string | number }
+                | undefined;
+              const opArgs = args as unknown as
+                | { where?: { id?: string | number } }
+                | undefined;
+              const id = res?.id ?? opArgs?.where?.id;
+
               if (['create', 'update', 'upsert'].includes(operation)) {
-                let id = (result as any)?.id;
-                if (!id && (args as any)?.where?.id)
-                  id = (args as any).where.id;
                 if (id) {
                   await ragQueue.add(
                     'sync_record',
@@ -60,9 +65,6 @@ export class PrismaService
                   );
                 }
               } else if (operation === 'delete') {
-                let id = (result as any)?.id;
-                if (!id && (args as any)?.where?.id)
-                  id = (args as any).where.id;
                 if (id) {
                   await ragQueue.add(
                     'delete_record',

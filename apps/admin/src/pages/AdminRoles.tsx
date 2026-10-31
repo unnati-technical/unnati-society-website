@@ -9,7 +9,7 @@ export default function AdminRoles() {
   const queryClient = useQueryClient();
   const [newEmail, setNewEmail] = useState('');
   const [newName, setNewName] = useState('');
-  
+
   const { data: admins = [], isLoading } = useQuery({
     queryKey: ['admin-users'],
     queryFn: async () => {
@@ -49,7 +49,7 @@ export default function AdminRoles() {
   };
 
   const handleRemoveAdmin = (id: string, email: string) => {
-    if (email === 'unnati.ir@iiitbh.ac.in' || email.toLowerCase() === 'rinku4578914@gmail.com') {
+    if (email === 'unnati.ir@iiitbh.ac.in' || email.toLowerCase() === 'rinku4578914@gmail.com' || email.toLowerCase() === 'technical.ir@iiitbh.ac.in') {
       toast.error('Cannot remove a protected super admin.');
       return;
     }
@@ -108,7 +108,7 @@ export default function AdminRoles() {
           <div className="p-4 md:p-5 border-b border-gray-100">
             <h2 className="font-bold text-lg text-gray-900">Authorized Admins</h2>
           </div>
-          
+
           <div className="overflow-x-auto">
             <table className="w-full text-left border-collapse">
               <thead>
@@ -175,7 +175,7 @@ export default function AdminRoles() {
                         </span>
                       </td>
                       <td className="px-5 py-4 text-right">
-                        {admin.email?.toLowerCase() === 'rinku4578914@gmail.com' ? (
+                        {admin.email?.toLowerCase() === 'rinku4578914@gmail.com' || admin.email?.toLowerCase() === 'technical.ir@iiitbh.ac.in' ? (
                           <span className="text-xs text-gray-400 font-medium italic">Protected</span>
                         ) : (
                           <button
