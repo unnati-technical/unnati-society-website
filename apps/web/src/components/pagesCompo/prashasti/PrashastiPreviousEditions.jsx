@@ -177,7 +177,7 @@ const PrashastiPreviousEditions = () => {
         </motion.div>
 
         {/* ---------------- 2025 SECOND EDITION ---------------- */}
-        <div className="p-6 sm:p-10 rounded-3xl bg-slate-50 border border-slate-200/90 shadow-sm mb-16">
+        <div id="edition-2025" className="scroll-mt-24 p-6 sm:p-10 rounded-3xl bg-slate-50 border border-slate-200/90 shadow-sm mb-16">
           
           <motion.div
             initial={{ opacity: 0, y: 18 }}

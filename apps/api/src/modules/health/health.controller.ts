@@ -24,7 +24,7 @@ export class HealthController {
     return this.health.check([
       // Check database connection with serverless wake-up allowance
       () => this.prismaHealth.pingCheck('database', this.prisma, { timeout: 5000 }),
-      // Check official public website
+      // Check the official public website
       () =>
         this.http.pingCheck(
           'public-web',
