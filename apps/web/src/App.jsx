@@ -105,6 +105,9 @@ const PrivacyPolicy = React.lazy(() => import("./pages/PrivacyPolicy"));
 const TermsAndConditions = React.lazy(
   () => import("./pages/TermsAndConditions"),
 );
+const PrashastiSamaroh = React.lazy(
+  () => import("./pages/PrashastiSamaroh"),
+);
 
 // Trigger Vercel deployment update
 const App = () => {
@@ -240,6 +243,14 @@ const App = () => {
           <Route
             path="/terms-and-conditions"
             element={<TermsAndConditions />}
+          />
+          <Route
+            path="/prashasti-samaroh"
+            element={<PrashastiSamaroh />}
+          />
+          <Route
+            path="/prashasti"
+            element={<PrashastiSamaroh />}
           />
         </Routes>
       </Suspense>
