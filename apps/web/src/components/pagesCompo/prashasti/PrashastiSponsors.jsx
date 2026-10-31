@@ -65,7 +65,7 @@ const PrashastiSponsors = () => {
           <div className="flex items-center justify-between flex-wrap gap-2 mb-6">
             <div className="inline-flex items-center gap-1.5 px-3.5 py-1 rounded-full bg-rose-50 text-[#9F1A45] border border-rose-200 text-xs font-bold uppercase tracking-wider">
               <span className="w-2 h-2 rounded-full bg-[#9F1A45]" />
-              Official Sponsor
+              Title Sponsor
             </div>
             <span className="text-xs text-slate-400 font-medium">
               Supporting Prashasti Samaroh

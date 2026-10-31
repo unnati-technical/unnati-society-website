@@ -4,7 +4,7 @@ import { useEffect, useRef, useState } from "react";
 const SPONSORS = [
   {
     name: "Punjab National Bank",
-    tier: "Principal Sponsor",
+    tier: "Title Sponsor",
     logo: "/assets/pnb-sponsor.png",
   },
 ];
