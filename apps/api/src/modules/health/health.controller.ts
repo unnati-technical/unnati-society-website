@@ -25,7 +25,7 @@ export class HealthController {
       // Check database connection
       () => this.prismaHealth.pingCheck('database', this.prisma),
       // Check public website
-      () => this.http.pingCheck('public-web', 'https://unnatibihar.org'),
+      () => this.http.pingCheck('public-web', 'https://unnati.iiitbh.ac.in'),
     ]);
   }
 }

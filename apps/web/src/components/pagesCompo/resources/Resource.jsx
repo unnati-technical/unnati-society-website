@@ -35,7 +35,18 @@ const Resource = () => {
         {
             title: "Unnati Newsletter",
             desc: "Stay updated with our latest activities and announcements through the newsletter.",
-            link: "https://heyzine.com/flip-book/36de4bab25.html",
+            options: [
+                {
+                    title: "Volume 1 - Issue 1",
+                    description: "Open the first issue",
+                    url: "https://heyzine.com/flip-book/36de4bab25.html",
+                },
+                {
+                    title: "Volume 1 - Issue 2",
+                    description: "The second issue will be available here once published.",
+                    url: "https://heyzine.com/flip-book/5f5e5e973c.html",
+                },
+            ],
             icon: <FiMail size={24} />,
             watermark: (
                 <svg width="220" height="220" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="0.8" className="w-full h-full text-white/5">
