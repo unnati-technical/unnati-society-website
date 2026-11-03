@@ -212,7 +212,8 @@ const Donate = () => {
       if (!order || !order.payment_session_id)
         throw new Error("Could not create Cashfree order");
 
-      const cashfree = await load({ mode: "production" });
+      const cashfreeMode = import.meta.env.VITE_CASHFREE_MODE || "production";
+      const cashfree = await load({ mode: cashfreeMode });
 
       const checkoutOptions = {
         paymentSessionId: order.payment_session_id,
