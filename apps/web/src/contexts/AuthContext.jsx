@@ -27,6 +27,11 @@ export const AuthProvider = ({ children }) => {
   };
 
   useEffect(() => {
+    if (!auth) {
+      setLoading(false);
+      return;
+    }
+
     const unsubscribe = onAuthStateChanged(auth, async (user) => {
       setCurrentUser(user);
       if (user) {
@@ -41,6 +46,8 @@ export const AuthProvider = ({ children }) => {
   }, []);
 
   const logout = async () => {
+    if (!auth) return;
+
     try {
       await firebaseSignOut(auth);
     } catch (error) {

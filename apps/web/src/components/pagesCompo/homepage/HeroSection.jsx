@@ -6,7 +6,7 @@ import { homeMediaApi } from "../../../api/home-media.api";
 const playIcon =
   "https://ik.imagekit.io/zpkfsvgtn/Home/play.png?updatedAt=1785865818727";
 
-const VideoSlide = ({ url, isActive, onEnded }) => {
+const VideoSlide = ({ url, isActive }) => {
   const videoRef = useRef(null);
 
   useEffect(() => {
@@ -29,7 +29,7 @@ const VideoSlide = ({ url, isActive, onEnded }) => {
       ref={videoRef}
       muted
       playsInline
-      onEnded={onEnded}
+      loop
       className="absolute inset-0 w-full h-full object-cover"
     >
       <source src={url} type="video/mp4" />
@@ -45,6 +45,11 @@ const HeroSection = () => {
   const timeoutRef = useRef(null);
 
   useEffect(() => {
+    if (!import.meta.env.VITE_API_URL) {
+      setLoading(false);
+      return;
+    }
+
     const fetchMedia = async () => {
       try {
         const data = await homeMediaApi.getAll();
@@ -88,24 +93,20 @@ const HeroSection = () => {
   };
 
   useEffect(() => {
-    if (list.length <= 1) return;
-
-    // Reset current timeout
     if (timeoutRef.current) {
       clearTimeout(timeoutRef.current);
     }
 
-    // Set slide duration: 6s for photo, 15s safety timeout for video
-    const duration = currentItem.type === "PHOTO" ? 6000 : 15000;
+    if (list.length <= 1 || currentItem.type !== "PHOTO") return;
 
     timeoutRef.current = setTimeout(() => {
-      handleNext();
-    }, duration);
+      setActiveIndex((prev) => (prev + 1) % list.length);
+    }, 6000);
 
     return () => {
       if (timeoutRef.current) clearTimeout(timeoutRef.current);
     };
-  }, [activeIndex, list, currentItem]);
+  }, [activeIndex, currentItem.type, list.length]);
 
   const openVideo = () => {
     // Open the raw mp4 file in a new tab instead of using Cloudinary's player
@@ -132,7 +133,6 @@ const HeroSection = () => {
                 <VideoSlide
                   url={item.url}
                   isActive={isActive}
-                  onEnded={handleNext}
                 />
               ) : (
                 <img
@@ -251,4 +251,3 @@ const HeroSection = () => {
 };
 
 export default HeroSection;
-

@@ -11,10 +11,13 @@ const firebaseConfig = {
   measurementId: import.meta.env.VITE_FIREBASE_MEASUREMENT_ID
 };
 
-// Initialize Firebase
-const app = initializeApp(firebaseConfig);
+const requiredConfigKeys = ["apiKey", "authDomain", "projectId", "appId"];
+export const isFirebaseConfigured = requiredConfigKeys.every(
+  (key) => typeof firebaseConfig[key] === "string" && firebaseConfig[key].trim(),
+);
 
-// Initialize Firebase Authentication
-export const auth = getAuth(app);
-export const googleProvider = new GoogleAuthProvider();
-export const githubProvider = new GithubAuthProvider();
+const app = isFirebaseConfigured ? initializeApp(firebaseConfig) : null;
+
+export const auth = app ? getAuth(app) : null;
+export const googleProvider = app ? new GoogleAuthProvider() : null;
+export const githubProvider = app ? new GithubAuthProvider() : null;
