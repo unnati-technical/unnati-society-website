@@ -6,7 +6,7 @@ import { FaGraduationCap, FaUserTie, FaHandsHelping, FaUsers } from 'react-icons
 import { authApi } from '../../api/auth.api';
 const UnnatiLogo = 'https://ik.imagekit.io/zpkfsvgtn/Navbar/Unnati.png?updatedAt=1785681448621';
 import { signInWithEmailAndPassword, createUserWithEmailAndPassword, signInWithPopup } from 'firebase/auth';
-import { auth, googleProvider, githubProvider } from '../../lib/firebase';
+import { auth, googleProvider, githubProvider, isFirebaseConfigured } from '../../lib/firebase';
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'sonner';
 
@@ -98,6 +98,11 @@ const AuthModal = ({ isOpen, onClose }) => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    if (!isFirebaseConfigured) {
+      toast.error('Authentication is unavailable. Configure the VITE_FIREBASE_* environment variables.');
+      return;
+    }
+
     setIsSubmitting(true);
     
     try {
@@ -143,6 +148,11 @@ const AuthModal = ({ isOpen, onClose }) => {
   };
 
   const handleGoogleSignIn = async () => {
+    if (!isFirebaseConfigured) {
+      toast.error('Authentication is unavailable. Configure the VITE_FIREBASE_* environment variables.');
+      return;
+    }
+
     try {
       setIsSubmitting(true);
       const userCred = await signInWithPopup(auth, googleProvider);
@@ -183,6 +193,11 @@ const AuthModal = ({ isOpen, onClose }) => {
   };
 
   const handleGithubSignIn = async () => {
+    if (!isFirebaseConfigured) {
+      toast.error('Authentication is unavailable. Configure the VITE_FIREBASE_* environment variables.');
+      return;
+    }
+
     try {
       setIsSubmitting(true);
       const userCred = await signInWithPopup(auth, githubProvider);
@@ -359,6 +374,11 @@ const AuthModal = ({ isOpen, onClose }) => {
               <div className="flex-1 flex flex-col p-10 max-w-2xl mx-auto w-full justify-center">
                 <h2 className="text-3xl font-bold text-[#111827] mb-2">Welcome Back!</h2>
                 <p className="text-gray-600 text-sm mb-8">Sign in to continue your Unnati Society account.</p>
+                {!isFirebaseConfigured && (
+                  <p role="status" className="mb-6 rounded-lg border border-amber-200 bg-amber-50 p-3 text-sm text-amber-800">
+                    Sign-in is unavailable until the VITE_FIREBASE_* environment variables are configured.
+                  </p>
+                )}
 
                 {/* Role Selector */}
                 <div className="flex bg-white rounded-xl p-1.5 border border-gray-200 shadow-sm mb-8 shrink-0">
@@ -417,7 +437,7 @@ const AuthModal = ({ isOpen, onClose }) => {
                     </button>
                   </div>
 
-                  <button type="submit" disabled={isSubmitting} className={`w-full py-3 text-white font-bold text-sm rounded-xl transition-all shadow-lg flex items-center justify-center gap-2 ${currentRoleInfo.btnClass}`}>
+                  <button type="submit" disabled={isSubmitting || !isFirebaseConfigured} className={`w-full py-3 text-white font-bold text-sm rounded-xl transition-all shadow-lg flex items-center justify-center gap-2 ${currentRoleInfo.btnClass}`}>
                     <FiLock size={16} />
                     {isSubmitting ? 'Signing In...' : 'Sign In'}
                   </button>
@@ -430,7 +450,7 @@ const AuthModal = ({ isOpen, onClose }) => {
                 </div>
 
                 <div className="flex gap-3">
-                  <button type="button" onClick={handleGoogleSignIn} disabled={isSubmitting} className="flex-1 flex items-center justify-center gap-2 py-3 bg-white border-2 border-gray-200 rounded-xl font-bold text-sm text-gray-700 hover:bg-gray-50 transition-colors">
+                  <button type="button" onClick={handleGoogleSignIn} disabled={isSubmitting || !isFirebaseConfigured} className="flex-1 flex items-center justify-center gap-2 py-3 bg-white border-2 border-gray-200 rounded-xl font-bold text-sm text-gray-700 hover:bg-gray-50 transition-colors">
                     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48" width="20" height="20">
                       <path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.7 17.74 9.5 24 9.5z"/>
                       <path fill="#4285F4" d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z"/>
@@ -439,7 +459,7 @@ const AuthModal = ({ isOpen, onClose }) => {
                     </svg>
                     Google
                   </button>
-                  <button type="button" onClick={handleGithubSignIn} disabled={isSubmitting} className="flex-1 flex items-center justify-center gap-2 py-3 bg-[#24292e] border-2 border-[#24292e] rounded-xl font-bold text-sm text-white hover:bg-gray-800 transition-colors">
+                  <button type="button" onClick={handleGithubSignIn} disabled={isSubmitting || !isFirebaseConfigured} className="flex-1 flex items-center justify-center gap-2 py-3 bg-[#24292e] border-2 border-[#24292e] rounded-xl font-bold text-sm text-white hover:bg-gray-800 transition-colors">
                     <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 24 24">
                       <path fillRule="evenodd" d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.531 1.032 1.531 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z" clipRule="evenodd" />
                     </svg>
@@ -463,6 +483,11 @@ const AuthModal = ({ isOpen, onClose }) => {
                 <div className="mb-6">
                   <h2 className="text-3xl font-bold text-[#111827] mb-2">Join Unnati</h2>
                   <p className="text-gray-600 text-sm">Become part of a movement creating educational opportunities.</p>
+                  {!isFirebaseConfigured && (
+                    <p role="status" className="mt-4 rounded-lg border border-amber-200 bg-amber-50 p-3 text-sm text-amber-800">
+                      Sign-up is unavailable until the VITE_FIREBASE_* environment variables are configured.
+                    </p>
+                  )}
                 </div>
 
                 {/* Step Indicator */}
@@ -616,7 +641,7 @@ const AuthModal = ({ isOpen, onClose }) => {
                         <button type="button" onClick={() => setSignupStep(2)} className="flex-1 py-3 bg-white border-2 border-gray-200 text-gray-700 font-bold text-sm rounded-xl hover:bg-gray-50 transition-colors">
                           Back
                         </button>
-                        <button type="submit" disabled={isSubmitting} className="flex-[2] py-3 bg-gradient-to-r from-[#2563EB] to-blue-500 text-white font-bold text-sm rounded-xl hover:from-blue-600 hover:to-blue-700 transition-all shadow-lg shadow-blue-600/30 flex justify-center items-center gap-2">
+                        <button type="submit" disabled={isSubmitting || !isFirebaseConfigured} className="flex-[2] py-3 bg-gradient-to-r from-[#2563EB] to-blue-500 text-white font-bold text-sm rounded-xl hover:from-blue-600 hover:to-blue-700 transition-all shadow-lg shadow-blue-600/30 flex justify-center items-center gap-2">
                           {isSubmitting ? 'Creating...' : 'Create Account'}
                         </button>
                       </div>
