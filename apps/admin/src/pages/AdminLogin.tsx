@@ -17,6 +17,10 @@ const AdminLogin = () => {
   const navigate = useNavigate();
 
   const handleEmailLogin = async (e) => {
+    if (!auth) {
+      setError('Firebase configuration is missing. Please add VITE_FIREBASE_* environment variables in Vercel settings.');
+      return;
+    }
     e.preventDefault();
     setError('');
     
@@ -63,6 +67,10 @@ const AdminLogin = () => {
   };
 
   const handleGoogleLogin = async () => {
+    if (!auth || !googleProvider) {
+      setError('Firebase configuration is missing. Please add VITE_FIREBASE_* environment variables in Vercel settings.');
+      return;
+    }
     setError('');
     try {
       const result = await signInWithPopup(auth, googleProvider);
@@ -81,6 +89,10 @@ const AdminLogin = () => {
   };
 
   const handleResetPassword = async () => {
+    if (!auth) {
+      setError('Firebase configuration is missing. Please add VITE_FIREBASE_* environment variables in Vercel settings.');
+      return;
+    }
     if (!email) {
       setError('Please enter the admin email address first.');
       return;
