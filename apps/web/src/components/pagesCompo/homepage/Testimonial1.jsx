@@ -46,7 +46,7 @@ const Testimonial1 = () => {
   return (
     <section className="w-full bg-white pt-4 pb-8 md:pt-8 md:pb-12 px-6 md:px-12 lg:px-20 overflow-hidden flex justify-center">
       <motion.div 
-        className="max-w-[1200px] w-full flex flex-col md:flex-row items-start relative mx-auto"
+        className="max-w-300 w-full flex flex-col md:flex-row items-start relative mx-auto"
         initial="hidden"
         whileInView="visible"
         viewport={{ once: true, margin: "-50px" }}
