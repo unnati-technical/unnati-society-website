@@ -6,6 +6,7 @@ import { leadershipApi } from "../../../api/leadership.api";
 import { queryKeys } from "../../../constants/queryKeys";
 import { imagekitImage } from "../../../utils/imagekit";
 import { useLocation } from "react-router-dom";
+import { ProgressiveImage } from "../../common/ProgressiveImage";
 const directorImg =
   "https://ik.imagekit.io/zpkfsvgtn/leadership_profiles/directorsir.png?updatedAt=1785677499424";
 const prImg =
@@ -21,7 +22,7 @@ const SectionHeader = ({ title }) => (
   </div>
 );
 
-import { ProgressiveImage } from "../../common/ProgressiveImage";
+// ProgressiveImage is imported at top
 
 const ProfileCard = ({ member, isImageKit = true, showSocials = true }) => {
   const isImageKitFinal =
@@ -43,6 +44,7 @@ const ProfileCard = ({ member, isImageKit = true, showSocials = true }) => {
         <ProgressiveImage
           src={imgSrc}
           alt={member.name}
+          fallbackSrc={`https://ui-avatars.com/api/?name=${encodeURIComponent(member.name || "User")}&background=random&color=fff&size=256`}
           className="w-full h-full object-cover"
         />
       </div>
