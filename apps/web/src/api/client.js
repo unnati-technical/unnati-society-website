@@ -44,7 +44,8 @@ apiClient.interceptors.response.use(
       if (error.response.status === 401) {
         toast.error('Session expired. Please log in again.');
       } else if (error.response.status >= 500) {
-        toast.error('Server error. Please try again later.');
+        const message = error.response.data?.message || 'Server error. Please try again later.';
+        toast.error(message);
       }
     } else if (error.request) {
       toast.error('Network error. Please check your connection.');

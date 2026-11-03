@@ -44,6 +44,11 @@ export class DonationsService {
       });
 
       // 2. Generate Cashfree Order
+      if (!process.env.CASHFREE_APP_ID || !process.env.CASHFREE_SECRET_KEY) {
+        throw new BadRequestException(
+          'Cashfree API credentials are not configured on the server. Please set CASHFREE_APP_ID and CASHFREE_SECRET_KEY in Render environment variables.',
+        );
+      }
       const cashfreeEnv = process.env.CASHFREE_ENV || 'SANDBOX';
       const baseUrl =
         cashfreeEnv === 'PRODUCTION'
