@@ -117,7 +117,7 @@ const HeroSection = () => {
   };
 
   return (
-    <section className="relative w-full h-[calc(100vh-100px)] min-h-[600px] overflow-hidden bg-black text-white flex items-center px-6 md:px-16 lg:px-24 group">
+    <section className="relative w-full h-[calc(100vh-100px)] min-h-150 overflow-hidden bg-black text-white flex items-center px-6 md:px-16 lg:px-24 group">
       {/* Background Slides */}
       <div className="absolute inset-0 w-full h-full z-0 overflow-hidden">
         {list.map((item, index) => {
@@ -138,7 +138,7 @@ const HeroSection = () => {
                 <img
                   src={item.url}
                   alt={item.title || "Hero Slide"}
-                  className={`absolute inset-0 w-full h-full object-cover transition-transform duration-[6000ms] ease-out ${
+                  className={`absolute inset-0 w-full h-full object-cover transition-transform duration-6000 ease-out ${
                     isActive ? "scale-105" : "scale-100"
                   }`}
                 />
@@ -200,7 +200,7 @@ const HeroSection = () => {
                 loading="lazy"
                 src={playIcon}
                 alt="play"
-                className="w-3 h-3 ml-[1px]"
+                className="w-3 h-3 ml-px"
               />
             </div>
             <span className="oswald-font-3 font-bold text-sm md:text-base tracking-wider">
