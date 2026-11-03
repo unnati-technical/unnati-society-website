@@ -1,8 +1,11 @@
 import axios from 'axios';
 import { toast } from 'sonner';
-// import { auth } from '../contexts/AuthContext' // We'll handle this dynamically if needed, or from Firebase directly if used.
 
-const API_URL = import.meta.env.VITE_API_URL || '';
+// Clean base URL: strip any trailing slash or trailing '/api' from VITE_API_URL
+// This ensures that endpoints starting with '/api/...' never result in '/api/api/...'
+// regardless of whether VITE_API_URL is "https://domain.com/api" or "https://domain.com"
+const RAW_URL = import.meta.env.VITE_API_URL || '';
+const API_URL = RAW_URL.trim().replace(/\/+$/, '').replace(/\/api$/, '');
 
 export const apiClient = axios.create({
   baseURL: API_URL,

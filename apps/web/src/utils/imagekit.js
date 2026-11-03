@@ -13,16 +13,30 @@ const IK_ENDPOINT2 = import.meta.env.VITE_IMAGEKIT_ENDPOINT2 || 'https://ik.imag
 
 /**
  * Build an optimized ImageKit URL from a fileId or path.
- * Equivalent to the old imagekitImage(publicId) helper.
+ * Handles full URLs (ImageKit, Cloudinary, etc.) safely without breaking.
  */
 export const imagekitImage = (filePathOrId) => {
-  return `${IK_ENDPOINT}/${filePathOrId}?tr=w-2560,q-auto,f-auto`;
+  if (!filePathOrId) return '';
+  // If already a full URL, return directly
+  if (typeof filePathOrId === 'string' && (filePathOrId.startsWith('http://') || filePathOrId.startsWith('https://'))) {
+    return filePathOrId;
+  }
+  const cleanPath = String(filePathOrId).startsWith('/')
+    ? String(filePathOrId).slice(1)
+    : filePathOrId;
+  return `${IK_ENDPOINT}/${cleanPath}?tr=w-2560,q-auto,f-auto`;
 };
 
 /**
  * Build an optimized ImageKit URL from the secondary account.
- * Equivalent to the old imagekitImage2(publicId) helper.
  */
 export const imagekitImage2 = (filePathOrId) => {
-  return `${IK_ENDPOINT2}/${filePathOrId}?tr=w-2560,q-auto,f-auto`;
+  if (!filePathOrId) return '';
+  if (typeof filePathOrId === 'string' && (filePathOrId.startsWith('http://') || filePathOrId.startsWith('https://'))) {
+    return filePathOrId;
+  }
+  const cleanPath = String(filePathOrId).startsWith('/')
+    ? String(filePathOrId).slice(1)
+    : filePathOrId;
+  return `${IK_ENDPOINT2}/${cleanPath}?tr=w-2560,q-auto,f-auto`;
 };
