@@ -8,8 +8,8 @@
  * are served as-is (they still work for old images). New uploads go through ImageKit.
  */
 
-const IK_ENDPOINT  = import.meta.env.VITE_IMAGEKIT_ENDPOINT  || 'https://ik.imagekit.io/unnati';
-const IK_ENDPOINT2 = import.meta.env.VITE_IMAGEKIT_ENDPOINT2 || 'https://ik.imagekit.io/unnati2';
+const IK_ENDPOINT  = import.meta.env.VITE_IMAGEKIT_ENDPOINT  || 'https://ik.imagekit.io/zpkfsvgtn';
+const IK_ENDPOINT2 = import.meta.env.VITE_IMAGEKIT_ENDPOINT2 || 'https://ik.imagekit.io/zpkfsvgtn';
 
 /**
  * Build an optimized ImageKit URL from a fileId or path.
