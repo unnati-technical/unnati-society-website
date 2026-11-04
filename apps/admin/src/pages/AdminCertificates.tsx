@@ -313,7 +313,7 @@ function PreviewScaler({ children }: { children: React.ReactNode }) {
 }
 
 /* ────────────────────────────────────────────────────────────────
-   Collapsible section
+   Collapsible section certificate
 ──────────────────────────────────────────────────────────────── */
 function Section({ title, icon: Icon, children, defaultOpen = true }: {
   title: string; icon: React.ElementType; children: React.ReactNode; defaultOpen?: boolean;
