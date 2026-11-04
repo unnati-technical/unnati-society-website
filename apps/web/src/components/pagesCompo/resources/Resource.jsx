@@ -20,8 +20,8 @@ const Resource = () => {
                 },
                 {
                     title: "Unnati Magazine 2026",
-                    description: "The 2026 edition will be available here once published.",
-                    disabled: true,
+                    description: "Open the 2026 edition",
+                    url: "https://heyzine.com/flip-book/2d06403646.html",
                 },
             ],
             icon: <FiBookOpen size={24} />,
