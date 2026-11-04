@@ -100,6 +100,7 @@ const Contact = React.lazy(() => import("./pages/Contact"));
 const Outreach = React.lazy(() => import("./pages/Outreach"));
 const JoinUs = React.lazy(() => import("./pages/JoinUs"));
 const Donate = React.lazy(() => import("./pages/Donate"));
+const UnderMaintence = React.lazy(() => import("./pages/UnderMaintaince"));
 const VerificationPage = React.lazy(() => import("./pages/VerificationPage"));
 const PrivacyPolicy = React.lazy(() => import("./pages/PrivacyPolicy"));
 const TermsAndConditions = React.lazy(
@@ -237,7 +238,7 @@ const App = () => {
 
           <Route path="/outreach" element={<Outreach />} />
           <Route path="/join-us" element={<JoinUs />} />
-          <Route path="/donate" element={<Donate />} />
+          <Route path="/donate" element={<UnderMaintence />} />
           <Route path="/verify/*" element={<VerificationPage />} />
           <Route path="/privacy-policy" element={<PrivacyPolicy />} />
           <Route
